@@ -1,0 +1,29 @@
+{
+  "name": "feh-battles",
+  "version": "1.0.0",
+  "description": "An attempt to imitate Fire Emblem Heroes battles as faithfully as possible.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mk360/feh-battles"
+  },
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "npx jasmine test/spec"
+  },
+  "author": {
+    "name": "Muhammad Kassar",
+    "email": "n_tonio36.poke@outlook.com",
+    "url": "https://github.com/mk360"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "lodash.clonedeep": "^4.5.0",
+    "shortid": "^2.2.15"
+  },
+  "devDependencies": {
+    "@types/jasmine": "^3.5.9",
+    "@types/shortid": "0.0.29",
+    "jasmine": "^3.5.0",
+    "typescript": "^4.0.0-dev.20200523"
+  }
+}

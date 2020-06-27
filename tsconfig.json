@@ -1,0 +1,14 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "module": "CommonJS",
+    "lib": ["ES2016", "ES7"],
+    "target": "ES5",
+    "esModuleInterop": true,
+    "declaration": true,
+    "declarationMap": true,
+    "declarationDir": "dec",
+    "rootDir": "./src",
+    "outDir": "./lib"
+  }
+}

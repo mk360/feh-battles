@@ -2,7 +2,7 @@ import Weapon from "./weapon";
 import Skill from "./passive_skill";
 import { weaponColor, weaponCategory } from "./weapon";
 import { Stats, StatsBuffsTable, heroBuffs, HeroSkills, heroDebuffs, MovementType, MandatoryStats, MovementTypeEnum, MapCoordinates, StatEnum } from "./types";
-import { Cursor, createCursorsReference } from "./cursor";
+import { CursorsReference, createCursorsReference } from "./cursor";
 import shortid from "shortid";
 
 interface Hero {
@@ -22,7 +22,7 @@ interface Hero {
     allowedWeaponTypes?: weaponCategory | weaponCategory[]
     allies?: Hero[]
     enemies?: Hero[],
-    cursors: { [k: string]: Cursor }
+    cursors: CursorsReference
     statuses: Array<heroDebuffs | heroBuffs>
 };
 
@@ -81,10 +81,10 @@ class Hero {
         if (!this.skills.weapon) return null;
         return this.skills.weapon.range;
     };
-    lowerCursor(label: string, value: number) {
+    lowerCursor(label: keyof CursorsReference, value: number) {
         this.cursors[label].decreaseValue(value);
     };
-    raiseCursor(label: string, value: number) {
+    raiseCursor(label: keyof CursorsReference, value: number) {
         this.cursors[label].increaseValue(value);
     };
     setEnemy(hero: Hero) {
@@ -118,7 +118,7 @@ class Hero {
     };
     setBattleMods(mods: StatsBuffsTable) {
         for (let stat in mods) {
-            if (mods[stat] < 0 || (mods[stat] > 0 && this.getCursorValue("fightBuff") >= 0)) {
+            if (mods[stat] < 0 || (mods[stat] > 0 && this.getCursorValue("combatBuff") >= 0)) {
                 this.battleMods[stat] += mods[stat];
             }
         }
@@ -158,7 +158,7 @@ class Hero {
         this.addStatus(debuffIndicator);
         return this;
     };
-    getCursorValue(label: string) {
+    getCursorValue(label: keyof CursorsReference) {
         return this.cursors[label].getCurrentValue();
     };
     setColor(color: weaponColor) {
@@ -191,7 +191,7 @@ class Hero {
         if (this.cursors.mapBuff.getCurrentValue() >= 0) {
             initialStats = modifyStatValues(initialStats, this.mapMods);
         }
-        if (this.cursors.fightBuff.getCurrentValue() >= 0) {
+        if (this.cursors.combatBuff.getCurrentValue() >= 0) {
             initialStats = modifyStatValues(initialStats, this.battleMods);
         }
         return initialStats;

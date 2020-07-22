@@ -119,7 +119,7 @@ export class Combat {
                 if (attacker.getCursorValue("reverseAffinity") > 0) {
                     return 0;
                 }
-                if (attacker.getCursorValue("artificalAffinity") > 0) {
+                if (attacker.getCursorValue("artificialAffinity") > 0) {
                     return 0.2;
                 }
                 return getColorRelationship(attacker.color, defender.color);

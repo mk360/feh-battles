@@ -1,6 +1,6 @@
+export type CursorEffects = "followup" | "addedDamageMod" | "subtractedDamageMod" | "counterattack" | "staffDamageLikeOtherWeapons" | "damageReduction" | "cancelledAffinity" | "gemWeapon" | "artificialAffinity" | "reverseAffinity" | "mapBuff" | "vantage" | "desperation" | "braveWeapon" | "combatBuff" | "combatDebuff" | "additionalMovement" | "effectiveness" | "lowerOfDefAndRes";
 
-
-const effects = ["followup", "addedDamageMod", "subtractedDamageMod", "counterattack", "staffDamageLikeOtherWeapons", "damageReduction", "cancelledAffinity", "gemWeapon", "artificalAffinity", "reverseAffinity", "mapBuff", "vantage", "desperation", "braveWeapon", "fightBuff", "fightDebuff", "damageReduction", "additionalMovement", "effectiveness", "lowerOfDefAndRes"];
+const effects: CursorEffects[] = ["followup", "addedDamageMod", "subtractedDamageMod", "counterattack", "staffDamageLikeOtherWeapons", "damageReduction", "cancelledAffinity", "gemWeapon", "reverseAffinity", "mapBuff", "vantage", "desperation", "braveWeapon", "combatBuff", "combatDebuff", "damageReduction", "additionalMovement", "effectiveness", "lowerOfDefAndRes", "artificialAffinity"];
 
 export interface Cursor {
     getCurrentValue: () => number,
@@ -30,10 +30,14 @@ export class Cursor {
     };
 };
 
+export type CursorsReference = {
+    [k in CursorEffects]?: Cursor
+};
+
 function createCursorsReference() {
-    let cursorsReference = {};
-    for (let effect of effects) {
-        cursorsReference[effect] = new Cursor();
+    let cursorsReference: CursorsReference = {};
+    for (let key of effects) {
+        cursorsReference[key] = new Cursor();
     }
     return cursorsReference;
 };

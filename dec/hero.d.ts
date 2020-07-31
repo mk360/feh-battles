@@ -34,7 +34,7 @@ declare class Hero {
     getDistance(hero: Hero): number;
     setAllowedWeaponType(type: weaponCategory | weaponCategory[]): void;
     setAlly(hero: Hero): this;
-    getWeaponProperty(property: keyof Weapon): string | number | (MovementType | "lance" | "axe" | "sword" | "bow" | "dagger" | "tome" | "dragonstone" | "staff" | "beast")[] | ((color: weaponColor) => Weapon) | ((range: 2 | 1) => Weapon) | ((...targets: (MovementType | "lance" | "axe" | "sword" | "bow" | "dagger" | "tome" | "dragonstone" | "staff" | "beast")[]) => Weapon) | ((slot: import("./base_skill").SkillSlot) => Weapon) | ((newWielder: Hero) => void) | ((effect: import("./base_skill").SkillEffect) => void);
+    getWeaponProperty(property: keyof Weapon): string | number | ("lance" | "axe" | "sword" | "bow" | "dagger" | "tome" | "dragonstone" | "staff" | "beast" | MovementType)[] | ((newWielder: Hero) => void) | ((effect: import("./base_skill").SkillEffect) => void) | ((color: weaponColor) => Weapon) | ((range: 1 | 2) => Weapon) | ((...targets: ("lance" | "axe" | "sword" | "bow" | "dagger" | "tome" | "dragonstone" | "staff" | "beast" | MovementType)[]) => Weapon) | ((slot: import("./base_skill").SkillSlot) => Weapon);
     getWeaponRange(): null | 1 | 2;
     lowerCursor(label: keyof CursorsReference, value: number): void;
     raiseCursor(label: keyof CursorsReference, value: number): void;
@@ -48,7 +48,7 @@ declare class Hero {
     equipSkill(skill: Skill | Weapon): this;
     setCoordinates({ x, y }: MapCoordinates): this;
     private addStatus;
-    getStatuses(): ("statBuff" | "enhancedMovement" | "dragonEffectiveness" | "doubledBonuses" | "panic" | "limitedMovement" | "statDebuff" | "cannotCounterattack" | "trilemma")[];
+    getStatuses(): ("panic" | "limitedMovement" | "statDebuff" | "cannotCounterattack" | "trilemma" | "statBuff" | "enhancedMovement" | "dragonEffectiveness" | "doubledBonuses")[];
     setMovementType(type: MovementTypeEnum): this;
     addBuffIndicator(buffIndicator: heroBuffs): this;
     addDebuffIndicator(debuffIndicator: heroDebuffs): this;

@@ -10,8 +10,15 @@ interface Weapon extends BaseSkill {
     range: weaponRange;
     effectiveAgainst?: (weaponCategory | MovementType)[];
 }
+interface WeaponOptions {
+    name: string;
+    might: number;
+    category: weaponCategory;
+    color?: weaponColor;
+    range: weaponRange;
+}
 declare class Weapon extends BaseSkill {
-    constructor(weaponInformations?: Weapon);
+    constructor(weaponInformations?: WeaponOptions);
     private throwIncompatibleError;
     setColor(color: weaponColor): this;
     setRange(range: weaponRange): this;

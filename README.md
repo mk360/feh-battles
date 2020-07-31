@@ -1,4 +1,4 @@
-This package aims to reproduce the combat conditions from the mobile game [https://fire-emblem-heroes.com/en/](Fire Emblem Heroes).
+This package aims to reproduce the combat conditions from the mobile game [Fire Emblem Heroes](https://fire-emblem-heroes.com/en/).
 
 ### Basics
 
@@ -71,7 +71,7 @@ const weapon2 = new FEH.Weapon()
 hero2.equipWeapon(weapon2);
 ```
 
-If you feel the need to _really_ populate your battlefield, you can assign allies and enemies to both sides - with so far no restriction on wilder scenarios (such as a third hero being an ally of both enemies. Don't try to think about it, you'll have a headache.).
+If you feel the need to _really_ populate your battlefield, you can assign allies and enemies to both sides - with so far no restriction on wilder scenarios (such as a third hero being an ally of both enemies).
 
 Now that the two opponents are prepared, let's fight:
 
@@ -101,7 +101,15 @@ Even allies have their own event handlers.
 
 A core functionality of this package. They determine internally, for a specific combat effect (say, for example, how many times a hero can attack) what behavior that hero will have: will they attack once? Twice? Won't they attack at all? Can they attack before their opponent initiates, can they attack twice, in a row, before their opponent initiates?
 
+The multitude of effects available in this game are represented each by a specific cursor who has a default value (0), value that can be modified (by calling `Hero#raiseCursor` or `Hero#lowerCursor`). Depending on the effect and depending on the final value, a specific behavior might or might not occur.
+
 Despite my focus on turns taken and such, combat is much more vast than that.
+
+Whether they affect the ongoing battle is determined by a few factors:
+* What are the possible states of that effect? (attacking could be completely disallowed, or the hero could attack normally, or the hero attacks more often. Buffs obtained during combat can be enabled or disabled.)
+* What is the default value of that effect cursor? (0).
+* Does this cursor's effect activate only when its value is positive (> 0), or does it still activate even if its value equals zero?
+* If this check passes, apply that effect.
 
 ### Effects coverage
 

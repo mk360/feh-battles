@@ -13,8 +13,16 @@ interface Weapon extends BaseSkill {
     effectiveAgainst?: (weaponCategory | MovementType)[]
 };
 
+interface WeaponOptions {
+    name: string
+    might: number
+    category: weaponCategory
+    color?: weaponColor
+    range: weaponRange
+};
+
 class Weapon extends BaseSkill {
-    constructor(weaponInformations?: Weapon) {
+    constructor(weaponInformations?: WeaponOptions) {
         super();
         super.setSlot("weapon");
         if (weaponInformations) {

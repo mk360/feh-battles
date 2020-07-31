@@ -1,6 +1,6 @@
 {
   "name": "feh-battles",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "An attempt to imitate Fire Emblem Heroes battles as faithfully as possible.",
   "repository": {
     "type": "git",
@@ -8,7 +8,8 @@
   },
   "main": "lib/index.js",
   "scripts": {
-    "test": "npx jasmine test/spec"
+    "test": "npx jasmine test/spec",
+    "postinstall": "tsc"
   },
   "author": {
     "name": "Muhammad Kassar",

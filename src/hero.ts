@@ -73,13 +73,9 @@ class Hero {
         this.allies.push(hero);
         return this;
     };
-    getWeaponProperty(property: keyof Weapon) {
-        if (this.skills.weapon) return this.skills.weapon[property];
+    getWeapon() {
+        if (this.skills.weapon) return this.skills.weapon;
         return null;
-    };
-    getWeaponRange(): null | 1 | 2 {
-        if (!this.skills.weapon) return null;
-        return this.skills.weapon.range;
     };
     lowerCursor(label: keyof CursorsReference, value: number) {
         this.cursors[label].decreaseValue(value);

@@ -21,6 +21,19 @@ interface DamageFormula {
     advantage: number
 }
 
+interface CombatOutcome {
+    attacker: {
+        turns: number;
+        damageByTurn: number;
+        extraDamage: number;
+    };
+    defender: {
+        turns: number;
+        damageByTurn: number;
+        extraDamage: number;
+    };
+}
+
 function getColorRelationship(attackerColor: weaponColor, defenderColor: weaponColor) {
     if (attackerColor === defenderColor || [attackerColor, defenderColor].includes("colorless")) return 0;
     return {
@@ -36,15 +49,10 @@ function getColorRelationship(attackerColor: weaponColor, defenderColor: weaponC
             red: -0.2,
             blue: 0.2,
         },
-        colorless: {
-            red: 0,
-            blue: 0,
-            green: 0
-        }
-    }[attackerColor][defenderColor] || 0;
+    }[attackerColor][defenderColor];
 };
 
-type hookNames = "onEquip" | "onInitiate" | "onDefense" | "onBeforeCombat" | "onStartTurn" | "onAllyInitiate" | "onAllyDefense" | "onBeforeAllyCombat" | "modifyCursors"
+type hookNames = "onEquip" | "onInitiate" | "onDefense" | "onBeforeCombat" | "onStartTurn" | "onAllyInitiate" | "onAllyDefense" | "onBeforeAllyCombat" | "modifyCursors";
 type hookSide = "defender" | "attacker";
 
 interface SkillHook {
@@ -80,7 +88,7 @@ interface TurnArgument {
 }
 
 export class Combat {
-    constructor({ attacker, defender }) {
+    constructor({ attacker, defender }: { attacker: Hero, defender: Hero }) {
         this.attacker = cloneDeep(attacker);
         this.defender = cloneDeep(defender);
     };
@@ -92,7 +100,11 @@ export class Combat {
     };
     private callSkillHook(hook: SkillHook) {
         if (hook.skill[hook.hookName]) {
-            hook.skill[hook.hookName].call(null, hook.side === "attacker" ? { wielder: this.attacker, enemy: this.defender } : { wielder: this.defender, enemy: this.attacker });
+            const hookParam = hook.side === "attacker" ? {
+                wielder: this.attacker, enemy: this.defender,
+            } : { wielder: this.defender, enemy: this.attacker };
+
+            hook.skill[hook.hookName](hookParam);
         }
     };
     private runAllAttackerSkillsHooks(hookName: hookNames) {
@@ -126,7 +138,7 @@ export class Combat {
             }
         });
         let gemWeaponAffinity = attacker.getCursorValue("gemWeapon") > 0 ? getColorRelationship(attacker.color, defender.color) : 0;
-        let statusAffinity = attacker.statuses.includes("trilemma") || defender.statuses.includes("trilemma") ? getColorRelationship(attacker.color, defender.color) : 0;
+        let statusAffinity = [...attacker.statuses, ...defender.statuses].includes("trilemma") ? getColorRelationship(attacker.color, defender.color) : 0;
         let affinity = Math.max(statusAffinity, gemWeaponAffinity);
         let effectiveness = attacker.getCursorValue("effectiveness") > 0 ? 1.5 : 1;
         let attackStat = attackerStats.atk;
@@ -169,7 +181,7 @@ export class Combat {
     };
     private setupTurns(): Turn[] {
         let turns: Turn[] = [];
-        let defenderCanFightBack = this.defender.getWeaponRange() === this.attacker.getWeaponRange() || this.defender.getCursorValue("counterattack") > 0;
+        let defenderCanFightBack = this.defender.getWeapon().range === this.attacker.getWeapon().range || this.defender.getCursorValue("counterattack") > 0;
         if (this.defender.getCursorValue("vantage") > 0 && defenderCanFightBack) {
             turns.push({
                 attacker: this.defender,

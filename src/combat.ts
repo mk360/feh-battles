@@ -91,6 +91,7 @@ export class Combat {
     constructor({ attacker, defender }: { attacker: Hero, defender: Hero }) {
         this.attacker = cloneDeep(attacker);
         this.defender = cloneDeep(defender);
+        // optimization: only clone the necessary information
     };
     private callAttackerHook(hook: SkillHook) {
         this.callSkillHook({ hookName: hook.hookName, skill: hook.skill, side: "attacker" });

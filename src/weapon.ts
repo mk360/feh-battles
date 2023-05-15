@@ -1,24 +1,23 @@
 import BaseSkill, { SkillSlot } from "./base_skill";
 import { MovementType } from "./types";
 
-export type weaponColor = "red" | "blue" | "green" | "colorless";
-export type weaponCategory = "lance" | "axe" | "sword" | "bow" | "dagger" | "tome" | "dragonstone" | "staff" | "beast";
-type weaponRange = 1 | 2;
+export type WeaponColor = "red" | "blue" | "green" | "colorless";
+export type WeaponType = "lance" | "axe" | "sword" | "bow" | "dagger" | "tome" | "dragonstone" | "staff" | "beast";
 
 interface Weapon extends BaseSkill {
     might: number,
-    category: weaponCategory,
-    color?: weaponColor,
-    range: weaponRange,
-    effectiveAgainst?: (weaponCategory | MovementType)[]
+    type: WeaponType,
+    color?: WeaponColor,
+    range: number,
+    effectiveAgainst?: (WeaponType | MovementType)[]
 };
 
 interface WeaponOptions {
     name: string
     might: number
-    category: weaponCategory
-    color?: weaponColor
-    range: weaponRange
+    type: WeaponType
+    color?: WeaponColor
+    range: number
 };
 
 class Weapon extends BaseSkill {
@@ -28,56 +27,56 @@ class Weapon extends BaseSkill {
         if (weaponInformations) {
             this.setName(weaponInformations.name);
             this.setMight(weaponInformations.might);
-            this.setCategory(weaponInformations.category);
+            this.setType(weaponInformations.type);
             if (!this.color) this.setColor(weaponInformations.color);
         }
     };
 
-    private throwIncompatibleError(color: weaponColor, category: weaponCategory) {
+    private throwIncompatibleError(color: WeaponColor, category: WeaponType) {
         throw new Error(`Incompatible combination between color ${this.color} and weapon ${category}`);
     };
 
-    setColor(color: weaponColor) {
-        if (["staff", "axe", "sword", "lance", "staff"].includes(this.category)) {
-            if (isIncompatible(color, this.category)) {
-                this.throwIncompatibleError(color, this.category);
+    setColor(color: WeaponColor) {
+        if (["staff", "axe", "sword", "lance", "staff"].includes(this.type)) {
+            if (isIncompatible(color, this.type)) {
+                this.throwIncompatibleError(color, this.type);
+                return;
             }
-        } else {
-            this.color = color;
         }
+        this.color = color;
         return this;
     };
 
-    setRange(range: weaponRange) {
+    setRange(range: number) {
         this.range = range;
         return this;
     };
 
-    setEffectiveness(...targets: (weaponCategory | MovementType)[]) {
+    setEffectiveness(...targets: (WeaponType | MovementType)[]) {
         this.effectiveAgainst = targets;
         return this;
     };
 
-    setCategory(category: weaponCategory) {
+    setType(type: WeaponType) {
         if (this.color) {
-            if (isIncompatible(this.color, category)) {
-                this.throwIncompatibleError(this.color, category);
+            if (isIncompatible(this.color, type)) {
+                this.throwIncompatibleError(this.color, type);
             }
         }
 
-        this.category = category;
-        if (["axe", "sword", "lance", "beast", "dragonstone"].includes(category)) {
+        this.type = type;
+        if (["axe", "sword", "lance", "beast", "dragonstone"].includes(type)) {
             this.setRange(1);
-            if (["axe", "sword", "lance"].includes(category)) {
+            if (["axe", "sword", "lance"].includes(type)) {
                 this.setColor({
                     axe: "green",
                     sword: "red",
                     lance: "blue"
-                }[category]);
+                }[type]);
             }
         } else {
             this.setRange(2);
-            if (category === "staff") {
+            if (type === "staff") {
                 this.setColor("colorless");
             }
         }
@@ -97,7 +96,7 @@ class Weapon extends BaseSkill {
     };
 };
 
-function isIncompatible(color: weaponColor, weapon: weaponCategory) {
+function isIncompatible(color: WeaponColor, weapon: WeaponType) {
     return (
         color === "red" && ["axe", "lance", "staff"].includes(weapon) ||
         color === "blue" && ["axe", "sword", "staff"].includes(weapon) ||

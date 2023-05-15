@@ -1,6 +1,7 @@
 import Hero from "./hero";
 import Skill from "./passive_skill";
-import { weaponColor } from "./weapon";
+import { StatsBuffsTable } from "./types";
+import { WeaponColor as WeaponColor } from "./weapon";
 import cloneDeep from "lodash.clonedeep";
 
 export interface Combat {
@@ -21,20 +22,34 @@ interface DamageFormula {
     advantage: number
 }
 
-interface CombatOutcome {
-    attacker: {
-        turns: number;
-        damageByTurn: number;
-        extraDamage: number;
-    };
-    defender: {
-        turns: number;
-        damageByTurn: number;
-        extraDamage: number;
-    };
+interface TurnOutcome {
+    attacker: Hero,
+    defender: Hero,
+    advantage: "advantage" | "disadvantage" | "neutral",
+    effective: boolean,
+    remainingHP: number,
+    damage: number
 }
 
-function getColorRelationship(attackerColor: weaponColor, defenderColor: weaponColor) {
+interface CombatOutcome {
+    // attacker: {
+    //     turns: number;
+    //     damageByTurn: number;
+    //     extraDamage: number;
+    // };
+    // defender: {
+    //     turns: number;
+    //     damageByTurn: number;
+    //     extraDamage: number;
+    // };
+    atkChanges: StatsBuffsTable
+    defChanges: StatsBuffsTable
+    atkRemainingHP: number
+    defRemainingHP: number
+    outcome: TurnOutcome[]
+}
+
+function getColorRelationship(attackerColor: WeaponColor, defenderColor: WeaponColor): number {
     if (attackerColor === defenderColor || [attackerColor, defenderColor].includes("colorless")) return 0;
     return {
         blue: {
@@ -91,7 +106,6 @@ export class Combat {
     constructor({ attacker, defender }: { attacker: Hero, defender: Hero }) {
         this.attacker = cloneDeep(attacker);
         this.defender = cloneDeep(defender);
-        // optimization: only clone the necessary information
     };
     private callAttackerHook(hook: SkillHook) {
         this.callSkillHook({ hookName: hook.hookName, skill: hook.skill, side: "attacker" });
@@ -104,7 +118,6 @@ export class Combat {
             const hookParam = hook.side === "attacker" ? {
                 wielder: this.attacker, enemy: this.defender,
             } : { wielder: this.defender, enemy: this.attacker };
-
             hook.skill[hook.hookName](hookParam);
         }
     };
@@ -144,14 +157,19 @@ export class Combat {
         let effectiveness = attacker.getCursorValue("effectiveness") > 0 ? 1.5 : 1;
         let attackStat = attackerStats.atk;
         let defenderStat = attacker.getCursorValue("lowerOfDefAndRes") > 0 ? Math.min(defenderStats.def, defenderStats.res) :
-            ["tome", "dragonstone"].includes(attacker.skills.weapon.category) ? defenderStats.res : defenderStats.def;
+            ["tome", "dragonstone"].includes(attacker.skills.weapon.type) ? defenderStats.res : defenderStats.def;
         let damage = this.produceDamage({ attackStat, defenderStat, advantage, affinity, effectiveness });
         damage += attacker.getCursorValue("addedDamageMod") - defender.getCursorValue("subtractedDamageMod");
-        if (attacker.skills.weapon.category === "staff" && attacker.getCursorValue("staffDamageLikeOtherWeapons") <= 0) {
+        if (attacker.skills.weapon.type === "staff" && attacker.getCursorValue("staffDamageLikeOtherWeapons") <= 0) {
             damage = Math.floor(damage / 2);
         }
-        return damage;
+        return {
+            advantage: advantage === 0 ? "neutral" : advantage === 0.2 ? "advantage" : "disadvantage" as "neutral" | "advantage" | "disadvantage",
+            damage,
+            effective: effectiveness === 1 ? false : true
+        }
     };
+
     private generateStartupTurns({ attacker: turnAttacker, defender: turnDefender }: Turn): Turn[] {
         let turns: Turn[] = [];
         let consecutiveTurns = 1;
@@ -163,6 +181,7 @@ export class Combat {
         }
         return this.stackSameTurns({ attacker: turnAttacker, defender: turnDefender, iterations: consecutiveTurns, turns });
     };
+
     private runAllDefenderSkillsHooks(hookName: hookNames) {
         for (let skillSlot in this.defender.skills) {
             let skill = this.defender.skills[skillSlot];
@@ -180,7 +199,7 @@ export class Combat {
         }
         return turnsCopy;
     };
-    private setupTurns(): Turn[] {
+    private setupTurns() {
         let turns: Turn[] = [];
         let defenderCanFightBack = this.defender.getWeapon().range === this.attacker.getWeapon().range || this.defender.getCursorValue("counterattack") > 0;
         if (this.defender.getCursorValue("vantage") > 0 && defenderCanFightBack) {
@@ -239,14 +258,25 @@ export class Combat {
         this.runAllAttackerSkillsHooks("onInitiate");
         this.runAllDefenderSkillsHooks("onDefense");
         let turns = this.setupTurns();
-        let combatOutcome = [];
+        const combatData: CombatOutcome = {
+            atkChanges: this.attacker.battleMods,
+            defChanges: this.defender.battleMods,
+            outcome: [],
+            atkRemainingHP: 0,
+            defRemainingHP: 0
+        };
+
         for (let turn of turns) {
-            let damage = this.calculateDamage({ attacker: turn.attacker, defender: turn.defender });
+            let attackOutcome = this.calculateDamage({ attacker: turn.attacker, defender: turn.defender });
+            const { damage } = attackOutcome;
+            const remainingHP = Math.max(0, turn.defender.stats.hp - damage);
             turn.defender.stats.hp = Math.max(0, turn.defender.stats.hp - damage);
-            combatOutcome.push({ attacker: turn.attacker, defender: turn.defender, damage });
-            if (turn.defender.stats.hp === 0) return combatOutcome;
+            combatData.outcome.push({ attacker: turn.attacker, defender: turn.defender, ...attackOutcome, remainingHP });
+            combatData.atkRemainingHP = turn.attacker.stats.hp;
+            combatData.defRemainingHP = turn.defender.stats.hp;
+            if (turn.defender.stats.hp === 0) return combatData;
         }
-        return combatOutcome;
+        return combatData;
     };
 };
 

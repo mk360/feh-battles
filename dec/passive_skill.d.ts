@@ -1,10 +1,10 @@
 import BaseSkill from "./base_skill";
-import { weaponCategory } from "./weapon";
+import { WeaponType } from "./weapon";
 import { MovementType } from "./types";
 declare type PassiveSkillSlot = "A" | "B" | "C";
 interface PassiveSkill extends BaseSkill {
     slot: PassiveSkillSlot;
-    allowedUsers?: Array<MovementType | weaponCategory>;
+    allowedUsers?: Array<MovementType | WeaponType>;
 }
 declare class PassiveSkill extends BaseSkill {
     constructor(passiveSkillInformations?: PassiveSkill);

@@ -1,7 +1,7 @@
 import Weapon from "./weapon";
 import Skill from "./passive_skill";
-import { weaponColor, weaponCategory } from "./weapon";
-import { Stats, StatsBuffsTable, heroBuffs, HeroSkills, heroDebuffs, MovementType, MandatoryStats, MovementTypeEnum, MapCoordinates, StatEnum } from "./types";
+import { WeaponColor, WeaponType } from "./weapon";
+import { Stats, StatsBuffsTable, heroBuffs, HeroSkills, heroDebuffs, MovementType, MandatoryStats, MapCoordinates, StatEnum } from "./types";
 import { CursorsReference } from "./cursor";
 interface Hero {
     name: string;
@@ -13,11 +13,11 @@ interface Hero {
     mapMods: StatsBuffsTable;
     positiveStatuses: heroBuffs[];
     negativeStatuses: heroDebuffs[];
-    color: weaponColor;
+    color: WeaponColor;
     skills: HeroSkills;
     movementType: MovementType;
     coordinates: MapCoordinates;
-    allowedWeaponTypes?: weaponCategory | weaponCategory[];
+    allowedWeaponTypes?: WeaponType | WeaponType[];
     allies?: Hero[];
     enemies?: Hero[];
     cursors: CursorsReference;
@@ -26,20 +26,20 @@ interface Hero {
 interface HeroConstructor {
     name: string;
     stats: MandatoryStats;
-    weaponType?: weaponCategory;
-    weaponColor?: weaponColor;
+    weaponType?: WeaponType;
+    movementType: MovementType;
+    weaponColor?: WeaponColor;
 }
 declare class Hero {
     constructor(heroConstructor?: HeroConstructor);
     getDistance(hero: Hero): number;
-    setAllowedWeaponType(type: weaponCategory | weaponCategory[]): void;
+    setAllowedWeaponType(type: WeaponType | WeaponType[]): void;
     setAlly(hero: Hero): this;
-    getWeaponProperty(property: keyof Weapon): string | number | ("lance" | "axe" | "sword" | "bow" | "dagger" | "tome" | "dragonstone" | "staff" | "beast" | MovementType)[] | ((newWielder: Hero) => void) | ((effect: import("./base_skill").SkillEffect) => void) | ((color: weaponColor) => Weapon) | ((range: 1 | 2) => Weapon) | ((...targets: ("lance" | "axe" | "sword" | "bow" | "dagger" | "tome" | "dragonstone" | "staff" | "beast" | MovementType)[]) => Weapon) | ((slot: import("./base_skill").SkillSlot) => Weapon);
-    getWeaponRange(): null | 1 | 2;
+    getWeapon(): Weapon;
     lowerCursor(label: keyof CursorsReference, value: number): void;
     raiseCursor(label: keyof CursorsReference, value: number): void;
     setEnemy(hero: Hero): this;
-    getMovementType(): MovementTypeEnum;
+    getMovementType(): MovementType;
     setName(name: string): this;
     setMapMods(mods: Stats): this;
     raiseStat(stat: StatEnum, value: number): this;
@@ -49,11 +49,11 @@ declare class Hero {
     setCoordinates({ x, y }: MapCoordinates): this;
     private addStatus;
     getStatuses(): ("panic" | "limitedMovement" | "statDebuff" | "cannotCounterattack" | "trilemma" | "statBuff" | "enhancedMovement" | "dragonEffectiveness" | "doubledBonuses")[];
-    setMovementType(type: MovementTypeEnum): this;
+    setMovementType(type: MovementType): this;
     addBuffIndicator(buffIndicator: heroBuffs): this;
     addDebuffIndicator(debuffIndicator: heroDebuffs): this;
     getCursorValue(label: keyof CursorsReference): number;
-    setColor(color: weaponColor): this;
+    setColor(color: WeaponColor): this;
     setWeapon(weapon: Weapon): this;
     getBattleStats(): Stats;
     setBaseStats(stats: Stats): this;

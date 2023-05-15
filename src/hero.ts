@@ -1,7 +1,7 @@
 import Weapon from "./weapon";
 import Skill from "./passive_skill";
-import { weaponColor, weaponCategory } from "./weapon";
-import { Stats, StatsBuffsTable, heroBuffs, HeroSkills, heroDebuffs, MovementType, MandatoryStats, MovementTypeEnum, MapCoordinates, StatEnum } from "./types";
+import { WeaponColor, WeaponType } from "./weapon";
+import { Stats, StatsBuffsTable, heroBuffs, HeroSkills, heroDebuffs, MovementType, MandatoryStats, MapCoordinates, StatEnum } from "./types";
 import { CursorsReference, createCursorsReference } from "./cursor";
 import shortid from "shortid";
 
@@ -15,11 +15,11 @@ interface Hero {
     mapMods: StatsBuffsTable
     positiveStatuses: heroBuffs[];
     negativeStatuses: heroDebuffs[];
-    color: weaponColor,
+    color: WeaponColor,
     skills: HeroSkills,
     movementType: MovementType,
     coordinates: MapCoordinates,
-    allowedWeaponTypes?: weaponCategory | weaponCategory[]
+    allowedWeaponTypes?: WeaponType | WeaponType[]
     allies?: Hero[]
     enemies?: Hero[],
     cursors: CursorsReference
@@ -29,8 +29,9 @@ interface Hero {
 interface HeroConstructor {
     name: string,
     stats: MandatoryStats,
-    weaponType?: weaponCategory
-    weaponColor?: weaponColor
+    weaponType?: WeaponType,
+    movementType: MovementType,
+    weaponColor?: WeaponColor
 };
 
 class Hero {
@@ -49,6 +50,7 @@ class Hero {
         this.allies = [];
         this.statuses = [];
         this.skills = {};
+        this.movementType = heroConstructor.movementType,
         this.cursors = createCursorsReference();
         this.battleMods = {
             atk: 0,
@@ -66,7 +68,7 @@ class Hero {
     getDistance(hero: Hero) {
         return Math.abs(hero.coordinates.x - this.coordinates.x) + Math.abs(hero.coordinates.y - this.coordinates.y);
     };
-    setAllowedWeaponType(type: weaponCategory | weaponCategory[]) {
+    setAllowedWeaponType(type: WeaponType | WeaponType[]) {
         this.allowedWeaponTypes = type;
     };
     setAlly(hero: Hero) {
@@ -88,7 +90,7 @@ class Hero {
         return this;
     };
     getMovementType() {
-        return this.movementType.type;
+        return this.movementType;
     };
     setName(name: string) {
         this.name = name;
@@ -139,11 +141,8 @@ class Hero {
     getStatuses() {
         return this.statuses;
     };
-    setMovementType(type: MovementTypeEnum) {
-        this.movementType = {
-            type,
-            tiles: type === "armored" ? 1 : type === "cavalry" ? 3 : 2
-        };
+    setMovementType(type: MovementType) {
+        this.movementType = type;
         return this;
     };
     addBuffIndicator(buffIndicator: heroBuffs) {
@@ -157,14 +156,14 @@ class Hero {
     getCursorValue(label: keyof CursorsReference) {
         return this.cursors[label].getCurrentValue();
     };
-    setColor(color: weaponColor) {
+    setColor(color: WeaponColor) {
         this.color = color;
         return this;
     };
     setWeapon(weapon: Weapon) {
         this.stats = { ...this.baseStats };
         if (this.allowedWeaponTypes) {
-            if (this.allowedWeaponTypes === weapon.category || this.allowedWeaponTypes.includes(weapon.category)) {
+            if (this.allowedWeaponTypes === weapon.type || this.allowedWeaponTypes.includes(weapon.type)) {
                 this.equipSkill(weapon);
                 this.setColor(weapon.color);
                 if (this.stats) {

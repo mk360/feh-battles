@@ -1,12 +1,28 @@
 import Hero from "./hero";
+import { StatsBuffsTable } from "./types";
 export interface Combat {
     attacker: Hero;
     defender: Hero;
 }
+interface TurnOutcome {
+    attacker: Hero;
+    defender: Hero;
+    advantage: "advantage" | "disadvantage" | "neutral";
+    effective: boolean;
+    remainingHP: number;
+    damage: number;
+}
+interface CombatOutcome {
+    atkChanges: StatsBuffsTable;
+    defChanges: StatsBuffsTable;
+    atkRemainingHP: number;
+    defRemainingHP: number;
+    outcome: TurnOutcome[];
+}
 export declare class Combat {
     constructor({ attacker, defender }: {
-        attacker: any;
-        defender: any;
+        attacker: Hero;
+        defender: Hero;
     });
     private callAttackerHook;
     private callDefenderHook;
@@ -23,7 +39,7 @@ export declare class Combat {
     private handleFollowups;
     private runAllSkillsHooks;
     private runAllyHooks;
-    createCombat(): any[];
+    createCombat(): CombatOutcome;
 }
 export default Combat;
 //# sourceMappingURL=combat.d.ts.map

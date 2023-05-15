@@ -35,16 +35,11 @@ export interface StatsBuffsTable {
 };
 
 export type MapCoordinates = {
-    x: 1 | 2 | 3 | 4 | 5 | 6,
-    y: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8,
+    x: number,
+    y: number,
 };
 
-export type MovementTypeEnum = "infantry" | "flier" | "armored" | "cavalry";
-
-export interface MovementType {
-    type: MovementTypeEnum
-    tiles: 1 | 2 | 3
-};
+export type MovementType = "infantry" | "flier" | "armored" | "cavalry";
 
 export type heroBuffs = "statBuff" | "enhancedMovement" | "dragonEffectiveness" | "doubledBonuses";
 export type heroDebuffs = "panic" | "limitedMovement" | "statDebuff" | "cannotCounterattack" | "trilemma";

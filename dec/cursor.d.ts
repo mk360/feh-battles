@@ -1,4 +1,5 @@
-export declare type CursorEffects = "followup" | "addedDamageMod" | "subtractedDamageMod" | "counterattack" | "staffDamageLikeOtherWeapons" | "damageReduction" | "cancelledAffinity" | "gemWeapon" | "artificialAffinity" | "reverseAffinity" | "mapBuff" | "vantage" | "desperation" | "braveWeapon" | "combatBuff" | "combatDebuff" | "additionalMovement" | "effectiveness" | "lowerOfDefAndRes";
+declare const effects: readonly ["followup", "addedDamageMod", "subtractedDamageMod", "counterattack", "staffDamageLikeOtherWeapons", "damageReduction", "cancelledAffinity", "gemWeapon", "reverseAffinity", "mapBuff", "vantage", "desperation", "braveWeapon", "combatBuff", "combatDebuff", "damageReduction", "additionalMovement", "effectiveness", "lowerOfDefAndRes", "artificialAffinity"];
+export declare type CursorEffects = (typeof effects)[number];
 export interface Cursor {
     getCurrentValue: () => number;
     decreaseValue: (valueDifference: number) => Cursor;

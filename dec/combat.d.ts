@@ -17,6 +17,8 @@ interface CombatOutcome {
     defChanges: StatsBuffsTable;
     atkRemainingHP: number;
     defRemainingHP: number;
+    atkDamage: number;
+    defDamage: number;
     outcome: TurnOutcome[];
 }
 export declare class Combat {

@@ -1,7 +1,7 @@
 import BaseSkill from "./base_skill";
 import { WeaponType } from "./weapon";
 import { MovementType } from "./types";
-declare type PassiveSkillSlot = "A" | "B" | "C";
+declare type PassiveSkillSlot = "A" | "B" | "C" | "S";
 interface PassiveSkill extends BaseSkill {
     slot: PassiveSkillSlot;
     allowedUsers?: Array<MovementType | WeaponType>;

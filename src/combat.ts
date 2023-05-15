@@ -46,6 +46,8 @@ interface CombatOutcome {
     defChanges: StatsBuffsTable
     atkRemainingHP: number
     defRemainingHP: number
+    atkDamage: number
+    defDamage: number
     outcome: TurnOutcome[]
 }
 
@@ -263,7 +265,9 @@ export class Combat {
             defChanges: this.defender.battleMods,
             outcome: [],
             atkRemainingHP: 0,
-            defRemainingHP: 0
+            defRemainingHP: 0,
+            atkDamage: 0,
+            defDamage: 0
         };
 
         for (let turn of turns) {
@@ -272,8 +276,10 @@ export class Combat {
             const remainingHP = Math.max(0, turn.defender.stats.hp - damage);
             turn.defender.stats.hp = Math.max(0, turn.defender.stats.hp - damage);
             combatData.outcome.push({ attacker: turn.attacker, defender: turn.defender, ...attackOutcome, remainingHP });
-            combatData.atkRemainingHP = turn.attacker.stats.hp;
-            combatData.defRemainingHP = turn.defender.stats.hp;
+            combatData.atkDamage += this.attacker.id === turn.attacker.id ? damage : 0;
+            combatData.defDamage += this.defender.id === turn.attacker.id ? damage : 0;
+            combatData.atkRemainingHP = turn.attacker.id === this.attacker.id ? turn.attacker.stats.hp : turn.defender.stats.hp;
+            combatData.defRemainingHP = turn.defender.id === this.defender.id ? turn.defender.stats.hp : turn.attacker.stats.hp;
             if (turn.defender.stats.hp === 0) return combatData;
         }
         return combatData;

@@ -24,6 +24,7 @@ class Weapon extends BaseSkill {
     constructor(weaponInformations?: WeaponOptions) {
         super();
         super.setSlot("weapon");
+        this.effectiveAgainst = [];
         if (weaponInformations) {
             this.setName(weaponInformations.name);
             this.setMight(weaponInformations.might);

@@ -16,11 +16,11 @@ export class Cursor {
             return currentValue;
         };
         this.decreaseValue = (valueDifference) => {
-            currentValue = -Math.max(currentValue, valueDifference);
+            currentValue -= valueDifference;
             return this;
         };
         this.increaseValue = (valueDifference) => {
-            currentValue = Math.max(currentValue, valueDifference);
+            currentValue += valueDifference;
             return this;
         };
         this.resetValue = () => {

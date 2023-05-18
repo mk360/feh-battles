@@ -26,6 +26,7 @@ export declare class Combat {
         attacker: Hero;
         defender: Hero;
     });
+    cloneHero(hero: Hero): Hero;
     private callAttackerHook;
     private callDefenderHook;
     private callSkillHook;

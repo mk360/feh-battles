@@ -47,8 +47,8 @@ declare class Hero {
     setBattleMods(mods: StatsBuffsTable): this;
     equipSkill(skill: Skill | Weapon): this;
     setCoordinates({ x, y }: MapCoordinates): this;
-    private addStatus;
-    getStatuses(): ("panic" | "limitedMovement" | "statDebuff" | "cannotCounterattack" | "trilemma" | "statBuff" | "enhancedMovement" | "dragonEffectiveness" | "doubledBonuses")[];
+    addStatus(status: heroBuffs | heroDebuffs): this;
+    getStatuses(): ("statBuff" | "enhancedMovement" | "dragonEffectiveness" | "doubledBonuses" | "panic" | "limitedMovement" | "statDebuff" | "cannotCounterattack" | "trilemma")[];
     setMovementType(type: MovementType): this;
     addBuffIndicator(buffIndicator: heroBuffs): this;
     addDebuffIndicator(debuffIndicator: heroDebuffs): this;
@@ -57,7 +57,7 @@ declare class Hero {
     setWeapon(weapon: Weapon): this;
     getBattleStats(): Stats;
     setBaseStats(stats: Stats): this;
-    private applyWeaponBuff;
+    applyWeaponBuff(): void;
 }
 export default Hero;
 //# sourceMappingURL=hero.d.ts.map

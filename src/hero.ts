@@ -99,7 +99,7 @@ class Hero {
     setMapMods(mods: Stats) {
         for (let stat in mods) {
             if (mods[stat] < 0 || (mods[stat] > 0 && this.getCursorValue("mapBuff") >= 0)) {
-                this.mapMods[stat] = stat;
+                this.mapMods[stat] = mods[stat] < 0 ? Math.min(this.mapMods[stat], mods[stat]) :  Math.max(mods[stat], this.mapMods[stat]);
             }
         }
         return this;
@@ -134,7 +134,7 @@ class Hero {
         this.coordinates = { x, y };
         return this;
     };
-    private addStatus(status: heroBuffs | heroDebuffs) {
+    addStatus(status: heroBuffs | heroDebuffs) {
         this.statuses.push(status);
         return this;
     };
@@ -197,7 +197,7 @@ class Hero {
         this.maxHP = this.stats.hp;
         return this;
     };
-    private applyWeaponBuff() {
+    applyWeaponBuff() {
         this.stats.atk += this.skills.weapon.might;
     };
 };

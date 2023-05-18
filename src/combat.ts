@@ -106,9 +106,16 @@ interface TurnArgument {
 
 export class Combat {
     constructor({ attacker, defender }: { attacker: Hero, defender: Hero }) {
-        this.attacker = cloneDeep(attacker);
-        this.defender = cloneDeep(defender);
+        this.attacker = this.cloneHero(attacker);
+        this.defender = this.cloneHero(defender);
     };
+
+    cloneHero(hero: Hero) {
+        const clone = cloneDeep(hero) as Hero;
+        clone.allies = hero.allies;
+        clone.enemies = hero.enemies;
+        return clone;
+    }
     private callAttackerHook(hook: SkillHook) {
         this.callSkillHook({ hookName: hook.hookName, skill: hook.skill, side: "attacker" });
     };
@@ -133,7 +140,8 @@ export class Combat {
         return affinityPredicate.predicate({ attacker: affinityPredicate.attacker, defender: affinityPredicate.defender });
     };
     private produceDamage({ attackStat, defenderStat, affinity, advantage, effectiveness }: DamageFormula) {
-        let mainFormula = attackStat + Math.trunc((attackStat * effectiveness) * (advantage * (affinity + 20) / 20)) - defenderStat;
+        const withEffectiveness = Math.floor(attackStat * effectiveness);
+        const mainFormula = withEffectiveness + Math.trunc(withEffectiveness * (advantage * ((affinity + 20) / 20))) - defenderStat;
         return Math.max(mainFormula, 0);
     };
     private calculateDamage({ attacker, defender }: Sides) {

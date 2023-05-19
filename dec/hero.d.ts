@@ -1,7 +1,7 @@
 import Weapon from "./weapon";
 import Skill from "./passive_skill";
 import { WeaponColor, WeaponType } from "./weapon";
-import { Stats, StatsBuffsTable, heroBuffs, HeroSkills, heroDebuffs, MovementType, MandatoryStats, MapCoordinates, StatEnum } from "./types";
+import { Stats, StatsBuffsTable, StatusBuff, HeroSkills, StatusDebuff, MovementType, MandatoryStats, MapCoordinates, Stat } from "./types";
 import { CursorsReference } from "./cursor";
 interface Hero {
     name: string;
@@ -11,8 +11,8 @@ interface Hero {
     maxHP: number;
     battleMods: StatsBuffsTable;
     mapMods: StatsBuffsTable;
-    positiveStatuses: heroBuffs[];
-    negativeStatuses: heroDebuffs[];
+    positiveStatuses: StatusBuff[];
+    negativeStatuses: StatusDebuff[];
     color: WeaponColor;
     skills: HeroSkills;
     movementType: MovementType;
@@ -21,7 +21,7 @@ interface Hero {
     allies?: Hero[];
     enemies?: Hero[];
     cursors: CursorsReference;
-    statuses: Array<heroDebuffs | heroBuffs>;
+    statuses: Array<StatusDebuff | StatusBuff>;
 }
 interface HeroConstructor {
     name: string;
@@ -42,16 +42,16 @@ declare class Hero {
     getMovementType(): MovementType;
     setName(name: string): this;
     setMapMods(mods: Stats): this;
-    raiseStat(stat: StatEnum, value: number): this;
-    lowerStat(stat: StatEnum, value: number): this;
+    raiseStat(stat: Stat, value: number): this;
+    lowerStat(stat: Stat, value: number): this;
     setBattleMods(mods: StatsBuffsTable): this;
     equipSkill(skill: Skill | Weapon): this;
     setCoordinates({ x, y }: MapCoordinates): this;
-    addStatus(status: heroBuffs | heroDebuffs): this;
+    addStatus(status: StatusBuff | StatusDebuff): this;
     getStatuses(): ("statBuff" | "enhancedMovement" | "dragonEffectiveness" | "doubledBonuses" | "panic" | "limitedMovement" | "statDebuff" | "cannotCounterattack" | "trilemma")[];
     setMovementType(type: MovementType): this;
-    addBuffIndicator(buffIndicator: heroBuffs): this;
-    addDebuffIndicator(debuffIndicator: heroDebuffs): this;
+    addBuffIndicator(buffIndicator: StatusBuff): this;
+    addDebuffIndicator(debuffIndicator: StatusDebuff): this;
     getCursorValue(label: keyof CursorsReference): number;
     setColor(color: WeaponColor): this;
     setWeapon(weapon: Weapon): this;

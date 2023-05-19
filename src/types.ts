@@ -1,8 +1,10 @@
 import PassiveSkill from "./passive_skill";
+import Special from "./special";
 import Weapon from "./weapon";
 
 export interface HeroSkills {
     weapon?: Weapon,
+    special?: Special;
     A?: PassiveSkill,
     B?: PassiveSkill,
     C?: PassiveSkill
@@ -17,15 +19,9 @@ export interface Stats {
     res?: number
 };
 
-export interface MandatoryStats {
-    hp: number
-    atk: number
-    spd: number
-    def: number
-    res: number
-};
+export type MandatoryStats = Required<Stats>;
 
-export type StatEnum = "atk" | "def" | "res" | "hp" | "spd"
+export type Stat = keyof MandatoryStats;
 
 export interface StatsBuffsTable {
     atk?: number,
@@ -41,5 +37,5 @@ export type MapCoordinates = {
 
 export type MovementType = "infantry" | "flier" | "armored" | "cavalry";
 
-export type heroBuffs = "statBuff" | "enhancedMovement" | "dragonEffectiveness" | "doubledBonuses";
-export type heroDebuffs = "panic" | "limitedMovement" | "statDebuff" | "cannotCounterattack" | "trilemma";
+export type StatusBuff = "statBuff" | "enhancedMovement" | "dragonEffectiveness" | "doubledBonuses";
+export type StatusDebuff = "panic" | "limitedMovement" | "statDebuff" | "cannotCounterattack" | "trilemma";

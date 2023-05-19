@@ -1,7 +1,7 @@
 import Weapon from "./weapon";
 import Skill from "./passive_skill";
 import { WeaponColor, WeaponType } from "./weapon";
-import { Stats, StatsBuffsTable, heroBuffs, HeroSkills, heroDebuffs, MovementType, MandatoryStats, MapCoordinates, StatEnum } from "./types";
+import { Stats, StatsBuffsTable, StatusBuff, HeroSkills, StatusDebuff, MovementType, MandatoryStats, MapCoordinates, Stat } from "./types";
 import { CursorsReference, createCursorsReference } from "./cursor";
 import shortid from "shortid";
 
@@ -13,8 +13,8 @@ interface Hero {
     maxHP: number
     battleMods: StatsBuffsTable
     mapMods: StatsBuffsTable
-    positiveStatuses: heroBuffs[];
-    negativeStatuses: heroDebuffs[];
+    positiveStatuses: StatusBuff[];
+    negativeStatuses: StatusDebuff[];
     color: WeaponColor,
     skills: HeroSkills,
     movementType: MovementType,
@@ -23,7 +23,7 @@ interface Hero {
     allies?: Hero[]
     enemies?: Hero[],
     cursors: CursorsReference
-    statuses: Array<heroDebuffs | heroBuffs>
+    statuses: Array<StatusDebuff | StatusBuff>
 };
 
 interface HeroConstructor {
@@ -104,12 +104,12 @@ class Hero {
         }
         return this;
     };
-    raiseStat(stat: StatEnum, value: number) {
+    raiseStat(stat: Stat, value: number) {
         this.stats[stat] += value;
         if (stat === "hp") this.maxHP += value;
         return this;
     };
-    lowerStat(stat: StatEnum, value: number) {
+    lowerStat(stat: Stat, value: number) {
         this.stats[stat] -= value;
         if (stat === "hp") this.maxHP -= value;
         return this;
@@ -134,7 +134,7 @@ class Hero {
         this.coordinates = { x, y };
         return this;
     };
-    addStatus(status: heroBuffs | heroDebuffs) {
+    addStatus(status: StatusBuff | StatusDebuff) {
         this.statuses.push(status);
         return this;
     };
@@ -145,11 +145,11 @@ class Hero {
         this.movementType = type;
         return this;
     };
-    addBuffIndicator(buffIndicator: heroBuffs) {
+    addBuffIndicator(buffIndicator: StatusBuff) {
         this.addStatus(buffIndicator);
         return this;
     };
-    addDebuffIndicator(debuffIndicator: heroDebuffs) {
+    addDebuffIndicator(debuffIndicator: StatusDebuff) {
         this.addStatus(debuffIndicator);
         return this;
     };

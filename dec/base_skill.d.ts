@@ -1,4 +1,5 @@
 import Hero from "./hero";
+import { StatsBuffsTable } from "./types";
 export declare type SkillSlot = "weapon" | "assist" | "special" | "A" | "B" | "C" | "S";
 export interface SkillEffect {
     wielder?: Hero;
@@ -12,15 +13,23 @@ export interface BaseSkillArgument {
     name: string;
     slot?: SkillSlot;
 }
+export interface Effect {
+    targetHeroId: string;
+    appliedEffect: {
+        stats?: StatsBuffsTable;
+        status?: [];
+    };
+}
 interface BaseSkill extends BaseSkillArgument {
     onEquip?: (newWielder: Hero) => void;
     onInitiate?: (effect: SkillEffect) => void;
     onDefense?: (effect: SkillEffect) => void;
     onBeforeCombat?: (effect: SkillEffect) => void;
-    onStartTurn?: (effect: SkillEffect) => void;
     onAllyInitiate?: (effect: SkillEffect) => void;
     onAllyDefense?: (effect: SkillEffect) => void;
     onBeforeAllyCombat?: (effect: SkillEffect) => void;
+    onTurnStart?: (effect: SkillEffect) => Effect[];
+    onAfterCombat?: (effect: SkillEffect) => Effect[];
 }
 declare abstract class BaseSkill {
     constructor(baseSkill?: BaseSkillArgument);

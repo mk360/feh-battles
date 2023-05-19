@@ -169,7 +169,7 @@ export class Combat {
         let defenderStat = attacker.getCursorValue("lowerOfDefAndRes") > 0 ? Math.min(defenderStats.def, defenderStats.res) :
             ["tome", "dragonstone"].includes(attacker.skills.weapon.type) ? defenderStats.res : defenderStats.def;
         let damage = this.produceDamage({ attackStat, defenderStat, advantage, affinity, effectiveness });
-        damage += attacker.getCursorValue("addedDamageMod") - defender.getCursorValue("subtractedDamageMod");
+        damage += attacker.getCursorValue("damageIncrease") - defender.getCursorValue("damageReduction");
         if (attacker.skills.weapon.type === "staff" && attacker.getCursorValue("staffDamageLikeOtherWeapons") <= 0) {
             damage = Math.floor(damage / 2);
         }
@@ -232,8 +232,8 @@ export class Combat {
         return previousTurns.turns.filter(turn => turn.attacker.id === previousTurns.heroId);
     };
     private handleFollowups({ attacker, defender }: Turn): Turn[] {
-        let isNaturalFollowup = attacker.getBattleStats().spd >= defender.getBattleStats().spd + 5 && attacker.getCursorValue("desperation") <= 0;
-        let isArtificalFollowup = attacker.getCursorValue("followup") > 0;
+        let isNaturalFollowup = attacker.getBattleStats().spd >= defender.getBattleStats().spd + 5 && attacker.getCursorValue("followup") >= 0;
+        let isArtificalFollowup = attacker.getCursorValue("followup") > 0 && attacker.getCursorValue("desperation") <= 0;
         if (isNaturalFollowup || isArtificalFollowup) {
             return this.generateStartupTurns({ attacker, defender });
         }

@@ -14,8 +14,9 @@ export interface SkillEffect {
 };
 
 export interface BaseSkillArgument {
-    name: string
-    slot?: SkillSlot
+    name: string;
+    description: string;
+    slot?: SkillSlot;
 };
 
 export interface Effect {

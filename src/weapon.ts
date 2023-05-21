@@ -1,4 +1,4 @@
-import BaseSkill, { SkillSlot } from "./base_skill";
+import BaseSkill, { BaseSkillArgument, SkillSlot } from "./base_skill";
 import { MovementType } from "./types";
 
 export type WeaponColor = "red" | "blue" | "green" | "colorless";
@@ -12,8 +12,7 @@ interface Weapon extends BaseSkill {
     effectiveAgainst?: (WeaponType | MovementType)[]
 };
 
-interface WeaponOptions {
-    name: string
+interface WeaponOptions extends BaseSkillArgument {
     might: number
     type: WeaponType
     color?: WeaponColor

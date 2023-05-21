@@ -19,6 +19,8 @@ interface CombatOutcome {
     defRemainingHP: number;
     atkDamage: number;
     defDamage: number;
+    atkEffective: boolean;
+    defEffective: boolean;
     outcome: TurnOutcome[];
 }
 export declare class Combat {

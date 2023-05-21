@@ -48,6 +48,8 @@ interface CombatOutcome {
     defRemainingHP: number
     atkDamage: number
     defDamage: number
+    atkEffective: boolean;
+    defEffective: boolean;
     outcome: TurnOutcome[]
 }
 
@@ -211,7 +213,9 @@ export class Combat {
     };
     private setupTurns() {
         let turns: Turn[] = [];
-        let defenderCanFightBack = this.defender.getWeapon().range === this.attacker.getWeapon().range || this.defender.getCursorValue("counterattack") > 0;
+        const sameRange = this.defender.getWeapon().range === this.attacker.getWeapon().range;
+        const counterattackAllowed = this.defender.getCursorValue("counterattack") >= 0;
+        let defenderCanFightBack = sameRange ? counterattackAllowed : this.defender.getCursorValue("counterattack") > 0;
         if (this.defender.getCursorValue("vantage") > 0 && defenderCanFightBack) {
             turns.push({
                 attacker: this.defender,
@@ -274,6 +278,8 @@ export class Combat {
             outcome: [],
             atkRemainingHP: 0,
             defRemainingHP: 0,
+            atkEffective: false,
+            defEffective: false,
             atkDamage: 0,
             defDamage: 0
         };
@@ -288,6 +294,11 @@ export class Combat {
             combatData.defDamage += this.defender.id === turn.attacker.id ? damage : 0;
             combatData.atkRemainingHP = turn.attacker.id === this.attacker.id ? turn.attacker.stats.hp : turn.defender.stats.hp;
             combatData.defRemainingHP = turn.defender.id === this.defender.id ? turn.defender.stats.hp : turn.attacker.stats.hp;
+            if (turn.attacker.id === this.attacker.id) {
+                combatData.atkEffective = attackOutcome.effective;
+            } else {
+                combatData.defEffective = attackOutcome.effective;
+            }            
             if (turn.defender.stats.hp === 0) return combatData;
         }
         return combatData;

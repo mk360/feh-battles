@@ -48,7 +48,7 @@ declare class Hero {
     equipSkill(skill: Skill | Weapon): this;
     setCoordinates({ x, y }: MapCoordinates): this;
     addStatus(status: StatusBuff | StatusDebuff): this;
-    getStatuses(): ("statBuff" | "enhancedMovement" | "dragonEffectiveness" | "doubledBonuses" | "panic" | "limitedMovement" | "statDebuff" | "cannotCounterattack" | "trilemma")[];
+    getStatuses(): ("panic" | "limitedMovement" | "statDebuff" | "cannotCounterattack" | "trilemma" | "statBuff" | "enhancedMovement" | "dragonEffectiveness" | "doubledBonuses")[];
     setMovementType(type: MovementType): this;
     addBuffIndicator(buffIndicator: StatusBuff): this;
     addDebuffIndicator(debuffIndicator: StatusDebuff): this;
@@ -56,6 +56,13 @@ declare class Hero {
     setColor(color: WeaponColor): this;
     setWeapon(weapon: Weapon): this;
     getBattleStats(): Stats;
+    getMapStats(): {
+        hp?: number;
+        atk?: number;
+        spd?: number;
+        def?: number;
+        res?: number;
+    };
     setBaseStats(stats: Stats): this;
     applyWeaponBuff(): void;
 }

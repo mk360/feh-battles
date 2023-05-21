@@ -191,6 +191,9 @@ class Hero {
         }
         return initialStats;
     };
+    getMapStats() {
+        return modifyStatValues(this.stats, this.mapMods);
+    }
     setBaseStats(stats: Stats) {
         this.stats = stats;
         this.baseStats = stats;

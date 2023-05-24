@@ -33,7 +33,7 @@ class Weapon extends BaseSkill {
     };
 
     private throwIncompatibleError(color: WeaponColor, category: WeaponType) {
-        throw new Error(`Incompatible combination between color ${this.color} and weapon ${category}`);
+        throw new Error(`Incompatible combination between color ${color} and weapon ${category}`);
     };
 
     setColor(color: WeaponColor) {
@@ -46,6 +46,11 @@ class Weapon extends BaseSkill {
         this.color = color;
         return this;
     };
+
+    setDescription(description: string) {
+        this.description = description;
+        return this;
+    }
 
     setRange(range: number) {
         this.range = range;

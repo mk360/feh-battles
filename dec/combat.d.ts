@@ -12,12 +12,14 @@ interface TurnOutcome {
     remainingHP: number;
     damage: number;
 }
-interface CombatOutcome {
+export interface CombatOutcome {
     atkChanges: StatsBuffsTable;
     defChanges: StatsBuffsTable;
     atkRemainingHP: number;
     defRemainingHP: number;
     atkDamage: number;
+    atkTurns: number;
+    defTurns: number;
     defDamage: number;
     atkEffective: boolean;
     defEffective: boolean;

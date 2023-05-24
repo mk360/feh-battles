@@ -19,6 +19,7 @@ declare class Weapon extends BaseSkill {
     constructor(weaponInformations?: WeaponOptions);
     private throwIncompatibleError;
     setColor(color: WeaponColor): this;
+    setDescription(description: string): this;
     setRange(range: number): this;
     setEffectiveness(...targets: (WeaponType | MovementType)[]): this;
     setType(type: WeaponType): this;

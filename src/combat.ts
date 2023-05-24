@@ -31,7 +31,7 @@ interface TurnOutcome {
     damage: number
 }
 
-interface CombatOutcome {
+export interface CombatOutcome {
     // attacker: {
     //     turns: number;
     //     damageByTurn: number;
@@ -47,6 +47,8 @@ interface CombatOutcome {
     atkRemainingHP: number
     defRemainingHP: number
     atkDamage: number
+    atkTurns: number
+    defTurns: number
     defDamage: number
     atkEffective: boolean;
     defEffective: boolean;
@@ -277,6 +279,8 @@ export class Combat {
             defChanges: this.defender.battleMods,
             outcome: [],
             atkRemainingHP: 0,
+            atkTurns: 0,
+            defTurns: 0,
             defRemainingHP: 0,
             atkEffective: false,
             defEffective: false,
@@ -290,16 +294,20 @@ export class Combat {
             const remainingHP = Math.max(0, turn.defender.stats.hp - damage);
             turn.defender.stats.hp = Math.max(0, turn.defender.stats.hp - damage);
             combatData.outcome.push({ attacker: turn.attacker, defender: turn.defender, ...attackOutcome, remainingHP });
-            combatData.atkDamage += this.attacker.id === turn.attacker.id ? damage : 0;
-            combatData.defDamage += this.defender.id === turn.attacker.id ? damage : 0;
-            combatData.atkRemainingHP = turn.attacker.id === this.attacker.id ? turn.attacker.stats.hp : turn.defender.stats.hp;
-            combatData.defRemainingHP = turn.defender.id === this.defender.id ? turn.defender.stats.hp : turn.attacker.stats.hp;
             if (turn.attacker.id === this.attacker.id) {
                 combatData.atkEffective = attackOutcome.effective;
+                combatData.atkRemainingHP = turn.attacker.stats.hp;
+                combatData.defRemainingHP = turn.defender.stats.hp;
+                combatData.atkDamage = damage;
+                combatData.atkTurns++;
             } else {
                 combatData.defEffective = attackOutcome.effective;
+                combatData.atkRemainingHP = turn.defender.stats.hp;
+                combatData.defRemainingHP = turn.attacker.stats.hp;
+                combatData.defDamage = damage;
+                combatData.defTurns++;
             }            
-            if (turn.defender.stats.hp === 0) return combatData;
+            if (turn.defender.stats.hp === 0) break;
         }
         return combatData;
     };

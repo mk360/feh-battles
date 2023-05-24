@@ -1,18 +1,12 @@
 import { Effect } from "./base_skill";
+import { CombatOutcome } from "./combat";
 import Hero from "./hero";
-import Weapon from "./weapon";
-
-type Effectt = "turnStart";
-
-const EffectToHookDictionary: Record<Effectt, keyof Weapon> = {
-    "turnStart": "onAfterCombat"
-};
 
 class MapEffectRunner {
     constructor(private team1: Hero[], private team2: Hero[]) {
     }
 
-    runEffects(effect: Effectt, team: "team1" | "team2") {
+    runTurnStartEffects(team: "team1" | "team2") {
         let effects: Effect[] = [];
         for (let hero of this[team]) {
             for (let skillSlot in hero.skills) {
@@ -27,6 +21,38 @@ class MapEffectRunner {
                 }
             }
         }
+        return effects;
+    }
+
+    runAfterCombatEffects({
+        hero,
+        enemy,
+        combatOutcome
+    }: { hero: Hero, enemy: Hero, combatOutcome: CombatOutcome}) {
+        let effects: Effect[] = [];
+        for (let skillSlot in hero.skills) {
+            const castSlot = skillSlot as keyof typeof hero.skills;
+            console.log(hero.skills[castSlot].onAfterCombat, hero.skills[castSlot].name);
+            if (hero.skills[castSlot].onAfterCombat) {
+                const skillEffects = hero.skills[castSlot].onAfterCombat?.({
+                    wielder: hero,
+                    enemy,
+                });
+                effects = effects.concat(skillEffects);
+            }
+        }
+        for (let skillSlot in enemy.skills) {
+            const castSlot = skillSlot as keyof typeof enemy.skills;
+            console.log(enemy.skills[castSlot].onAfterCombat, enemy.skills[castSlot].name);
+            if (enemy.skills[castSlot].onAfterCombat) {
+                const skillEffects = enemy.skills[castSlot].onAfterCombat?.({
+                    wielder: enemy,
+                    enemy: hero,
+                });
+                effects = effects.concat(skillEffects);
+            }
+        }
+
         return effects;
     }
 }

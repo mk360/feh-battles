@@ -1,11 +1,16 @@
 import { Effect } from "./base_skill";
+import { CombatOutcome } from "./combat";
 import Hero from "./hero";
-declare type Effectt = "turnStart";
 declare class MapEffectRunner {
     private team1;
     private team2;
     constructor(team1: Hero[], team2: Hero[]);
-    runEffects(effect: Effectt, team: "team1" | "team2"): Effect[];
+    runTurnStartEffects(team: "team1" | "team2"): Effect[];
+    runAfterCombatEffects({ hero, enemy, combatOutcome }: {
+        hero: Hero;
+        enemy: Hero;
+        combatOutcome: CombatOutcome;
+    }): Effect[];
 }
 export default MapEffectRunner;
 //# sourceMappingURL=map-effect.d.ts.map

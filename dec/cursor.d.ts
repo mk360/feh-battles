@@ -1,13 +1,11 @@
 declare const effects: readonly ["followup", "damageIncrease", "counterattack", "staffDamageLikeOtherWeapons", "damageReduction", "cancelledAffinity", "gemWeapon", "reverseAffinity", "mapBuff", "vantage", "desperation", "braveWeapon", "combatBuff", "combatDebuff", "damageReduction", "additionalMovement", "effectiveness", "lowerOfDefAndRes", "artificialAffinity"];
 export declare type CursorEffects = (typeof effects)[number];
-export interface Cursor {
-    getCurrentValue: () => number;
-    decreaseValue: (valueDifference: number) => Cursor;
-    increaseValue: (valueDifference: number) => Cursor;
-    resetValue: () => Cursor;
-}
 export declare class Cursor {
-    constructor();
+    private currentValue;
+    resetValue(): this;
+    decreaseValue(valueDifference: number): this;
+    getCurrentValue(): number;
+    increaseValue(valueDifference: number): this;
 }
 export declare type CursorsReference = {
     [k in CursorEffects]?: Cursor;

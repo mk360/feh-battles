@@ -2,31 +2,26 @@ const effects = ["followup", "damageIncrease", "counterattack", "staffDamageLike
 
 export type CursorEffects = (typeof effects)[number];
 
-export interface Cursor {
-    getCurrentValue: () => number,
-    decreaseValue: (valueDifference: number) => Cursor,
-    increaseValue: (valueDifference: number) => Cursor,
-    resetValue: () => Cursor
-};
-
 export class Cursor {
-    constructor() {
-        let currentValue = 0;
-        this.getCurrentValue = function () {
-            return currentValue;
-        };
-        this.decreaseValue = (valueDifference) => {
-            currentValue -= valueDifference;
-            return this;
-        };
-        this.increaseValue = (valueDifference) => {
-            currentValue += valueDifference;
-            return this;
-        };
-        this.resetValue = () => {
-            currentValue = 0;
-            return this;
-        };
+    private currentValue = 0;
+
+    resetValue() {
+        this.currentValue = 0;
+        return this;
+    };
+
+    decreaseValue(valueDifference: number) {
+        this.currentValue -= valueDifference;
+        return this;
+    };
+
+    getCurrentValue() {
+        return this.currentValue;
+    };
+
+    increaseValue(valueDifference: number) {
+        this.currentValue += valueDifference;
+        return this;
     };
 };
 

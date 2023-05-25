@@ -16,6 +16,8 @@ interface Hero {
     color: WeaponColor;
     skills: HeroSkills;
     movementType: MovementType;
+    bane?: keyof MandatoryStats;
+    boon?: keyof MandatoryStats;
     coordinates: MapCoordinates;
     allowedWeaponTypes?: WeaponType | WeaponType[];
     allies?: Hero[];
@@ -25,10 +27,13 @@ interface Hero {
 }
 interface HeroConstructor {
     name: string;
-    stats: MandatoryStats;
-    weaponType?: WeaponType;
+    growthRates: MandatoryStats;
+    boon?: keyof MandatoryStats;
+    bane?: keyof MandatoryStats;
+    lv1Stats: MandatoryStats;
+    weaponType: WeaponType;
     movementType: MovementType;
-    weaponColor?: WeaponColor;
+    weaponColor: WeaponColor;
 }
 declare class Hero {
     constructor(heroConstructor?: HeroConstructor);
@@ -63,7 +68,13 @@ declare class Hero {
         def?: number;
         res?: number;
     };
-    setBaseStats(stats: Stats): this;
+    setLv1Stats({ stats, growthRates, boon, bane }: {
+        stats: MandatoryStats;
+        growthRates: MandatoryStats;
+        boon?: keyof MandatoryStats;
+        bane?: keyof MandatoryStats;
+    }): void;
+    private setBaseStats;
     applyWeaponBuff(): void;
 }
 export default Hero;

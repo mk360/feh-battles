@@ -18,6 +18,8 @@ interface Hero {
     color: WeaponColor,
     skills: HeroSkills,
     movementType: MovementType,
+    bane?: keyof MandatoryStats;
+    boon?: keyof MandatoryStats;
     coordinates: MapCoordinates,
     allowedWeaponTypes?: WeaponType | WeaponType[]
     allies?: Hero[]
@@ -28,22 +30,47 @@ interface Hero {
 
 interface HeroConstructor {
     name: string,
-    stats: MandatoryStats,
-    weaponType?: WeaponType,
+    growthRates: MandatoryStats,
+    boon?: keyof MandatoryStats,
+    bane?: keyof MandatoryStats,
+    lv1Stats: MandatoryStats,
+    weaponType: WeaponType,
     movementType: MovementType,
-    weaponColor?: WeaponColor
+    weaponColor: WeaponColor
 };
+
+function convertToLv40(baseStat: number, growthRate: number) {
+    const appliedGrowthRate = Math.trunc(growthRate * 1.14);
+    const growthValue = Math.trunc(39 * appliedGrowthRate / 100);
+    return baseStat + growthValue;
+}
 
 class Hero {
     constructor(heroConstructor?: HeroConstructor) {
         if (heroConstructor) {
-            if (heroConstructor.name) this.name = heroConstructor.name;
-            if (heroConstructor.stats) {
-                this.setBaseStats(heroConstructor.stats);
+            this.name = heroConstructor.name;
+            this.allowedWeaponTypes = heroConstructor.weaponType;
+            if (heroConstructor.bane && heroConstructor.boon) {
+                if (heroConstructor.bane === heroConstructor.boon) {
+                    throw new Error("Bane cannot be the same as boon");
+                }
+
+                this.bane = heroConstructor.bane;
+                this.boon = heroConstructor.boon;
+
+                heroConstructor.growthRates[heroConstructor.bane] -= 5;
+                heroConstructor.growthRates[heroConstructor.boon] += 5;
+                // heroConstructor.lv1Stats[this.bane]--;
+                // heroConstructor.lv1Stats[this.boon]++;
             }
-            if (heroConstructor.weaponType) {
-                this.allowedWeaponTypes = heroConstructor.weaponType;
+
+            const lv40Stats = heroConstructor.lv1Stats;
+            for (let stat in lv40Stats) {
+                const castStat = stat as keyof MandatoryStats;
+                lv40Stats[castStat] = convertToLv40(heroConstructor.lv1Stats[stat], heroConstructor.growthRates[stat]);
             }
+
+            this.setBaseStats(lv40Stats);
         }
         this.enemies = [];
         this.id = shortid.generate();
@@ -194,7 +221,38 @@ class Hero {
     getMapStats() {
         return modifyStatValues(this.stats, this.mapMods);
     }
-    setBaseStats(stats: Stats) {
+    setLv1Stats({
+        stats, growthRates,
+        boon, bane
+    }: {
+        stats: MandatoryStats,
+        growthRates: MandatoryStats,
+        boon?: keyof MandatoryStats,
+        bane?: keyof MandatoryStats
+    }) {
+        if (bane && boon) {
+            if (bane === boon) {
+                throw new Error("Bane cannot be the same as boon");
+            }
+
+            this.bane = bane;
+            this.boon = boon;
+            stats[bane]--;
+            stats[boon]++;
+
+            growthRates[bane] -= 5;
+            growthRates[boon] += 5;
+        }
+
+        const lv40Stats = stats;
+        for (let stat in lv40Stats) {
+            const castStat = stat as keyof MandatoryStats;
+            lv40Stats[castStat] = convertToLv40(stats[stat], growthRates[stat]);
+        }
+
+        this.setBaseStats(lv40Stats);
+    }
+    private setBaseStats(stats: Stats) {
         this.stats = stats;
         this.baseStats = stats;
         this.maxHP = this.stats.hp;

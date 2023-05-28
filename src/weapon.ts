@@ -29,6 +29,7 @@ class Weapon extends BaseSkill {
             this.setMight(weaponInformations.might);
             this.setType(weaponInformations.type);
             if (!this.color) this.setColor(weaponInformations.color);
+            this.description = weaponInformations.description;
         }
     };
 
@@ -37,7 +38,7 @@ class Weapon extends BaseSkill {
     };
 
     setColor(color: WeaponColor) {
-        if (["staff", "axe", "sword", "lance", "staff"].includes(this.type)) {
+        if (["staff", "axe", "sword", "lance"].includes(this.type)) {
             if (isIncompatible(color, this.type)) {
                 this.throwIncompatibleError(color, this.type);
                 return;

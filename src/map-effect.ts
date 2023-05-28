@@ -32,7 +32,6 @@ class MapEffectRunner {
         let effects: Effect[] = [];
         for (let skillSlot in hero.skills) {
             const castSlot = skillSlot as keyof typeof hero.skills;
-            console.log(hero.skills[castSlot].onAfterCombat, hero.skills[castSlot].name);
             if (hero.skills[castSlot].onAfterCombat) {
                 const skillEffects = hero.skills[castSlot].onAfterCombat?.({
                     wielder: hero,

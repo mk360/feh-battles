@@ -40,8 +40,8 @@ interface HeroConstructor {
 };
 
 function convertToLv40(baseStat: number, growthRate: number) {
-    const appliedGrowthRate = Math.trunc(growthRate * 1.14);
-    const growthValue = Math.trunc(39 * appliedGrowthRate / 100);
+    const appliedGrowthRate = Math.floor(growthRate * 1.14);
+    const growthValue = Math.trunc(appliedGrowthRate * 0.39);
     return baseStat + growthValue;
 }
 
@@ -57,20 +57,7 @@ class Hero {
 
                 this.bane = heroConstructor.bane;
                 this.boon = heroConstructor.boon;
-
-                heroConstructor.growthRates[heroConstructor.bane] -= 5;
-                heroConstructor.growthRates[heroConstructor.boon] += 5;
-                // heroConstructor.lv1Stats[this.bane]--;
-                // heroConstructor.lv1Stats[this.boon]++;
             }
-
-            const lv40Stats = heroConstructor.lv1Stats;
-            for (let stat in lv40Stats) {
-                const castStat = stat as keyof MandatoryStats;
-                lv40Stats[castStat] = convertToLv40(heroConstructor.lv1Stats[stat], heroConstructor.growthRates[stat]);
-            }
-
-            this.setBaseStats(lv40Stats);
         }
         this.enemies = [];
         this.id = shortid.generate();
@@ -91,6 +78,13 @@ class Hero {
             spd: 0,
             res: 0
         };
+
+        this.setLv1Stats({
+            stats: heroConstructor.lv1Stats,
+            boon: this.boon,
+            bane: this.bane,
+            growthRates: heroConstructor.growthRates
+        });
     };
     getDistance(hero: Hero) {
         return Math.abs(hero.coordinates.x - this.coordinates.x) + Math.abs(hero.coordinates.y - this.coordinates.y);
@@ -247,6 +241,9 @@ class Hero {
         const lv40Stats = stats;
         for (let stat in lv40Stats) {
             const castStat = stat as keyof MandatoryStats;
+            if (this.name === "Lucina" && castStat === "def") {
+                console.log(growthRates[castStat]);
+            }
             lv40Stats[castStat] = convertToLv40(stats[stat], growthRates[stat]);
         }
 

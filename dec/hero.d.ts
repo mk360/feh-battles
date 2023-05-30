@@ -10,7 +10,8 @@ interface Hero {
     stats: Stats;
     maxHP: number;
     battleMods: StatsBuffsTable;
-    mapMods: StatsBuffsTable;
+    mapBoosts: StatsBuffsTable;
+    mapPenalties: StatsBuffsTable;
     positiveStatuses: StatusBuff[];
     negativeStatuses: StatusDebuff[];
     color: WeaponColor;
@@ -46,7 +47,8 @@ declare class Hero {
     setEnemy(hero: Hero): this;
     getMovementType(): MovementType;
     setName(name: string): this;
-    setMapMods(mods: Stats): this;
+    setMapBoosts(mods: Stats): this;
+    setMapPenalties(mods: Stats): this;
     raiseStat(stat: Stat, value: number): this;
     lowerStat(stat: Stat, value: number): this;
     setBattleMods(mods: StatsBuffsTable): this;

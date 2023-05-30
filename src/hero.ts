@@ -11,8 +11,9 @@ interface Hero {
     baseStats: Stats;
     stats: Stats;
     maxHP: number
-    battleMods: StatsBuffsTable
-    mapMods: StatsBuffsTable
+    battleMods: StatsBuffsTable;
+    mapBoosts: StatsBuffsTable;
+    mapPenalties: StatsBuffsTable;
     positiveStatuses: StatusBuff[];
     negativeStatuses: StatusDebuff[];
     color: WeaponColor,
@@ -72,7 +73,14 @@ class Hero {
             spd: 0,
             res: 0
         };
-        this.mapMods = {
+        this.mapBoosts = {
+            atk: 0,
+            def: 0,
+            spd: 0,
+            res: 0
+        };
+
+        this.mapPenalties = {
             atk: 0,
             def: 0,
             spd: 0,
@@ -117,12 +125,17 @@ class Hero {
         this.name = name;
         return this;
     };
-    setMapMods(mods: Stats) {
+    setMapBoosts(mods: Stats) {
         for (let stat in mods) {
-            if (mods[stat] < 0 || (mods[stat] > 0 && this.getCursorValue("mapBuff") >= 0)) {
-                this.mapMods[stat] = mods[stat] < 0 ? Math.min(this.mapMods[stat], mods[stat]) :  Math.max(mods[stat], this.mapMods[stat]);
+            if ((mods[stat] > 0 && this.getCursorValue("mapBuff") >= 0)) {
+                this.mapBoosts[stat] = mods[stat] < 0 ? Math.min(this.mapBoosts[stat], mods[stat]) :  Math.max(mods[stat], this.mapBoosts[stat]);
             }
         }
+        return this;
+    };
+
+    setMapPenalties(mods: Stats) {
+        this.mapPenalties = mods;
         return this;
     };
     raiseStat(stat: Stat, value: number) {
@@ -204,8 +217,9 @@ class Hero {
     };
     getBattleStats() {
         let initialStats = this.stats;
+        initialStats = modifyStatValues(initialStats, this.mapPenalties);
         if (this.cursors.mapBuff.getCurrentValue() >= 0) {
-            initialStats = modifyStatValues(initialStats, this.mapMods);
+            initialStats = modifyStatValues(initialStats, this.mapBoosts);
         }
         if (this.cursors.combatBuff.getCurrentValue() >= 0) {
             initialStats = modifyStatValues(initialStats, this.battleMods);
@@ -213,7 +227,7 @@ class Hero {
         return initialStats;
     };
     getMapStats() {
-        return modifyStatValues(this.stats, this.mapMods);
+        return modifyStatValues(this.stats, this.mapBoosts);
     }
     setLv1Stats({
         stats, growthRates,

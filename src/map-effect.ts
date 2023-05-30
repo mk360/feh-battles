@@ -1,19 +1,22 @@
 import { Effect } from "./base_skill";
 import { CombatOutcome } from "./combat";
 import Hero from "./hero";
+import { HeroSkills, MapCoordinates } from "./types";
 
 class MapEffectRunner {
-    constructor(private team1: Hero[], private team2: Hero[]) {
-    }
+    constructor(
+        private team1: { [k: string]: Hero; },
+        private team2: { [k: string]: Hero; }
+    ) {}
 
     runTurnStartEffects(team: "team1" | "team2") {
         let effects: Effect[] = [];
-        for (let hero of this[team]) {
-            for (let skillSlot in hero.skills) {
-                const castSlot = skillSlot as keyof typeof hero.skills;
-                if (hero.skills[castSlot].onTurnStart) {
-                    const skillEffects = hero.skills[castSlot].onTurnStart({
-                        wielder: hero
+        for (let hero in this[team]) {
+            for (let skillSlot in this[team][hero].skills) {
+                const castSlot = skillSlot as keyof HeroSkills;
+                if (this[team][hero].skills[castSlot].onTurnStart) {
+                    const skillEffects = this[team][hero].skills[castSlot].onTurnStart({
+                        wielder: this[team][hero]
                     });
                     if (skillEffects.length) {
                         effects = effects.concat(skillEffects);

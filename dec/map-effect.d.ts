@@ -4,7 +4,11 @@ import Hero from "./hero";
 declare class MapEffectRunner {
     private team1;
     private team2;
-    constructor(team1: Hero[], team2: Hero[]);
+    constructor(team1: {
+        [k: string]: Hero;
+    }, team2: {
+        [k: string]: Hero;
+    });
     runTurnStartEffects(team: "team1" | "team2"): Effect[];
     runAfterCombatEffects({ hero, enemy, combatOutcome }: {
         hero: Hero;

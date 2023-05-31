@@ -1,9 +1,12 @@
+import Assist from "./assist";
+import BaseSkill from "./base_skill";
 import PassiveSkill from "./passive_skill";
 import Special from "./special";
 import Weapon from "./weapon";
 
 export interface HeroSkills {
-    weapon?: Weapon,
+    weapon?: Weapon;
+    assist?: Assist;
     special?: Special;
     A?: PassiveSkill,
     B?: PassiveSkill,

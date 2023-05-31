@@ -1,4 +1,4 @@
-import BaseSkill, { BaseSkillArgument } from "./base_skill";
+import BaseSkill, { BaseSkillArgument, SkillSlot } from "./base_skill";
 import { WeaponType } from "./weapon";
 import { MovementType } from "./types";
 declare type PassiveSkillSlot = "A" | "B" | "C" | "S";
@@ -8,7 +8,7 @@ interface PassiveSkill extends BaseSkill {
     allowedUsers?: Array<MovementType | WeaponType>;
 }
 interface PassiveSkillArgument extends BaseSkillArgument {
-    slot: PassiveSkillSlot;
+    slot: SkillSlot;
 }
 declare class PassiveSkill extends BaseSkill {
     constructor(passiveSkillInformations?: PassiveSkillArgument);

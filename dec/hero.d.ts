@@ -1,8 +1,10 @@
 import Weapon from "./weapon";
-import Skill from "./passive_skill";
 import { WeaponColor, WeaponType } from "./weapon";
 import { Stats, StatsBuffsTable, StatusBuff, HeroSkills, StatusDebuff, MovementType, MandatoryStats, MapCoordinates, Stat } from "./types";
 import { CursorsReference } from "./cursor";
+import Special from "./special";
+import PassiveSkill from "./passive_skill";
+import Assist from "./assist";
 interface Hero {
     name: string;
     id: string;
@@ -52,7 +54,7 @@ declare class Hero {
     raiseStat(stat: Stat, value: number): this;
     lowerStat(stat: Stat, value: number): this;
     setBattleMods(mods: StatsBuffsTable): this;
-    equipSkill(skill: Skill | Weapon): this;
+    equipSkill(skill: Weapon | Special | PassiveSkill | Assist): this;
     setCoordinates({ x, y }: MapCoordinates): this;
     addStatus(status: StatusBuff | StatusDebuff): this;
     getStatuses(): ("statBuff" | "enhancedMovement" | "dragonEffectiveness" | "doubledBonuses" | "panic" | "limitedMovement" | "statDebuff" | "cannotCounterattack" | "trilemma")[];

@@ -1,0 +1,1 @@
+{"version":3,"file":"assist.d.ts","sourceRoot":"","sources":["../src/assist.ts"],"names":[],"mappings":"AAAA,OAAO,SAAS,EAAE,EAAE,iBAAiB,EAAE,MAAM,cAAc,CAAC;AAE5D,UAAU,eAAgB,SAAQ,iBAAiB;IAC/C,KAAK,EAAE,MAAM,CAAC;CACjB;AAED,cAAM,MAAO,SAAQ,SAAS;gBACd,iBAAiB,CAAC,EAAE,eAAe;CAIlD;AAED,eAAe,MAAM,CAAC"}

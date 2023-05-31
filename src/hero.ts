@@ -1,9 +1,12 @@
 import Weapon from "./weapon";
-import Skill from "./passive_skill";
 import { WeaponColor, WeaponType } from "./weapon";
 import { Stats, StatsBuffsTable, StatusBuff, HeroSkills, StatusDebuff, MovementType, MandatoryStats, MapCoordinates, Stat } from "./types";
 import { CursorsReference, createCursorsReference } from "./cursor";
 import shortid from "shortid";
+import Special from "./special";
+import PassiveSkill from "./passive_skill";
+import Assist from "./assist";
+import BaseSkill, { SkillSlot } from "./base_skill";
 
 interface Hero {
     name: string;
@@ -17,7 +20,7 @@ interface Hero {
     positiveStatuses: StatusBuff[];
     negativeStatuses: StatusDebuff[];
     color: WeaponColor,
-    skills: HeroSkills,
+    skills: HeroSkills;
     movementType: MovementType,
     bane?: keyof MandatoryStats;
     boon?: keyof MandatoryStats;
@@ -156,8 +159,9 @@ class Hero {
         }
         return this;
     };
-    equipSkill(skill: Skill | Weapon) {
+    equipSkill(skill: Weapon | Special | PassiveSkill | Assist) {
         if (!this.skills) this.skills = {};
+        // this.skills[skill.slot] = skill;
         this.skills[skill.slot] = skill;
         if (skill.onEquip) {
             skill.onEquip(this);

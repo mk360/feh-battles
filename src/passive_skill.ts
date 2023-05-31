@@ -1,4 +1,4 @@
-import BaseSkill, { BaseSkillArgument } from "./base_skill";
+import BaseSkill, { BaseSkillArgument, SkillSlot } from "./base_skill";
 import { WeaponType } from "./weapon";
 import { MovementType } from "./types";
 
@@ -11,7 +11,7 @@ interface PassiveSkill extends BaseSkill {
 };
 
 interface PassiveSkillArgument extends BaseSkillArgument {
-    slot: PassiveSkillSlot;
+    slot: SkillSlot;
 }
 
 class PassiveSkill extends BaseSkill {

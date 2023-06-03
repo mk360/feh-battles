@@ -6,13 +6,15 @@ interface SpecialArgument extends BaseSkillArgument {
 
 class Special extends BaseSkill {
     baseCooldown = 0;
-    cooldown = 0;
+    defaultCooldown = 0;
+    currentCooldown = 0;
     constructor(specialInformations?: SpecialArgument) {
         super(specialInformations);
         super.setSlot("special");
         this.description = specialInformations.description;
         this.baseCooldown = specialInformations.cooldown;
-        this.cooldown = specialInformations.cooldown;
+        this.defaultCooldown = specialInformations.cooldown;
+        this.currentCooldown = specialInformations.cooldown;
     };
 
     setDescription(desc: string) {

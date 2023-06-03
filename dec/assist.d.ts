@@ -8,7 +8,9 @@ interface AssistArguments extends BaseSkillArgument {
     }) => boolean;
 }
 declare class Assist extends BaseSkill {
+    range: number;
     constructor(assistConstructor?: AssistArguments);
+    setRange(range: number): this;
 }
 export default Assist;
 //# sourceMappingURL=assist.d.ts.map

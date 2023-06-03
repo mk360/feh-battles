@@ -36,6 +36,7 @@ declare abstract class BaseSkill {
     constructor(baseSkill?: BaseSkillArgument);
     setSlot(slot: SkillSlot): this;
     setName(name: string): this;
+    setDescription(description: string): this;
 }
 export default BaseSkill;
 //# sourceMappingURL=base_skill.d.ts.map

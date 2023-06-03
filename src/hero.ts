@@ -159,10 +159,24 @@ class Hero {
         }
         return this;
     };
-    equipSkill(skill: Weapon | Special | PassiveSkill | Assist) {
+    equipSkill(skill: BaseSkill) {
         if (!this.skills) this.skills = {};
-        // this.skills[skill.slot] = skill;
-        this.skills[skill.slot] = skill;
+        if (skill instanceof Weapon) {
+            this.skills.weapon = skill;
+        }
+
+        if (skill instanceof Assist) {
+            this.skills.assist = skill;
+        }
+
+        if (skill instanceof Special) {
+            this.skills.special = skill;
+        }
+
+        if (skill instanceof PassiveSkill) {
+            this.skills[skill.slot as "A" | "B" | "C" | "S"] = skill;
+        }
+        
         if (skill.onEquip) {
             skill.onEquip(this);
         }
@@ -231,7 +245,7 @@ class Hero {
         return initialStats;
     };
     getMapStats() {
-        return modifyStatValues(this.stats, this.mapBoosts);
+        return modifyStatValues(this.stats, this.mapBoosts, this.mapPenalties);
     }
     setLv1Stats({
         stats, growthRates,

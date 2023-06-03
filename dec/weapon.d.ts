@@ -4,6 +4,7 @@ export declare type WeaponColor = "red" | "blue" | "green" | "colorless";
 export declare type WeaponType = "lance" | "axe" | "sword" | "bow" | "dagger" | "tome" | "dragonstone" | "staff" | "beast";
 interface Weapon extends BaseSkill {
     might: number;
+    slot: "weapon";
     type: WeaponType;
     color?: WeaponColor;
     range: number;

@@ -1,5 +1,4 @@
 import Assist from "./assist";
-import BaseSkill from "./base_skill";
 import PassiveSkill from "./passive_skill";
 import Special from "./special";
 import Weapon from "./weapon";
@@ -8,10 +7,10 @@ export interface HeroSkills {
     weapon?: Weapon;
     assist?: Assist;
     special?: Special;
-    A?: PassiveSkill,
-    B?: PassiveSkill,
-    C?: PassiveSkill
-    S?: PassiveSkill
+    A?: PassiveSkill;
+    B?: PassiveSkill;
+    C?: PassiveSkill;
+    S?: PassiveSkill;
 };
 
 export interface Stats {
@@ -39,6 +38,5 @@ export type MapCoordinates = {
 };
 
 export type MovementType = "infantry" | "flier" | "armored" | "cavalry";
-
 export type StatusBuff = "statBuff" | "enhancedMovement" | "dragonEffectiveness" | "doubledBonuses";
 export type StatusDebuff = "panic" | "limitedMovement" | "statDebuff" | "cannotCounterattack" | "trilemma";

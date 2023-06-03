@@ -6,6 +6,7 @@ export type WeaponType = "lance" | "axe" | "sword" | "bow" | "dagger" | "tome" |
 
 interface Weapon extends BaseSkill {
     might: number,
+    slot: "weapon"
     type: WeaponType,
     color?: WeaponColor,
     range: number,

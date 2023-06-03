@@ -3,7 +3,7 @@ import Hero from "./hero";
 
 interface AssistArguments extends BaseSkillArgument {
     range: number;
-    canApplyAssist: ({
+    canRun?: ({
         wielder,
         target
     }: { wielder: Hero; target: Hero }) => boolean;
@@ -11,7 +11,7 @@ interface AssistArguments extends BaseSkillArgument {
 
 class Assist extends BaseSkill {
     constructor(assistConstructor?: AssistArguments) {
-        super();
+        super(assistConstructor);
         super.setSlot("assist");
     }
 };

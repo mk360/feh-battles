@@ -5,13 +5,12 @@ import { MovementType } from "./types";
 type PassiveSkillSlot = "A" | "B" | "C" | "S";
 
 interface PassiveSkill extends BaseSkill {
-    slot: PassiveSkillSlot;
     description: string;
     allowedUsers?: Array<MovementType | WeaponType>
 };
 
 interface PassiveSkillArgument extends BaseSkillArgument {
-    slot: SkillSlot;
+    slot: PassiveSkillSlot;
 }
 
 class PassiveSkill extends BaseSkill {
@@ -22,11 +21,6 @@ class PassiveSkill extends BaseSkill {
         this.slot = slot;
         return this;
     };
-
-    setDescription(description: string) {
-        this.description = description;
-        return this;
-    }
 };
 
 export default PassiveSkill;

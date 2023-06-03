@@ -3,6 +3,8 @@ interface SpecialArgument extends BaseSkillArgument {
     cooldown: number;
 }
 declare class Special extends BaseSkill {
+    baseCooldown: number;
+    cooldown: number;
     constructor(specialInformations?: SpecialArgument);
     setDescription(desc: string): this;
     setSlot(slot: SkillSlot): this;

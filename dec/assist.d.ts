@@ -2,7 +2,7 @@ import BaseSkill, { BaseSkillArgument } from "./base_skill";
 import Hero from "./hero";
 interface AssistArguments extends BaseSkillArgument {
     range: number;
-    canApplyAssist: ({ wielder, target }: {
+    canRun?: ({ wielder, target }: {
         wielder: Hero;
         target: Hero;
     }) => boolean;

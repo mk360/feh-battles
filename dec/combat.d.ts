@@ -13,16 +13,24 @@ interface TurnOutcome {
     damage: number;
 }
 export interface CombatOutcome {
-    atkChanges: StatsBuffsTable;
-    defChanges: StatsBuffsTable;
-    atkRemainingHP: number;
-    defRemainingHP: number;
-    atkDamage: number;
-    atkTurns: number;
-    defTurns: number;
-    defDamage: number;
-    atkEffective: boolean;
-    defEffective: boolean;
+    attacker: {
+        startHP: number;
+        turns: number;
+        remainingHP: number;
+        damage: number;
+        effective: boolean;
+        statChanges: StatsBuffsTable;
+        extraDamage: number;
+    };
+    defender: {
+        startHP: number;
+        turns: number;
+        remainingHP: number;
+        damage: number;
+        effective: boolean;
+        statChanges: StatsBuffsTable;
+        extraDamage: number;
+    };
     outcome: TurnOutcome[];
 }
 export declare class Combat {

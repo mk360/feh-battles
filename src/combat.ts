@@ -32,26 +32,24 @@ interface TurnOutcome {
 }
 
 export interface CombatOutcome {
-    // attacker: {
-    //     turns: number;
-    //     damageByTurn: number;
-    //     extraDamage: number;
-    // };
-    // defender: {
-    //     turns: number;
-    //     damageByTurn: number;
-    //     extraDamage: number;
-    // };
-    atkChanges: StatsBuffsTable
-    defChanges: StatsBuffsTable
-    atkRemainingHP: number
-    defRemainingHP: number
-    atkDamage: number
-    atkTurns: number
-    defTurns: number
-    defDamage: number
-    atkEffective: boolean;
-    defEffective: boolean;
+    attacker: {
+        startHP: number;
+        turns: number;
+        remainingHP: number;
+        damage: number;
+        effective: boolean;
+        statChanges: StatsBuffsTable;
+        extraDamage: number;
+    };
+    defender: {
+        startHP: number;
+        turns: number;
+        remainingHP: number;
+        damage: number;
+        effective: boolean;
+        statChanges: StatsBuffsTable;
+        extraDamage: number;
+    };
     outcome: TurnOutcome[]
 }
 
@@ -275,17 +273,25 @@ export class Combat {
         this.runAllDefenderSkillsHooks("onDefense");
         let turns = this.setupTurns();
         const combatData: CombatOutcome = {
-            atkChanges: this.attacker.battleMods,
-            defChanges: this.defender.battleMods,
+            attacker: {
+                statChanges: this.attacker.battleMods,
+                remainingHP: 0,
+                turns: 0,
+                startHP: this.attacker.stats.hp,
+                effective: false,
+                damage: 0,
+                extraDamage: 0
+            },
+            defender: {
+                statChanges: this.defender.battleMods,
+                remainingHP: 0,
+                startHP: this.defender.stats.hp,
+                turns: 0,
+                effective: false,
+                damage: 0,
+                extraDamage: 0
+            },
             outcome: [],
-            atkRemainingHP: 0,
-            atkTurns: 0,
-            defTurns: 0,
-            defRemainingHP: 0,
-            atkEffective: false,
-            defEffective: false,
-            atkDamage: 0,
-            defDamage: 0
         };
 
         for (let turn of turns) {
@@ -295,17 +301,17 @@ export class Combat {
             turn.defender.stats.hp = Math.max(0, turn.defender.stats.hp - damage);
             combatData.outcome.push({ attacker: turn.attacker, defender: turn.defender, ...attackOutcome, remainingHP });
             if (turn.attacker.id === this.attacker.id) {
-                combatData.atkEffective = attackOutcome.effective;
-                combatData.atkRemainingHP = turn.attacker.stats.hp;
-                combatData.defRemainingHP = turn.defender.stats.hp;
-                combatData.atkDamage = damage;
-                combatData.atkTurns++;
+                combatData.attacker.effective = attackOutcome.effective;
+                combatData.attacker.remainingHP = turn.attacker.stats.hp;
+                combatData.defender.remainingHP = turn.defender.stats.hp;
+                combatData.attacker.damage = damage;
+                combatData.attacker.turns++;
             } else {
-                combatData.defEffective = attackOutcome.effective;
-                combatData.atkRemainingHP = turn.defender.stats.hp;
-                combatData.defRemainingHP = turn.attacker.stats.hp;
-                combatData.defDamage = damage;
-                combatData.defTurns++;
+                combatData.defender.effective = attackOutcome.effective;
+                combatData.attacker.remainingHP = turn.defender.stats.hp;
+                combatData.defender.remainingHP = turn.attacker.stats.hp;
+                combatData.defender.damage = damage;
+                combatData.defender.turns++;
             }            
             if (turn.defender.stats.hp === 0) break;
         }

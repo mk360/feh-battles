@@ -273,9 +273,6 @@ class Hero {
         const lv40Stats = stats;
         for (let stat in lv40Stats) {
             const castStat = stat as keyof MandatoryStats;
-            if (this.name === "Lucina" && castStat === "def") {
-                console.log(growthRates[castStat]);
-            }
             lv40Stats[castStat] = convertToLv40(stats[stat], growthRates[stat]);
         }
 

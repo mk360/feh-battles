@@ -31,7 +31,7 @@ export interface CombatOutcome {
         statChanges: StatsBuffsTable;
         extraDamage: number;
     };
-    outcome: TurnOutcome[];
+    turns: TurnOutcome[];
 }
 export declare class Combat {
     constructor({ attacker, defender }: {

@@ -50,7 +50,7 @@ export interface CombatOutcome {
         statChanges: StatsBuffsTable;
         extraDamage: number;
     };
-    outcome: TurnOutcome[]
+    turns: TurnOutcome[]
 }
 
 function getColorRelationship(attackerColor: WeaponColor, defenderColor: WeaponColor): number {
@@ -291,7 +291,7 @@ export class Combat {
                 damage: 0,
                 extraDamage: 0
             },
-            outcome: [],
+            turns: [],
         };
 
         for (let turn of turns) {
@@ -299,7 +299,7 @@ export class Combat {
             const { damage } = attackOutcome;
             const remainingHP = Math.max(0, turn.defender.stats.hp - damage);
             turn.defender.stats.hp = Math.max(0, turn.defender.stats.hp - damage);
-            combatData.outcome.push({ attacker: turn.attacker, defender: turn.defender, ...attackOutcome, remainingHP });
+            combatData.turns.push({ attacker: turn.attacker, defender: turn.defender, ...attackOutcome, remainingHP });
             if (turn.attacker.id === this.attacker.id) {
                 combatData.attacker.effective = attackOutcome.effective;
                 combatData.attacker.remainingHP = turn.attacker.stats.hp;

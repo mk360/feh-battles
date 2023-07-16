@@ -16,6 +16,7 @@ export interface CombatOutcome {
     attacker: {
         startHP: number;
         turns: number;
+        id: string;
         remainingHP: number;
         damage: number;
         effective: boolean;
@@ -25,6 +26,7 @@ export interface CombatOutcome {
     defender: {
         startHP: number;
         turns: number;
+        id: string;
         remainingHP: number;
         damage: number;
         effective: boolean;

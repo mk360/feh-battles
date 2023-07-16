@@ -4,6 +4,13 @@ import { StatsBuffsTable } from "./types";
 import { WeaponColor as WeaponColor } from "./weapon";
 import cloneDeep from "lodash.clonedeep";
 
+// refactor: integrate Battle class inside feh-battles package
+// allow heroes to access battle, allow skills to access battles
+// basically make a revamp
+// add a team property to heroes
+// create a Team class
+// { id: string; members: Hero[] }
+
 export interface Combat {
     attacker: Hero,
     defender: Hero
@@ -35,6 +42,7 @@ export interface CombatOutcome {
     attacker: {
         startHP: number;
         turns: number;
+        id: string;
         remainingHP: number;
         damage: number;
         effective: boolean;
@@ -44,6 +52,7 @@ export interface CombatOutcome {
     defender: {
         startHP: number;
         turns: number;
+        id: string;
         remainingHP: number;
         damage: number;
         effective: boolean;
@@ -71,7 +80,7 @@ function getColorRelationship(attackerColor: WeaponColor, defenderColor: WeaponC
     }[attackerColor][defenderColor];
 };
 
-type hookNames = "onEquip" | "onInitiate" | "onDefense" | "onBeforeCombat" | "onStartTurn" | "onAllyInitiate" | "onAllyDefense" | "onBeforeAllyCombat" | "modifyCursors";
+type hookNames = "onEquip" | "onInitiate" | "onDefense" | "onBeforeCombat" | "onStartTurn" | "onAllyInitiate" | "onAllyDefense" | "onBeforeAllyCombat" | "modifyCursors" | "onRoundAttack" | "onRoundDefense";
 type hookSide = "defender" | "attacker";
 
 interface SkillHook {
@@ -265,6 +274,7 @@ export class Combat {
             }
         }
     };
+
     createCombat() {
         this.runAllSkillsHooks("modifyCursors");
         this.runAllSkillsHooks("onBeforeCombat");
@@ -276,6 +286,7 @@ export class Combat {
             attacker: {
                 statChanges: this.attacker.battleMods,
                 remainingHP: 0,
+                id: this.attacker.id,
                 turns: 0,
                 startHP: this.attacker.stats.hp,
                 effective: false,
@@ -285,6 +296,7 @@ export class Combat {
             defender: {
                 statChanges: this.defender.battleMods,
                 remainingHP: 0,
+                id: this.defender.id,
                 startHP: this.defender.stats.hp,
                 turns: 0,
                 effective: false,

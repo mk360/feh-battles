@@ -44,7 +44,7 @@ interface HeroConstructor {
 };
 
 function convertToLv40(baseStat: number, growthRate: number) {
-    const appliedGrowthRate = Math.floor(growthRate * 1.14);
+    const appliedGrowthRate = Math.trunc(growthRate * 1.14);
     const growthValue = Math.trunc(appliedGrowthRate * 0.39);
     return baseStat + growthValue;
 }

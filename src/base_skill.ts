@@ -1,3 +1,4 @@
+import BattleState from "./battle_state";
 import Hero from "./hero";
 import { MovementType, StatsBuffsTable } from "./types";
 import { WeaponType } from "./weapon";
@@ -9,6 +10,7 @@ export interface SkillEffect {
     wielder?: Hero,
     enemy?: Hero,
     ally?: Hero,
+    battleState?: BattleState,
     damage?: number,
     attackTurn?: number,
     defenseTurn?: number

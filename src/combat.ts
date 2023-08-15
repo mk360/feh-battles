@@ -1,3 +1,4 @@
+import BattleState from "./battle_state";
 import Hero from "./hero";
 import Skill from "./passive_skill";
 import { StatsBuffsTable } from "./types";
@@ -13,7 +14,8 @@ import cloneDeep from "lodash.clonedeep";
 
 export interface Combat {
     attacker: Hero,
-    defender: Hero
+    defender: Hero,
+    battleState: BattleState;
 };
 
 interface Sides {
@@ -46,6 +48,7 @@ export interface CombatOutcome {
         remainingHP: number;
         damage: number;
         effective: boolean;
+        triggeredSpecial: boolean;
         statChanges: StatsBuffsTable;
         extraDamage: number;
     };
@@ -80,19 +83,16 @@ function getColorRelationship(attackerColor: WeaponColor, defenderColor: WeaponC
     }[attackerColor][defenderColor];
 };
 
-type hookNames = "onEquip" | "onInitiate" | "onDefense" | "onBeforeCombat" | "onStartTurn" | "onAllyInitiate" | "onAllyDefense" | "onBeforeAllyCombat" | "modifyCursors" | "onRoundAttack" | "onRoundDefense";
-type hookSide = "defender" | "attacker";
+type HookName = "onEquip" | "onInitiate" | "onDefense" | "onBeforeCombat" | "onTurnStart" | "onAllyInitiate" | "onAllyDefense" | "onBeforeAllyCombat" | "modifyCursors" | "onRoundAttack" | "onRoundDefense";
+
+type HookSide = "defender" | "attacker";
+
+type Advantage = "advantage" | "disadvantage" | "neutral";
 
 interface SkillHook {
     skill: Skill,
-    hookName: hookNames
-    side?: hookSide
-}
-
-interface AffinityArguments {
-    predicate: ({ attacker, defender }: Sides) => number,
-    attacker?: Hero,
-    defender?: Hero
+    hookName: HookName
+    side?: HookSide
 }
 
 interface previousTurns {
@@ -116,9 +116,10 @@ interface TurnArgument {
 }
 
 export class Combat {
-    constructor({ attacker, defender }: { attacker: Hero, defender: Hero }) {
+    constructor({ attacker, defender, battleState }: { attacker: Hero, defender: Hero, battleState: BattleState }) {
         this.attacker = this.cloneHero(attacker);
         this.defender = this.cloneHero(defender);
+        this.battleState = battleState;
     };
 
     cloneHero(hero: Hero) {
@@ -135,43 +136,42 @@ export class Combat {
     };
     private callSkillHook(hook: SkillHook) {
         if (hook.skill[hook.hookName]) {
-            const hookParam = hook.side === "attacker" ? {
+            const hookParams = hook.side === "attacker" ? {
                 wielder: this.attacker, enemy: this.defender,
             } : { wielder: this.defender, enemy: this.attacker };
-            hook.skill[hook.hookName](hookParam);
+            hook.skill[hook.hookName]({ ...hookParams, battleState: this.battleState });
         }
     };
-    private runAllAttackerSkillsHooks(hookName: hookNames) {
+    private runAllAttackerSkillsHooks(hookName: HookName) {
         for (let skillSlot in this.attacker.skills) {
             let skill = this.attacker.skills[skillSlot];
             this.callAttackerHook({ skill, hookName });
         }
     };
-    private getAffinity(affinityPredicate: AffinityArguments) {
-        return affinityPredicate.predicate({ attacker: affinityPredicate.attacker, defender: affinityPredicate.defender });
+
+    private getAffinity({ attacker, defender }: { attacker: Hero; defender: Hero }) {
+        if (defender.getCursorValue("reverseAffinity") > 0) {
+            return getColorRelationship(defender.color, attacker.color);
+        }
+        if (attacker.getCursorValue("reverseAffinity") > 0) {
+            return 0;
+        }
+        if (attacker.getCursorValue("artificialAffinity") > 0) {
+            return 0.2;
+        }
+        return getColorRelationship(attacker.color, defender.color);
     };
+
     private produceDamage({ attackStat, defenderStat, affinity, advantage, effectiveness }: DamageFormula) {
         const withEffectiveness = Math.floor(attackStat * effectiveness);
         const mainFormula = withEffectiveness + Math.trunc(withEffectiveness * (advantage * ((affinity + 20) / 20))) - defenderStat;
         return Math.max(mainFormula, 0);
     };
+
     private calculateDamage({ attacker, defender }: Sides) {
         let attackerStats = attacker.getBattleStats();
         let defenderStats = defender.getBattleStats();
-        let advantage = this.getAffinity({
-            predicate: () => {
-                if (defender.getCursorValue("reverseAffinity") > 0) {
-                    return getColorRelationship(defender.color, attacker.color);
-                }
-                if (attacker.getCursorValue("reverseAffinity") > 0) {
-                    return 0;
-                }
-                if (attacker.getCursorValue("artificialAffinity") > 0) {
-                    return 0.2;
-                }
-                return getColorRelationship(attacker.color, defender.color);
-            }
-        });
+        let advantage = this.getAffinity({ attacker, defender });
         let gemWeaponAffinity = attacker.getCursorValue("gemWeapon") > 0 ? getColorRelationship(attacker.color, defender.color) : 0;
         let statusAffinity = [...attacker.statuses, ...defender.statuses].includes("trilemma") ? getColorRelationship(attacker.color, defender.color) : 0;
         let affinity = Math.max(statusAffinity, gemWeaponAffinity);
@@ -185,7 +185,7 @@ export class Combat {
             damage = Math.floor(damage / 2);
         }
         return {
-            advantage: advantage === 0 ? "neutral" : advantage === 0.2 ? "advantage" : "disadvantage" as "neutral" | "advantage" | "disadvantage",
+            advantage: advantage === 0 ? "neutral" : advantage === 0.2 ? "advantage" : "disadvantage" as Advantage,
             damage,
             effective: effectiveness === 1 ? false : true
         }
@@ -203,7 +203,7 @@ export class Combat {
         return this.stackSameTurns({ attacker: turnAttacker, defender: turnDefender, iterations: consecutiveTurns, turns });
     };
 
-    private runAllDefenderSkillsHooks(hookName: hookNames) {
+    private runAllDefenderSkillsHooks(hookName: HookName) {
         for (let skillSlot in this.defender.skills) {
             let skill = this.defender.skills[skillSlot];
             this.callDefenderHook({ skill, hookName });
@@ -252,11 +252,11 @@ export class Combat {
         }
         return [];
     };
-    private runAllSkillsHooks(hookName: hookNames) {
+    private runAllSkillsHooks(hookName: HookName) {
         this.runAllAttackerSkillsHooks(hookName);
         this.runAllDefenderSkillsHooks(hookName);
     };
-    private runAllyHooks(hookName: hookNames) {
+    private runAllyHooks(hookName: HookName) {
         for (let ally of this.attacker.allies) {
             for (let skillName in ally.skills) {
                 let skill = ally.skills[skillName];

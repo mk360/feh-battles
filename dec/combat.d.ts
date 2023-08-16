@@ -1,48 +1,43 @@
+import BattleState from "./battle_state";
 import Hero from "./hero";
 import { StatsBuffsTable } from "./types";
 export interface Combat {
     attacker: Hero;
     defender: Hero;
+    battleState: BattleState;
 }
 interface TurnOutcome {
     attacker: Hero;
     defender: Hero;
-    advantage: "advantage" | "disadvantage" | "neutral";
+    advantage: Advantage;
     effective: boolean;
     remainingHP: number;
     damage: number;
 }
+interface CombatOutcomeSide {
+    startHP: number;
+    turns: number;
+    id: string;
+    remainingHP: number;
+    damage: number;
+    effective: boolean;
+    triggeredSpecial: boolean;
+    statChanges: StatsBuffsTable;
+    extraDamage: number;
+}
 export interface CombatOutcome {
-    attacker: {
-        startHP: number;
-        turns: number;
-        id: string;
-        remainingHP: number;
-        damage: number;
-        effective: boolean;
-        statChanges: StatsBuffsTable;
-        extraDamage: number;
-    };
-    defender: {
-        startHP: number;
-        turns: number;
-        id: string;
-        remainingHP: number;
-        damage: number;
-        effective: boolean;
-        statChanges: StatsBuffsTable;
-        extraDamage: number;
-    };
+    attacker: CombatOutcomeSide;
+    defender: CombatOutcomeSide;
     turns: TurnOutcome[];
 }
+declare type Advantage = "advantage" | "disadvantage" | "neutral";
 export declare class Combat {
-    constructor({ attacker, defender }: {
+    constructor({ attacker, defender, battleState }: {
         attacker: Hero;
         defender: Hero;
+        battleState: BattleState;
     });
-    cloneHero(hero: Hero): Hero;
-    private callAttackerHook;
-    private callDefenderHook;
+    private cloneHero;
     private callSkillHook;
     private runAllAttackerSkillsHooks;
     private getAffinity;

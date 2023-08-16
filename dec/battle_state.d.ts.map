@@ -1,0 +1,1 @@
+{"version":3,"file":"battle_state.d.ts","sourceRoot":"","sources":["../src/battle_state.ts"],"names":[],"mappings":"AAAA,OAAO,IAAI,MAAM,QAAQ,CAAA;AAEzB,cAAM,WAAW;IACb,KAAK,EAAE;QACH,CAAC,CAAC,EAAE,MAAM,GAAG,IAAI,GAAG;YAAE,KAAK,EAAE,MAAM,CAAA;SAAE,CAAC;KACzC,CAAA;IACD,WAAW,EAAE,MAAM,CAAC;CACvB;AAGD,eAAe,WAAW,CAAC"}

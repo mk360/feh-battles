@@ -2,15 +2,8 @@ import BattleState from "./battle_state";
 import Hero from "./hero";
 import Skill from "./passive_skill";
 import { StatsBuffsTable } from "./types";
-import { WeaponColor as WeaponColor } from "./weapon";
+import { WeaponColor } from "./weapon";
 import cloneDeep from "lodash.clonedeep";
-
-// refactor: integrate Battle class inside feh-battles package
-// allow heroes to access battle, allow skills to access battles
-// basically make a revamp
-// add a team property to heroes
-// create a Team class
-// { id: string; members: Hero[] }
 
 export interface Combat {
     attacker: Hero,
@@ -34,34 +27,27 @@ interface DamageFormula {
 interface TurnOutcome {
     attacker: Hero,
     defender: Hero,
-    advantage: "advantage" | "disadvantage" | "neutral",
+    advantage: Advantage,
     effective: boolean,
     remainingHP: number,
     damage: number
 }
 
+interface CombatOutcomeSide {
+    startHP: number;
+    turns: number;
+    id: string;
+    remainingHP: number;
+    damage: number;
+    effective: boolean;
+    triggeredSpecial: boolean;
+    statChanges: StatsBuffsTable;
+    extraDamage: number;
+};
+
 export interface CombatOutcome {
-    attacker: {
-        startHP: number;
-        turns: number;
-        id: string;
-        remainingHP: number;
-        damage: number;
-        effective: boolean;
-        triggeredSpecial: boolean;
-        statChanges: StatsBuffsTable;
-        extraDamage: number;
-    };
-    defender: {
-        startHP: number;
-        turns: number;
-        id: string;
-        remainingHP: number;
-        damage: number;
-        effective: boolean;
-        statChanges: StatsBuffsTable;
-        extraDamage: number;
-    };
+    attacker: CombatOutcomeSide;
+    defender: CombatOutcomeSide;
     turns: TurnOutcome[]
 }
 
@@ -122,30 +108,29 @@ export class Combat {
         this.battleState = battleState;
     };
 
-    cloneHero(hero: Hero) {
+    private cloneHero(hero: Hero) {
         const clone = cloneDeep(hero) as Hero;
         clone.allies = hero.allies;
         clone.enemies = hero.enemies;
         return clone;
     }
-    private callAttackerHook(hook: SkillHook) {
-        this.callSkillHook({ hookName: hook.hookName, skill: hook.skill, side: "attacker" });
-    };
-    private callDefenderHook(hook: SkillHook) {
-        this.callSkillHook({ hookName: hook.hookName, skill: hook.skill, side: "defender" });
-    };
-    private callSkillHook(hook: SkillHook) {
+
+    private callSkillHook(hook: SkillHook, extraArgs?: {
+        [extraArg: string]: any
+    }) {
         if (hook.skill[hook.hookName]) {
             const hookParams = hook.side === "attacker" ? {
                 wielder: this.attacker, enemy: this.defender,
             } : { wielder: this.defender, enemy: this.attacker };
-            hook.skill[hook.hookName]({ ...hookParams, battleState: this.battleState });
+            const extraArgsObject = extraArgs ?? {};
+            hook.skill[hook.hookName]({ ...hookParams, battleState: Object.seal(this.battleState), ...extraArgsObject });
         }
     };
-    private runAllAttackerSkillsHooks(hookName: HookName) {
+
+    private runAllAttackerSkillsHooks(hookName: HookName, extraArgs?: any) {
         for (let skillSlot in this.attacker.skills) {
             let skill = this.attacker.skills[skillSlot];
-            this.callAttackerHook({ skill, hookName });
+            this.callSkillHook({ hookName, skill, side: "attacker" }, extraArgs);
         }
     };
 
@@ -180,6 +165,8 @@ export class Combat {
         let defenderStat = attacker.getCursorValue("lowerOfDefAndRes") > 0 ? Math.min(defenderStats.def, defenderStats.res) :
             ["tome", "dragonstone"].includes(attacker.skills.weapon.type) ? defenderStats.res : defenderStats.def;
         let damage = this.produceDamage({ attackStat, defenderStat, advantage, affinity, effectiveness });
+        this.runAllAttackerSkillsHooks("onRoundAttack", { damage });
+        this.runAllDefenderSkillsHooks("onRoundDefense", { damage });
         damage += attacker.getCursorValue("damageIncrease") - defender.getCursorValue("damageReduction");
         if (attacker.skills.weapon.type === "staff" && attacker.getCursorValue("staffDamageLikeOtherWeapons") <= 0) {
             damage = Math.floor(damage / 2);
@@ -203,12 +190,15 @@ export class Combat {
         return this.stackSameTurns({ attacker: turnAttacker, defender: turnDefender, iterations: consecutiveTurns, turns });
     };
 
-    private runAllDefenderSkillsHooks(hookName: HookName) {
+    private runAllDefenderSkillsHooks(hookName: HookName, extraArgs?: {
+        [extraArg: string]: any
+    }) {
         for (let skillSlot in this.defender.skills) {
             let skill = this.defender.skills[skillSlot];
-            this.callDefenderHook({ skill, hookName });
+            this.callSkillHook({ hookName, skill, side: "defender" }, extraArgs);
         }
     };
+
     private stackSameTurns(turnArgument: TurnArgument) {
         let { attacker, defender, iterations, turns } = turnArgument;
         let i = 0;
@@ -220,6 +210,7 @@ export class Combat {
         }
         return turnsCopy;
     };
+
     private setupTurns() {
         let turns: Turn[] = [];
         const sameRange = this.defender.getWeapon().range === this.attacker.getWeapon().range;
@@ -241,9 +232,11 @@ export class Combat {
         }
         return turns;
     };
+
     private getPreviousAttackTurns(previousTurns: previousTurns) {
         return previousTurns.turns.filter(turn => turn.attacker.id === previousTurns.heroId);
     };
+
     private handleFollowups({ attacker, defender }: Turn): Turn[] {
         let isNaturalFollowup = attacker.getBattleStats().spd >= defender.getBattleStats().spd + 5 && attacker.getCursorValue("followup") >= 0;
         let isArtificalFollowup = attacker.getCursorValue("followup") > 0 && attacker.getCursorValue("desperation") <= 0;
@@ -252,10 +245,12 @@ export class Combat {
         }
         return [];
     };
+
     private runAllSkillsHooks(hookName: HookName) {
         this.runAllAttackerSkillsHooks(hookName);
         this.runAllDefenderSkillsHooks(hookName);
     };
+
     private runAllyHooks(hookName: HookName) {
         for (let ally of this.attacker.allies) {
             for (let skillName in ally.skills) {
@@ -287,6 +282,7 @@ export class Combat {
                 statChanges: this.attacker.battleMods,
                 remainingHP: 0,
                 id: this.attacker.id,
+                triggeredSpecial: false,
                 turns: 0,
                 startHP: this.attacker.stats.hp,
                 effective: false,
@@ -299,6 +295,7 @@ export class Combat {
                 id: this.defender.id,
                 startHP: this.defender.stats.hp,
                 turns: 0,
+                triggeredSpecial: false,
                 effective: false,
                 damage: 0,
                 extraDamage: 0

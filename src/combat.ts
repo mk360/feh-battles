@@ -1,3 +1,4 @@
+import { SkillEffect } from "./base_skill";
 import BattleState from "./battle_state";
 import Hero from "./hero";
 import Skill from "./passive_skill";
@@ -115,19 +116,17 @@ export class Combat {
         return clone;
     }
 
-    private callSkillHook(hook: SkillHook, extraArgs?: {
-        [extraArg: string]: any
-    }) {
+    private callSkillHook(hook: SkillHook, extraArgs?: Omit<SkillEffect, 'wielder' | 'enemy' | 'battleState'>) {
         if (hook.skill[hook.hookName]) {
             const hookParams = hook.side === "attacker" ? {
                 wielder: this.attacker, enemy: this.defender,
             } : { wielder: this.defender, enemy: this.attacker };
             const extraArgsObject = extraArgs ?? {};
-            hook.skill[hook.hookName]({ ...hookParams, battleState: Object.seal(this.battleState), ...extraArgsObject });
+            hook.skill[hook.hookName]({ ...hookParams, battleState: this.battleState, ...extraArgsObject });
         }
     };
 
-    private runAllAttackerSkillsHooks(hookName: HookName, extraArgs?: any) {
+    private runAllAttackerSkillsHooks(hookName: HookName, extraArgs?: Omit<SkillEffect, 'wielder' | 'enemy'>) {
         for (let skillSlot in this.attacker.skills) {
             let skill = this.attacker.skills[skillSlot];
             this.callSkillHook({ hookName, skill, side: "attacker" }, extraArgs);
@@ -190,9 +189,7 @@ export class Combat {
         return this.stackSameTurns({ attacker: turnAttacker, defender: turnDefender, iterations: consecutiveTurns, turns });
     };
 
-    private runAllDefenderSkillsHooks(hookName: HookName, extraArgs?: {
-        [extraArg: string]: any
-    }) {
+    private runAllDefenderSkillsHooks(hookName: HookName, extraArgs?: Omit<SkillEffect, 'wielder' | 'enemy'>) {
         for (let skillSlot in this.defender.skills) {
             let skill = this.defender.skills[skillSlot];
             this.callSkillHook({ hookName, skill, side: "defender" }, extraArgs);
@@ -251,12 +248,12 @@ export class Combat {
         this.runAllDefenderSkillsHooks(hookName);
     };
 
-    private runAllyHooks(hookName: HookName) {
+    private runAllyHooks(hookName: HookName, extraArgs?: Omit<SkillEffect, 'wielder' | 'enemy'>) {
         for (let ally of this.attacker.allies) {
             for (let skillName in ally.skills) {
                 let skill = ally.skills[skillName];
                 if (skill[hookName]) {
-                    skill[hookName].call(null, { wielder: ally, ally: this.attacker, enemy: this.defender });
+                    skill[hookName].apply(null, [{ wielder: ally, ally: this.attacker, enemy: this.defender },  extraArgs]);
                 }
             }
         }
@@ -264,7 +261,7 @@ export class Combat {
             for (let skillName in ally.skills) {
                 let skill = ally.skills[skillName];
                 if (skill[hookName]) {
-                    skill[hookName].call(null, { wielder: ally, ally: this.defender, enemy: this.attacker });
+                    skill[hookName].apply(null, [{ wielder: ally, ally: this.defender, enemy: this.attacker },  extraArgs]);
                 }
             }
         }

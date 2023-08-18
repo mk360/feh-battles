@@ -13,6 +13,7 @@ class Team {
 
     addMember(member: Hero) {
         this.members[member.id] = member;
+        member.teamId = this.id;
     }
 
     removeMember(member: Hero) {

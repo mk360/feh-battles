@@ -23,6 +23,7 @@ interface Hero {
     skills: HeroSkills;
     movementType: MovementType,
     bane?: keyof MandatoryStats;
+    teamId: string;
     boon?: keyof MandatoryStats;
     coordinates: MapCoordinates,
     allowedWeaponTypes?: WeaponType | WeaponType[]

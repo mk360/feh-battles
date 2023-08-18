@@ -18,6 +18,7 @@ interface Hero {
     skills: HeroSkills;
     movementType: MovementType;
     bane?: keyof MandatoryStats;
+    teamId: string;
     boon?: keyof MandatoryStats;
     coordinates: MapCoordinates;
     allowedWeaponTypes?: WeaponType | WeaponType[];
@@ -55,7 +56,7 @@ declare class Hero {
     equipSkill(skill: BaseSkill): this;
     setCoordinates({ x, y }: MapCoordinates): this;
     addStatus(status: StatusBuff | StatusDebuff): this;
-    getStatuses(): ("statBuff" | "enhancedMovement" | "dragonEffectiveness" | "doubledBonuses" | "panic" | "limitedMovement" | "statDebuff" | "cannotCounterattack" | "trilemma")[];
+    getStatuses(): ("panic" | "limitedMovement" | "statDebuff" | "cannotCounterattack" | "trilemma" | "statBuff" | "enhancedMovement" | "dragonEffectiveness" | "doubledBonuses")[];
     setMovementType(type: MovementType): this;
     addBuffIndicator(buffIndicator: StatusBuff): this;
     addDebuffIndicator(debuffIndicator: StatusDebuff): this;

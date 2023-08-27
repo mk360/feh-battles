@@ -154,8 +154,9 @@ export class Combat {
     };
 
     private produceDamage({ attackStat, defenderStat, affinity, advantage, effectiveness }: DamageFormula) {
-        const withEffectiveness = (attackStat * effectiveness) << 0;
-        const mainFormula = withEffectiveness - defenderStat + ((withEffectiveness * (advantage * ((affinity + 20) / 20)) << 0)) ;
+        const withEffectiveness = Math.trunc(attackStat * effectiveness);
+        const mainFormula = withEffectiveness - defenderStat + (withEffectiveness * (advantage * Math.trunc((affinity + 20) / 20)));
+
         return Math.max(mainFormula, 0);
     };
 
@@ -174,9 +175,11 @@ export class Combat {
         this.runAllAttackerSkillsHooks("onRoundAttack", { damage });
         this.runAllDefenderSkillsHooks("onRoundDefense", { damage });
         damage += attacker.getCursorValue("damageIncrease") - defender.getCursorValue("damageReduction");
+
         if (attacker.skills.weapon.type === "staff" && attacker.getCursorValue("staffDamageLikeOtherWeapons") <= 0) {
-            damage = (damage / 2) << 0;
+            damage = Math.trunc(damage / 2);
         }
+
         return {
             advantage: advantage === 0 ? "neutral" : advantage === 0.2 ? "advantage" : "disadvantage" as Advantage,
             damage,

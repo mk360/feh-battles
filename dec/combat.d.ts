@@ -9,6 +9,10 @@ export interface Combat {
 interface TurnOutcome {
     attacker: Hero;
     defender: Hero;
+    attackerSpecialCooldown: number;
+    defenderSpecialCooldown: number;
+    attackerTriggeredSpecial: boolean;
+    defenderTriggeredSpecial: boolean;
     advantage: Advantage;
     effective: boolean;
     remainingHP: number;
@@ -32,6 +36,7 @@ export interface CombatOutcome {
 }
 declare type Advantage = "advantage" | "disadvantage" | "neutral";
 export declare class Combat {
+    private specialsManager;
     constructor({ attacker, defender, battleState }: {
         attacker: Hero;
         defender: Hero;

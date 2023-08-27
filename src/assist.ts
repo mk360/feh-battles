@@ -10,7 +10,7 @@ interface AssistArguments extends BaseSkillArgument {
 }
 
 class Assist extends BaseSkill {
-    range = 0;
+    range: number;
     constructor(assistConstructor?: AssistArguments) {
         super(assistConstructor);
         super.setSlot("assist");

@@ -1,13 +1,17 @@
-import BaseSkill, { SkillSlot, BaseSkillArgument } from "./base_skill";
+import BaseSkill, { SkillSlot, BaseSkillArgument, SkillEffect, Effect } from "./base_skill";
 
 interface SpecialArgument extends BaseSkillArgument {
     cooldown: number
+    trigger?(effect: SkillEffect): number | Effect[];
+    shouldTrigger?(effect: SkillEffect): boolean;
 };
 
 class Special extends BaseSkill {
     baseCooldown = 0;
     defaultCooldown = 0;
     currentCooldown = 0;
+    trigger: (args: SkillEffect) => number | Effect[];
+    shouldTrigger: (args: SkillEffect) => boolean;
     constructor(specialInformations?: SpecialArgument) {
         super(specialInformations);
         super.setSlot("special");
@@ -15,6 +19,12 @@ class Special extends BaseSkill {
         this.baseCooldown = specialInformations.cooldown;
         this.defaultCooldown = specialInformations.cooldown;
         this.currentCooldown = specialInformations.cooldown;
+        if (specialInformations.shouldTrigger) {
+            this.shouldTrigger = specialInformations.shouldTrigger;
+        }
+        if (specialInformations.trigger) {
+            this.trigger = specialInformations.trigger;
+        }
     };
 
     setDescription(desc: string) {

@@ -2,6 +2,7 @@ import { SkillEffect } from "./base_skill";
 import BattleState from "./battle_state";
 import Hero from "./hero";
 import Skill from "./passive_skill";
+import SpecialManager from "./specials-manager";
 import { StatsBuffsTable } from "./types";
 import { WeaponColor } from "./weapon";
 import cloneDeep from "lodash.clonedeep";
@@ -28,6 +29,10 @@ interface DamageFormula {
 interface TurnOutcome {
     attacker: Hero,
     defender: Hero,
+    attackerSpecialCooldown: number;
+    defenderSpecialCooldown: number;
+    attackerTriggeredSpecial: boolean,
+    defenderTriggeredSpecial: boolean,
     advantage: Advantage,
     effective: boolean,
     remainingHP: number,
@@ -103,6 +108,8 @@ interface TurnArgument {
 }
 
 export class Combat {
+    private specialsManager = new SpecialManager();
+
     constructor({ attacker, defender, battleState }: { attacker: Hero, defender: Hero, battleState: BattleState }) {
         this.attacker = this.cloneHero(attacker);
         this.defender = this.cloneHero(defender);
@@ -147,8 +154,8 @@ export class Combat {
     };
 
     private produceDamage({ attackStat, defenderStat, affinity, advantage, effectiveness }: DamageFormula) {
-        const withEffectiveness = Math.floor(attackStat * effectiveness);
-        const mainFormula = withEffectiveness + Math.trunc(withEffectiveness * (advantage * ((affinity + 20) / 20))) - defenderStat;
+        const withEffectiveness = (attackStat * effectiveness) << 0;
+        const mainFormula = withEffectiveness - defenderStat + ((withEffectiveness * (advantage * ((affinity + 20) / 20)) << 0)) ;
         return Math.max(mainFormula, 0);
     };
 
@@ -157,7 +164,7 @@ export class Combat {
         let defenderStats = defender.getBattleStats();
         let advantage = this.getAffinity({ attacker, defender });
         let gemWeaponAffinity = attacker.getCursorValue("gemWeapon") > 0 ? getColorRelationship(attacker.color, defender.color) : 0;
-        let statusAffinity = [...attacker.statuses, ...defender.statuses].includes("trilemma") ? getColorRelationship(attacker.color, defender.color) : 0;
+        let statusAffinity = attacker.statuses.concat(defender.statuses).includes("trilemma") ? getColorRelationship(attacker.color, defender.color) : 0;
         let affinity = Math.max(statusAffinity, gemWeaponAffinity);
         let effectiveness = attacker.getCursorValue("effectiveness") > 0 ? 1.5 : 1;
         let attackStat = attackerStats.atk;
@@ -168,12 +175,12 @@ export class Combat {
         this.runAllDefenderSkillsHooks("onRoundDefense", { damage });
         damage += attacker.getCursorValue("damageIncrease") - defender.getCursorValue("damageReduction");
         if (attacker.skills.weapon.type === "staff" && attacker.getCursorValue("staffDamageLikeOtherWeapons") <= 0) {
-            damage = Math.floor(damage / 2);
+            damage = (damage / 2) << 0;
         }
         return {
             advantage: advantage === 0 ? "neutral" : advantage === 0.2 ? "advantage" : "disadvantage" as Advantage,
             damage,
-            effective: effectiveness === 1 ? false : true
+            effective: effectiveness > 1
         }
     };
 
@@ -302,10 +309,71 @@ export class Combat {
 
         for (let turn of turns) {
             let attackOutcome = this.calculateDamage({ attacker: turn.attacker, defender: turn.defender });
+
             const { damage } = attackOutcome;
-            const remainingHP = Math.max(0, turn.defender.stats.hp - damage);
-            turn.defender.stats.hp = Math.max(0, turn.defender.stats.hp - damage);
-            combatData.turns.push({ attacker: turn.attacker, defender: turn.defender, ...attackOutcome, remainingHP });
+
+            const turnOutcome: TurnOutcome = {
+                attacker: turn.attacker,
+                defender: turn.defender,
+                ...attackOutcome,
+                remainingHP: 0,
+                damage,
+                attackerSpecialCooldown: this.attacker.skills.special?.currentCooldown || 0,
+                defenderSpecialCooldown: this.attacker.skills.special?.currentCooldown || 0,
+                attackerTriggeredSpecial: false,
+                defenderTriggeredSpecial: false
+            };
+
+             if (turn.attacker.skills.special?.currentCooldown === 0 && turn.attacker.skills.special?.shouldTrigger({
+                damage, wielder: turn.attacker,
+                enemy: turn.defender,
+                attacker: turn.attacker,
+                defender: turn.defender,
+                battleState: this.battleState
+            })) {
+                const output = turn.attacker.skills.special?.trigger({
+                    damage,
+                    wielder: turn.attacker,
+                    enemy: turn.defender,
+                    battleState: this.battleState
+                });
+
+                if (typeof output === "number") {
+                    turnOutcome.damage = Math.floor(output);
+                }
+                turnOutcome.attackerTriggeredSpecial = true;
+            }
+
+            turnOutcome.remainingHP = Math.max(0, turn.defender.stats.hp - turnOutcome.damage);
+            turn.defender.stats.hp = Math.max(0, turn.defender.stats.hp - turnOutcome.damage);
+
+            if (turn.defender.skills.special?.currentCooldown === 0 && turn.defender.skills.special?.shouldTrigger({
+                damage, wielder: turn.defender,
+                enemy: turn.attacker,
+                battleState: this.battleState,
+                attacker: turn.attacker,
+                defender: turn.defender
+            })) {
+                const output = turn.defender.skills.special?.trigger({
+                    damage,
+                    wielder: turn.defender,
+                    enemy: turn.attacker,
+                    battleState: this.battleState
+                });
+
+                turnOutcome.defenderTriggeredSpecial = true;
+            }
+
+            if (this.attacker.skills.special) {
+                this.attacker.skills.special.currentCooldown = this.specialsManager.getCooldownAfterHit(this.attacker, turnOutcome.attackerTriggeredSpecial);
+            }
+
+            if (this.defender.skills.special) {
+                this.defender.skills.special.currentCooldown = this.specialsManager.getCooldownAfterHit(this.defender, turnOutcome.defenderTriggeredSpecial);
+            }
+
+            combatData.turns.push(turnOutcome);
+
             if (turn.attacker.id === this.attacker.id) {
                 combatData.attacker.effective = attackOutcome.effective;
                 combatData.attacker.remainingHP = turn.attacker.stats.hp;
@@ -318,8 +386,8 @@ export class Combat {
                 combatData.defender.remainingHP = turn.attacker.stats.hp;
                 combatData.defender.damage = damage;
                 combatData.defender.turns++;
-            }            
-            if (turn.defender.stats.hp === 0) break;
+            }
+            if (turnOutcome.defender.stats.hp === 0) break;
         }
         return combatData;
     };

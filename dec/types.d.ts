@@ -32,5 +32,5 @@ export declare type MapCoordinates = {
 };
 export declare type MovementType = "infantry" | "flier" | "armored" | "cavalry";
 export declare type StatusBuff = "statBuff" | "enhancedMovement" | "dragonEffectiveness" | "doubledBonuses";
-export declare type StatusDebuff = "panic" | "limitedMovement" | "statDebuff" | "cannotCounterattack" | "trilemma";
+export declare type StatusDebuff = "panic" | "limitedMovement" | "statDebuff" | "cannotCounterattack" | "trilemma" | "guard";
 //# sourceMappingURL=types.d.ts.map

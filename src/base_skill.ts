@@ -13,6 +13,8 @@ export interface SkillEffect {
     battleState?: BattleState,
     damage?: number,
     attackTurn?: number,
+    attacker?: Hero;
+    defender?: Hero;
     defenseTurn?: number
 };
 

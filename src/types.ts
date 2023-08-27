@@ -39,4 +39,4 @@ export type MapCoordinates = {
 
 export type MovementType = "infantry" | "flier" | "armored" | "cavalry";
 export type StatusBuff = "statBuff" | "enhancedMovement" | "dragonEffectiveness" | "doubledBonuses";
-export type StatusDebuff = "panic" | "limitedMovement" | "statDebuff" | "cannotCounterattack" | "trilemma";
+export type StatusDebuff = "panic" | "limitedMovement" | "statDebuff" | "cannotCounterattack" | "trilemma" | "guard";

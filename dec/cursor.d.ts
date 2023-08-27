@@ -1,4 +1,4 @@
-declare const effects: readonly ["followup", "damageIncrease", "counterattack", "staffDamageLikeOtherWeapons", "damageReduction", "cancelledAffinity", "gemWeapon", "reverseAffinity", "mapBuff", "vantage", "desperation", "braveWeapon", "combatBuff", "combatDebuff", "damageReduction", "additionalMovement", "effectiveness", "lowerOfDefAndRes", "artificialAffinity"];
+declare const effects: readonly ["followup", "damageIncrease", "counterattack", "staffDamageLikeOtherWeapons", "damageReduction", "cancelledAffinity", "gemWeapon", "reverseAffinity", "mapBuff", "vantage", "desperation", "braveWeapon", "combatBuff", "combatDebuff", "damageReduction", "additionalMovement", "effectiveness", "lowerOfDefAndRes", "artificialAffinity", "slowCooldown", "fastCooldown"];
 export declare type CursorEffects = (typeof effects)[number];
 export declare class Cursor {
     private currentValue;

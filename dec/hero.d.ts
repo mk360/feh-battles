@@ -56,7 +56,7 @@ declare class Hero {
     equipSkill(skill: BaseSkill): this;
     setCoordinates({ x, y }: MapCoordinates): this;
     addStatus(status: StatusBuff | StatusDebuff): this;
-    getStatuses(): ("panic" | "limitedMovement" | "statDebuff" | "cannotCounterattack" | "trilemma" | "statBuff" | "enhancedMovement" | "dragonEffectiveness" | "doubledBonuses")[];
+    getStatuses(): ("statBuff" | "enhancedMovement" | "dragonEffectiveness" | "doubledBonuses" | "panic" | "limitedMovement" | "statDebuff" | "cannotCounterattack" | "trilemma" | "guard")[];
     setMovementType(type: MovementType): this;
     addBuffIndicator(buffIndicator: StatusBuff): this;
     addDebuffIndicator(debuffIndicator: StatusDebuff): this;

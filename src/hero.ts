@@ -6,7 +6,7 @@ import shortid from "shortid";
 import Special from "./special";
 import PassiveSkill from "./passive_skill";
 import Assist from "./assist";
-import BaseSkill, { SkillSlot } from "./base_skill";
+import BaseSkill from "./base_skill";
 
 interface Hero {
     name: string;
@@ -238,7 +238,15 @@ class Hero {
         let initialStats = this.stats;
         initialStats = modifyStatValues(initialStats, this.mapPenalties);
         if (this.cursors.mapBuff.getCurrentValue() >= 0) {
-            initialStats = modifyStatValues(initialStats, this.mapBoosts);
+            if (this.statuses.includes("panic")) {
+                const reversedBuffs = {...this.mapBoosts};
+                for (let stat in reversedBuffs) {
+                    reversedBuffs[stat] = -reversedBuffs[stat];
+                }
+                initialStats = modifyStatValues(initialStats, reversedBuffs);
+            } else {
+                initialStats = modifyStatValues(initialStats, this.mapBoosts);
+            }
         }
         if (this.cursors.combatBuff.getCurrentValue() >= 0) {
             initialStats = modifyStatValues(initialStats, this.battleMods);

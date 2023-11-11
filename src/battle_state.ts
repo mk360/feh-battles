@@ -12,11 +12,9 @@ class BattleState {
     currentTurn: "team1" | "team2";
 
     endTurn() {
-        this.turns[this.currentTurn]++;
         this.currentTurn = this.currentTurn === "team1" ? "team2" : "team1";
+        this.turns[this.currentTurn]++;
     }
-
-    
 
     static createBlankState() {
         const state = new BattleState();
@@ -25,7 +23,7 @@ class BattleState {
             team2: new Team(),
         };
         state.turns = {
-            team1: 0,
+            team1: 1,
             team2: 0
         };
 
@@ -37,6 +35,17 @@ class BattleState {
         return state;
     }
 };
+
+const ground = 0b1111;
+const tree = 0b1011;
+const voidTile = 0b1000;
+const trench = 0b11011;
+
+const infantry = 0b1;
+const armor = 0b10;
+const cavalry = 0b100;
+const flier = 0b1000;
+
 
 
 export default BattleState;

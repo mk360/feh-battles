@@ -5,6 +5,9 @@ export declare class Cursor {
     resetValue(): this;
     decreaseValue(valueDifference: number): this;
     getCurrentValue(): number;
+    multiplyValue(multiplier: number): this;
+    divideValue(divisor: number): this;
+    setValue(value: number): this;
     increaseValue(valueDifference: number): this;
 }
 export declare type CursorsReference = {

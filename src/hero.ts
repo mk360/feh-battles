@@ -71,6 +71,7 @@ class Hero {
         this.skills = {};
         this.movementType = heroConstructor.movementType,
         this.cursors = createCursorsReference();
+        this.cursors.damageReduction.setValue(1);
         this.battleMods = {
             atk: 0,
             def: 0,
@@ -115,6 +116,15 @@ class Hero {
     lowerCursor(label: keyof CursorsReference, value: number) {
         this.cursors[label].decreaseValue(value);
     };
+
+    multiplyCursor(label: keyof CursorsReference, value: number) {
+        this.cursors[label].multiplyValue(value);
+    };
+
+    divideCursor(label: keyof CursorsReference, value: number) {
+        this.cursors[label].divideValue(value);
+    }
+
     raiseCursor(label: keyof CursorsReference, value: number) {
         this.cursors[label].increaseValue(value);
     };

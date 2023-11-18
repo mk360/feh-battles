@@ -44,6 +44,8 @@ declare class Hero {
     setAlly(hero: Hero): this;
     getWeapon(): Weapon;
     lowerCursor(label: keyof CursorsReference, value: number): void;
+    multiplyCursor(label: keyof CursorsReference, value: number): void;
+    divideCursor(label: keyof CursorsReference, value: number): void;
     raiseCursor(label: keyof CursorsReference, value: number): void;
     setEnemy(hero: Hero): this;
     getMovementType(): MovementType;

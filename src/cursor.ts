@@ -19,6 +19,21 @@ export class Cursor {
         return this.currentValue;
     };
 
+    multiplyValue(multiplier: number) {
+        this.currentValue *= multiplier;
+        return this;
+    }
+
+    divideValue(divisor: number) {
+        this.currentValue /= divisor;
+        return this;
+    }
+
+    setValue(value: number) {
+        this.currentValue = value;
+        return this;
+    }
+
     increaseValue(valueDifference: number) {
         this.currentValue += valueDifference;
         return this;

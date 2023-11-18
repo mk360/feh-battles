@@ -125,6 +125,9 @@ export class Combat {
 
     private callSkillHook(hook: SkillHook, extraArgs?: Omit<SkillEffect, 'wielder' | 'enemy' | 'battleState'>) {
         if (hook.skill[hook.hookName]) {
+            if (hook.hookName === "onRoundDefense") {
+                console.log(hook.skill, hook.hookName, hook.skill[hook.hookName]);
+            }
             const hookParams = hook.side === "attacker" ? {
                 wielder: this.attacker, enemy: this.defender,
             } : { wielder: this.defender, enemy: this.attacker };
@@ -133,7 +136,7 @@ export class Combat {
         }
     };
 
-    private runAllAttackerSkillsHooks(hookName: HookName, extraArgs?: Omit<SkillEffect, 'wielder' | 'enemy'>) {
+    private runAllAttackerSkillsHooks(hookName: HookName, extraArgs?: SkillEffect) {
         for (let skillSlot in this.attacker.skills) {
             let skill = this.attacker.skills[skillSlot];
             this.callSkillHook({ hookName, skill, side: "attacker" }, extraArgs);
@@ -156,7 +159,6 @@ export class Combat {
     private produceDamage({ attackStat, defenderStat, affinity, advantage, effectiveness }: DamageFormula) {
         const withEffectiveness = Math.trunc(attackStat * effectiveness);
         const mainFormula = withEffectiveness - defenderStat + (withEffectiveness * (advantage * Math.trunc((affinity + 20) / 20)));
-
         return Math.max(mainFormula, 0);
     };
 
@@ -172,9 +174,8 @@ export class Combat {
         let defenderStat = attacker.getCursorValue("lowerOfDefAndRes") > 0 ? Math.min(defenderStats.def, defenderStats.res) :
             ["tome", "dragonstone"].includes(attacker.skills.weapon.type) ? defenderStats.res : defenderStats.def;
         let damage = this.produceDamage({ attackStat, defenderStat, advantage, affinity, effectiveness });
-        this.runAllAttackerSkillsHooks("onRoundAttack", { damage });
-        this.runAllDefenderSkillsHooks("onRoundDefense", { damage });
-        damage += attacker.getCursorValue("damageIncrease") - defender.getCursorValue("damageReduction");
+        damage += attacker.getCursorValue("damageIncrease");
+        damage = Math.ceil(damage * defender.getCursorValue("damageReduction"));
 
         if (attacker.skills.weapon.type === "staff" && attacker.getCursorValue("staffDamageLikeOtherWeapons") <= 0) {
             damage = Math.trunc(damage / 2);
@@ -199,7 +200,7 @@ export class Combat {
         return this.stackSameTurns({ attacker: turnAttacker, defender: turnDefender, iterations: consecutiveTurns, turns });
     };
 
-    private runAllDefenderSkillsHooks(hookName: HookName, extraArgs?: Omit<SkillEffect, 'wielder' | 'enemy'>) {
+    private runAllDefenderSkillsHooks(hookName: HookName, extraArgs?: SkillEffect) {
         for (let skillSlot in this.defender.skills) {
             let skill = this.defender.skills[skillSlot];
             this.callSkillHook({ hookName, skill, side: "defender" }, extraArgs);
@@ -283,6 +284,10 @@ export class Combat {
         this.runAllyHooks("onBeforeAllyCombat");
         this.runAllAttackerSkillsHooks("onInitiate");
         this.runAllDefenderSkillsHooks("onDefense");
+        this.runAllAttackerSkillsHooks("onRoundAttack", { wielder: this.attacker, enemy: this.defender });
+        this.runAllAttackerSkillsHooks("onRoundDefense", { wielder: this.attacker, enemy: this.defender });
+        this.runAllDefenderSkillsHooks("onRoundAttack", { wielder: this.defender, enemy: this.attacker });
+        this.runAllDefenderSkillsHooks("onRoundDefense", { wielder: this.defender, enemy: this.attacker });
         let turns = this.setupTurns();
         const combatData: CombatOutcome = {
             attacker: {
@@ -312,7 +317,6 @@ export class Combat {
 
         for (let turn of turns) {
             let attackOutcome = this.calculateDamage({ attacker: turn.attacker, defender: turn.defender });
-
             const { damage } = attackOutcome;
 
             const turnOutcome: TurnOutcome = {

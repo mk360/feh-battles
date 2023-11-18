@@ -2,7 +2,7 @@ import BaseSkill, { SkillSlot, BaseSkillArgument, SkillEffect, Effect } from "./
 
 interface SpecialArgument extends BaseSkillArgument {
     cooldown: number
-    trigger?(effect: SkillEffect): number | Effect[];
+    trigger?(effect: SkillEffect): Effect[];
     shouldTrigger?(effect: SkillEffect): boolean;
 };
 
@@ -10,7 +10,7 @@ class Special extends BaseSkill {
     baseCooldown = 0;
     defaultCooldown = 0;
     currentCooldown = 0;
-    trigger: (args: SkillEffect) => number | Effect[];
+    trigger: (args: SkillEffect) => Effect[];
     shouldTrigger: (args: SkillEffect) => boolean;
     constructor(specialInformations?: SpecialArgument) {
         super(specialInformations);

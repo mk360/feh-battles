@@ -1,5 +1,4 @@
-import { Query, System } from "ape-ecs";
-import Hero from "../hero";
+import { Component, Entity, Query, System } from "ape-ecs";
 
 class EffectivenessSystem extends System {
     private effectivenessQuery: Query;
@@ -14,25 +13,28 @@ class EffectivenessSystem extends System {
         this.weaponTypeQuery = this.createQuery().from("WeaponType");
     }
 
-    checkBattleEffectiveness(hero1, hero2) {
-        let effectivessSet = new Set();
-        for (let skillSlot in hero1.skills) {
-            const effectiveness = hero1.skills[skillSlot].getComponents("Effectiveness");
-            effectivessSet = new Set([...effectivessSet, ...effectiveness]);
+    checkBattleEffectiveness(hero1: Entity, hero2: Entity) {
+        const skills = hero1.getComponents("SkillSlots");
+        const enemySkills = hero2.getComponents("SkillSlots");
+        const effectivenessAgainstEnemy = new Set<Component>();
+        const opponentMovementType = hero2.getOne("MovementType");
+        const opponentWeaponType = hero2.getOne("WeaponType");
+        let enemyImmunities = new Set<Component>();
+        for (let skill of enemySkills) {
+            const immunity = (skill.properties.skill as Entity).getComponents("Immunity");
+            enemyImmunities = new Set([...enemyImmunities, ...immunity]);
         }
 
-        let defenseSet = new Set();
-
-        for (let skillSlot in hero2.skills) {
-            const immunity = hero2.skills[skillSlot].getComponents("Immunity");
-            defenseSet = new Set([...defenseSet, ...immunity]);
-        }
-        
-        for (let effective of effectivessSet) {
-            if (defenseSet.has(effective)) return true;
+        for (let skill of skills) {
+            const effectiveness = (skill.properties.skill as Entity).getComponents("Effectiveness");
+            for (let eff of effectiveness) {
+                if (eff === opponentMovementType || eff === opponentWeaponType && !enemyImmunities.has(eff)) {
+                    effectivenessAgainstEnemy.add(eff);
+                }
+            }
         }
 
-        return false;
+        return !!effectivenessAgainstEnemy.size;
     }
 };
 

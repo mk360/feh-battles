@@ -4,6 +4,7 @@
     "module": "CommonJS",
     "lib": ["ES2016", "ES7"],
     "target": "ES5",
+    "downlevelIteration": true,
     "esModuleInterop": true,
     "declaration": true,
     "declarationMap": true,

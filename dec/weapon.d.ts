@@ -1,7 +1,7 @@
 import BaseSkill, { BaseSkillArgument, SkillSlot } from "./base_skill";
 import { MovementType } from "./types";
 export declare type WeaponColor = "red" | "blue" | "green" | "colorless";
-export declare type WeaponType = "lance" | "axe" | "sword" | "bow" | "dagger" | "tome" | "dragonstone" | "staff" | "beast";
+export declare type WeaponType = "lance" | "axe" | "sword" | "bow" | "dagger" | "tome" | "breath" | "staff" | "beast";
 interface Weapon extends BaseSkill {
     might: number;
     slot: "weapon";

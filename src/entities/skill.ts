@@ -1,14 +1,11 @@
-import { Entity } from "ape-ecs";
+import { Component, EntityRef } from "ape-ecs";
 
-class Skill extends Entity {
-    id = "skill";
-
-    onSamir() {
-        this.addComponent({
-            type: "Weapon",
-            weaponType: "Sword",
-            range: 1
-        });
+class Skill extends Component {
+    static properties = {
+        name: "",
+        description: "",
+        slot: "",
+        wielder: EntityRef
     }
 }
 

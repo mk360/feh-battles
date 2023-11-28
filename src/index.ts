@@ -7,6 +7,7 @@ import MapEffectRunner from "./map-effect";
 import Special from "./special";
 import Assist from "./assist";
 import BattleState from "./battle_state";
+import GameWorld from "./world";
 
 export default {
     Hero,
@@ -18,4 +19,5 @@ export default {
     Combat,
     BattleState,
     MapEffectRunner,
+    GameWorld
 };

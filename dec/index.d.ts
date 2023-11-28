@@ -7,6 +7,7 @@ import MapEffectRunner from "./map-effect";
 import Special from "./special";
 import Assist from "./assist";
 import BattleState from "./battle_state";
+import GameWorld from "./world";
 declare const _default: {
     Hero: typeof Hero;
     Special: typeof Special;
@@ -17,6 +18,7 @@ declare const _default: {
     Combat: typeof Combat;
     BattleState: typeof BattleState;
     MapEffectRunner: typeof MapEffectRunner;
+    GameWorld: typeof GameWorld;
 };
 export default _default;
 //# sourceMappingURL=index.d.ts.map

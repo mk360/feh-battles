@@ -1,8 +1,11 @@
-import { Component } from "ape-ecs";
 interface WeaponDict {
     [k: string]: {
         description: string;
-        onCombatStart(context: any): Component[];
+        might: number;
+        range: number;
+        onCombatStart?(...args: any[]): any;
+        onDamageReceived?(...args: any[]): any;
+        onEquip?(...args: any[]): any;
     };
 }
 declare const WEAPONS: WeaponDict;

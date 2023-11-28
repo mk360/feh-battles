@@ -36,9 +36,6 @@ const PASSIVE_A = {
     "Swift Slice": {
         slot: "A",
         onInitiateCombat(...args) {
-            if (condition) {
-                return [{ type: "Effectiveness", }]
-            }
         }
     }
 }
@@ -52,7 +49,6 @@ const WEAPONS: WeaponDict = {
             // if (context.j'ai des amis) {
                 return [{ type: "counterattack" }];
             // }
-            return []
         }
     },
     "Urvan": {

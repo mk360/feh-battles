@@ -1,1 +1,1 @@
-{"version":3,"file":"map-effects.d.ts","sourceRoot":"","sources":["../../src/systems/map-effects.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAE,MAAM,SAAS,CAAC;AAEjC,cAAM,UAAW,SAAQ,MAAM;CAE9B;AAED,eAAe,UAAU,CAAC"}
+{"version":3,"file":"map-effects.d.ts","sourceRoot":"","sources":["../../src/systems/map-effects.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAE,MAAM,SAAS,CAAC;AACjC,OAAO,SAAS,MAAM,SAAS,CAAC;AAEhC,cAAM,gBAAiB,SAAQ,MAAM;IACjC,OAAO,CAAC,KAAK,CAAY;IAEzB,IAAI,CAAC,KAAK,EAAE,SAAS;IAIrB,OAAO,CAAC,IAAI,EAAE,MAAM;CAKvB;AAED,eAAe,gBAAgB,CAAC"}

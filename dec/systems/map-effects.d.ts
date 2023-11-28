@@ -1,5 +1,9 @@
 import { System } from "ape-ecs";
-declare class MapEffects extends System {
+import GameState from "./state";
+declare class MapEffectsSystem extends System {
+    private state;
+    init(state: GameState): void;
+    getTeam(team: string): import("ape-ecs").Entity[];
 }
-export default MapEffects;
+export default MapEffectsSystem;
 //# sourceMappingURL=map-effects.d.ts.map

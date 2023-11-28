@@ -7,7 +7,6 @@ import CHARACTERS from "./data/characters";
 import Side from "./components/side";
 import Skill from "./components/skill";
 import WEAPONS from "./data/weapons";
-import shortid from "shortid";
 import GameState from "./systems/state";
 
 interface HeroData {

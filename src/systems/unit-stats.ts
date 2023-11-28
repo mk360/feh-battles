@@ -9,11 +9,11 @@ class UnitStatsSystem extends System {
         this.state = state;
     }
 
-    static getLv40Stats(lv1Stats: MandatoryStats, growthRates: MandatoryStats, rarity: number) {        
+    static getLv40Stats(lv1Stats: MandatoryStats, growthRates: MandatoryStats, rarity: number) {
         const copy = { ...lv1Stats };
         for (let stat in copy) {
             const growthRate = growthRates[stat];
-            const masterGrowthRate = Math.floor(growthRate * (0.86 + 0.07 * rarity));
+            const masterGrowthRate = Math.floor(growthRate * (0.79 + 0.07 * rarity));
             const growthValue = Math.floor(39 * masterGrowthRate / 100);
             copy[stat] += growthValue;
         }

@@ -1,13 +1,21 @@
+import { Component } from "ape-ecs";
+import Weapon from "../components/weapon";
 import Hero from "../entities/hero";
+import GameState from "../systems/state";
+import { WeaponType } from "../weapon";
 
 interface WeaponDict {
     [k: string]: {
         description: string;
         might: number;
-        range: number;
-        onCombatStart?(...args: any[]): any;
-        onDamageReceived?(...args: any[]): any;
-        onEquip?(...args: any[]): any;
+        type: WeaponType;
+        effectiveAgainst?: string[];
+        protects?: string[];
+        onCombat?(...args: any[]): any;
+        onInitiate?(...args: any[]): any;
+        onDefense?(...args: any[]): any;
+        onEquip?(this: Weapon): any;
+        onTurnStart?(battleState: GameState): Component[];
     }
 }
 
@@ -23,58 +31,18 @@ interface Turn {
     consecutiveOrder: number; // si tours consécutifs, incrémenter ce
 }
 
-const PASSIVE_A = {
-    "Distant Counter": {
-        onCombatStart() {
-            return [{ type: "counterattack" }];
-        },
-        slot: "A"
-    },
-    "Armored Spd Buff": {
-        slot: "C"
-    },
-    "Swift Slice": {
-        slot: "A",
-        onInitiateCombat(...args) {
-        }
-    }
-}
-
 const WEAPONS: WeaponDict = {
-    "Raijinto": {
-        description: "Les 1000 Oiseaux",
+    "Iron Bow": {
+        description: "A generic Iron Bow. Effective against fliers.",
+        might: 8,
+        type: "bow",
+        effectiveAgainst: ["flier"]
+    },
+    "Shielding Lance": {
+        description: "A lance that protects fliers. Disables skills that are effective against fliers.",
         might: 16,
-        range: 1,
-        onCombatStart(state) {
-            // if (context.j'ai des amis) {
-                return [{ type: "counterattack" }];
-            // }
-        }
-    },
-    "Urvan": {
-        might: 14,
-        range: 1,
-        description: "La hache de la justice",
-        onDamageReceived(state, combatState, turnState) {
-            if (turnState.consecutiveOrder > 1) {
-                return [{ type: "damage-reduction", percentage: 0.8 }];
-            }
-
-            if (turnState.order === 1) {
-                return [{ type: "damage-reduction", percentage: 0.4 }];
-            }
-        }
-    },
-    "Axe of Despair": {
-        "description": "Ohlala spooky",
-        might: 15,
-        range: 2,
-        onEquip() {
-            return [{ type: "accelerate-special" }];
-        },
-        onCombatStart(context, combatState: { attacker: Hero }) {
-
-        }
+        type: "lance",
+        protects: ["flier"],
     }
 };
 

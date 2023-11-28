@@ -2,8 +2,11 @@
   "compileOnSave": true,
   "compilerOptions": {
     "module": "CommonJS",
-    "lib": ["ES2016", "ES7"],
-    "target": "ES5",
+    "lib": [
+      "ES2016",
+      "ES7"
+    ],
+    "target": "ES6",
     "downlevelIteration": true,
     "esModuleInterop": true,
     "declaration": true,

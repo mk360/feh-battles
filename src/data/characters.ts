@@ -4,6 +4,7 @@ interface CharacterData {
     [k: string]: {
         color: string;
         weaponType: string;
+        movementType: string;
         stats: MandatoryStats;
         growthRates: MandatoryStats;
     }
@@ -13,6 +14,7 @@ interface CharacterData {
 const CHARACTERS: CharacterData = {
     "Morgan: Devoted Darkness": {
         color: "Red",
+        movementType: "infantry",
         weaponType: "tome",
         stats: {
             hp: 19,
@@ -31,6 +33,7 @@ const CHARACTERS: CharacterData = {
     },
     "Ryoma: Peerless Samurai": {
         color: "Red",
+        movementType: "infantry",
         weaponType: "sword",
         stats: {
             hp: 19,
@@ -45,6 +48,44 @@ const CHARACTERS: CharacterData = {
             spd: 55,
             def: 50,
             res: 40
+        }
+    },
+    "Klein: Silver Nobleman": {
+        color: "colorless",
+        movementType: "infantry",
+        weaponType: "bow",
+        stats: {
+            hp: 18,
+            atk: 9,
+            spd: 7,
+            def: 5,
+            res: 5,
+        },
+        growthRates: {
+            hp: 50,
+            atk: 50,
+            spd: 60,
+            def: 35,
+            res: 45
+        }
+    },
+    "Clair: Highborn Flier": {
+        weaponType: "lance",
+        color: "blue",
+        movementType: "flier",
+        stats: {
+            hp: 18,
+            atk: 7,
+            spd: 8,
+            def: 5,
+            res: 9
+        },
+        growthRates: {
+            hp: 45,
+            atk: 45,
+            spd: 65,
+            def: 45,
+            res: 55
         }
     }
 } as const;

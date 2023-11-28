@@ -1,9 +1,12 @@
+import { Entity } from "ape-ecs";
+
 interface GameState {
     teams: {
-        team1: string[];
-        team2: string[];
+        team1: Entity[];
+        team2: Entity[];
     };
     currentSide: "team1" | "team2";
+    turn: number;
 }
 
 export default GameState;

@@ -1,11 +1,10 @@
-import { Component, EntityRef } from "ape-ecs";
+import { Component } from "ape-ecs";
 
 class Skill extends Component {
     static properties = {
         name: "",
         description: "",
         slot: "",
-        wielder: EntityRef
     }
 }
 

@@ -12,12 +12,9 @@ class MovementSystem extends System {
     }
 
     getFinalMovementRange(unit: Entity) {
-        const hasIncreasedMovement = !!unit.getOne("IncreasedMovement");
-        const hasGravity = !!unit.getOne("Gravity");
+        if (unit.getOne("Gravity")) return 1;
 
-        if (hasGravity) return 1;
-
-        if (hasIncreasedMovement) return unit.getOne("Movement").range + 1;
+        if (unit.getOne("IncreasedMovement")) return unit.getOne("MovementType").range + 1;
 
         return unit.getOne("Movement").range;
     }

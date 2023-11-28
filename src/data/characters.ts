@@ -1,24 +1,50 @@
-const CHARACTERS = {
+import { MandatoryStats } from "../types";
+
+interface CharacterData {
+    [k: string]: {
+        color: string;
+        weaponType: string;
+        stats: MandatoryStats;
+        growthRates: MandatoryStats;
+    }
+}
+
+
+const CHARACTERS: CharacterData = {
     "Morgan: Devoted Darkness": {
         color: "Red",
         weaponType: "tome",
         stats: {
-            hp: 40,
-            atk: 39,
-            spd: 17,
-            def: 41,
-            res: 35
+            hp: 19,
+            atk: 8,
+            spd: 11,
+            def: 5,
+            res: 4
+        },
+        growthRates: {
+            hp: 50,
+            atk: 60,
+            spd: 55,
+            def: 50,
+            res: 40
         }
     },
     "Ryoma: Peerless Samurai": {
         color: "Red",
         weaponType: "sword",
         stats: {
-            hp: 41,
-            atk: 34,
-            spd: 35,
-            def: 27,
-            res: 21
+            hp: 19,
+            atk: 8,
+            spd: 11,
+            def: 5,
+            res: 4
+        },
+        growthRates: {
+            hp: 50,
+            atk: 60,
+            spd: 55,
+            def: 50,
+            res: 40
         }
     }
 } as const;

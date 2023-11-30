@@ -1,4 +1,4 @@
-import { World } from "ape-ecs";
+import { Entity, World } from "ape-ecs";
 import Weapon from "./components/weapon";
 import UnitStatsSystem from "./systems/unit-stats";
 import MapEffects from "./systems/map-effects";
@@ -12,6 +12,12 @@ import Position from "./components/position";
 import Effectiveness from "./components/effectiveness";
 import MovementType from "./components/movement-type";
 import Immunity from "./components/immunity";
+import Bane from "./components/bane";
+import Boon from "./components/boon";
+import { Stat } from "./types";
+import getLv40Stats from "./systems/unit-stats";
+import Team1 from "./components/team1";
+import Team2 from "./components/team2";
 
 interface HeroData {
     name: string;
@@ -25,6 +31,8 @@ interface HeroData {
         C: string;
         S: string;
     };
+    boon?: Stat;
+    bane?: Stat;
     initialPosition: { x: number; y: number };
 }
 
@@ -49,26 +57,39 @@ class GameWorld extends World {
         this.registerComponent(Stats);
         this.registerComponent(Side);
         this.registerComponent(Position);
+        this.registerComponent(Team1);
+        this.registerComponent(Team2);
         this.registerComponent(Effectiveness);
         this.registerComponent(MovementType);
         this.registerComponent(Skill);
         this.registerComponent(Immunity);
-        this.registerSystem("every-turn", UnitStatsSystem, [this.state]);
+        this.registerComponent(Bane);
+        this.registerComponent(Boon);
         this.registerSystem("every-turn", MapEffects, [this.state]);
     }
 
-    initiate(lineup: InitialLineup) {
-        const { team1, team2 } = lineup;
+    createHero(member: HeroData) {
+         this.registerTags(member.name);
 
-        for (let member of team1) {
-            const components = this.createCharacterComponents(member.name, member.rarity, "team1");
-            const entity = this.createEntity({
-                components,
+            const entity = this.createEntity({ 
+                tags: [member.name]
             });
+            const components = this.createCharacterComponents(entity, "team1", member.rarity);
 
-            this.registerTags(member.name);
+            for (let component of components) {
+                entity.addComponent(component);
+            }
 
-            entity.addTag(member.name);
+            if (member.bane && member.boon && member.bane !== member.boon) {
+                entity.addComponent({
+                    type: "Bane",
+                    value: member.bane
+                });
+                entity.addComponent({
+                    type: "Boon",
+                    value: member.boon
+                });
+            }
 
             entity.addComponent({
                 type: "Position",
@@ -111,48 +132,26 @@ class GameWorld extends World {
             }
 
             this.state.teams.team1.push(entity);
+    }
+
+    initiate(lineup: InitialLineup) {
+        const { team1, team2 } = lineup;
+
+        for (let member of team1) {
+            this.createHero(member);
         }
 
         for (let member of team2) {
-            const components = this.createCharacterComponents(member.name, member.rarity, "team2");
-            const entity = this.createEntity({
-                components,
-                name: member.name
-            });
-            entity.addComponent({
-                type: "Position",
-                x: member.initialPosition.x,
-                y: member.initialPosition.y,
-            });
-
-            for (let skill in member.skills) {
-                const skillData = WEAPONS[member.skills[skill]];
-                if (skillData) {
-                    const skillComponent = {
-                        type: "Skill",
-                        name: member.skills[skill],
-                        description: skillData.description,
-                        slot: skill,
-                    };
-
-                    const internalComponent = entity.addComponent(skillComponent);
-
-                    if (skillData.onEquip) skillData.onEquip.call(internalComponent);
-                }
-            }
-
-            this.state.teams.team2.push(entity);
+            this.createHero(member);
         }
     }
 
-    createCharacterComponents(character: string, rarity: number, team: string): { type: string;[k: string]: any }[] {
-        const dexData = CHARACTERS[character];
-        const newStats = UnitStatsSystem.getLv40Stats(dexData.stats, dexData.growthRates, rarity);
+    createCharacterComponents(hero: Entity, team: string, rarity: number): { type: string;[k: string]: any }[] {
+        const newStats = getLv40Stats(hero, rarity);
+        const [name] = hero.tags;
+        const dexData = CHARACTERS[name];
+
         return [
-            {
-                type: "Stats",
-                ...newStats
-            },
             {
                 type: "Weapon",
                 weaponType: dexData.weaponType,
@@ -161,14 +160,13 @@ class GameWorld extends World {
                 useMagic: ["Tome", "Breath"].includes(dexData.weaponType)
             },
             {
-                type: "Side",
-                value: team
+                type: team === "team1" ? "Team1" : "Team2"
             },
             {
                 type: "MovementType",
                 value: dexData.movementType,
             }
-        ] as { type: string }[]
+        ];
     }
 };
 

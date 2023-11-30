@@ -3,14 +3,15 @@ import Weapon from "../components/weapon";
 import Hero from "../entities/hero";
 import GameState from "../systems/state";
 import { WeaponType } from "../weapon";
+import { MovementType } from "../types";
 
 interface WeaponDict {
     [k: string]: {
         description: string;
         might: number;
         type: WeaponType;
-        effectiveAgainst?: string[];
-        protects?: string[];
+        effectiveAgainst?: (MovementType | WeaponType)[];
+        protects?: (MovementType | WeaponType)[];
         onCombat?(...args: any[]): any;
         onInitiate?(...args: any[]): any;
         onDefense?(...args: any[]): any;

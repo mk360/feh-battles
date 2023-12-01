@@ -29,18 +29,18 @@ function getEnemies(state: GameState, hero: Entity) {
     return state.teams[otherSide];
 }
 
-function ploy(comparedStat: Stat, resDifference: number, debuff: number) {
+function ploy(affectedStat: Stat, resDifference: number, debuff: number) {
     return function ployLevel(state: GameState) {
         const { x, y } = this.entity.getOne("Position");
         const enemies = getEnemies(state, this.entity);
         for (let enemy of enemies) {
             const enemyPos = enemy.getOne("Position");
             const isCardinal = x === enemyPos.x || y === enemyPos.y;
-            const resIsHigher = this.entity.getOne("Stats")[comparedStat] > enemy.getOne("Stats")[comparedStat] + resDifference;
+            const resIsHigher = this.entity.getOne("Stats").res > enemy.getOne("Stats").res + resDifference;
             if (isCardinal && resIsHigher) {
                 enemy.addComponent({
                     type: "MapDebuff",
-                    def: debuff
+                    [affectedStat]: debuff
                 });
             }
         }
@@ -216,59 +216,17 @@ const PASSIVES: PassivesDict = {
     "Def Ploy 1": {
         slot: "C",
         description: "At start of turn, inflicts Def-3 on foes in cardinal directions with Res < unit's Res through their next actions.",
-        onTurnStart(battleState) {
-            const { x, y } = this.entity.getOne("Position");
-            const enemies = getEnemies(battleState, this.entity);
-            for (let enemy of enemies) {
-                const enemyPos = enemy.getOne("Position");
-                const isCardinal = x === enemyPos.x || y === enemyPos.y;
-                const resIsHigher = this.entity.getOne("Stats").res > enemy.getOne("Stats").res;
-                if (isCardinal && resIsHigher) {
-                    enemy.addComponent({
-                        type: "MapDebuff",
-                        def: -3
-                    });
-                }
-            }
-        },
+        onTurnStart: ploy("def", 0, -3)
     },
     "Def Ploy 2": {
         slot: "C",
         description: "At start of turn, inflicts Def-3 on foes in cardinal directions with Res < unit's Res through their next actions.",
-        onTurnStart(battleState) {
-            const { x, y } = this.entity.getOne("Position");
-            const enemies = getEnemies(battleState, this.entity);
-            for (let enemy of enemies) {
-                const enemyPos = enemy.getOne("Position");
-                const isCardinal = x === enemyPos.x || y === enemyPos.y;
-                const resIsHigher = this.entity.getOne("Stats").res > enemy.getOne("Stats").res;
-                if (isCardinal && resIsHigher) {
-                    enemy.addComponent({
-                        type: "MapDebuff",
-                        def: -4
-                    });
-                }
-            }
-        },
+        onTurnStart: ploy("def", 0, -4)
     },
     "Def Ploy 3": {
         slot: "C",
         description: "At start of turn, inflicts Def-3 on foes in cardinal directions with Res < unit's Res through their next actions.",
-        onTurnStart(battleState) {
-            const { x, y } = this.entity.getOne("Position");
-            const enemies = getEnemies(battleState, this.entity);
-            for (let enemy of enemies) {
-                const enemyPos = enemy.getOne("Position");
-                const isCardinal = x === enemyPos.x || y === enemyPos.y;
-                const resIsHigher = this.entity.getOne("Stats").res > enemy.getOne("Stats").res;
-                if (isCardinal && resIsHigher) {
-                    enemy.addComponent({
-                        type: "MapDebuff",
-                        def: -5
-                    });
-                }
-            }
-        },
+        onTurnStart: ploy("def", 0, -5)
     },
     "Spur Atk 1": {
         slot: "C",

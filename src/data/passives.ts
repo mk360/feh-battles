@@ -2,7 +2,7 @@ import { Component, Entity } from "ape-ecs";
 import Skill from "../components/skill";
 import HeroSystem from "../systems/hero";
 import GameState from "../systems/state";
-import { MovementType } from "../types";
+import { MovementType, Stat, Stats } from "../types";
 import { WeaponType } from "../weapon";
 
 interface PassivesDict {
@@ -29,6 +29,24 @@ function getEnemies(state: GameState, hero: Entity) {
     return state.teams[otherSide];
 }
 
+function ploy(comparedStat: Stat, resDifference: number, debuff: number) {
+    return function ployLevel(state: GameState) {
+        const { x, y } = this.entity.getOne("Position");
+        const enemies = getEnemies(state, this.entity);
+        for (let enemy of enemies) {
+            const enemyPos = enemy.getOne("Position");
+            const isCardinal = x === enemyPos.x || y === enemyPos.y;
+            const resIsHigher = this.entity.getOne("Stats")[comparedStat] > enemy.getOne("Stats")[comparedStat] + resDifference;
+            if (isCardinal && resIsHigher) {
+                enemy.addComponent({
+                    type: "MapDebuff",
+                    def: debuff
+                });
+            }
+        }
+    }
+}
+
 const PASSIVES: PassivesDict = {
     "Panic Ploy 3": {
         description: "At start of turn, converts bonuses on foes in cardinal directions with HP < unit's HP into penalties through their next actions.",
@@ -42,7 +60,7 @@ const PASSIVES: PassivesDict = {
             for (let enemy of otherTeam) {
                 const enemyPosition = enemy.getOne("Position");
                 if (enemyPosition.x === x || enemyPosition.y === y) {
-                    const { hp: enemyHp } =enemy.getOne("Stats");
+                    const { hp: enemyHp } = enemy.getOne("Stats");
                     if (enemyHp < hp) {
                         enemy.addComponent({
                             type: "Panic"
@@ -130,7 +148,6 @@ const PASSIVES: PassivesDict = {
         description: "At start of turn, if unit is adjacent to an armored ally, unit and adjacent armored allies can move 1 extra space. (That turn only. Does not stack.)",
         onTurnStart(state) {
             const allies = getAllies(state, this.entity);
-            const { maxHP, hp } = this.entity.getOne("Stats");
             let applyBuffToSelf = false;
             for (let ally of allies) {
                 if (HeroSystem.getDistance(ally, this.entity) === 1 && ally.getOne("MovementType").value === "armored") {
@@ -401,7 +418,7 @@ const PASSIVES: PassivesDict = {
         description: "Grants Def/Res +2 to adjacent allies during combat.",
         slot: "C",
         onCombatAllyStart(state, ally) {
-             if (HeroSystem.getDistance(ally, this.entity) === 1) {
+            if (HeroSystem.getDistance(ally, this.entity) === 1) {
                 ally.addComponent({
                     type: "CombatBuff",
                     def: 2,
@@ -414,7 +431,7 @@ const PASSIVES: PassivesDict = {
         description: "Grants Def/Res +3 to adjacent allies during combat.",
         slot: "C",
         onCombatAllyStart(state, ally) {
-             if (HeroSystem.getDistance(ally, this.entity) === 1) {
+            if (HeroSystem.getDistance(ally, this.entity) === 1) {
                 ally.addComponent({
                     type: "CombatBuff",
                     def: 3,

@@ -25,7 +25,7 @@
   "types": "dec/index.d.ts",
   "devDependencies": {
     "@types/jasmine": "^3.5.9",
-    "@types/node": "^14.0.24",
+    "@types/node": "^14.18.63",
     "@types/shortid": "0.0.29",
     "jasmine": "^3.5.0",
     "ts-node": "^10.9.1",

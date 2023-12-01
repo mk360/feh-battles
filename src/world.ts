@@ -160,7 +160,8 @@ class GameWorld extends World {
                 useMagic: ["Tome", "Breath"].includes(dexData.weaponType)
             },
             {
-                type: team === "team1" ? "Team1" : "Team2"
+                type: "Side",
+                value: team
             },
             {
                 type: "MovementType",

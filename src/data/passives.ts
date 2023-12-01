@@ -2,23 +2,31 @@ import { Component, Entity } from "ape-ecs";
 import Skill from "../components/skill";
 import HeroSystem from "../systems/hero";
 import GameState from "../systems/state";
+import { MovementType } from "../types";
+import { WeaponType } from "../weapon";
 
 interface PassivesDict {
     [k: string]: {
         description: string;
         slot: string;
-        allowedMovementTypes?: string[];
-        allowedWeaponTypes?: string[];
+        allowedMovementTypes?: (MovementType | WeaponType)[];
+        allowedWeaponTypes?: (MovementType | WeaponType)[];
+        protects?: (MovementType | WeaponType)[];
         onCombatStart?(...args: any[]): any;
-        onDamageReceived?(...args: any[]): any;
         onEquip?(...args: any[]): any;
-        onAllyCombatStart?(...args: any[]): any;
-        onTurnStart?(this: Skill, combatState: GameState): void;
+        onCombatAllyStart?(this: Skill, state: GameState, ally: Entity): any;
+        onTurnStart?(this: Skill, battleState: GameState): void;
     }
 }
 
 function getAllies(state: GameState, hero: Entity) {
     return (state.teams[hero.getOne("Side").value] as Entity[]).filter(i => i.id !== hero.id);
+}
+
+function getEnemies(state: GameState, hero: Entity) {
+    const { value } = hero.getOne("Side");
+    const otherSide = value === "team1" ? "team2" : "team1";
+    return state.teams[otherSide];
 }
 
 const PASSIVES: PassivesDict = {
@@ -140,13 +148,241 @@ const PASSIVES: PassivesDict = {
             }
         }
     },
+    "Drive Def 1": {
+        slot: "C",
+        description: "Grants Def+2 to allies within 2 spaces during combat.",
+        onCombatAllyStart(state, ally) {
+            if (HeroSystem.getDistance(ally, this.entity) <= 2) {
+                ally.addComponent({
+                    type: "CombatBuff",
+                    def: 2
+                });
+            }
+        },
+    },
+    "Drive Def 2": {
+        slot: "C",
+        description: "Grants Def+3 to allies within 2 spaces during combat.",
+        onCombatAllyStart(state, ally) {
+            if (HeroSystem.getDistance(ally, this.entity) <= 2) {
+                ally.addComponent({
+                    type: "CombatBuff",
+                    def: 3
+                });
+            }
+        },
+    },
+    "Drive Atk 1": {
+        slot: "C",
+        description: "Grants Atk+2 to allies within 2 spaces during combat.",
+        onCombatAllyStart(state, ally) {
+            if (HeroSystem.getDistance(ally, this.entity) <= 2) {
+                ally.addComponent({
+                    type: "CombatBuff",
+                    atk: 2
+                });
+            }
+        },
+    },
+    "Drive Atk 2": {
+        slot: "C",
+        description: "Grants Atk+3 to allies within 2 spaces during combat.",
+        onCombatAllyStart(state, ally) {
+            if (HeroSystem.getDistance(ally, this.entity) <= 2) {
+                ally.addComponent({
+                    type: "CombatBuff",
+                    atk: 3
+                });
+            }
+        },
+    },
+    "Def Ploy 1": {
+        slot: "C",
+        description: "At start of turn, inflicts Def-3 on foes in cardinal directions with Res < unit's Res through their next actions.",
+        onTurnStart(battleState) {
+            const { x, y } = this.entity.getOne("Position");
+            const enemies = getEnemies(battleState, this.entity);
+            for (let enemy of enemies) {
+                const enemyPos = enemy.getOne("Position");
+                if (x === enemyPos.x || y === enemyPos.y) {
+                    enemy.addComponent({
+                        type: "MapDebuff",
+                        def: -3
+                    });
+                }
+            }
+        },
+    },
     "Spur Atk 1": {
         slot: "C",
         description: "Grants Atk+2 to adjacent allies during combat.",
-        onAllyCombatStart() {
-
+        onCombatAllyStart(state, ally) {
+            if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                ally.addComponent({
+                    type: "CombatBuff",
+                    atk: 2
+                });
+            }
         }
     },
+    "Spur Atk 2": {
+        slot: "C",
+        description: "Grants Atk+3 to adjacent allies during combat.",
+        onCombatAllyStart(state, ally) {
+            if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                ally.addComponent({
+                    type: "CombatBuff",
+                    atk: 3
+                });
+            }
+        }
+    },
+    "Spur Atk 3": {
+        slot: "C",
+        description: "Grants Atk+4 to adjacent allies during combat.",
+        onCombatAllyStart(state, ally) {
+            if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                ally.addComponent({
+                    type: "CombatBuff",
+                    atk: 4
+                });
+            }
+        }
+    },
+    "Spur Res 1": {
+        slot: "C",
+        description: "Grants Res+2 to adjacent allies during combat.",
+        onCombatAllyStart(state, ally) {
+            if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                ally.addComponent({
+                    type: "CombatBuff",
+                    res: 2
+                });
+            }
+        }
+    },
+    "Spur Res 2": {
+        slot: "C",
+        description: "Grants Res+3 to adjacent allies during combat.",
+        onCombatAllyStart(state, ally) {
+            if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                ally.addComponent({
+                    type: "CombatBuff",
+                    res: 3
+                });
+            }
+        }
+    },
+    "Spur Res 3": {
+        slot: "C",
+        description: "Grants Res+4 to adjacent allies during combat.",
+        onCombatAllyStart(state, ally) {
+            if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                ally.addComponent({
+                    type: "CombatBuff",
+                    res: 4
+                });
+            }
+        }
+    },
+    "Spur Def 1": {
+        slot: "C",
+        description: "Grants Def+2 to adjacent allies during combat.",
+        onCombatAllyStart(state, ally) {
+            if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                ally.addComponent({
+                    type: "CombatBuff",
+                    def: 2
+                });
+            }
+        }
+    },
+    "Spur Def 2": {
+        slot: "C",
+        description: "Grants Def+3 to adjacent allies during combat.",
+        onCombatAllyStart(state, ally) {
+            if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                ally.addComponent({
+                    type: "CombatBuff",
+                    def: 3
+                });
+            }
+        }
+    },
+    "Spur Def 3": {
+        slot: "C",
+        description: "Grants Def+4 to adjacent allies during combat.",
+        onCombatAllyStart(state, ally) {
+            if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                ally.addComponent({
+                    type: "CombatBuff",
+                    def: 4
+                });
+            }
+        }
+    },
+    "Spur Spd 1": {
+        slot: "C",
+        description: "Grants Spd+2 to adjacent allies during combat.",
+        onCombatAllyStart(state, ally) {
+            if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                ally.addComponent({
+                    type: "CombatBuff",
+                    spd: 2
+                });
+            }
+        }
+    },
+    "Spur Spd 2": {
+        slot: "C",
+        description: "Grants Spd+3 to adjacent allies during combat.",
+        onCombatAllyStart(state, ally) {
+            if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                ally.addComponent({
+                    type: "CombatBuff",
+                    spd: 3
+                });
+            }
+        }
+    },
+    "Spur Spd 3": {
+        slot: "C",
+        description: "Grants Spd+4 to adjacent allies during combat.",
+        onCombatAllyStart(state, ally) {
+            if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                ally.addComponent({
+                    type: "CombatBuff",
+                    spd: 4
+                });
+            }
+        }
+    },
+    "Spur Def/Res 1": {
+        description: "Grants Def/Res +2 to adjacent allies during combat.",
+        slot: "C",
+        onCombatAllyStart(state, ally) {
+             if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                ally.addComponent({
+                    type: "CombatBuff",
+                    def: 2,
+                    res: 2
+                });
+            }
+        },
+    },
+    "Spur Def/Res 2": {
+        description: "Grants Def/Res +3 to adjacent allies during combat.",
+        slot: "C",
+        onCombatAllyStart(state, ally) {
+             if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                ally.addComponent({
+                    type: "CombatBuff",
+                    def: 3,
+                    res: 3
+                });
+            }
+        },
+    }
 };
 
 export default PASSIVES;

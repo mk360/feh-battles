@@ -18,6 +18,8 @@ import { Stat } from "./types";
 import getLv40Stats from "./systems/unit-stats";
 import Team1 from "./components/team1";
 import Team2 from "./components/team2";
+import WarpableTile from "./components/warpable-tile";
+import WalkableTile from "./components/walkable-tile";
 
 interface HeroData {
     name: string;
@@ -57,8 +59,8 @@ class GameWorld extends World {
         this.registerComponent(Stats);
         this.registerComponent(Side);
         this.registerComponent(Position);
-        this.registerComponent(Team1);
-        this.registerComponent(Team2);
+        this.registerComponent(WarpableTile);
+        this.registerComponent(WalkableTile);
         this.registerComponent(Effectiveness);
         this.registerComponent(MovementType);
         this.registerComponent(Skill);

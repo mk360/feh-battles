@@ -1,22 +1,34 @@
 import { Entity, Query, System } from "ape-ecs";
+import GameState from "./state";
+
+
 
 class MovementSystem extends System {
-    increasedMovementQuery: Query;
-    gravityQuery: Query;
-    obstructQuery: Query;
+    private increasedMovementQuery: Query;
+    private obstructQuery: Query;
+    private state: GameState;
 
-    init(): void {
+    init(state: GameState): void {
+        this.state = state;
         this.increasedMovementQuery = this.createQuery().from("IncreasedMovement");
-        this.gravityQuery = this.createQuery().from("Gravity");
         this.obstructQuery = this.createQuery().from("Obstruct");
     }
 
-    getFinalMovementRange(unit: Entity) {
+    update() {
+        const team = this.state.teams[this.state.currentSide];
+
+        for (let member of team) {
+            const movementRange = this.getFinalMovementRange(member);
+
+        }
+    }
+
+    getFinalMovementRange(unit: Entity): number {
         if (unit.getOne("Gravity")) return 1;
 
         if (unit.getOne("IncreasedMovement")) return unit.getOne("MovementType").range + 1;
 
-        return unit.getOne("Movement").range;
+        return unit.getOne("MovementType").range;
     }
 };
 

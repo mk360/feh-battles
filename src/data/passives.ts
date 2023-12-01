@@ -204,7 +204,9 @@ const PASSIVES: PassivesDict = {
             const enemies = getEnemies(battleState, this.entity);
             for (let enemy of enemies) {
                 const enemyPos = enemy.getOne("Position");
-                if (x === enemyPos.x || y === enemyPos.y) {
+                const isCardinal = x === enemyPos.x || y === enemyPos.y;
+                const resIsHigher = this.entity.getOne("Stats").res > enemy.getOne("Stats").res;
+                if (isCardinal && resIsHigher) {
                     enemy.addComponent({
                         type: "MapDebuff",
                         def: -3

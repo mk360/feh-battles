@@ -1,6 +1,5 @@
 import { Entity, World } from "ape-ecs";
 import Weapon from "./components/weapon";
-import UnitStatsSystem from "./systems/unit-stats";
 import MapEffects from "./systems/map-effects";
 import Stats from "./components/stats";
 import CHARACTERS from "./data/characters";
@@ -16,8 +15,6 @@ import Bane from "./components/bane";
 import Boon from "./components/boon";
 import { Stat } from "./types";
 import getLv40Stats from "./systems/unit-stats";
-import Team1 from "./components/team1";
-import Team2 from "./components/team2";
 import WarpableTile from "./components/warpable-tile";
 import WalkableTile from "./components/walkable-tile";
 
@@ -71,69 +68,69 @@ class GameWorld extends World {
     }
 
     createHero(member: HeroData) {
-         this.registerTags(member.name);
+        this.registerTags(member.name);
 
-            const entity = this.createEntity({ 
-                tags: [member.name]
-            });
-            const components = this.createCharacterComponents(entity, "team1", member.rarity);
+        const entity = this.createEntity({
+            tags: [member.name]
+        });
+        const components = this.createCharacterComponents(entity, "team1", member.rarity);
 
-            for (let component of components) {
-                entity.addComponent(component);
-            }
+        for (let component of components) {
+            entity.addComponent(component);
+        }
 
-            if (member.bane && member.boon && member.bane !== member.boon) {
-                entity.addComponent({
-                    type: "Bane",
-                    value: member.bane
-                });
-                entity.addComponent({
-                    type: "Boon",
-                    value: member.boon
-                });
-            }
-
+        if (member.bane && member.boon && member.bane !== member.boon) {
             entity.addComponent({
-                type: "Position",
-                x: member.initialPosition.x,
-                y: member.initialPosition.y,
+                type: "Bane",
+                value: member.bane
             });
+            entity.addComponent({
+                type: "Boon",
+                value: member.boon
+            });
+        }
 
-            for (let skill in member.skills) {
-                const skillName = member.skills[skill];
-                const skillData = WEAPONS[skillName];
-                if (skillData) {
-                    const skillComponent = {
-                        type: "Skill",
-                        description: skillData.description,
-                        slot: skill,
-                        name: skillName,
-                    };
+        entity.addComponent({
+            type: "Position",
+            x: member.initialPosition.x,
+            y: member.initialPosition.y,
+        });
 
-                    const internalComponent = entity.addComponent(skillComponent);
-                    if (skillData.onEquip) skillData.onEquip.call(internalComponent);
+        for (let skill in member.skills) {
+            const skillName = member.skills[skill];
+            const skillData = WEAPONS[skillName];
+            if (skillData) {
+                const skillComponent = {
+                    type: "Skill",
+                    description: skillData.description,
+                    slot: skill,
+                    name: skillName,
+                };
 
-                    if (skillData.protects) {
-                        for (let immunity of skillData.protects) {
-                            entity.addComponent({
-                                type: "Immunity",
-                                value: immunity
-                            });
-                        }
+                const internalComponent = entity.addComponent(skillComponent);
+                if (skillData.onEquip) skillData.onEquip.call(internalComponent);
+
+                if (skillData.protects) {
+                    for (let immunity of skillData.protects) {
+                        entity.addComponent({
+                            type: "Immunity",
+                            value: immunity
+                        });
                     }
+                }
 
-                    if (skillData.effectiveAgainst) {
-                        for (let effectiveness of skillData.effectiveAgainst) {
-                            entity.addComponent({
-                                type: "Effectiveness",
-                                value: effectiveness
-                            });
-                        }
+                if (skillData.effectiveAgainst) {
+                    for (let effectiveness of skillData.effectiveAgainst) {
+                        entity.addComponent({
+                            type: "Effectiveness",
+                            value: effectiveness
+                        });
                     }
                 }
             }
+        }
 
-            this.state.teams.team1.push(entity);
+        this.state.teams.team1.push(entity);
     }
 
     initiate(lineup: InitialLineup) {

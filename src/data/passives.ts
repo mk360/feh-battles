@@ -1,5 +1,6 @@
 import { Component, Entity } from "ape-ecs";
 import Skill from "../components/skill";
+import PassiveSkill from "../passive_skill";
 import HeroSystem from "../systems/hero";
 import GameState from "../systems/state";
 import { MovementType, Stat, Stats } from "../types";
@@ -8,7 +9,7 @@ import { WeaponType } from "../weapon";
 interface PassivesDict {
     [k: string]: {
         description: string;
-        slot: string;
+        slot: PassiveSkill["slot"];
         allowedMovementTypes?: MovementType[];
         allowedWeaponTypes?: WeaponType[];
         protects?: (MovementType | WeaponType)[];
@@ -59,8 +60,6 @@ function turnIsOdd(turnCount: number) {
 function turnIsEven(turnCount: number) {
     return turnCount % 2 === 0;
 }
-
-function smoke(stat: Stat, )
 
 function drive(affectedStat: Stat, buff: number) {
     return function (this: Skill, state: GameState, ally: Entity) {
@@ -133,8 +132,8 @@ function tactic(affectedStat: Stat, buff: number) {
 }
 
 function movementBasedCombatBuff(buff: Stats, range: number) {
-    return function(movementType: MovementType) {
-        return function(this: Skill, state: GameState, ally: Entity) {
+    return function (movementType: MovementType) {
+        return function (this: Skill, state: GameState, ally: Entity) {
             if (ally.getOne("MovementType").value === movementType && HeroSystem.getDistance(ally, this.entity) <= range) {
                 ally.addComponent({
                     type: "CombatBuff",
@@ -145,14 +144,8 @@ function movementBasedCombatBuff(buff: Stats, range: number) {
     }
 }
 
-function smoke(stat: Stat, amount: number) {
-    return function(this: Skill, state: GameState, ) {
-
-    }
-};
-
 function honeStat(stat: Stat, buff: number) {
-    return function(this: Skill, state: GameState) {
+    return function (this: Skill, state: GameState) {
         const allies = getAllies(state, this.entity);
         for (let ally of allies) {
             if (HeroSystem.getDistance(ally, this.entity) === 1) {
@@ -206,6 +199,58 @@ const PASSIVES: PassivesDict = {
                     ally.addComponent({
                         type: "AfterCombatHeal",
                         value: 7
+                    });
+                }
+            }
+        }
+    },
+    "Guidance 1": {
+        slot: "C",
+        description: "If unit's HP = 100%, infantry and armored allies within 2 spaces can move to a space adjacent to unit.",
+        onTurnStart(state) {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp === maxHP) {
+                const allies = getAllies(state, this.entity);
+                for (let ally of allies) {
+                    if (["armored", "infantry"].includes(ally.getOne("MovementType").value) && HeroSystem.getDistance(ally, this.entity) <= 2) {
+                        ally.addComponent({
+                            type: "Status",
+                            value: "Guidance"
+                        });
+                    }
+                }
+            }
+        }
+    },
+    "Guidance 2": {
+        slot: "C",
+        description: "If unit's HP ≥ 50%, infantry and armored allies within 2 spaces can move to a space adjacent to unit. ",
+        onTurnStart(state) {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP >= 0.5) {
+                const allies = getAllies(state, this.entity);
+                for (let ally of allies) {
+                    if (["armored", "infantry"].includes(ally.getOne("MovementType").value) && HeroSystem.getDistance(ally, this.entity) <= 2) {
+                        ally.addComponent({
+                            type: "Status",
+                            value: "Guidance"
+                        });
+                    }
+                }
+            }
+        }
+    },
+    "Guidance 3": {
+        slot: "C",
+        allowedMovementTypes: ["flier"],
+        description: "Infantry and armored allies within 2 spaces can move to a space adjacent to unit. ",
+        onTurnStart(state) {
+            const allies = getAllies(state, this.entity);
+            for (let ally of allies) {
+                if (["armored", "infantry"].includes(ally.getOne("MovementType").value) && HeroSystem.getDistance(ally, this.entity) <= 2) {
+                    ally.addComponent({
+                        type: "Status",
+                        value: "Guidance"
                     });
                 }
             }
@@ -276,6 +321,145 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         onTurnStart: honeStat("atk", 7),
     },
+    "Hone Spd 1": {
+        description: "At start of turn, grants Spd+2 to adjacent allies for 1 turn.",
+        slot: "C",
+        onTurnStart: honeStat("spd", 2),
+    },
+    "Hone Spd 2": {
+        description: "At start of turn, grants Spd+3 to adjacent allies for 1 turn.",
+        slot: "C",
+        onTurnStart: honeStat("spd", 3),
+    },
+    "Hone Spd 3": {
+        description: "At start of turn, grants Spd+4 to adjacent allies for 1 turn.",
+        slot: "C",
+        onTurnStart: honeStat("spd", 4),
+    },
+    "Hone Cavalry": {
+        description: "At start of turn, grants Atk/Spd+6 to adjacent cavalry allies for 1 turn.",
+        slot: "C",
+        allowedMovementTypes: ["cavalry"],
+        onTurnStart(battleState) {
+            const allies = getAllies(battleState, this.entity);
+            for (let ally of allies) {
+                if (ally.getOne("MovementType").value === "cavalry") {
+                    ally.addComponent({
+                        type: "MapBuff",
+                        atk: 6,
+                        spd: 6
+                    });
+                }
+            }
+        },
+    },
+    "Hone Fliers": {
+        description: "At start of turn, grants Atk/Spd+6 to adjacent flying allies for 1 turn.",
+        slot: "C",
+        allowedMovementTypes: ["flier"],
+        onTurnStart(battleState) {
+            const allies = getAllies(battleState, this.entity);
+            for (let ally of allies) {
+                if (ally.getOne("MovementType").value === "flier") {
+                    ally.addComponent({
+                        type: "MapBuff",
+                        atk: 6,
+                        spd: 6
+                    });
+                }
+            }
+        },
+    },
+    "Fortify Def 1": {
+        description: "At start of turn, grants Def+2 to adjacent allies for 1 turn.",
+        slot: "C",
+        onTurnStart(battleState) {
+            const allies = getAllies(battleState, this.entity);
+            for (let ally of allies) {
+                if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                    ally.addComponent({
+                        type: "MapBuff",
+                        def: 2
+                    });
+                }
+            }
+        },
+    },
+    "Fortify Def 2": {
+        description: "At start of turn, grants Def+3 to adjacent allies for 1 turn.",
+        slot: "C",
+        onTurnStart(battleState) {
+            const allies = getAllies(battleState, this.entity);
+            for (let ally of allies) {
+                if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                    ally.addComponent({
+                        type: "MapBuff",
+                        def: 3
+                    });
+                }
+            }
+        },
+    },
+    "Fortify Def 3": {
+        description: "At start of turn, grants Def+3 to adjacent allies for 1 turn.",
+        slot: "C",
+        onTurnStart(battleState) {
+            const allies = getAllies(battleState, this.entity);
+            for (let ally of allies) {
+                if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                    ally.addComponent({
+                        type: "MapBuff",
+                        def: 3
+                    });
+                }
+            }
+        },
+    },
+    "Fortify Res 1": {
+        description: "At start of turn, grants Res+2 to adjacent allies for 1 turn.",
+        slot: "C",
+        onTurnStart(battleState) {
+            const allies = getAllies(battleState, this.entity);
+            for (let ally of allies) {
+                if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                    ally.addComponent({
+                        type: "MapBuff",
+                        res: 2
+                    });
+                }
+            }
+        },
+    },
+    "Fortify Res 2": {
+        description: "At start of turn, grants Res+3 to adjacent allies for 1 turn.",
+        slot: "C",
+        onTurnStart(battleState) {
+            const allies = getAllies(battleState, this.entity);
+            for (let ally of allies) {
+                if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                    ally.addComponent({
+                        type: "MapBuff",
+                        res: 3
+                    });
+                }
+            }
+        },
+    },
+    "Fortify Res 3": {
+        description: "At start of turn, grants Res+4 to adjacent allies for 1 turn.",
+        slot: "C",
+        onTurnStart(battleState) {
+            const allies = getAllies(battleState, this.entity);
+            for (let ally of allies) {
+                if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                    ally.addComponent({
+                        type: "MapBuff",
+                        res: 4
+                    });
+                }
+            }
+        },
+    },
     "Fortify Armor": {
         description: "At start of turn, grants Def/Res+6 to adjacent armored allies for 1 turn.",
         slot: "C",
@@ -331,7 +515,7 @@ const PASSIVES: PassivesDict = {
         description: "At start of turn, grants Def/Res+6 to adjacent flying allies for 1 turn.",
         allowedMovementTypes: ["flier"],
         slot: "C",
-         onTurnStart(state) {
+        onTurnStart(state) {
             const allies = getAllies(state, this.entity);
             for (let ally of allies) {
                 if (ally.getOne("MovementType").value === "flier" && HeroSystem.getDistance(ally, this.entity) === 1) {

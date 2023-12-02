@@ -9,12 +9,14 @@ interface PassivesDict {
     [k: string]: {
         description: string;
         slot: string;
-        allowedMovementTypes?: (MovementType | WeaponType)[];
-        allowedWeaponTypes?: (MovementType | WeaponType)[];
+        allowedMovementTypes?: MovementType[];
+        allowedWeaponTypes?: WeaponType[];
         protects?: (MovementType | WeaponType)[];
         onCombatStart?(...args: any[]): any;
         onEquip?(...args: any[]): any;
-        onCombatAllyStart?(this: Skill, state: GameState, ally: Entity): any;
+        onCombatInitiate?(this: Skill, state: GameState, target: Entity): void;
+        onCombatAllyStart?(this: Skill, state: GameState, ally: Entity): void;
+        onCombatAfter?(this: Skill, state: GameState, target: Entity): void;
         onTurnStart?(this: Skill, battleState: GameState): void;
     }
 }
@@ -47,6 +49,9 @@ function ploy(affectedStat: Stat, debuff: number) {
     }
 }
 
+const ward = movementBasedCombatBuff({ def: 4, res: 4 }, 2);
+const goad = movementBasedCombatBuff({ atk: 4, spd: 4 }, 2);
+
 function turnIsOdd(turnCount: number) {
     return turnCount % 2 === 1;
 }
@@ -54,6 +59,8 @@ function turnIsOdd(turnCount: number) {
 function turnIsEven(turnCount: number) {
     return turnCount % 2 === 0;
 }
+
+function smoke(stat: Stat, )
 
 function drive(affectedStat: Stat, buff: number) {
     return function (this: Skill, state: GameState, ally: Entity) {
@@ -86,13 +93,340 @@ function wave(affectedStat: Stat, parity: (turnCount: number) => boolean, buff: 
     }
 }
 
+function tactic(affectedStat: Stat, buff: number) {
+    return function (this: Skill, state: GameState) {
+        const movementTypeMap: {
+            [k in MovementType]: 0
+        } = {
+            "armored": 0,
+            "cavalry": 0,
+            "flier": 0,
+            "infantry": 0
+        };
+        const userMovementType = this.entity.getOne("MovementType").value;
+        movementTypeMap[userMovementType]++;
+
+        const allies = getAllies(state, this.entity);
+
+        for (let ally of allies) {
+            const allyMovementType = ally.getOne("MovementType").value;
+            movementTypeMap[allyMovementType]++;
+        }
+
+        if (movementTypeMap[userMovementType] <= 2) {
+            this.entity.addComponent({
+                type: "MapBuff",
+                [affectedStat]: buff
+            });
+        }
+
+        for (let ally of allies) {
+            const allyMovementType = ally.getOne("MovementType").value;
+            if (allyMovementType <= 2) {
+                ally.addComponent({
+                    type: "MapBuff",
+                    [affectedStat]: buff
+                });
+            }
+        }
+    }
+}
+
+function movementBasedCombatBuff(buff: Stats, range: number) {
+    return function(movementType: MovementType) {
+        return function(this: Skill, state: GameState, ally: Entity) {
+            if (ally.getOne("MovementType").value === movementType && HeroSystem.getDistance(ally, this.entity) <= range) {
+                ally.addComponent({
+                    type: "CombatBuff",
+                    ...buff
+                });
+            }
+        }
+    }
+}
+
+function smoke(stat: Stat, amount: number) {
+    return function(this: Skill, state: GameState, ) {
+
+    }
+};
+
+function honeStat(stat: Stat, buff: number) {
+    return function(this: Skill, state: GameState) {
+        const allies = getAllies(state, this.entity);
+        for (let ally of allies) {
+            if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                ally.addComponent({
+                    type: "MapBuff",
+                    [stat]: buff
+                });
+            }
+        }
+    }
+}
+
 const PASSIVES: PassivesDict = {
+    "Breath of Life 1": {
+        slot: "C",
+        description: "If unit initiates combat, restores 3 HP to adjacent allies after combat.",
+        onCombatInitiate(state) {
+            const allies = getAllies(state, this.entity);
+            for (let ally of allies) {
+                if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                    ally.addComponent({
+                        type: "AfterCombatHeal",
+                        value: 3
+                    });
+                }
+            }
+        }
+    },
+    "Breath of Life 2": {
+        slot: "C",
+        description: "If unit initiates combat, restores 5 HP to adjacent allies after combat.",
+        onCombatInitiate(state) {
+            const allies = getAllies(state, this.entity);
+            for (let ally of allies) {
+                if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                    ally.addComponent({
+                        type: "AfterCombatHeal",
+                        value: 5
+                    });
+                }
+            }
+        }
+    },
+    "Breath of Life 3": {
+        slot: "C",
+        description: "If unit initiates combat, restores 7 HP to adjacent allies after combat.",
+        onCombatInitiate(state) {
+            const allies = getAllies(state, this.entity);
+            for (let ally of allies) {
+                if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                    ally.addComponent({
+                        type: "AfterCombatHeal",
+                        value: 7
+                    });
+                }
+            }
+        }
+    },
+    "Savage Blow 1": {
+        description: "If unit initiates combat, deals 3 damage to foes within 2 spaces of target after combat.",
+        slot: "C",
+        onCombatInitiate(state, target) {
+            const enemies = getAllies(state, target);
+            for (let enemy of enemies) {
+                if (HeroSystem.getDistance(enemy, target) <= 2) {
+                    enemy.addComponent({
+                        type: "AfterCombatDamage",
+                        value: 3
+                    });
+                }
+            }
+        }
+    },
+    "Savage Blow 2": {
+        description: "If unit initiates combat, deals 5 damage to foes within 2 spaces of target after combat.",
+        slot: "C",
+        onCombatInitiate(state, target) {
+            const enemies = getAllies(state, target);
+            for (let enemy of enemies) {
+                if (HeroSystem.getDistance(enemy, target) <= 2) {
+                    enemy.addComponent({
+                        type: "AfterCombatDamage",
+                        value: 5
+                    });
+                }
+            }
+        }
+    },
+    "Savage Blow 3": {
+        description: "If unit initiates combat, deals 7 damage to foes within 2 spaces of target after combat.",
+        slot: "C",
+        onCombatInitiate(state, target) {
+            const enemies = getAllies(state, target);
+            for (let enemy of enemies) {
+                if (HeroSystem.getDistance(enemy, target) <= 2) {
+                    enemy.addComponent({
+                        type: "AfterCombatDamage",
+                        value: 7
+                    });
+                }
+            }
+        }
+    },
+    "Hone Atk 1": {
+        description: "At start of turn, grants Atk+2 to adjacent allies for 1 turn.",
+        slot: "C",
+        onTurnStart: honeStat("atk", 2),
+    },
+    "Hone Atk 2": {
+        description: "At start of turn, grants Atk+3 to adjacent allies for 1 turn.",
+        slot: "C",
+        onTurnStart: honeStat("atk", 3),
+    },
+    "Hone Atk 3": {
+        description: "At start of turn, grants Atk+4 to adjacent allies for 1 turn.",
+        slot: "C",
+        onTurnStart: honeStat("atk", 4),
+    },
+    "Hone Atk 4": {
+        description: "At start of turn, grants Atk+7 to adjacent allies for 1 turn.",
+        slot: "C",
+        onTurnStart: honeStat("atk", 7),
+    },
+    "Fortify Armor": {
+        description: "At start of turn, grants Def/Res+6 to adjacent armored allies for 1 turn.",
+        slot: "C",
+        allowedMovementTypes: ["armored"],
+        onTurnStart(state) {
+            const allies = getAllies(state, this.entity);
+            for (let ally of allies) {
+                if (ally.getOne("MovementType").value === "armored" && HeroSystem.getDistance(ally, this.entity) === 1) {
+                    ally.addComponent({
+                        type: "MapBuff",
+                        def: 6,
+                        res: 6
+                    });
+                }
+            }
+        },
+    },
+    "Fortify Cavalry": {
+        description: "At start of turn, grants Def/Res+6 to adjacent cavalry allies for 1 turn.",
+        slot: "C",
+        allowedMovementTypes: ["cavalry"],
+        onTurnStart(state) {
+            const allies = getAllies(state, this.entity);
+            for (let ally of allies) {
+                if (ally.getOne("MovementType").value === "cavalry" && HeroSystem.getDistance(ally, this.entity) === 1) {
+                    ally.addComponent({
+                        type: "MapBuff",
+                        def: 6,
+                        res: 6
+                    });
+                }
+            }
+        },
+    },
+    "Fortify Dragons": {
+        description: "At start of turn, grants Def/Res+6 to adjacent dragon allies for 1 turn.",
+        slot: "C",
+        allowedWeaponTypes: ["breath"],
+        onTurnStart(state) {
+            const allies = getAllies(state, this.entity);
+            for (let ally of allies) {
+                if (ally.getOne("WeaponType").value === "breath" && HeroSystem.getDistance(ally, this.entity) === 1) {
+                    ally.addComponent({
+                        type: "MapBuff",
+                        def: 6,
+                        res: 6
+                    });
+                }
+            }
+        },
+    },
+    "Fortify Fliers": {
+        description: "At start of turn, grants Def/Res+6 to adjacent flying allies for 1 turn.",
+        allowedMovementTypes: ["flier"],
+        slot: "C",
+         onTurnStart(state) {
+            const allies = getAllies(state, this.entity);
+            for (let ally of allies) {
+                if (ally.getOne("MovementType").value === "flier" && HeroSystem.getDistance(ally, this.entity) === 1) {
+                    ally.addComponent({
+                        type: "MapBuff",
+                        def: 6,
+                        res: 6
+                    });
+                }
+            }
+        },
+    },
+    "Goad Fliers": {
+        description: "Grants Atk/Spd+4 to flying allies within 2 spaces during combat.",
+        slot: "C",
+        allowedMovementTypes: ["flier"],
+        onCombatAllyStart: goad("flier")
+    },
+    "Goad Armor": {
+        description: "Grants Atk/Spd+4 to armored allies within 2 spaces during combat.",
+        slot: "C",
+        allowedMovementTypes: ["armored"],
+        onCombatAllyStart: goad("armored")
+    },
+    "Goad Cavalry": {
+        description: "Grants Atk/Spd+4 to cavalry allies within 2 spaces during combat.",
+        slot: "C",
+        allowedMovementTypes: ["cavalry"],
+        onCombatAllyStart: goad("cavalry")
+    },
+    "Ward Cavalry": {
+        description: "Grants Def/Res+4 to cavalry allies within 2 spaces during combat.",
+        onCombatAllyStart: ward("cavalry"),
+        slot: "C",
+        allowedMovementTypes: ["cavalry"]
+    },
+    "Ward Armor": {
+        description: "Grants Def/Res+4 to armored allies within 2 spaces during combat.",
+        onCombatAllyStart: ward("armored"),
+        slot: "C",
+        allowedMovementTypes: ["armored"]
+    },
+    "Ward Fliers": {
+        description: "Grants Def/Res+4 to flier allies within 2 spaces during combat.",
+        onCombatAllyStart: ward("flier"),
+        slot: "C",
+        allowedMovementTypes: ["flier"]
+    },
+    "Panic Ploy 1": {
+        description: "At start of turn, converts bonuses on foes in cardinal directions with HP ≤ unit's HP-5 into penalties through their next actions.",
+        slot: "C",
+        onTurnStart(state) {
+            const otherTeam = getEnemies(state, this.entity);
+            const { x, y } = this.entity.getOne("Position");
+            const { hp } = this.entity.getOne("Stats");
+
+            for (let enemy of otherTeam) {
+                const enemyPosition = enemy.getOne("Position");
+                if (enemyPosition.x === x || enemyPosition.y === y) {
+                    const { hp: enemyHp } = enemy.getOne("Stats");
+                    if (enemyHp <= hp - 5) {
+                        enemy.addComponent({
+                            type: "Panic"
+                        });
+                    }
+                }
+            }
+        }
+    },
+    "Panic Ploy 2": {
+        description: "At start of turn, converts bonuses on foes in cardinal directions with HP ≤ unit's HP-3 into penalties through their next actions.",
+        slot: "C",
+        onTurnStart(state) {
+            const otherTeam = getEnemies(state, this.entity);
+            const { x, y } = this.entity.getOne("Position");
+            const { hp } = this.entity.getOne("Stats");
+
+            for (let enemy of otherTeam) {
+                const enemyPosition = enemy.getOne("Position");
+                if (enemyPosition.x === x || enemyPosition.y === y) {
+                    const { hp: enemyHp } = enemy.getOne("Stats");
+                    if (enemyHp <= hp - 3) {
+                        enemy.addComponent({
+                            type: "Panic"
+                        });
+                    }
+                }
+            }
+        }
+    },
     "Panic Ploy 3": {
         description: "At start of turn, converts bonuses on foes in cardinal directions with HP < unit's HP into penalties through their next actions.",
         slot: "C",
         onTurnStart(state) {
-            const team = this.entity.getOne("Side").value;
-            const otherTeam = team === "team1" ? state.teams.team2 : state.teams.team1;
+            const otherTeam = getEnemies(state, this.entity);
             const { x, y } = this.entity.getOne("Position");
             const { hp } = this.entity.getOne("Stats");
 
@@ -108,6 +442,126 @@ const PASSIVES: PassivesDict = {
                 }
             }
         }
+    },
+    "Atk Ploy 1": {
+        slot: "C",
+        description: "At start of turn, inflicts Atk-3 on foes in cardinal directions with Res < unit's Res through their next actions.",
+        onTurnStart: ploy("atk", -3)
+    },
+    "Atk Ploy 2": {
+        slot: "C",
+        description: "At start of turn, inflicts Atk-4 on foes in cardinal directions with Res < unit's Res through their next actions.",
+        onTurnStart: ploy("atk", -4)
+    },
+    "Atk Ploy 3": {
+        slot: "C",
+        description: "At start of turn, inflicts Atk-5 on foes in cardinal directions with Res < unit's Res through their next actions.",
+        onTurnStart: ploy("atk", -5)
+    },
+    "Spd Ploy 1": {
+        slot: "C",
+        description: "At start of turn, inflicts Spd-3 on foes in cardinal directions with Res < unit's Res through their next actions.",
+        onTurnStart: ploy("spd", -3)
+    },
+    "Spd Ploy 2": {
+        slot: "C",
+        description: "At start of turn, inflicts Spd-4 on foes in cardinal directions with Res < unit's Res through their next actions.",
+        onTurnStart: ploy("spd", -4)
+    },
+    "Spd Ploy 3": {
+        slot: "C",
+        description: "At start of turn, inflicts Spd-5 on foes in cardinal directions with Res < unit's Res through their next actions.",
+        onTurnStart: ploy("spd", -5)
+    },
+    "Def Ploy 1": {
+        slot: "C",
+        description: "At start of turn, inflicts Def-3 on foes in cardinal directions with Res < unit's Res through their next actions.",
+        onTurnStart: ploy("def", -3)
+    },
+    "Def Ploy 2": {
+        slot: "C",
+        description: "At start of turn, inflicts Def-4 on foes in cardinal directions with Res < unit's Res through their next actions.",
+        onTurnStart: ploy("def", -4)
+    },
+    "Def Ploy 3": {
+        slot: "C",
+        description: "At start of turn, inflicts Def-5 on foes in cardinal directions with Res < unit's Res through their next actions.",
+        onTurnStart: ploy("def", -5)
+    },
+    "Res Ploy 1": {
+        slot: "C",
+        description: "At start of turn, inflicts Res-3 on foes in cardinal directions with Res < unit's Res through their next actions.",
+        onTurnStart: ploy("res", -3)
+    },
+    "Res Ploy 2": {
+        slot: "C",
+        description: "At start of turn, inflicts Res-4 on foes in cardinal directions with Res < unit's Res through their next actions.",
+        onTurnStart: ploy("res", -4)
+    },
+    "Res Ploy 3": {
+        slot: "C",
+        description: "At start of turn, inflicts Res-5 on foes in cardinal directions with Res < unit's Res through their next actions.",
+        onTurnStart: ploy("res", -5)
+    },
+    "Atk Tactic 1": {
+        slot: "C",
+        description: "At start of turn, grants Atk+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
+        onTurnStart: tactic("atk", 2),
+    },
+    "Atk Tactic 2": {
+        slot: "C",
+        description: "At start of turn, grants Atk+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
+        onTurnStart: tactic("atk", 4),
+    },
+    "Atk Tactic 3": {
+        slot: "C",
+        description: "At start of turn, grants Atk+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
+        onTurnStart: tactic("atk", 6),
+    },
+    "Spd Tactic 1": {
+        slot: "C",
+        description: "At start of turn, grants Spd+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
+        onTurnStart: tactic("spd", 2),
+    },
+    "Spd Tactic 2": {
+        slot: "C",
+        description: "At start of turn, grants Spd+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
+        onTurnStart: tactic("spd", 4),
+    },
+    "Spd Tactic 3": {
+        slot: "C",
+        description: "At start of turn, grants Spd+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
+        onTurnStart: tactic("spd", 6),
+    },
+    "Def Tactic 1": {
+        slot: "C",
+        description: "At start of turn, grants Def+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
+        onTurnStart: tactic("def", 2),
+    },
+    "Def Tactic 2": {
+        slot: "C",
+        description: "At start of turn, grants Def+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
+        onTurnStart: tactic("def", 4),
+    },
+    "Def Tactic 3": {
+        slot: "C",
+        description: "At start of turn, grants Def+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
+        onTurnStart: tactic("def", 6),
+    },
+    "Res Tactic 1": {
+        slot: "C",
+        description: "At start of turn, grants Res+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
+        onTurnStart: tactic("res", 2),
+    },
+    "Res Tactic 2": {
+        slot: "C",
+        description: "At start of turn, grants Res+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
+        onTurnStart: tactic("res", 4),
+    },
+    "Res Tactic 3": {
+        slot: "C",
+        description: "At start of turn, grants Res+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
+        onTurnStart: tactic("res", 6),
     },
     "Odd Atk Wave 1": {
         description: "On odd turns, adds +2 Atk for unit and nearby allies for 1 turn.",
@@ -227,66 +681,6 @@ const PASSIVES: PassivesDict = {
         onCombatAllyStart: drive("res", 3),
         slot: "C",
         description: "Grants Res+3 to allies within 2 spaces during combat."
-    },
-    "Atk Ploy 1": {
-        slot: "C",
-        description: "At start of turn, inflicts Atk-3 on foes in cardinal directions with Res < unit's Res through their next actions.",
-        onTurnStart: ploy("atk", -3)
-    },
-    "Atk Ploy 2": {
-        slot: "C",
-        description: "At start of turn, inflicts Atk-4 on foes in cardinal directions with Res < unit's Res through their next actions.",
-        onTurnStart: ploy("atk", -4)
-    },
-    "Atk Ploy 3": {
-        slot: "C",
-        description: "At start of turn, inflicts Atk-5 on foes in cardinal directions with Res < unit's Res through their next actions.",
-        onTurnStart: ploy("atk", -5)
-    },
-    "Spd Ploy 1": {
-        slot: "C",
-        description: "At start of turn, inflicts Spd-3 on foes in cardinal directions with Res < unit's Res through their next actions.",
-        onTurnStart: ploy("spd", -3)
-    },
-    "Spd Ploy 2": {
-        slot: "C",
-        description: "At start of turn, inflicts Spd-4 on foes in cardinal directions with Res < unit's Res through their next actions.",
-        onTurnStart: ploy("spd", -4)
-    },
-    "Spd Ploy 3": {
-        slot: "C",
-        description: "At start of turn, inflicts Spd-5 on foes in cardinal directions with Res < unit's Res through their next actions.",
-        onTurnStart: ploy("spd", -5)
-    },
-    "Def Ploy 1": {
-        slot: "C",
-        description: "At start of turn, inflicts Def-3 on foes in cardinal directions with Res < unit's Res through their next actions.",
-        onTurnStart: ploy("def", -3)
-    },
-    "Def Ploy 2": {
-        slot: "C",
-        description: "At start of turn, inflicts Def-4 on foes in cardinal directions with Res < unit's Res through their next actions.",
-        onTurnStart: ploy("def", -4)
-    },
-    "Def Ploy 3": {
-        slot: "C",
-        description: "At start of turn, inflicts Def-5 on foes in cardinal directions with Res < unit's Res through their next actions.",
-        onTurnStart: ploy("def", -5)
-    },
-    "Res Ploy 1": {
-        slot: "C",
-        description: "At start of turn, inflicts Res-3 on foes in cardinal directions with Res < unit's Res through their next actions.",
-        onTurnStart: ploy("res", -3)
-    },
-    "Res Ploy 2": {
-        slot: "C",
-        description: "At start of turn, inflicts Res-4 on foes in cardinal directions with Res < unit's Res through their next actions.",
-        onTurnStart: ploy("res", -4)
-    },
-    "Res Ploy 3": {
-        slot: "C",
-        description: "At start of turn, inflicts Res-5 on foes in cardinal directions with Res < unit's Res through their next actions.",
-        onTurnStart: ploy("res", -5)
     },
     "Spur Atk 1": {
         slot: "C",

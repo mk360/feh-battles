@@ -29,19 +29,58 @@ function getEnemies(state: GameState, hero: Entity) {
     return state.teams[otherSide];
 }
 
-function ploy(affectedStat: Stat, resDifference: number, debuff: number) {
-    return function ployLevel(state: GameState) {
+function ploy(affectedStat: Stat, debuff: number) {
+    return function (this: Skill, state: GameState) {
         const { x, y } = this.entity.getOne("Position");
         const enemies = getEnemies(state, this.entity);
         for (let enemy of enemies) {
             const enemyPos = enemy.getOne("Position");
             const isCardinal = x === enemyPos.x || y === enemyPos.y;
-            const resIsHigher = this.entity.getOne("Stats").res > enemy.getOne("Stats").res + resDifference;
+            const resIsHigher = this.entity.getOne("Stats").res > enemy.getOne("Stats").res;
             if (isCardinal && resIsHigher) {
                 enemy.addComponent({
                     type: "MapDebuff",
                     [affectedStat]: debuff
                 });
+            }
+        }
+    }
+}
+
+function turnIsOdd(turnCount: number) {
+    return turnCount % 2 === 1;
+}
+
+function turnIsEven(turnCount: number) {
+    return turnCount % 2 === 0;
+}
+
+function drive(affectedStat: Stat, buff: number) {
+    return function (this: Skill, state: GameState, ally: Entity) {
+        if (HeroSystem.getDistance(ally, this.entity) <= 2) {
+            ally.addComponent({
+                type: "CombatBuff",
+                [affectedStat]: buff
+            });
+        }
+    }
+}
+
+function wave(affectedStat: Stat, parity: (turnCount: number) => boolean, buff: number) {
+    return function (this: Skill, state: GameState) {
+        if (parity(state.turn)) {
+            this.entity.addComponent({
+                type: "MapBuff",
+                [affectedStat]: buff
+            });
+            const allies = getAllies(state, this.entity);
+            for (let ally of allies) {
+                if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                    ally.addComponent({
+                        type: "MapBuff",
+                        [affectedStat]: buff
+                    });
+                }
             }
         }
     }
@@ -70,26 +109,20 @@ const PASSIVES: PassivesDict = {
             }
         }
     },
+    "Odd Atk Wave 1": {
+        description: "On odd turns, adds +2 Atk for unit and nearby allies for 1 turn.",
+        slot: "C",
+        onTurnStart: wave("atk", turnIsOdd, 2)
+    },
+    "Odd Atk Wave 2": {
+        description: "On odd turns, adds +4 Atk for unit and nearby allies for 1 turn.",
+        slot: "C",
+        onTurnStart: wave("atk", turnIsOdd, 4)
+    },
     "Odd Atk Wave 3": {
         description: "On odd turns, adds +6 Atk for unit and nearby allies for 1 turn.",
         slot: "C",
-        onTurnStart(state) {
-            if (state.turn % 2) {
-                this.entity.addComponent({
-                    type: "MapBuff",
-                    atk: 6
-                });
-                const allies = getAllies(state, this.entity);
-                for (let ally of allies) {
-                    if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                        ally.addComponent({
-                            type: "MapBuff",
-                            atk: 6
-                        });
-                    }
-                }
-            }
-        }
+        onTurnStart: wave("atk", turnIsOdd, 6)
     },
     "Armor March 1": {
         slot: "C",
@@ -168,65 +201,92 @@ const PASSIVES: PassivesDict = {
     "Drive Def 1": {
         slot: "C",
         description: "Grants Def+2 to allies within 2 spaces during combat.",
-        onCombatAllyStart(state, ally) {
-            if (HeroSystem.getDistance(ally, this.entity) <= 2) {
-                ally.addComponent({
-                    type: "CombatBuff",
-                    def: 2
-                });
-            }
-        },
+        onCombatAllyStart: drive("def", 2)
     },
     "Drive Def 2": {
         slot: "C",
         description: "Grants Def+3 to allies within 2 spaces during combat.",
-        onCombatAllyStart(state, ally) {
-            if (HeroSystem.getDistance(ally, this.entity) <= 2) {
-                ally.addComponent({
-                    type: "CombatBuff",
-                    def: 3
-                });
-            }
-        },
+        onCombatAllyStart: drive("def", 3)
     },
     "Drive Atk 1": {
         slot: "C",
         description: "Grants Atk+2 to allies within 2 spaces during combat.",
-        onCombatAllyStart(state, ally) {
-            if (HeroSystem.getDistance(ally, this.entity) <= 2) {
-                ally.addComponent({
-                    type: "CombatBuff",
-                    atk: 2
-                });
-            }
-        },
+        onCombatAllyStart: drive("atk", 2)
     },
     "Drive Atk 2": {
+        onCombatAllyStart: drive("atk", 3),
         slot: "C",
         description: "Grants Atk+3 to allies within 2 spaces during combat.",
-        onCombatAllyStart(state, ally) {
-            if (HeroSystem.getDistance(ally, this.entity) <= 2) {
-                ally.addComponent({
-                    type: "CombatBuff",
-                    atk: 3
-                });
-            }
-        },
+    },
+    "Drive Res 1": {
+        onCombatAllyStart: drive("res", 2),
+        slot: "C",
+        description: "Grants Res+2 to allies within 2 spaces during combat."
+    },
+    "Drive Res 2": {
+        onCombatAllyStart: drive("res", 3),
+        slot: "C",
+        description: "Grants Res+3 to allies within 2 spaces during combat."
+    },
+    "Atk Ploy 1": {
+        slot: "C",
+        description: "At start of turn, inflicts Atk-3 on foes in cardinal directions with Res < unit's Res through their next actions.",
+        onTurnStart: ploy("atk", -3)
+    },
+    "Atk Ploy 2": {
+        slot: "C",
+        description: "At start of turn, inflicts Atk-4 on foes in cardinal directions with Res < unit's Res through their next actions.",
+        onTurnStart: ploy("atk", -4)
+    },
+    "Atk Ploy 3": {
+        slot: "C",
+        description: "At start of turn, inflicts Atk-5 on foes in cardinal directions with Res < unit's Res through their next actions.",
+        onTurnStart: ploy("atk", -5)
+    },
+    "Spd Ploy 1": {
+        slot: "C",
+        description: "At start of turn, inflicts Spd-3 on foes in cardinal directions with Res < unit's Res through their next actions.",
+        onTurnStart: ploy("spd", -3)
+    },
+    "Spd Ploy 2": {
+        slot: "C",
+        description: "At start of turn, inflicts Spd-4 on foes in cardinal directions with Res < unit's Res through their next actions.",
+        onTurnStart: ploy("spd", -4)
+    },
+    "Spd Ploy 3": {
+        slot: "C",
+        description: "At start of turn, inflicts Spd-5 on foes in cardinal directions with Res < unit's Res through their next actions.",
+        onTurnStart: ploy("spd", -5)
     },
     "Def Ploy 1": {
         slot: "C",
         description: "At start of turn, inflicts Def-3 on foes in cardinal directions with Res < unit's Res through their next actions.",
-        onTurnStart: ploy("def", 0, -3)
+        onTurnStart: ploy("def", -3)
     },
     "Def Ploy 2": {
         slot: "C",
-        description: "At start of turn, inflicts Def-3 on foes in cardinal directions with Res < unit's Res through their next actions.",
-        onTurnStart: ploy("def", 0, -4)
+        description: "At start of turn, inflicts Def-4 on foes in cardinal directions with Res < unit's Res through their next actions.",
+        onTurnStart: ploy("def", -4)
     },
     "Def Ploy 3": {
         slot: "C",
-        description: "At start of turn, inflicts Def-3 on foes in cardinal directions with Res < unit's Res through their next actions.",
-        onTurnStart: ploy("def", 0, -5)
+        description: "At start of turn, inflicts Def-5 on foes in cardinal directions with Res < unit's Res through their next actions.",
+        onTurnStart: ploy("def", -5)
+    },
+    "Res Ploy 1": {
+        slot: "C",
+        description: "At start of turn, inflicts Res-3 on foes in cardinal directions with Res < unit's Res through their next actions.",
+        onTurnStart: ploy("res", -3)
+    },
+    "Res Ploy 2": {
+        slot: "C",
+        description: "At start of turn, inflicts Res-4 on foes in cardinal directions with Res < unit's Res through their next actions.",
+        onTurnStart: ploy("res", -4)
+    },
+    "Res Ploy 3": {
+        slot: "C",
+        description: "At start of turn, inflicts Res-5 on foes in cardinal directions with Res < unit's Res through their next actions.",
+        onTurnStart: ploy("res", -5)
     },
     "Spur Atk 1": {
         slot: "C",

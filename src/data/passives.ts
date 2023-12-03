@@ -158,6 +158,20 @@ function honeStat(stat: Stat, buff: number) {
     }
 }
 
+function threaten(statDebuffs: Stats) {
+    return function(this: Skill, state: GameState) {
+        const enemies = getEnemies(state, this.entity);
+        for (let enemy of enemies) {
+            if (HeroSystem.getDistance(enemy, this.entity) <= 2) {
+                enemy.addComponent({
+                    type: "MapDebuff",
+                    ...statDebuffs
+                });
+            }
+        }
+    }
+}
+
 const PASSIVES: PassivesDict = {
     "Breath of Life 1": {
         slot: "C",
@@ -1035,7 +1049,231 @@ const PASSIVES: PassivesDict = {
                 });
             }
         },
-    }
+    },
+    "Infantry Pulse 1": {
+        description: "At the start of turn 1, grants Special cooldown count-1 to all infantry allies on team with HP ≤ unit's HP-5. (Stacks with similar skills.)",
+        slot: "C",
+        onTurnStart(battleState) {
+            if (battleState.turn === 1) {
+                const allies = getAllies(battleState, this.entity);
+                for (let ally of allies) {
+                    if (ally.getOne("MovementType").value === "infantry" && ally.getOne("Stats").hp <= this.entity.getOne("Stats").hp - 5) {
+                        ally.addComponent({
+                            type: "AccelerateSpecial"
+                        });
+                    }
+                }
+            }
+        },
+    },
+    "Infantry Pulse 2": {
+        description: "At the start of turn 1, grants Special cooldown count-1 to all infantry allies on team with HP ≤ unit’s HP-3. (Stacks with similar skills.)",
+        slot: "C",
+        onTurnStart(battleState) {
+            if (battleState.turn === 1) {
+                const allies = getAllies(battleState, this.entity);
+                for (let ally of allies) {
+                    if (ally.getOne("MovementType").value === "infantry" && ally.getOne("Stats").hp <= this.entity.getOne("Stats").hp - 3) {
+                        ally.addComponent({
+                            type: "AccelerateSpecial"
+                        });
+                    }
+                }
+            }
+        },
+    },
+    "Infantry Pulse 3": {
+        description: "At the start of turn 1, grants Special cooldown count-1 to all infantry allies on team with HP ≤ unit's HP-5. (Stacks with similar skills.)",
+        slot: "C",
+        onTurnStart(battleState) {
+            if (battleState.turn === 1) {
+                const allies = getAllies(battleState, this.entity);
+                for (let ally of allies) {
+                    if (ally.getOne("MovementType").value === "infantry" && ally.getOne("Stats").hp <= this.entity.getOne("Stats").hp - 5) {
+                        ally.addComponent({
+                            type: "AccelerateSpecial"
+                        });
+                    }
+                }
+            }
+        },
+    },
+    "Threaten Atk 1": {
+        description: "At start of turn, inflicts Atk-3 on foes within 2 spaces through their next actions.",
+        slot: "C",
+        onTurnStart: threaten({ atk: -3 })
+    },
+    "Threaten Atk 2": {
+        description: "At start of turn, inflicts Atk-5 on foes within 2 spaces through their next actions.",
+        slot: "C",
+        onTurnStart: threaten({ atk: -5 })
+    },
+    "Threaten Atk 3": {
+        description: "At start of turn, inflicts Atk-3 on foes within 2 spaces through their next actions.",
+        slot: "C",
+        onTurnStart: threaten({ atk: -7 })
+    },
+    "Threaten Def 1": {
+        description: "At start of turn, inflicts Def-3 on foes within 2 spaces through their next actions.",
+        slot: "C",
+        onTurnStart: threaten({ def: -3 })
+    },
+    "Threaten Def 2": {
+        description: "At start of turn, inflicts Def-5 on foes within 2 spaces through their next actions.",
+        slot: "C",
+        onTurnStart: threaten({ def: -5 })
+    },
+    "Threaten Def 3": {
+        description: "At start of turn, inflicts Def-7 on foes within 2 spaces through their next actions.",
+        slot: "C",
+        onTurnStart: threaten({def: -7 })
+    },
+    "Threaten Spd 1": {
+        description: "At start of turn, inflicts Spd-3 on foes within 2 spaces through their next actions.",
+        slot: "C",
+        onTurnStart: threaten({ spd: -3 })
+    },
+    "Threaten Spd 2": {
+        description: "At start of turn, inflicts Spd-5 on foes within 2 spaces through their next actions.",
+        slot: "C",
+        onTurnStart: threaten({ spd: -5 })
+    },
+    "Threaten Spd 3": {
+        description: "At start of turn, inflicts Spd-7 on foes within 2 spaces through their next actions.",
+        slot: "C",
+        onTurnStart: threaten({ spd: -7 })
+    },
+    "Threaten Res 1": {
+        description: "At start of turn, inflicts Res-3 on foes within 2 spaces through their next actions.",
+        slot: "C",
+        onTurnStart: threaten({ res: -3 })
+    },
+    "Threaten Res 2": {
+        description: "At start of turn, inflicts Res-5 on foes within 2 spaces through their next actions.",
+        slot: "C",
+        onTurnStart: threaten({ res: -5 })
+    },
+    "Threaten Res 3": {
+        description: "At start of turn, inflicts Res-7 on foes within 2 spaces through their next actions.",
+        slot: "C",
+        onTurnStart: threaten({ res: -7 })
+    },
+    "Atk Smoke 1": {
+        description: "Inflicts Atk-3 on foes within 2 spaces of target through their next actions after combat.",
+        slot: "C",
+        onCombatAfter(state, target) {
+            const enemies = getAllies(state, target);
+            for (let enemy of enemies) {
+                if (HeroSystem.getDistance(enemy, target) <= 2) {
+                    enemy.addComponent({
+                        type: "MapDebuff",
+                        atk: -3
+                    });
+                }
+            }
+        },
+    },
+    "Atk Smoke 2": {
+        description: "Inflicts Atk-5 on foes within 2 spaces of target through their next actions after combat.",
+        slot: "C",
+        onCombatAfter(state, target) {
+            const enemies = getAllies(state, target);
+            for (let enemy of enemies) {
+                if (HeroSystem.getDistance(enemy, target) <= 2) {
+                    enemy.addComponent({
+                        type: "MapDebuff",
+                        atk: -5
+                    });
+                }
+            }
+        },
+    },
+    "Atk Smoke 3": {
+        description: "Inflicts Atk-7 on foes within 2 spaces of target through their next actions after combat.",
+        slot: "C",
+        onCombatAfter(state, target) {
+            const enemies = getAllies(state, target);
+            for (let enemy of enemies) {
+                if (HeroSystem.getDistance(enemy, target) <= 2) {
+                    enemy.addComponent({
+                        type: "MapDebuff",
+                        atk: -7
+                    });
+                }
+            }
+        },
+    },
+    "Spd Smoke 1": {
+        description: "Inflicts Spd-3 on foes within 2 spaces of target through their next actions after combat.",
+        slot: "C",
+        onCombatAfter(state, target) {
+            const enemies = getAllies(state, target);
+            for (let enemy of enemies) {
+                if (HeroSystem.getDistance(enemy, target) <= 2) {
+                    enemy.addComponent({
+                        type: "MapDebuff",
+                        spd: -3
+                    });
+                }
+            }
+        },
+    },
+    "Spd Smoke 2": {
+        description: "Inflicts Spd-5 on foes within 2 spaces of target through their next actions after combat.",
+        slot: "C",
+        onCombatAfter(state, target) {
+            const enemies = getAllies(state, target);
+            for (let enemy of enemies) {
+                if (HeroSystem.getDistance(enemy, target) <= 2) {
+                    enemy.addComponent({
+                        type: "MapDebuff",
+                        spd: -5
+                    });
+                }
+            }
+        },
+    },
+    "Spd Smoke 3": {
+        description: "Inflicts Spd-7 on foes within 2 spaces of target through their next actions after combat.",
+        slot: "C",
+        onCombatAfter(state, target) {
+            const enemies = getAllies(state, target);
+            for (let enemy of enemies) {
+                if (HeroSystem.getDistance(enemy, target) <= 2) {
+                    enemy.addComponent({
+                        type: "MapDebuff",
+                        spd: -7
+                    });
+                }
+            }
+        },
+    },
+    "Spur Spd/Def 1": {
+        slot: "C",
+        description: "Grants Spd/Def+2 to adjacent allies during combat.",
+        onCombatAllyStart(state, ally) {
+            if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                ally.addComponent({
+                    type: "CombatBuff",
+                    spd: 2,
+                    def: 2
+                });
+            }
+        }
+    },
+    "Spur Spd/Def 2": {
+        slot: "C",
+        description: "Grants Spd/Def+3 to adjacent allies during combat.",
+        onCombatAllyStart(state, ally) {
+            if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                ally.addComponent({
+                    type: "CombatBuff",
+                    spd: 3,
+                    def: 3
+                });
+            }
+        }
+    },
 };
 
 export default PASSIVES;

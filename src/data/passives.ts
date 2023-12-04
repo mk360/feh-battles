@@ -18,7 +18,7 @@ interface PassivesDict {
         onCombatInitiate?(this: Skill, state: GameState, target: Entity): void;
         onCombatAllyStart?(this: Skill, state: GameState, ally: Entity): void;
         onCombatAfter?(this: Skill, state: GameState, target: Entity): void;
-        onTurnStart?(this: Skill, battleState: GameState): void;
+        onTurnStart?(this: Skill, state: GameState): void;
     }
 }
 

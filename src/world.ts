@@ -47,7 +47,7 @@ class GameWorld extends World {
             team2: [],
         },
         currentSide: "team1",
-        turn: 1
+        turn: 1,
     };
 
     constructor() {

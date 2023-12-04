@@ -1,16 +1,19 @@
-import { System } from "ape-ecs";
+import { Query, System } from "ape-ecs";
 import GameState from "./state";
 import WEAPONS from "../data/weapons";
 
 class MapEffectsSystem extends System {
     private state: GameState;
+    private heroesQuery: Query;
 
     init(state: GameState) {
         this.state = state;
+        this.heroesQuery = this.createQuery().fromAll("Side");
     };
 
     update() {
         const teamMembers = this.getCurrentTeam();
+        console.log("req", teamMembers);
         for (let member of teamMembers) {
             const skills = member.getComponents("Skill");
             skills.forEach((skill) => {
@@ -22,9 +25,9 @@ class MapEffectsSystem extends System {
     }
 
     getCurrentTeam() {
-        const entities = Array.from(this.createQuery().from("Side").execute());
-
-        return entities.filter(entity => entity.c.Team.value === this.state.currentSide);
+        const entities = Array.from(this.heroesQuery.execute());
+        console.log(entities[0]);
+        return entities.filter(entity => entity.c.Side.value === this.state.currentSide);
     }
 };
 

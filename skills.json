@@ -309,11 +309,7 @@
         "Watersweep 2",
         "Watersweep 3"
     ],
-    "passivec": [
-        "Spd Smoke 1",
-        "Spd Smoke 2",
-        "Spd Smoke 3"
-    ],
+    "passivec": [],
     "assist": [
         "Swap",
         "Heal",

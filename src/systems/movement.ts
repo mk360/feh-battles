@@ -1,8 +1,6 @@
 import { Entity, Query, System } from "ape-ecs";
 import GameState from "./state";
 
-
-
 class MovementSystem extends System {
     private increasedMovementQuery: Query;
     private obstructQuery: Query;
@@ -19,7 +17,7 @@ class MovementSystem extends System {
 
         for (let member of team) {
             const movementRange = this.getFinalMovementRange(member);
-
+            
         }
     }
 

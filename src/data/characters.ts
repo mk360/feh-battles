@@ -10,7 +10,6 @@ interface CharacterData {
     }
 }
 
-
 const CHARACTERS: CharacterData = {
     "Morgan: Devoted Darkness": {
         color: "Red",

@@ -1,5 +1,4 @@
 import { Entity, System } from "ape-ecs";
-import GameState from "./state";
 
 class HeroSystem extends System {
     static getDistance(hero1: Entity, hero2: Entity) {

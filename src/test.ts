@@ -29,7 +29,7 @@ world.initiate({
             assist: null,
             special: null,
             B: null,
-            C: null,
+            C: "Threaten Atk 3",
             S: null,
         },
         rarity: 5,
@@ -41,6 +41,7 @@ world.initiate({
 });
 
 const x = world.getEntities("Weapon");
+world.runSystems("every-turn");
 const [klein, clair] = x;
 
-console.log(klein.getObject());
+// console.log(klein.getObject());

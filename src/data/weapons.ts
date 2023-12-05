@@ -16,7 +16,7 @@ interface WeaponDict {
         onInitiate?(...args: any[]): any;
         onDefense?(...args: any[]): any;
         onEquip?(this: Weapon): any;
-        onTurnStart?(battleState: GameState): Component[];
+        onTurnStart?(battleState: GameState): void;
     }
 }
 
@@ -44,7 +44,15 @@ const WEAPONS: WeaponDict = {
         might: 16,
         type: "lance",
         protects: ["flier"],
-    }
+    },
+    "Sieglinde": {
+        description: "At start of turn, grants Atk+4 to adjacent allies for 1 turn.",
+        might: 16,
+        type: "sword",
+        onTurnStart: function (state) {
+
+        }
+    },
 };
 
 export default WEAPONS;

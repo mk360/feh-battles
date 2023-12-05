@@ -1,24 +1,18 @@
-import { Entity, System } from "ape-ecs";
 import { MandatoryStats, Stat } from "../types";
-import GameState from "./state";
-import CHARACTERS from "../data/characters";
-import Bane from "../components/bane";
 
-function getLv40Stats(hero: Entity, rarity: number) {
-    const [nameTag] = hero.tags;
-    const dexData = CHARACTERS[nameTag];
-    const { growthRates, stats: lv1Stats } = dexData;
-    const boon = hero.getOne("Boon");
-    if (boon) {
-        growthRates[boon.value as Stat] += 5;
-        const bane = hero.getOne("Bane");
-        growthRates[bane.value as Stat] += 5;
+function getLv40Stats(lv1Stats: MandatoryStats, growthRates: MandatoryStats, rarity: number, boon?: Stat, bane?: Stat) {
+    const copy = { ...lv1Stats };
+    const growthRateCopy = {...growthRates};
+
+    if (boon && bane) {
+        growthRateCopy[boon] += 5;
+        copy[boon]++;
+        growthRateCopy[bane] -= 5;
+        copy[bane]--;
     }
 
-    const copy = { ...lv1Stats };
-
     for (let stat in copy) {
-        const growthRate = growthRates[stat];
+        const growthRate = growthRateCopy[stat as Stat];
         const masterGrowthRate = Math.floor(growthRate * (0.79 + 0.07 * rarity));
         const growthValue = Math.floor(39 * masterGrowthRate / 100);
         copy[stat] += growthValue;
@@ -28,40 +22,3 @@ function getLv40Stats(hero: Entity, rarity: number) {
 };
 
 export default getLv40Stats;
-
-// class UnitStatsSystem extends System {
-//     private state: GameState;
-
-//     init(state: GameState): void {
-//         this.state = state;
-//     }
-
-//     static getLv40Stats(lv1Stats: MandatoryStats, growthRates: MandatoryStats, rarity: number) {
-//         const copy = { ...lv1Stats };
-//         for (let stat in copy) {
-//             const growthRate = growthRates[stat];
-//             const masterGrowthRate = Math.floor(growthRate * (0.79 + 0.07 * rarity));
-//             const growthValue = Math.floor(39 * masterGrowthRate / 100);
-//             copy[stat] += growthValue;
-//         }
-
-//         return copy;
-//     }
-
-//     getMapStats(hero: Entity) {
-//         const mapBuffs = hero.getOne("MapBuff");
-//         const hasPanic = !!hero.getOne("Panic");
-//         const baseLv40Stats = hero.getOne("Stats");
-
-//         return {};
-//     }
-
-//     getBattleStats(hero: Entity) {
-//         const mapStats = this.getMapStats(hero);
-//         const combatBuffs = hero.getComponents("CombatBuff");
-
-//         return {};
-//     }
-// };
-
-// export default UnitStatsSystem;

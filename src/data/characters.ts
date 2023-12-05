@@ -1,10 +1,11 @@
-import { MandatoryStats } from "../types";
+import { MandatoryStats, MovementType } from "../types";
+import { WeaponType } from "../weapon";
 
 interface CharacterData {
     [k: string]: {
         color: string;
-        weaponType: string;
-        movementType: string;
+        weaponType: WeaponType;
+        movementType: MovementType;
         stats: MandatoryStats;
         growthRates: MandatoryStats;
     }

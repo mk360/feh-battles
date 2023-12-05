@@ -1,10 +1,12 @@
-import { Component, Entity } from "ape-ecs";
+import { Entity } from "ape-ecs";
 import Skill from "../components/skill";
 import PassiveSkill from "../passive_skill";
 import HeroSystem from "../systems/hero";
 import GameState from "../systems/state";
 import { MovementType, Stat, Stats } from "../types";
 import { WeaponType } from "../weapon";
+import getAllies from "../utils/get-alies";
+import getEnemies from "../utils/get-enemies";
 
 interface PassivesDict {
     [k: string]: {
@@ -13,6 +15,7 @@ interface PassivesDict {
         allowedMovementTypes?: MovementType[];
         allowedWeaponTypes?: WeaponType[];
         protects?: (MovementType | WeaponType)[];
+        effectiveAgainst?: (MovementType | WeaponType)[];
         onCombatStart?(...args: any[]): any;
         onEquip?(...args: any[]): any;
         onCombatInitiate?(this: Skill, state: GameState, target: Entity): void;
@@ -20,16 +23,6 @@ interface PassivesDict {
         onCombatAfter?(this: Skill, state: GameState, target: Entity): void;
         onTurnStart?(this: Skill, state: GameState): void;
     }
-}
-
-function getAllies(state: GameState, hero: Entity) {
-    return (state.teams[hero.getOne("Side").value] as Entity[]).filter(i => i.id !== hero.id);
-}
-
-function getEnemies(state: GameState, hero: Entity) {
-    const { value } = hero.getOne("Side");
-    const otherSide = value === "team1" ? "team2" : "team1";
-    return state.teams[otherSide];
 }
 
 function ploy(affectedStat: Stat, debuff: number) {

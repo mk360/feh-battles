@@ -1,6 +1,7 @@
 import { Query, System } from "ape-ecs";
 import GameState from "./state";
 import WEAPONS from "../data/weapons";
+import PASSIVES from "../data/passives";
 
 class MapEffectsSystem extends System {
     private state: GameState;
@@ -13,12 +14,12 @@ class MapEffectsSystem extends System {
 
     update() {
         const teamMembers = this.getCurrentTeam();
-        console.log("req", teamMembers);
         for (let member of teamMembers) {
             const skills = member.getComponents("Skill");
             skills.forEach((skill) => {
-                if (WEAPONS[skill.name].onTurnStart) {
-                    WEAPONS[skill.name].onTurnStart.call(skill, this.state);
+                const dict = skill.slot === "weapon" ? WEAPONS : PASSIVES;
+                if (dict[skill.name].onTurnStart) {
+                    dict[skill.name].onTurnStart.call(skill, this.state);
                 }
             });
         }
@@ -26,8 +27,7 @@ class MapEffectsSystem extends System {
 
     getCurrentTeam() {
         const entities = Array.from(this.heroesQuery.execute());
-        console.log(entities[0]);
-        return entities.filter(entity => entity.c.Side.value === this.state.currentSide);
+        return entities.filter(entity => entity.getOne("Side").value === this.state.currentSide);
     }
 };
 

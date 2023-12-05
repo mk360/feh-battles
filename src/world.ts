@@ -1,4 +1,4 @@
-import { Entity, World } from "ape-ecs";
+import { Entity, IWorldConfig, World } from "ape-ecs";
 import Weapon from "./components/weapon";
 import MapEffects from "./systems/map-effects";
 import Stats from "./components/stats";
@@ -17,6 +17,9 @@ import { Stat } from "./types";
 import getLv40Stats from "./systems/unit-stats";
 import WarpableTile from "./components/warpable-tile";
 import WalkableTile from "./components/walkable-tile";
+import PASSIVES from "./data/passives";
+import MapDebuff from "./components/map-debuff";
+import MovementTypes from "./data/movement-types";
 
 interface HeroData {
     name: string;
@@ -50,11 +53,12 @@ class GameWorld extends World {
         turn: 1,
     };
 
-    constructor() {
-        super();
+    constructor(config?: IWorldConfig) {
+        super(config);
         this.registerComponent(Weapon);
         this.registerComponent(Stats);
         this.registerComponent(Side);
+        this.registerComponent(MapDebuff);
         this.registerComponent(Position);
         this.registerComponent(WarpableTile);
         this.registerComponent(WalkableTile);
@@ -67,13 +71,14 @@ class GameWorld extends World {
         this.registerSystem("every-turn", MapEffects, [this.state]);
     }
 
-    createHero(member: HeroData) {
+    createHero(member: HeroData, team: "team1" | "team2") {
         this.registerTags(member.name);
 
         const entity = this.createEntity({
             tags: [member.name]
         });
-        const components = this.createCharacterComponents(entity, "team1", member.rarity);
+
+        const components = this.createCharacterComponents(entity, team, member.rarity);
 
         for (let component of components) {
             entity.addComponent(component);
@@ -98,7 +103,7 @@ class GameWorld extends World {
 
         for (let skill in member.skills) {
             const skillName = member.skills[skill];
-            const skillData = WEAPONS[skillName];
+            const skillData = WEAPONS[skillName] || PASSIVES[skillName];
             if (skillData) {
                 const skillComponent = {
                     type: "Skill",
@@ -130,33 +135,34 @@ class GameWorld extends World {
             }
         }
 
-        this.state.teams.team1.push(entity);
+        this.state.teams[team].push(entity);
     }
 
     initiate(lineup: InitialLineup) {
         const { team1, team2 } = lineup;
 
         for (let member of team1) {
-            this.createHero(member);
+            this.createHero(member, "team1");
         }
 
         for (let member of team2) {
-            this.createHero(member);
+            this.createHero(member, "team2");
         }
     }
 
     createCharacterComponents(hero: Entity, team: string, rarity: number): { type: string;[k: string]: any }[] {
-        const newStats = getLv40Stats(hero, rarity);
         const [name] = hero.tags;
         const dexData = CHARACTERS[name];
+        const { stats, growthRates } = dexData;
+        const lv40Stats = getLv40Stats(stats, growthRates, rarity, hero.getOne("Boon").value, hero.getOne("Bane").value);
 
         return [
             {
                 type: "Weapon",
                 weaponType: dexData.weaponType,
                 color: dexData.color,
-                range: ["Sword", "Lance", "Axe", "Beast", "Breath"].includes(dexData.weaponType) ? 1 : 2,
-                useMagic: ["Tome", "Breath"].includes(dexData.weaponType)
+                range: ["sword", "lance", "axe", "beast", "breath"].includes(dexData.weaponType) ? 1 : 2,
+                useMagic: ["tome", "breath"].includes(dexData.weaponType)
             },
             {
                 type: "Side",
@@ -165,6 +171,7 @@ class GameWorld extends World {
             {
                 type: "MovementType",
                 value: dexData.movementType,
+                ...MovementTypes[dexData.movementType]
             }
         ];
     }

@@ -299,7 +299,7 @@ const PASSIVES: PassivesDict = {
         description: "At start of turn, grants Atk+2 to adjacent allies for 1 turn.",
         slot: "C",
         onTurnStart(state) {
-            honeStat(state, "atk", 2);
+            honeStat(this, state, "atk", 2);
         }
     },
     "Hone Atk 2": {

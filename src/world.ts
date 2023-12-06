@@ -49,6 +49,14 @@ class GameWorld extends World {
             team1: [],
             team2: [],
         },
+        teamsByMovementTypes: {
+            team1: {},
+            team2: {}
+        },
+        teamsByWeaponTypes: {
+            team1: {},
+            team2: {}
+        },
         currentSide: "team1",
         turn: 1,
     };
@@ -150,10 +158,21 @@ class GameWorld extends World {
         }
     }
 
-    createCharacterComponents(hero: Entity, team: string, rarity: number): { type: string;[k: string]: any }[] {
+    createCharacterComponents(hero: Entity, team: "team1" | "team2", rarity: number): { type: string;[k: string]: any }[] {
         const [name] = hero.tags;
         const dexData = CHARACTERS[name];
         const { stats, growthRates } = dexData;
+        if (!this.state.teamsByMovementTypes[team][dexData.movementType]) {
+            this.state.teamsByMovementTypes[team][dexData.movementType] = 0;
+        }
+        this.state.teamsByMovementTypes[team][dexData.movementType]++;
+
+        if (!this.state.teamsByWeaponTypes[team][dexData.weaponType]) {
+            this.state.teamsByWeaponTypes[team][dexData.weaponType] = 0;
+        }
+
+        this.state.teamsByWeaponTypes[team][dexData.weaponType]++;
+
         const lv40Stats = getLv40Stats(stats, growthRates, rarity, hero.getOne("Boon").value, hero.getOne("Bane").value);
 
         return [

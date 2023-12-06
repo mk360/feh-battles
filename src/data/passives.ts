@@ -7,7 +7,7 @@ import { MovementType, Stat, Stats } from "../types";
 import { WeaponType } from "../weapon";
 import getAllies from "../utils/get-alies";
 import getEnemies from "../utils/get-enemies";
-import { honeStat } from "./effects";
+import { mapBuffByMovementType, honeStat } from "./effects";
 
 interface PassivesDict {
     [k: string]: {
@@ -305,48 +305,54 @@ const PASSIVES: PassivesDict = {
     "Hone Atk 2": {
         description: "At start of turn, grants Atk+3 to adjacent allies for 1 turn.",
         slot: "C",
-        onTurnStart: honeStat("atk", 3),
+        onTurnStart(state) { 
+            honeStat(this, state, "atk", 3)
+        }
     },
     "Hone Atk 3": {
         description: "At start of turn, grants Atk+4 to adjacent allies for 1 turn.",
         slot: "C",
-        onTurnStart: honeStat("atk", 4),
+        onTurnStart(state) {
+            honeStat(this, state, "atk", 4);
+        }
     },
     "Hone Atk 4": {
         description: "At start of turn, grants Atk+7 to adjacent allies for 1 turn.",
         slot: "C",
-        onTurnStart: honeStat("atk", 7),
+        onTurnStart(state) {
+            honeStat(this, state, "atk", 7);
+        }
     },
     "Hone Spd 1": {
         description: "At start of turn, grants Spd+2 to adjacent allies for 1 turn.",
         slot: "C",
-        onTurnStart: honeStat("spd", 2),
+        onTurnStart(state) {
+            honeStat(this, state, "spd", 2);
+        }
     },
     "Hone Spd 2": {
         description: "At start of turn, grants Spd+3 to adjacent allies for 1 turn.",
         slot: "C",
-        onTurnStart: honeStat("spd", 3),
+        onTurnStart(state) {
+            honeStat(this, state, "spd", 3);
+        }
     },
     "Hone Spd 3": {
         description: "At start of turn, grants Spd+4 to adjacent allies for 1 turn.",
         slot: "C",
-        onTurnStart: honeStat("spd", 4),
+        onTurnStart(state) {
+            honeStat(this, state, "spd", 4);
+        }
     },
     "Hone Cavalry": {
         description: "At start of turn, grants Atk/Spd+6 to adjacent cavalry allies for 1 turn.",
         slot: "C",
         allowedMovementTypes: ["cavalry"],
         onTurnStart(battleState) {
-            const allies = getAllies(battleState, this.entity);
-            for (let ally of allies) {
-                if (ally.getOne("MovementType").value === "cavalry") {
-                    ally.addComponent({
-                        type: "MapBuff",
-                        atk: 6,
-                        spd: 6
-                    });
-                }
-            }
+            mapBuffByMovementType(this, battleState, "cavalry", {
+                atk: 6,
+                spd: 6
+            });
         },
     },
     "Hone Fliers": {
@@ -354,16 +360,10 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         allowedMovementTypes: ["flier"],
         onTurnStart(battleState) {
-            const allies = getAllies(battleState, this.entity);
-            for (let ally of allies) {
-                if (ally.getOne("MovementType").value === "flier") {
-                    ally.addComponent({
-                        type: "MapBuff",
-                        atk: 6,
-                        spd: 6
-                    });
-                }
-            }
+            mapBuffByMovementType(this, battleState, "flier", {
+                atk: 6,
+                spd: 6
+            });
         },
     },
     "Fortify Def 1": {

@@ -7,6 +7,7 @@ import { MovementType, Stat, Stats } from "../types";
 import { WeaponType } from "../weapon";
 import getAllies from "../utils/get-alies";
 import getEnemies from "../utils/get-enemies";
+import { honeStat } from "./effects";
 
 interface PassivesDict {
     [k: string]: {
@@ -131,20 +132,6 @@ function movementBasedCombatBuff(buff: Stats, range: number) {
                 ally.addComponent({
                     type: "CombatBuff",
                     ...buff
-                });
-            }
-        }
-    }
-}
-
-function honeStat(stat: Stat, buff: number) {
-    return function (this: Skill, state: GameState) {
-        const allies = getAllies(state, this.entity);
-        for (let ally of allies) {
-            if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                ally.addComponent({
-                    type: "MapBuff",
-                    [stat]: buff
                 });
             }
         }
@@ -311,7 +298,9 @@ const PASSIVES: PassivesDict = {
     "Hone Atk 1": {
         description: "At start of turn, grants Atk+2 to adjacent allies for 1 turn.",
         slot: "C",
-        onTurnStart: honeStat("atk", 2),
+        onTurnStart(state) {
+            honeStat(state, "atk", 2);
+        }
     },
     "Hone Atk 2": {
         description: "At start of turn, grants Atk+3 to adjacent allies for 1 turn.",

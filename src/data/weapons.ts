@@ -3,7 +3,9 @@ import Weapon from "../components/weapon";
 import Hero from "../entities/hero";
 import GameState from "../systems/state";
 import { WeaponType } from "../weapon";
-import { MovementType } from "../types";
+import { MovementType, Stat } from "../types";
+import getAllies from "../utils/get-alies";
+import HeroSystem from "../systems/hero";
 
 interface WeaponDict {
     [k: string]: {
@@ -20,7 +22,17 @@ interface WeaponDict {
     }
 }
 
-
+function hone(state: GameState, stat: Stat, buff: number) {
+    const allies = getAllies(state, this.entity);
+    for (let ally of allies) {
+        if (HeroSystem.getDistance(ally, this.entity) === 1) {
+            ally.addComponent({
+                type: "MapBuff",
+                [stat]: buff
+            });
+        }
+    }
+}
 
 type Battle = Turn[];
 
@@ -50,7 +62,7 @@ const WEAPONS: WeaponDict = {
         might: 16,
         type: "sword",
         onTurnStart: function (state) {
-
+            hone(state, "atk", 4);
         }
     },
 };

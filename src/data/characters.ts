@@ -1,9 +1,9 @@
 import { MandatoryStats, MovementType } from "../types";
-import { WeaponType } from "../weapon";
+import { WeaponColor, WeaponType } from "../weapon";
 
 interface CharacterData {
     [k: string]: {
-        color: string;
+        color: WeaponColor;
         weaponType: WeaponType;
         movementType: MovementType;
         stats: MandatoryStats;
@@ -13,7 +13,7 @@ interface CharacterData {
 
 const CHARACTERS: CharacterData = {
     "Morgan: Devoted Darkness": {
-        color: "Red",
+        color: "red",
         movementType: "infantry",
         weaponType: "tome",
         stats: {
@@ -32,7 +32,7 @@ const CHARACTERS: CharacterData = {
         }
     },
     "Ryoma: Peerless Samurai": {
-        color: "Red",
+        color: "red",
         movementType: "infantry",
         weaponType: "sword",
         stats: {

@@ -184,6 +184,11 @@ class GameWorld extends World {
                 useMagic: ["tome", "breath"].includes(dexData.weaponType)
             },
             {
+                type: "Stats",
+                ...lv40Stats,
+                maxHP: lv40Stats.hp
+            },
+            {
                 type: "Side",
                 value: team
             },

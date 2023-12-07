@@ -3,6 +3,8 @@ import GameState from "./state";
 import getAllies from "../utils/get-alies";
 import PASSIVES from "../data/passives";
 import { Stats } from "../types";
+import checkBattleEffectiveness from "./effectiveness";
+import getDefenseStat from "./get-defense-stat";
 
 interface CombatTurnOutcome {
     turnNumber: number;
@@ -79,16 +81,22 @@ class CombatSystem extends System {
 
     init(state: GameState) {
         this.state = state;
+        this.battlingQuery = this.createQuery().fromAll("Battling");
     }
 
     update() {
-        const [unit1, unit2] = this.battlingQuery.only("Battling").execute();
+        const [unit1, unit2] = this.battlingQuery.execute();
         if (unit1 && unit2) {
             this.runAllySkills(unit1);
             this.runAllySkills(unit2);
             const firstHeroStats = getCombatStats(unit1);
-
             const secondHeroStats = getCombatStats(unit2);
+            const effectiveness = checkBattleEffectiveness(unit1, unit2);
+            const defenseStat = secondHeroStats[getDefenseStat(unit1)];
+            const effectivenessMultiplier = effectiveness ? 1.5 : 1;
+            const damage = Math.floor((firstHeroStats.atk - defenseStat) * effectivenessMultiplier);
+
+            // console.log({ damage });
         }
     }
 

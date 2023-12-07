@@ -1,10 +1,9 @@
-import { Component } from "ape-ecs";
-import Weapon from "../components/weapon";
 import Hero from "../entities/hero";
 import GameState from "../systems/state";
 import { WeaponType } from "../weapon";
 import { MovementType } from "../types";
 import * as Effects from "./effects";
+import Skill from "../components/skill";
 
 interface WeaponDict {
     [k: string]: {
@@ -16,7 +15,7 @@ interface WeaponDict {
         onCombat?(...args: any[]): any;
         onInitiate?(...args: any[]): any;
         onDefense?(...args: any[]): any;
-        onEquip?(this: Weapon): any;
+        onEquip?(this: Skill): any;
         onTurnStart?(battleState: GameState): void;
     }
 }
@@ -38,6 +37,12 @@ const WEAPONS: WeaponDict = {
         type: "bow",
         effectiveAgainst: ["flier"]
     },
+    "Silver Bow": {
+        description: "Effective against fliers.",
+        might: 16,
+        type: "bow",
+        effectiveAgainst: ["flier"]
+    },
     "Shielding Lance": {
         description: "A lance that protects fliers. Disables skills that are effective against fliers.",
         might: 16,
@@ -52,6 +57,14 @@ const WEAPONS: WeaponDict = {
             Effects.honeStat(this, state, "atk", 4);
         }
     },
+    "Siegmund": {
+        description: "At start of turn, grants Atk+3 to adjacent allies for 1 turn.",
+        might: 16,
+        type: "lance",
+        onTurnStart(battleState) {
+            Effects.honeStat(this, battleState, "atk", 3);
+        },
+    }
 };
 
 export default WEAPONS;

@@ -5,7 +5,7 @@ class MovementType extends Component {};
 MovementType.properties = {
     value: "",
     range: 0,
-    bitField: 0
+    bitfield: 0
 };
 
 export default MovementType;

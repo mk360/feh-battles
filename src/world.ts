@@ -20,12 +20,15 @@ import WalkableTile from "./components/walkable-tile";
 import PASSIVES from "./data/passives";
 import MapDebuff from "./components/map-debuff";
 import MovementTypes from "./data/movement-types";
+import Name from "./components/name";
+import CombatSystem from "./systems/combat";
+import Battling from "./components/battling";
 
 interface HeroData {
-    name: string;
+    name: keyof typeof CHARACTERS;
     rarity: number;
+    weapon: string;
     skills: {
-        weapon: string;
         assist: string;
         special: string;
         A: string;
@@ -75,15 +78,19 @@ class GameWorld extends World {
         this.registerComponent(Skill);
         this.registerComponent(Immunity);
         this.registerComponent(Bane);
+        this.registerComponent(Battling);
         this.registerComponent(Boon);
+        this.registerComponent(Name);
         this.registerSystem("every-turn", MapEffects, [this.state]);
+        this.registerSystem("combat", CombatSystem, [this.state]);
     }
 
     createHero(member: HeroData, team: "team1" | "team2") {
-        this.registerTags(member.name);
-
         const entity = this.createEntity({
-            tags: [member.name]
+            components: [{
+                type: "Name",
+                value: member.name
+            }]
         });
 
         const components = this.createCharacterComponents(entity, team, member.rarity);
@@ -108,10 +115,29 @@ class GameWorld extends World {
             x: member.initialPosition.x,
             y: member.initialPosition.y,
         });
+        entity.addComponent({
+            type: "Battling"
+        });
+
+        if (member.weapon) {
+            const skillData = WEAPONS[member.weapon];
+            const stats = entity.getOne("Stats");
+            stats.atk += skillData.might;
+            const weaponComponentData = {
+                type: "Skill",
+                description: skillData.description,
+                slot: "weapon",
+                name: member.weapon,
+            };
+            const weaponComponent = entity.addComponent(weaponComponentData)
+            if (skillData.onEquip) {
+                skillData.onEquip.call(weaponComponent);
+            }
+        }
 
         for (let skill in member.skills) {
             const skillName = member.skills[skill];
-            const skillData = WEAPONS[skillName] || PASSIVES[skillName];
+            const skillData = PASSIVES[skillName];
             if (skillData) {
                 const skillComponent = {
                     type: "Skill",
@@ -159,7 +185,7 @@ class GameWorld extends World {
     }
 
     createCharacterComponents(hero: Entity, team: "team1" | "team2", rarity: number): { type: string;[k: string]: any }[] {
-        const [name] = hero.tags;
+        const { value: name } = hero.getOne("Name");
         const dexData = CHARACTERS[name];
         const { stats, growthRates } = dexData;
         if (!this.state.teamsByMovementTypes[team][dexData.movementType]) {
@@ -173,7 +199,7 @@ class GameWorld extends World {
 
         this.state.teamsByWeaponTypes[team][dexData.weaponType]++;
 
-        const lv40Stats = getLv40Stats(stats, growthRates, rarity, hero.getOne("Boon").value, hero.getOne("Bane").value);
+        const lv40Stats = getLv40Stats(stats, growthRates, rarity, hero.getOne("Boon")?.value, hero.getOne("Bane")?.value);
 
         return [
             {

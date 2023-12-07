@@ -1,5 +1,4 @@
 import { Entity } from "ape-ecs";
-import Weapon from "../components/weapon";
 
 function checkBattleEffectiveness(hero1: Entity, hero2: Entity) {
     const heroEffectiveness = hero1.getComponents("Effectiveness");

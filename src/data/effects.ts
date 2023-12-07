@@ -1,3 +1,4 @@
+import { Entity } from "ape-ecs";
 import Skill from "../components/skill";
 import HeroSystem from "../systems/hero";
 import GameState from "../systems/state";
@@ -28,14 +29,15 @@ export function mapBuffByMovementType(thisArg: Skill, state: GameState, movement
     }
 }
 
-export function combatBuffByRange(thisArg: Skill, state: GameState, range: number, buffs: Stats) {
-    const allies = getAllies(state, thisArg.entity);
-    for (let ally of allies) {
-        if (HeroSystem.getDistance(ally, this.entity) <= range) {
-            ally.addComponent({
-                type: "MapBuff",
-                ...buffs
-            });
-        }
+export function combatBuffByRange(thisArg: Skill, ally: Entity, range: number, buffs: Stats) {
+    if (HeroSystem.getDistance(ally, thisArg.entity) <= range) {
+        ally.addComponent({
+            type: "CombatBuff",
+            ...buffs
+        });
     }
 }
+
+export function combatBuffByMovementType(thisArg: Skill, ally: Entity, movementType: MovementType, buffs: Stats) {
+
+};

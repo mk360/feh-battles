@@ -32,7 +32,6 @@ function getCombatStats(entity: Entity) {
     }
 
     mapBuffs.forEach((buff) => {
-        console.log(buff.getObject());
         for (let stat in compoundStats) {
             maxBuffs[stat] = Math.max(maxBuffs[stat], buff[stat]);
         }
@@ -43,8 +42,6 @@ function getCombatStats(entity: Entity) {
             maxDebuffs[stat] = Math.min(maxDebuffs[stat], debuff[stat]);
         }
     });
-
-    console.log(maxBuffs);
 
     for (let stat in maxBuffs) {
         compoundStats[stat] += hasPanic ? -maxBuffs[stat] : maxBuffs[stat];

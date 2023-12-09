@@ -43,6 +43,4 @@ world.initiate({
 
 world.runSystems("every-turn");
 
-console.log(Array.from(world.updatedEntities)[0].getObject());
-
 world.runSystems("combat");

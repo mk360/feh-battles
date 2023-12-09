@@ -5,6 +5,7 @@ import PASSIVES from "../data/passives";
 import { Stats } from "../types";
 import checkBattleEffectiveness from "./effectiveness";
 import getDefenseStat from "./get-defense-stat";
+import generateTurns from "./generate-turns";
 
 interface CombatTurnOutcome {
     turnNumber: number;
@@ -91,6 +92,7 @@ class CombatSystem extends System {
             this.runAllySkills(unit2);
             const firstHeroStats = getCombatStats(unit1);
             const secondHeroStats = getCombatStats(unit2);
+            const turns = generateTurns(unit1, unit2, firstHeroStats, secondHeroStats);
             const effectiveness = checkBattleEffectiveness(unit1, unit2);
             const defenseStat = secondHeroStats[getDefenseStat(unit1)];
             const effectivenessMultiplier = effectiveness ? 1.5 : 1;

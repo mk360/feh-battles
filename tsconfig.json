@@ -14,5 +14,8 @@
     "declarationDir": "dec",
     "rootDir": "./src",
     "outDir": "./lib"
-  }
+  },
+  "exclude": [
+    "./src/__tests"
+  ],
 }

@@ -23,6 +23,10 @@ import MovementTypes from "./data/movement-types";
 import Name from "./components/name";
 import CombatSystem from "./systems/combat";
 import Battling from "./components/battling";
+import PreventEnemyAlliesInteraction from "./components/prevent-enemy-allies-interaction";
+import CombatBuff from "./components/combat-buff";
+import Counterattack from "./components/counterattack";
+import MapBuff from "./components/map-buff";
 
 interface HeroData {
     name: keyof typeof CHARACTERS;
@@ -76,10 +80,14 @@ class GameWorld extends World {
         this.registerComponent(Effectiveness);
         this.registerComponent(MovementType);
         this.registerComponent(Skill);
+        this.registerComponent(Counterattack);
+        this.registerComponent(MapBuff);
         this.registerComponent(Immunity);
         this.registerComponent(Bane);
+        this.registerComponent(CombatBuff);
         this.registerComponent(Battling);
         this.registerComponent(Boon);
+        this.registerComponent(PreventEnemyAlliesInteraction);
         this.registerComponent(Name);
         this.registerSystem("every-turn", MapEffects, [this.state]);
         this.registerSystem("combat", CombatSystem, [this.state]);
@@ -170,6 +178,8 @@ class GameWorld extends World {
         }
 
         this.state.teams[team].push(entity);
+
+        return entity;
     }
 
     initiate(lineup: InitialLineup) {

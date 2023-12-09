@@ -7,9 +7,6 @@
     "url": "https://github.com/mk360/feh-battles"
   },
   "main": "lib/index.js",
-  "scripts": {
-    "postinstall": "tsc"
-  },
   "author": {
     "name": "Muhammad Kassar",
     "email": "n_tonio36.poke@outlook.com",

@@ -37,6 +37,16 @@ const WEAPONS: WeaponDict = {
         type: "bow",
         effectiveAgainst: ["flier"]
     },
+    "Raijinto": {
+        description: "Unit can counterattack regardless of enemy range.",
+        might: 16,
+        type: "sword",
+        onEquip() {
+            this.entity.addComponent({
+                type: "Counterattack"
+            });
+        }
+    },
     "Silver Bow": {
         description: "Effective against fliers.",
         might: 16,

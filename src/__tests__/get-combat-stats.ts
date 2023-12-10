@@ -1,12 +1,11 @@
 import CHARACTERS from "../data/characters";
 import getCombatStats from "../systems/get-combat-stats";
 import getLv40Stats from "../systems/unit-stats";
-import GameWorld from "../world"
+import TEST_GAME_WORLD from "./constants/world";
 
 describe("get-combat-stats", () => {
-    const gameWorld = new GameWorld();
     const dexData = CHARACTERS["Ryoma: Peerless Samurai"];
-    const entity = gameWorld.createHero({
+    const entity = TEST_GAME_WORLD.createHero({
         name: "Ryoma: Peerless Samurai",
         rarity: 5,
         weapon: null,
@@ -32,7 +31,7 @@ describe("get-combat-stats", () => {
     });
 
     it("should take weapons into account", () => {
-        const otherEntity = gameWorld.createHero({
+        const otherEntity = TEST_GAME_WORLD.createHero({
             name: "Ryoma: Peerless Samurai",
             rarity: 5,
             weapon: "Raijinto",
@@ -56,7 +55,7 @@ describe("get-combat-stats", () => {
 
         expect(combatStats.atk).toEqual(stats.atk + 16);
 
-        gameWorld.removeEntity(otherEntity);
+        TEST_GAME_WORLD.removeEntity(otherEntity);
         otherEntity.destroy();
     });
 

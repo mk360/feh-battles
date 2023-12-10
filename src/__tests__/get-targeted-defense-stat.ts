@@ -1,9 +1,8 @@
 import getTargetedDefenseStat from "../systems/get-targeted-defense-stat";
-import GameWorld from "../world";
+import TEST_GAME_WORLD from "./constants/world";
 
 describe("get-targeted-defense-stat", () => {
-    const gameWorld = new GameWorld();
-    const magicUser = gameWorld.createHero({
+    const magicUser = TEST_GAME_WORLD.createHero({
         name: "Morgan: Devoted Darkness",
         rarity: 5,
         skills: {
@@ -21,7 +20,7 @@ describe("get-targeted-defense-stat", () => {
         }
     }, "team1");
 
-    const physicalWeaponUser = gameWorld.createHero({
+    const physicalWeaponUser = TEST_GAME_WORLD.createHero({
         name: "Klein: Silver Nobleman",
         rarity: 5,
         skills: {

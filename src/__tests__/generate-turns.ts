@@ -1,10 +1,9 @@
 import generateTurns from "../systems/generate-turns";
 import getCombatStats from "../systems/get-combat-stats";
-import GameWorld from "../world";
+import TEST_GAME_WORLD from "./constants/world";
 
 describe("generate-turns", () => {
-    const world = new GameWorld();
-    const hero1 = world.createHero({
+    const hero1 = TEST_GAME_WORLD.createHero({
         name: "Ryoma: Peerless Samurai",
         weapon: "Sieglinde",
         rarity: 5,
@@ -22,7 +21,7 @@ describe("generate-turns", () => {
         }
     }, "team1");
 
-    const hero2 = world.createHero({
+    const hero2 = TEST_GAME_WORLD.createHero({
         name: "Ryoma: Peerless Samurai",
         weapon: "Sieglinde",
         rarity: 5,
@@ -40,7 +39,7 @@ describe("generate-turns", () => {
         }
     }, "team2");
 
-    const hero3 = world.createHero({
+    const hero3 = TEST_GAME_WORLD.createHero({
         initialPosition: {
             x: 5,
             y: 7,

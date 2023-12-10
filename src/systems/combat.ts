@@ -4,7 +4,7 @@ import getAllies from "../utils/get-alies";
 import PASSIVES from "../data/passives";
 import { Stats } from "../types";
 import checkBattleEffectiveness from "./effectiveness";
-import getDefenseStat from "./get-defense-stat";
+import getTargetedDefenseStat from "./get-targeted-defense-stat";
 import generateTurns from "./generate-turns";
 
 interface CombatTurnOutcome {
@@ -106,13 +106,12 @@ class CombatSystem extends System {
 
             for (let turn of turns) {
                 const defender = turn === unit1 ? unit2 : unit1;
-                const defenseStat = combatMap.get(defender).stats[getDefenseStat(turn)];
+                const defenseStat = combatMap.get(defender).stats[getTargetedDefenseStat(turn)];
                 const effectivenessMultiplier = combatMap.get(defender).effective ? 1.5 : 1;
                 const atkStat = combatMap.get(turn).stats.atk;
-                const damage = Math.floor((atkStat - defenseStat) * effectivenessMultiplier);
+                const damage = Math.max(0, Math.floor((atkStat - defenseStat) * effectivenessMultiplier));
+                console.log({ damage });
             }
-
-            // console.log({ damage });
         }
     }
 

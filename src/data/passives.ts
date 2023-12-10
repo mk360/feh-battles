@@ -18,7 +18,7 @@ interface PassivesDict {
         protects?: (MovementType | WeaponType)[];
         effectiveAgainst?: (MovementType | WeaponType)[];
         onCombatStart?(...args: any[]): any;
-        onEquip?(...args: any[]): any;
+        onEquip?(this: Skill, ...args: any[]): any;
         onCombatInitiate?(this: Skill, state: GameState, target: Entity): void;
         onCombatAllyStart?(this: Skill, state: GameState, ally: Entity): void;
         onCombatAfter?(this: Skill, state: GameState, target: Entity): void;
@@ -128,7 +128,7 @@ function movementBasedCombatBuff(buff: Stats, range: number) {
 }
 
 function threaten(statDebuffs: Stats) {
-    return function(this: Skill, state: GameState) {
+    return function (this: Skill, state: GameState) {
         const enemies = getEnemies(state, this.entity);
         for (let enemy of enemies) {
             if (HeroSystem.getDistance(enemy, this.entity) <= 2) {
@@ -142,6 +142,20 @@ function threaten(statDebuffs: Stats) {
 }
 
 const PASSIVES: PassivesDict = {
+    "Atk+3": {
+        slot: "A",
+        description: "Grants Atk+3.",
+        onEquip() {
+            this.entity.getOne("Stats").atk += 3;
+        }
+    },
+    "Def+3": {
+        slot: "A",
+        description: "Grants Def+3.",
+        onEquip() {
+            this.entity.getOne("Stats").def += 3;
+        }
+    },
     "Breath of Life 1": {
         slot: "C",
         description: "If unit initiates combat, restores 3 HP to adjacent allies after combat.",
@@ -294,7 +308,7 @@ const PASSIVES: PassivesDict = {
     "Hone Atk 2": {
         description: "At start of turn, grants Atk+3 to adjacent allies for 1 turn.",
         slot: "C",
-        onTurnStart(state) { 
+        onTurnStart(state) {
             honeStat(this, state, "atk", 3)
         }
     },
@@ -1082,7 +1096,7 @@ const PASSIVES: PassivesDict = {
     "Threaten Def 3": {
         description: "At start of turn, inflicts Def-7 on foes within 2 spaces through their next actions.",
         slot: "C",
-        onTurnStart: threaten({def: -7 })
+        onTurnStart: threaten({ def: -7 })
     },
     "Threaten Spd 1": {
         description: "At start of turn, inflicts Spd-3 on foes within 2 spaces through their next actions.",

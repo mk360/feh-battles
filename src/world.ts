@@ -29,7 +29,7 @@ import Counterattack from "./components/counterattack";
 import MapBuff from "./components/map-buff";
 
 interface HeroData {
-    name: keyof typeof CHARACTERS;
+    name: string;
     rarity: number;
     weapon: string;
     skills: {

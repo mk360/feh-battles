@@ -7,7 +7,7 @@ import { MovementType, Stat, Stats } from "../types";
 import { WeaponColor, WeaponType } from "../weapon";
 import getAllies from "../utils/get-alies";
 import getEnemies from "../utils/get-enemies";
-import { mapBuffByMovementType, honeStat, combatBuffByRange, defiant, breaker } from "./effects";
+import { mapBuffByMovementType, honeStat, combatBuffByRange, defiant, breaker, elementalBoost } from "./effects";
 
 interface PassivesDict {
     [k: string]: {
@@ -151,6 +151,136 @@ const PASSIVES: PassivesDict = {
         protects: ["flier"],
         allowedMovementTypes: ["flier"]
     },
+    "Swift Sparrow 1": {
+        slot: "A",
+        description: "If unit initiates combat, grants Atk/Spd+2 during combat.",
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                atk: 2,
+                spd: 2
+            });
+        }
+    },
+    "Swift Sparrow 2": {
+        slot: "A",
+        description: "If unit initiates combat, grants Atk/Spd+3 during combat.",
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                atk: 4,
+                spd: 4
+            });
+        }
+    },
+    "Water Boost 1": {
+        slot: "A",
+        description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Res+2 during combat.",
+        onCombatStart(state, target) {
+            elementalBoost(this, target, {
+                res: 2
+            });
+        },
+    },
+    "Water Boost 2": {
+        slot: "A",
+        description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Res+4 during combat.",
+        onCombatStart(state, target) {
+            elementalBoost(this, target, {
+                res: 4
+            });
+        },
+    },
+    "Water Boost 3": {
+        slot: "A",
+        description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Res+6 during combat.",
+        onCombatStart(state, target) {
+            elementalBoost(this, target, {
+                res: 6
+            });
+        },
+    },
+    "Wind Boost 1": {
+        slot: "A",
+        description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Spd+2 during combat.",
+        onCombatStart(state, target) {
+            elementalBoost(this, target, {
+                spd: 2
+            });
+        },
+    },
+    "Wind Boost 2": {
+        slot: "A",
+        description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Spd+4 during combat.",
+        onCombatStart(state, target) {
+            elementalBoost(this, target, {
+                spd: 4
+            });
+        },
+    },
+    "Wind Boost 3": {
+        slot: "A",
+        description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Spd+6 during combat.",
+        onCombatStart(state, target) {
+            elementalBoost(this, target, {
+                spd: 6
+            });
+        },
+    },
+    "Earth Boost 1": {
+        slot: "A",
+        description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Def+2 during combat.",
+        onCombatStart(state, target) {
+            elementalBoost(this, target, {
+                def: 2
+            });
+        },
+    },
+    "Earth Boost 2": {
+        slot: "A",
+        description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Def+4 during combat.",
+        onCombatStart(state, target) {
+            elementalBoost(this, target, {
+                def: 4
+            });
+        },
+    },
+    "Earth Boost 3": {
+        slot: "A",
+        description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Def+6 during combat.",
+        onCombatStart(state, target) {
+            elementalBoost(this, target, {
+                def: 6
+            });
+        },
+    },
+    "Fire Boost 1": {
+        slot: "A",
+        description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Atk+2 during combat.",
+        onCombatStart(state, target) {
+            elementalBoost(this, target, {
+                atk: 2
+            });
+        },
+    },
+    "Fire Boost 2": {
+        slot: "A",
+        description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Atk+4 during combat.",
+        onCombatStart(state, target) {
+            elementalBoost(this, target, {
+                atk: 4
+            });
+        },
+    },
+    "Fire Boost 3": {
+        slot: "A",
+        description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Atk+6 during combat.",
+        onCombatStart(state, target) {
+            elementalBoost(this, target, {
+                atk: 6
+            });
+        },
+    },
     "Grani's Shield": {
         slot: "A",
         description: 'Neutralizes "effective against cavalry" bonuses.',
@@ -183,6 +313,33 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: ["sword", "axe", "beast", "bow", "dagger", "breath", "tome", "staff"],
         allowedColors: ["colorless", "green", "red"],
         description: "If unit's HP ≥ 50% in combat against an axe foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+    },
+    "Daggerbreaker 1": {
+        onCombatStart(state, target) {
+            if (target.getOne("Weapon").color === "colorless") {
+                breaker(this, target, "dagger", 0.9);
+            }
+        },
+        slot: "B",
+        description: "If unit's HP ≥ 90% in combat against a colorless dagger foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+    },
+    "Daggerbreaker 2": {
+        onCombatStart(state, target) {
+            if (target.getOne("Weapon").color === "colorless") {
+                breaker(this, target, "dagger", 0.7);
+            }
+        },
+        slot: "B",
+        description: "If unit's HP ≥ 70% in combat against a colorless dagger foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+    },
+    "Daggerbreaker 3": {
+        onCombatStart(state, target) {
+            if (target.getOne("Weapon").color === "colorless") {
+                breaker(this, target, "dagger", 0.5);
+            }
+        },
+        slot: "B",
+        description: "If unit's HP ≥ 50% in combat against a colorless dagger foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
     },
     "Lancebreaker 1": {
         onCombatStart(state, target) {

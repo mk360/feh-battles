@@ -65,3 +65,15 @@ export function breaker(thisArg: Skill, enemy: Entity, targetWeaponType: WeaponT
         });
     }
 }
+
+export function elementalBoost(thisArg: Skill, target: Entity, buffs: Stats) {
+    const wielderHP = thisArg.entity.getOne("Stats").hp;
+    const enemyHP = target.getOne("Stats").hp;
+
+    if (wielderHP >= enemyHP + 3) {
+        thisArg.entity.addComponent({
+            type: "CombatBuff",
+            ...buffs
+        });
+    }
+};

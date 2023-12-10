@@ -1,7 +1,7 @@
 import { Entity } from "ape-ecs";
 
-function getDefenseStat(unit1: Entity) {
-    const useMagic = unit1.getOne("Weapon").useMagic;
+function getDefenseStat(unit: Entity) {
+    const useMagic = unit.getOne("Weapon").useMagic;
     if (useMagic) return "def";
     return "res";
 };

@@ -1,5 +1,4 @@
 import { Entity } from "ape-ecs";
-import getCombatStats from "./get-combat-stats";
 import { Stats } from "../types";
 
 function generateTurns(attacker: Entity, defender: Entity, attackerCombatStats: Stats, defenderCombatStats: Stats) {
@@ -22,7 +21,7 @@ function generateTurns(attacker: Entity, defender: Entity, attackerCombatStats: 
         turns.push(attacker);
     }
 
-    if (attackerCombatStats.spd + 5 <= defenderCombatStats.spd) {
+    if (attackerCombatStats.spd + 5 <= defenderCombatStats.spd && defenderIsAllowed) {
         turns.push(defender);
     }
 
@@ -30,7 +29,15 @@ function generateTurns(attacker: Entity, defender: Entity, attackerCombatStats: 
 };
 
 function defenderCanDefend(attacker: Entity, defender: Entity) {
-    return defender.getOne("Counterattack") || !attacker.getOne("PreventCounterattack");
+    const attackerPreventedCounterattacks = attacker.getOne("PreventCounterattack");
+    const isCounterattackAllowed = defender.getOne("Counterattack") && !attackerPreventedCounterattacks;
+    const rangeIsTheSame = attacker.getOne("Weapon").range === defender.getOne("Weapon").range;
+
+    if (rangeIsTheSame) {
+        return !attackerPreventedCounterattacks;
+    }
+
+    return isCounterattackAllowed;
 }
 
 export default generateTurns;

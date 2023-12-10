@@ -90,13 +90,27 @@ class CombatSystem extends System {
         if (unit1 && unit2) {
             this.runAllySkills(unit1);
             this.runAllySkills(unit2);
-            const firstHeroStats = getCombatStats(unit1);
-            const secondHeroStats = getCombatStats(unit2);
-            const turns = generateTurns(unit1, unit2, firstHeroStats, secondHeroStats);
-            const effectiveness = checkBattleEffectiveness(unit1, unit2);
-            const defenseStat = secondHeroStats[getDefenseStat(unit1)];
-            const effectivenessMultiplier = effectiveness ? 1.5 : 1;
-            const damage = Math.floor((firstHeroStats.atk - defenseStat) * effectivenessMultiplier);
+            const combatMap = new Map<Entity, {
+                stats: Stats,
+                effective: boolean
+            }>();
+            combatMap.set(unit1, {
+                effective: checkBattleEffectiveness(unit1, unit2),
+                stats: getCombatStats(unit1)
+            });
+            combatMap.set(unit2, {
+                effective: checkBattleEffectiveness(unit2, unit1),
+                stats: getCombatStats(unit2)
+            });
+            const turns = generateTurns(unit1, unit2, combatMap.get(unit1).stats, combatMap.get(unit2).stats);
+
+            for (let turn of turns) {
+                const defender = turn === unit1 ? unit2 : unit1;
+                const defenseStat = combatMap.get(defender).stats[getDefenseStat(turn)];
+                const effectivenessMultiplier = combatMap.get(defender).effective ? 1.5 : 1;
+                const atkStat = combatMap.get(turn).stats.atk;
+                const damage = Math.floor((atkStat - defenseStat) * effectivenessMultiplier);
+            }
 
             // console.log({ damage });
         }

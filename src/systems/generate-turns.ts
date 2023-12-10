@@ -6,9 +6,6 @@ function generateTurns(attacker: Entity, defender: Entity, attackerCombatStats: 
     const defenderIsAllowed = defenderCanDefend(attacker, defender);
     if (defender.getOne("Vantage") && defenderIsAllowed) {
         turns.push(defender);
-        if (defender.getOne("Desperation")) {
-            turns.push(defender);
-        }
     }
 
     turns.push(attacker);
@@ -29,7 +26,7 @@ function generateTurns(attacker: Entity, defender: Entity, attackerCombatStats: 
 };
 
 function defenderCanDefend(attacker: Entity, defender: Entity) {
-    const attackerPreventedCounterattacks = attacker.getOne("PreventCounterattack");
+    const attackerPreventedCounterattacks = defender.getOne("PreventCounterattack");
     const isCounterattackAllowed = defender.getOne("Counterattack") && !attackerPreventedCounterattacks;
     const rangeIsTheSame = attacker.getOne("Weapon").range === defender.getOne("Weapon").range;
 

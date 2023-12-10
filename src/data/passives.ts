@@ -17,7 +17,7 @@ interface PassivesDict {
         allowedWeaponTypes?: WeaponType[];
         protects?: (MovementType | WeaponType)[];
         effectiveAgainst?: (MovementType | WeaponType)[];
-        onCombatStart?(...args: any[]): any;
+        onCombatStart?(this: Skill, ...args: any[]): any;
         onEquip?(this: Skill, ...args: any[]): any;
         onCombatInitiate?(this: Skill, state: GameState, target: Entity): void;
         onCombatAllyStart?(this: Skill, state: GameState, ally: Entity): void;
@@ -142,19 +142,20 @@ function threaten(statDebuffs: Stats) {
 }
 
 const PASSIVES: PassivesDict = {
-    "Atk+3": {
+    "Svalinn Shield": {
         slot: "A",
-        description: "Grants Atk+3.",
-        onEquip() {
-            this.entity.getOne("Stats").atk += 3;
-        }
+        protects: ["armored"],
+        description: 'Neutralizes "effective against armor" bonuses.',
     },
-    "Def+3": {
+    "Iote's Shield": {
         slot: "A",
-        description: "Grants Def+3.",
-        onEquip() {
-            this.entity.getOne("Stats").def += 3;
-        }
+        description: 'Neutralizes "effective against flying" bonuses.',
+        protects: ["flier"]
+    },
+    "Grani's Shield": {
+        slot: "A",
+        description: 'Neutralizes "effective against cavalry" bonuses.',
+        protects: ["cavalry"]
     },
     "Breath of Life 1": {
         slot: "C",

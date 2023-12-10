@@ -41,3 +41,14 @@ export function combatBuffByRange(thisArg: Skill, ally: Entity, range: number, b
 export function combatBuffByMovementType(thisArg: Skill, ally: Entity, movementType: MovementType, buffs: Stats) {
 
 };
+
+export function defiant(thisArg: Skill, stat: Stat, buff: number) {
+    const { maxHP, hp } = thisArg.entity.getOne("Stats");
+
+    if (hp / maxHP <= 0.5) {
+        thisArg.entity.addComponent({
+            type: "MapBuff",
+            [stat]: buff
+        });
+    }
+}

@@ -4,10 +4,10 @@ import PassiveSkill from "../passive_skill";
 import HeroSystem from "../systems/hero";
 import GameState from "../systems/state";
 import { MovementType, Stat, Stats } from "../types";
-import { WeaponType } from "../weapon";
+import { WeaponColor, WeaponType } from "../weapon";
 import getAllies from "../utils/get-alies";
 import getEnemies from "../utils/get-enemies";
-import { mapBuffByMovementType, honeStat, combatBuffByRange } from "./effects";
+import { mapBuffByMovementType, honeStat, combatBuffByRange, defiant, breaker } from "./effects";
 
 interface PassivesDict {
     [k: string]: {
@@ -15,9 +15,10 @@ interface PassivesDict {
         slot: PassiveSkill["slot"];
         allowedMovementTypes?: MovementType[];
         allowedWeaponTypes?: WeaponType[];
+        allowedColors?: WeaponColor[];
         protects?: (MovementType | WeaponType)[];
         effectiveAgainst?: (MovementType | WeaponType)[];
-        onCombatStart?(this: Skill, ...args: any[]): any;
+        onCombatStart?(this: Skill, state: GameState, target: Entity): void;
         onEquip?(this: Skill, ...args: any[]): any;
         onCombatInitiate?(this: Skill, state: GameState, target: Entity): void;
         onCombatAllyStart?(this: Skill, state: GameState, ally: Entity): void;
@@ -49,10 +50,6 @@ const goad = movementBasedCombatBuff({ atk: 4, spd: 4 }, 2);
 
 function turnIsOdd(turnCount: number) {
     return !!(turnCount & 1);
-}
-
-function turnIsEven(turnCount: number) {
-    return !(turnCount & 1);
 }
 
 function wave(affectedStat: Stat, parity: (turnCount: number) => boolean, buff: number) {
@@ -145,17 +142,239 @@ const PASSIVES: PassivesDict = {
     "Svalinn Shield": {
         slot: "A",
         protects: ["armored"],
+        allowedMovementTypes: ["armored"],
         description: 'Neutralizes "effective against armor" bonuses.',
     },
     "Iote's Shield": {
         slot: "A",
         description: 'Neutralizes "effective against flying" bonuses.',
-        protects: ["flier"]
+        protects: ["flier"],
+        allowedMovementTypes: ["flier"]
     },
     "Grani's Shield": {
         slot: "A",
         description: 'Neutralizes "effective against cavalry" bonuses.',
-        protects: ["cavalry"]
+        protects: ["cavalry"],
+        allowedMovementTypes: ["cavalry"]
+    },
+    "Axebreaker 1": {
+        onCombatStart(state, target) {
+            breaker(this, target, "axe", 0.9);
+        },
+        slot: "B",
+        allowedWeaponTypes: ["sword", "axe", "beast", "bow", "dagger", "breath", "tome", "staff"],
+        allowedColors: ["colorless", "green", "red"],
+        description: "If unit's HP ≥ 90% in combat against an axe foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+    },
+    "Axebreaker 2": {
+        onCombatStart(state, target) {
+            breaker(this, target, "axe", 0.7);
+        },
+        slot: "B",
+        allowedWeaponTypes: ["sword", "axe", "beast", "bow", "dagger", "breath", "tome", "staff"],
+        allowedColors: ["colorless", "green", "red"],
+        description: "If unit's HP ≥ 70% in combat against an axe foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+    },
+    "Axebreaker 3": {
+        onCombatStart(state, target) {
+            breaker(this, target, "axe", 0.5);
+        },
+        slot: "B",
+        allowedWeaponTypes: ["sword", "axe", "beast", "bow", "dagger", "breath", "tome", "staff"],
+        allowedColors: ["colorless", "green", "red"],
+        description: "If unit's HP ≥ 50% in combat against an axe foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+    },
+    "Lancebreaker 1": {
+        onCombatStart(state, target) {
+            breaker(this, target, "lance", 0.9);
+        },
+        slot: "B",
+        allowedWeaponTypes: ["lance", "axe", "beast", "bow", "dagger", "breath", "tome", "staff"],
+        allowedColors: ["colorless", "green", "blue"],
+        description: "If unit's HP ≥ 90% in combat against a lance foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+    },
+    "Lancebreaker 2": {
+        onCombatStart(state, target) {
+            breaker(this, target, "lance", 0.7);
+        },
+        slot: "B",
+        allowedWeaponTypes: ["lance", "lance", "beast", "bow", "dagger", "breath", "tome", "staff"],
+        allowedColors: ["colorless", "green", "blue"],
+        description: "If unit's HP ≥ 70% in combat against a lance foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+    },
+    "Lancebreaker 3": {
+        onCombatStart(state, target) {
+            breaker(this, target, "lance", 0.5);
+        },
+        slot: "B",
+        allowedWeaponTypes: ["lance", "axe", "beast", "bow", "dagger", "breath", "tome", "staff"],
+        allowedColors: ["colorless", "green", "blue"],
+        description: "If unit's HP ≥ 50% in combat against a lance foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+    },
+    "Follow-Up Ring": {
+        description: "At start of combat, if unit's HP ≥ 50%, unit makes a guaranteed follow-up attack. (Skill cannot be inherited.)",
+        slot: "B",
+        onCombatStart() {
+            const { maxHP, hp } = this.entity.getOne("Stats");
+
+            if (hp / maxHP >= 0.5) {
+                this.entity.addComponent({
+                    type: "GuaranteedFollowup"
+                });
+            }
+        }
+    },
+    "Swordbreaker 1": {
+        onCombatStart(state, target) {
+            breaker(this, target, "sword", 0.9);
+        },
+        slot: "B",
+        allowedWeaponTypes: ["lance", "sword", "beast", "bow", "dagger", "breath", "tome", "staff"],
+        allowedColors: ["colorless", "red", "blue"],
+        description: "If unit's HP ≥ 90% in combat against a sword foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+    },
+    "Swordbreaker 2": {
+        onCombatStart(state, target) {
+            breaker(this, target, "sword", 0.7);
+        },
+        slot: "B",
+        allowedWeaponTypes: ["lance", "sword", "beast", "bow", "dagger", "breath", "tome", "staff"],
+        allowedColors: ["colorless", "red", "blue"],
+        description: "If unit's HP ≥ 70% in combat against a sword foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+    },
+    "Swordbreaker 3": {
+        onCombatStart(state, target) {
+            breaker(this, target, "sword", 0.5);
+        },
+        slot: "B",
+        allowedWeaponTypes: ["lance", "sword", "beast", "bow", "dagger", "breath", "tome", "staff"],
+        allowedColors: ["colorless", "red", "blue"],
+        description: "If unit's HP ≥ 50% in combat against a sword foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+    },
+    "Bowbreaker 1": {
+        onCombatStart(state, target) {
+            if (target.getOne("Weapon").color === "colorless") {
+                breaker(this, target, "bow", 0.9);
+            }
+        },
+        slot: "B",
+        allowedMovementTypes: ["armored", "cavalry", "infantry"],
+        description: "If unit's HP ≥ 90% in combat against a colorless bow foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+    },
+    "Bowbreaker 2": {
+        onCombatStart(state, target) {
+            if (target.getOne("Weapon").color === "colorless") {
+                breaker(this, target, "bow", 0.7);
+            }
+        },
+        slot: "B",
+        allowedMovementTypes: ["armored", "cavalry", "infantry"],
+        description: "If unit's HP ≥ 70% in combat against a colorless bow foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+    },
+    "Bowbreaker 3": {
+        onCombatStart(state, target) {
+            breaker(this, target, "bow", 0.5);
+        },
+        slot: "B",
+        allowedMovementTypes: ["armored", "cavalry", "infantry"],
+        description: "If unit's HP ≥ 50% in combat against a colorless bow foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+    },
+    "Beorc's Blessing": {
+        slot: "B",
+        description: `Neutralizes cavalry and flying foes' bonuses (from skills like Fortify, Rally, etc.) during combat.
+(Skill cannot be inherited.)`,
+        onCombatStart(state, target) {
+            if (["flier", "cavalry"].includes(target.getOne("MovementType").value)) {
+                target.addComponent({
+                    type: "NeutralizeMapBuffs",
+                    stats: ["atk", "def", "res", "spd"]
+                });
+            }
+        }
+    },
+    "Defiant Atk 1": {
+        slot: "A",
+        description: "At start of turn, if unit's HP ≤ 50%, grants Atk+3 for 1 turn.",
+        onTurnStart() {
+            defiant(this, "atk", 3);
+        }
+    },
+    "Defiant Atk 2": {
+        slot: "A",
+        description: "At start of turn, if unit's HP ≤ 50%, grants Atk+5 for 1 turn.",
+        onTurnStart() {
+            defiant(this, "atk", 5);
+        }
+    },
+    "Defiant Atk 3": {
+        slot: "A",
+        description: "At start of turn, if unit's HP ≤ 50%, grants Atk+7 for 1 turn.",
+        onTurnStart() {
+            defiant(this, "atk", 7);
+        }
+    },
+    "Defiant Def 1": {
+        slot: "A",
+        description: "At start of turn, if unit's HP ≤ 50%, grants Def+3 for 1 turn.",
+        onTurnStart() {
+            defiant(this, "def", 3);
+        }
+    },
+    "Defiant Def 2": {
+        slot: "A",
+        description: "At start of turn, if unit's HP ≤ 50%, grants Def+5 for 1 turn.",
+        onTurnStart() {
+            defiant(this, "def", 5);
+        }
+    },
+    "Defiant Def 3": {
+        slot: "A",
+        description: "At start of turn, if unit's HP ≤ 50%, grants Def+7 for 1 turn.",
+        onTurnStart() {
+            defiant(this, "def", 7);
+        }
+    },
+    "Defiant Spd 1": {
+        slot: "A",
+        description: "At start of turn, if unit's HP ≤ 50%, grants Spd+3 for 1 turn.",
+        onTurnStart() {
+            defiant(this, "spd", 3);
+        }
+    },
+    "Defiant Spd 2": {
+        slot: "A",
+        description: "At start of turn, if unit's HP ≤ 50%, grants Spd+5 for 1 turn.",
+        onTurnStart() {
+            defiant(this, "spd", 5);
+        }
+    },
+    "Defiant Spd 3": {
+        slot: "A",
+        description: "At start of turn, if unit's HP ≤ 50%, grants Spd+7 for 1 turn.",
+        onTurnStart() {
+            defiant(this, "spd", 7);
+        }
+    },
+    "Defiant Res 1": {
+        slot: "A",
+        description: "At start of turn, if unit's HP ≤ 50%, grants Res+3 for 1 turn.",
+        onTurnStart() {
+            defiant(this, "res", 3);
+        }
+    },
+    "Defiant Res 2": {
+        slot: "A",
+        description: "At start of turn, if unit's HP ≤ 50%, grants Res+5 for 1 turn.",
+        onTurnStart() {
+            defiant(this, "res", 5);
+        }
+    },
+    "Defiant Res 3": {
+        slot: "A",
+        description: "At start of turn, if unit's HP ≤ 50%, grants Res+7 for 1 turn.",
+        onTurnStart() {
+            defiant(this, "res", 7);
+        }
     },
     "Breath of Life 1": {
         slot: "C",

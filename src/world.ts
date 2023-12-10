@@ -27,6 +27,7 @@ import PreventEnemyAlliesInteraction from "./components/prevent-enemy-allies-int
 import CombatBuff from "./components/combat-buff";
 import Counterattack from "./components/counterattack";
 import MapBuff from "./components/map-buff";
+import NeutralizeMapBuffs from "./components/neutralize-map-buffs";
 
 interface HeroData {
     name: string;
@@ -84,6 +85,7 @@ class GameWorld extends World {
         this.registerComponent(MapBuff);
         this.registerComponent(Immunity);
         this.registerComponent(Bane);
+        this.registerComponent(NeutralizeMapBuffs);
         this.registerComponent(CombatBuff);
         this.registerComponent(Battling);
         this.registerComponent(Boon);

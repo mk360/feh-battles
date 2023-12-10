@@ -4,6 +4,7 @@ import HeroSystem from "../systems/hero";
 import GameState from "../systems/state";
 import { MovementType, Stat, Stats } from "../types";
 import getAllies from "../utils/get-alies";
+import { WeaponType } from "../weapon";
 
 export function honeStat(thisArg: Skill, state: GameState, stat: Stat, buff: number) {
     const allies = getAllies(state, thisArg.entity);
@@ -44,11 +45,23 @@ export function combatBuffByMovementType(thisArg: Skill, ally: Entity, movementT
 
 export function defiant(thisArg: Skill, stat: Stat, buff: number) {
     const { maxHP, hp } = thisArg.entity.getOne("Stats");
-
     if (hp / maxHP <= 0.5) {
         thisArg.entity.addComponent({
             type: "MapBuff",
             [stat]: buff
+        });
+    }
+}
+
+export function breaker(thisArg: Skill, enemy: Entity, targetWeaponType: WeaponType, hpPercentage: number) {
+    const { value } = enemy.getOne("WeaponType");
+    const { hp, maxHP } = thisArg.entity.getOne("Stats");
+    if (value === targetWeaponType && hp / maxHP >= hpPercentage) {
+        enemy.addComponent({
+            type: "PreventFollowUp"
+        });
+        thisArg.entity.addComponent({
+            type: "GuaranteedFollowup"
         });
     }
 }

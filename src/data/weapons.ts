@@ -19,7 +19,7 @@ interface WeaponDict {
         exclusiveTo?: (keyof typeof Characters)[];
         effectiveAgainst?: (MovementType | WeaponType)[];
         protects?: (MovementType | WeaponType)[];
-        onCombatStart?(...args: any[]): any;
+        onCombatStart?(this: Skill, battleState: GameState, target: Entity): void;
         onCombatAfter?(this: Skill, battleState: GameState, target: Entity, combat: CombatOutcome): void;
         onInitiate?(...args: any[]): any;
         onDefense?(...args: any[]): any;
@@ -225,6 +225,23 @@ const WEAPONS: WeaponDict = {
         type: "sword",
         effectiveAgainst: ["armored"],
     },
+    "Breath of Fog": {
+        description: "Effective against dragon foes. At start of odd-numbered turns, restores 10 HP. If foe's Range = 2, calculates damage using the lower of foe's Def or Res.",
+        effectiveAgainst: ["breath"],
+        exclusiveTo: ["Tiki: Dragon Scion"],
+        type: "breath",
+        might: 16,
+        onTurnStart(battleState) {
+            Effects.renewal(this, battleState.turn, (t) => t % 2 === 1, 10);
+        },
+        onCombatStart(battleState, target) {
+            if (target.getOne("Weapon").range === 2) {
+                target.addComponent({
+                    type: "TargetLowestDefense"
+                });
+            }
+        }
+    },
     "Hana's Katana": {
         description: "Effective against armored foes.",
         might: 16,
@@ -265,6 +282,43 @@ const WEAPONS: WeaponDict = {
         },
         exclusiveTo: ["Alm: Hero of Prophecy"]
     },
+    "Gradivus": {
+        description: "Unit can counterattack regardless of enemy range.",
+        might: 16,
+        type: "lance",
+        exclusiveTo: ["Camus: Sable Knight"],
+        onCombatStart() {
+            Effects.counterattack(this);
+        }
+    },
+    "Ragnell": {
+        might: 16,
+        description: "Unit can counterattack regardless of enemy range.",
+        type: "sword",
+        exclusiveTo: ["Ike: Young Mercenary"],
+        onCombatStart() {
+            Effects.counterattack(this);
+        }
+    },
+    "Stout Tomahawk": {
+        might: 16,
+        description: "Unit can counterattack regardless of enemy range.",
+        type: "sword",
+        exclusiveTo: ["Dorcas: Serene Warrior"],
+        onCombatStart() {
+            Effects.counterattack(this);
+        }
+    },
+    "Sapphire Lance": {
+        description: "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
+        type: "lance",
+        might: 8,
+        onCombatStart() {
+            this.entity.addComponent({
+                type: "GemWeapon"
+            });
+        }
+    },
     "Valflame": {
         description: "At start of turn, inflicts Atk/Res-4 on foes in cardinal directions with Res < unit's Res through their next actions.",
         type: "tome",
@@ -290,9 +344,7 @@ const WEAPONS: WeaponDict = {
         might: 16,
         type: "sword",
         onCombatStart() {
-            this.entity.addComponent({
-                type: "Counterattack"
-            });
+            Effects.counterattack(this);
         },
         exclusiveTo: ["Ryoma: Peerless Samurai"]
     },
@@ -301,9 +353,7 @@ const WEAPONS: WeaponDict = {
         might: 16,
         type: "sword",
         onCombatStart() {
-            this.entity.addComponent({
-                type: "Counterattack"
-            });
+            Effects.counterattack(this);
         },
         exclusiveTo: ["Xander: Paragon Knight"]
     },

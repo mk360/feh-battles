@@ -28,6 +28,7 @@ import CombatBuff from "./components/combat-buff";
 import Counterattack from "./components/counterattack";
 import MapBuff from "./components/map-buff";
 import NeutralizeMapBuffs from "./components/neutralize-map-buffs";
+import TargetLowestDefense from "./components/target-lowest-defense";
 
 interface HeroData {
     name: string;
@@ -91,6 +92,7 @@ class GameWorld extends World {
         this.registerComponent(Boon);
         this.registerComponent(PreventEnemyAlliesInteraction);
         this.registerComponent(Name);
+        this.registerComponent(TargetLowestDefense);
         this.registerSystem("every-turn", MapEffects, [this.state]);
         this.registerSystem("combat", CombatSystem, [this.state]);
     }

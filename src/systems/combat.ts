@@ -106,7 +106,8 @@ class CombatSystem extends System {
 
             for (let turn of turns) {
                 const defender = turn === unit1 ? unit2 : unit1;
-                const defenseStat = combatMap.get(defender).stats[getTargetedDefenseStat(turn)];
+                const defenderStats = combatMap.get(defender).stats;
+                const defenseStat = defenderStats[getTargetedDefenseStat(turn, defender, defenderStats)];
                 const effectivenessMultiplier = combatMap.get(defender).effective ? 1.5 : 1;
                 const atkStat = combatMap.get(turn).stats.atk;
                 const damage = Math.max(0, Math.floor((atkStat - defenseStat) * effectivenessMultiplier));

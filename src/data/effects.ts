@@ -89,7 +89,7 @@ export function renewal(thisArg: Skill, turnCount: number, periodicity: (turnCou
 }
 
 export function dagger(thisArg: Skill, state: GameState, combat: CombatOutcome, target: Entity, debuffs: Stats) {
-    if (/* unit attacked at least once */) {
+    if (true) {
         const allies = getAllies(state, target);
         target.addComponent({
             type: "MapDebuff",
@@ -106,3 +106,9 @@ export function dagger(thisArg: Skill, state: GameState, combat: CombatOutcome, 
         }
     }
 };
+
+export function counterattack(thisArg: Skill) {
+    thisArg.entity.addComponent({
+        type: "Counterattack"
+    });
+}

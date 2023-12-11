@@ -144,8 +144,74 @@ const WEAPONS: WeaponDict = {
         might: 11,
         type: "axe"
     },
+    "Silver Bow": {
+        description: "Effective against flying foes.",
+        effectiveAgainst: ["flier"],
+        type: "bow",
+        might: 9
+    },
+    "Silver Dagger": {
+        description: "After combat, if unit attacked, inflicts Def/Res-5 on foe through its next action.",
+        onCombatAfter(battleState, target, combat) {
+            Effects.dagger(this, battleState, combat, target, {
+                def: -5,
+                res: -5
+            });
+        },
+        might: 7,
+        type: "dagger"
+    },
+    "Silver Sword+": {
+        description: "",
+        might: 15,
+        type: "sword"
+    },
+    "Silver Lance+": {
+        description: "",
+        might: 15,
+        type: "lance"
+    },
+    "Silver Axe+": {
+        description: "",
+        might: 15,
+        type: "axe"
+    },
+    "Silver Bow+": {
+        description: "Effective against flying foes.",
+        effectiveAgainst: ["flier"],
+        type: "bow",
+        might: 13
+    },
+    "Silver Dagger+": {
+        description: "After combat, if unit attacked, inflicts Def/Res-7 on foe through its next action.",
+        onCombatAfter(battleState, target, combat) {
+            Effects.dagger(this, battleState, combat, target, {
+                def: -7,
+                res: -7
+            });
+        },
+        might: 10,
+        type: "dagger"
+    },
     "Fire Breath": {
         description: "",
+        type: "breath",
+        might: 6,
+    },
+    "Fire Breath+": {
+        description: "",
+        type: "breath",
+        might: 8,
+    },
+    "Flametongue": {
+        description: "",
+        type: "breath",
+        might: 11,
+    },
+    "Flametongue+": {
+        description: "",
+        type: "breath",
+        might: 15,
     },
     "Armorslayer": {
         description: "Effective against armored foes.",
@@ -240,12 +306,6 @@ const WEAPONS: WeaponDict = {
             });
         },
         exclusiveTo: ["Xander: Paragon Knight"]
-    },
-    "Silver Bow": {
-        description: "Effective against fliers.",
-        might: 16,
-        type: "bow",
-        effectiveAgainst: ["flier"]
     },
     "Sieglinde": {
         description: "At start of turn, grants Atk+4 to adjacent allies for 1 turn.",

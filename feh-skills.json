@@ -30,58 +30,6 @@
         "Might": 16
     },
     {
-        "WeaponName": "Fire Breath",
-        "CanUseWeapon": [
-            "Red Breath",
-            "  Blue Breath",
-            "  Green Breath",
-            "  Colorless Breath"
-        ],
-        "Exclusive": 0,
-        "Hero": "Tiki: Dragon Scion",
-        "Description": null,
-        "Might": 6
-    },
-    {
-        "WeaponName": "Fire Breath+",
-        "CanUseWeapon": [
-            "Red Breath",
-            "  Blue Breath",
-            "  Green Breath",
-            "  Colorless Breath"
-        ],
-        "Exclusive": 0,
-        "Hero": "Tiki: Dragon Scion",
-        "Description": null,
-        "Might": 8
-    },
-    {
-        "WeaponName": "Flametongue",
-        "CanUseWeapon": [
-            "Red Breath",
-            "  Blue Breath",
-            "  Green Breath",
-            "  Colorless Breath"
-        ],
-        "Exclusive": 0,
-        "Hero": "Tiki: Dragon Scion",
-        "Description": null,
-        "Might": 11
-    },
-    {
-        "WeaponName": "Flametongue+",
-        "CanUseWeapon": [
-            "Red Breath",
-            "  Blue Breath",
-            "  Green Breath",
-            "  Colorless Breath"
-        ],
-        "Exclusive": 0,
-        "Hero": "Tiki: Dragon Scion",
-        "Description": null,
-        "Might": 15
-    },
-    {
         "WeaponName": "Breath of Fog",
         "CanUseWeapon": [
             "Red Breath",
@@ -93,16 +41,6 @@
         "Hero": "Tiki: Dragon Scion",
         "Description": "Effective against dragon foes. At start of odd-numbered turns, restores 10 HP. If foe's Range = 2, calculates damage using the lower of foe's Def or Res.",
         "Might": 16
-    },
-    {
-        "WeaponName": "Silver Axe",
-        "CanUseWeapon": [
-            "Green Axe"
-        ],
-        "Exclusive": 0,
-        "Hero": "Anna: Commander",
-        "Description": null,
-        "Might": 11
     },
     {
         "WeaponName": "Nóatún",
@@ -175,19 +113,6 @@
         "Might": 16
     },
     {
-        "WeaponName": "Silver Bow",
-        "CanUseWeapon": [
-            "Red Bow",
-            "  Blue Bow",
-            "  Green Bow",
-            "  Colorless Bow"
-        ],
-        "Exclusive": 0,
-        "Hero": "Takumi: Wild Card",
-        "Description": "Effective against flying foes.",
-        "Might": 9
-    },
-    {
         "WeaponName": "Fujin Yumi",
         "CanUseWeapon": [
             "Red Bow",
@@ -219,42 +144,6 @@
         "Hero": "Cecilia: Etrurian General",
         "Description": "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
         "Might": 11
-    },
-    {
-        "WeaponName": "Silver Lance+",
-        "CanUseWeapon": [
-            "Blue Lance"
-        ],
-        "Exclusive": 0,
-        "Hero": "Effie: Army of One",
-        "Description": null,
-        "Might": 15
-    },
-    {
-        "WeaponName": "Silver Dagger",
-        "CanUseWeapon": [
-            "Red Dagger",
-            "  Blue Dagger",
-            "  Green Dagger",
-            "  Colorless Dagger"
-        ],
-        "Exclusive": 0,
-        "Hero": "Felicia: Maid Mayhem",
-        "Description": "After combat, if unit attacked, inflicts Def/Res-5 on foe through its next action.",
-        "Might": 7
-    },
-    {
-        "WeaponName": "Silver Dagger+",
-        "CanUseWeapon": [
-            "Red Dagger",
-            "  Blue Dagger",
-            "  Green Dagger",
-            "  Colorless Dagger"
-        ],
-        "Exclusive": 0,
-        "Hero": "Felicia: Maid Mayhem",
-        "Description": "After combat, if unit attacked, inflicts Def/Res-7 on foe through its next action.",
-        "Might": 10
     },
     {
         "WeaponName": "Felicia's Plate",
@@ -400,16 +289,6 @@
         "Hero": "Jakob: Devoted Servant",
         "Description": "If unit initiates combat, inflicts Atk/Spd/Def/Res-4 on foe during combat.&lt;br>Effect:\u3010Dagger \uff17\u3011&lt;br>&lt;br>\u3010Dagger \uff17\u3011&lt;br>After combat, if unit attacked, inflicts Def/Res-\uff17 on target and foes within 2 spaces of target through their next actions.",
         "Might": 14
-    },
-    {
-        "WeaponName": "Silver Sword+",
-        "CanUseWeapon": [
-            "Red Sword"
-        ],
-        "Exclusive": 0,
-        "Hero": "Laslow: Dancing Duelist",
-        "Description": null,
-        "Might": 15
     },
     {
         "WeaponName": "Laslow's Blade",

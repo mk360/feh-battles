@@ -5,6 +5,7 @@ import GameState from "../systems/state";
 import { MovementType, Stat, Stats } from "../types";
 import getAllies from "../utils/get-alies";
 import { WeaponType } from "../weapon";
+import { CombatOutcome } from "../combat";
 
 export function honeStat(thisArg: Skill, state: GameState, stat: Stat, buff: number) {
     const allies = getAllies(state, thisArg.entity);
@@ -75,5 +76,33 @@ export function elementalBoost(thisArg: Skill, target: Entity, buffs: Stats) {
             type: "CombatBuff",
             ...buffs
         });
+    }
+};
+
+export function renewal(thisArg: Skill, turnCount: number, periodicity: (turnCount: number) => boolean, amount: number) {
+    if (periodicity(turnCount)) {
+        thisArg.entity.addComponent({
+            type: "Heal",
+            value: amount
+        });
+    }
+}
+
+export function dagger(thisArg: Skill, state: GameState, combat: CombatOutcome, target: Entity, debuffs: Stats) {
+    if (/* unit attacked at least once */) {
+        const allies = getAllies(state, target);
+        target.addComponent({
+            type: "MapDebuff",
+            ...debuffs,
+        });
+
+        for (let ally of allies) {
+            if (HeroSystem.getDistance(ally, target) <= 2) {
+                ally.addComponent({
+                    type: "MapDebuff",
+                    ...debuffs,
+                });     
+            }
+        }
     }
 };

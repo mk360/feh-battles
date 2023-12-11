@@ -1,0 +1,3555 @@
+{
+   "Abel: The Panther": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 60,
+         "spd": 55,
+         "def": 40,
+         "res": 45
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 7,
+         "spd": 8,
+         "def": 8,
+         "res": 6
+      },
+      "movementType": "cavalry",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Alfonse: Prince of Askr": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 60,
+         "spd": 45,
+         "def": 55,
+         "res": 40
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 9,
+         "spd": 6,
+         "def": 8,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Alm: Hero of Prophecy": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 55,
+         "spd": 55,
+         "def": 50,
+         "res": 40
+      },
+      "stats": {
+         "hp": 21,
+         "atk": 9,
+         "spd": 6,
+         "def": 6,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Amelia: Rose of the War": {
+      "growthRates": {
+         "hp": 65,
+         "atk": 65,
+         "spd": 60,
+         "def": 60,
+         "res": 45
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 6,
+         "spd": 8,
+         "def": 9,
+         "res": 4
+      },
+      "movementType": "armored",
+      "color": "green",
+      "weaponType": "axe"
+   },
+   "Anna: Commander": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 50,
+         "spd": 65,
+         "def": 40,
+         "res": 50
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 7,
+         "spd": 10,
+         "def": 5,
+         "res": 6
+      },
+      "movementType": "infantry",
+      "color": "green",
+      "weaponType": "axe"
+   },
+   "Arden: Strong and Tough": {
+      "growthRates": {
+         "hp": 80,
+         "atk": 60,
+         "spd": 30,
+         "def": 65,
+         "res": 30
+      },
+      "stats": {
+         "hp": 25,
+         "atk": 10,
+         "spd": 3,
+         "def": 13,
+         "res": 3
+      },
+      "movementType": "armored",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Arthur: Hapless Hero": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 55,
+         "spd": 50,
+         "def": 50,
+         "res": 45
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 8,
+         "spd": 7,
+         "def": 8,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "green",
+      "weaponType": "axe"
+   },
+   "Arvis: Emperor of Flame": {
+      "growthRates": {
+         "hp": 35,
+         "atk": 60,
+         "spd": 55,
+         "def": 30,
+         "res": 60
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 8,
+         "spd": 7,
+         "def": 4,
+         "res": 7
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "tome"
+   },
+   "Athena: Borderland Sword": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 55,
+         "spd": 65,
+         "def": 45,
+         "res": 45
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 7,
+         "spd": 10,
+         "def": 8,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Ayra: Astra's Wielder": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 60,
+         "spd": 60,
+         "def": 55,
+         "res": 40
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 7,
+         "spd": 11,
+         "def": 7,
+         "res": 4
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Azama: Carefree Monk": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 40,
+         "spd": 45,
+         "def": 55,
+         "res": 45
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 4,
+         "spd": 7,
+         "def": 8,
+         "res": 6
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "staff"
+   },
+   "Azura: Lady of Ballads": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 60,
+         "spd": 60,
+         "def": 40,
+         "res": 50
+      },
+      "stats": {
+         "hp": 16,
+         "atk": 6,
+         "spd": 8,
+         "def": 3,
+         "res": 6
+      },
+      "movementType": "infantry",
+      "color": "green",
+      "weaponType": "axe"
+   },
+   "Azura: Lady of the Lake": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 60,
+         "spd": 60,
+         "def": 40,
+         "res": 50
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 5,
+         "spd": 7,
+         "def": 4,
+         "res": 6
+      },
+      "movementType": "infantry",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Barst: The Hatchet": {
+      "growthRates": {
+         "hp": 60,
+         "atk": 55,
+         "spd": 55,
+         "def": 55,
+         "res": 30
+      },
+      "stats": {
+         "hp": 20,
+         "atk": 9,
+         "spd": 8,
+         "def": 6,
+         "res": 4
+      },
+      "movementType": "infantry",
+      "color": "green",
+      "weaponType": "axe"
+   },
+   "Bartre: Fearless Warrior": {
+      "growthRates": {
+         "hp": 65,
+         "atk": 60,
+         "spd": 45,
+         "def": 60,
+         "res": 25
+      },
+      "stats": {
+         "hp": 21,
+         "atk": 10,
+         "spd": 6,
+         "def": 7,
+         "res": 3
+      },
+      "movementType": "infantry",
+      "color": "green",
+      "weaponType": "axe"
+   },
+   "Berkut: Prideful Prince": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 60,
+         "spd": 40,
+         "def": 55,
+         "res": 40
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 8,
+         "spd": 5,
+         "def": 7,
+         "res": 7
+      },
+      "movementType": "cavalry",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Beruka: Quiet Assassin": {
+      "growthRates": {
+         "hp": 60,
+         "atk": 50,
+         "spd": 40,
+         "def": 65,
+         "res": 40
+      },
+      "stats": {
+         "hp": 20,
+         "atk": 7,
+         "spd": 6,
+         "def": 9,
+         "res": 5
+      },
+      "movementType": "flier",
+      "color": "green",
+      "weaponType": "axe"
+   },
+   "Black Knight: Sinister General": {
+      "growthRates": {
+         "hp": 60,
+         "atk": 55,
+         "spd": 60,
+         "def": 60,
+         "res": 30
+      },
+      "stats": {
+         "hp": 22,
+         "atk": 10,
+         "spd": 8,
+         "def": 9,
+         "res": 5
+      },
+      "movementType": "armored",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Boey: Skillful Survivor": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 50,
+         "spd": 50,
+         "def": 55,
+         "res": 30
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 7,
+         "spd": 5,
+         "def": 8,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "green",
+      "weaponType": "tome"
+   },
+   "Caeda: Talys's Bride": {
+      "growthRates": {
+         "hp": 40,
+         "atk": 50,
+         "spd": 65,
+         "def": 35,
+         "res": 50
+      },
+      "stats": {
+         "hp": 16,
+         "atk": 7,
+         "spd": 9,
+         "def": 4,
+         "res": 8
+      },
+      "movementType": "infantry",
+      "color": "blue",
+      "weaponType": "tome"
+   },
+   "Caeda: Talys's Heart": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 45,
+         "spd": 65,
+         "def": 45,
+         "res": 55
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 6,
+         "spd": 9,
+         "def": 5,
+         "res": 10
+      },
+      "movementType": "flier",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Cain: The Bull": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 55,
+         "spd": 60,
+         "def": 45,
+         "res": 35
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 8,
+         "spd": 6,
+         "def": 8,
+         "res": 6
+      },
+      "movementType": "cavalry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Camilla: Bewitching Beauty": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 50,
+         "spd": 55,
+         "def": 50,
+         "res": 55
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 8,
+         "spd": 8,
+         "def": 6,
+         "res": 7
+      },
+      "movementType": "flier",
+      "color": "green",
+      "weaponType": "axe"
+   },
+   "Camilla: Spring Princess": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 60,
+         "spd": 45,
+         "def": 50,
+         "res": 35
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 9,
+         "spd": 6,
+         "def": 8,
+         "res": 4
+      },
+      "movementType": "flier",
+      "color": "green",
+      "weaponType": "tome"
+   },
+   "Camus: Sable Knight": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 55,
+         "spd": 55,
+         "def": 55,
+         "res": 30
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 8,
+         "spd": 9,
+         "def": 7,
+         "res": 4
+      },
+      "movementType": "cavalry",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Catria: Middle Whitewing": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 55,
+         "spd": 55,
+         "def": 50,
+         "res": 45
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 7,
+         "spd": 10,
+         "def": 7,
+         "res": 6
+      },
+      "movementType": "flier",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Cecilia: Etrurian General": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 55,
+         "spd": 45,
+         "def": 40,
+         "res": 50
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 8,
+         "spd": 6,
+         "def": 5,
+         "res": 7
+      },
+      "movementType": "cavalry",
+      "color": "green",
+      "weaponType": "tome"
+   },
+   "Celica: Caring Princess": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 55,
+         "spd": 60,
+         "def": 40,
+         "res": 35
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 8,
+         "spd": 7,
+         "def": 5,
+         "res": 7
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "tome"
+   },
+   "Charlotte: Money Maiden": {
+      "growthRates": {
+         "hp": 60,
+         "atk": 60,
+         "spd": 55,
+         "def": 45,
+         "res": 35
+      },
+      "stats": {
+         "hp": 20,
+         "atk": 10,
+         "spd": 8,
+         "def": 5,
+         "res": 4
+      },
+      "movementType": "infantry",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Cherche: Wyvern Friend": {
+      "growthRates": {
+         "hp": 60,
+         "atk": 65,
+         "spd": 45,
+         "def": 55,
+         "res": 30
+      },
+      "stats": {
+         "hp": 20,
+         "atk": 10,
+         "spd": 6,
+         "def": 8,
+         "res": 3
+      },
+      "movementType": "flier",
+      "color": "green",
+      "weaponType": "axe"
+   },
+   "Chrom: Exalted Prince": {
+      "growthRates": {
+         "hp": 60,
+         "atk": 65,
+         "spd": 45,
+         "def": 55,
+         "res": 30
+      },
+      "stats": {
+         "hp": 21,
+         "atk": 9,
+         "spd": 6,
+         "def": 7,
+         "res": 4
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Chrom: Spring Exalt": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 60,
+         "spd": 55,
+         "def": 50,
+         "res": 35
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 9,
+         "spd": 8,
+         "def": 6,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "green",
+      "weaponType": "axe"
+   },
+   "Clair: Highborn Flier": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 45,
+         "spd": 65,
+         "def": 45,
+         "res": 55
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 7,
+         "spd": 8,
+         "def": 5,
+         "res": 9
+      },
+      "movementType": "flier",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Clarine: Refined Noble": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 45,
+         "spd": 55,
+         "def": 40,
+         "res": 50
+      },
+      "stats": {
+         "hp": 16,
+         "atk": 6,
+         "spd": 9,
+         "def": 5,
+         "res": 7
+      },
+      "movementType": "cavalry",
+      "color": "colorless",
+      "weaponType": "staff"
+   },
+   "Clarisse: Sniper in the Dark": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 55,
+         "spd": 60,
+         "def": 45,
+         "res": 35
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 7,
+         "spd": 8,
+         "def": 6,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "bow"
+   },
+   "Clive: Idealistic Knight": {
+      "growthRates": {
+         "hp": 60,
+         "atk": 55,
+         "spd": 45,
+         "def": 55,
+         "res": 35
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 9,
+         "spd": 6,
+         "def": 8,
+         "res": 4
+      },
+      "movementType": "cavalry",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Cordelia: Knight Paragon": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 60,
+         "spd": 60,
+         "def": 40,
+         "res": 45
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 9,
+         "spd": 9,
+         "def": 5,
+         "res": 6
+      },
+      "movementType": "flier",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Cordelia: Perfect Bride": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 60,
+         "spd": 60,
+         "def": 35,
+         "res": 40
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 9,
+         "spd": 9,
+         "def": 4,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "bow"
+   },
+   "Corrin: Fateful Prince": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 55,
+         "spd": 55,
+         "def": 50,
+         "res": 45
+      },
+      "stats": {
+         "hp": 20,
+         "atk": 8,
+         "spd": 8,
+         "def": 6,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Corrin: Fateful Princess": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 45,
+         "spd": 65,
+         "def": 60,
+         "res": 35
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 8,
+         "spd": 6,
+         "def": 8,
+         "res": 6
+      },
+      "movementType": "infantry",
+      "color": "blue",
+      "weaponType": "breath"
+   },
+   "Corrin: Novice Vacationer": {
+      "growthRates": {
+         "hp": 40,
+         "atk": 55,
+         "spd": 60,
+         "def": 40,
+         "res": 45
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 7,
+         "spd": 8,
+         "def": 5,
+         "res": 7
+      },
+      "movementType": "flier",
+      "color": "blue",
+      "weaponType": "tome"
+   },
+   "Deirdre: Lady of the Forest": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 55,
+         "spd": 50,
+         "def": 30,
+         "res": 60
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 9,
+         "spd": 6,
+         "def": 3,
+         "res": 9
+      },
+      "movementType": "infantry",
+      "color": "green",
+      "weaponType": "tome"
+   },
+   "Delthea: Free Spirit": {
+      "growthRates": {
+         "hp": 40,
+         "atk": 60,
+         "spd": 60,
+         "def": 25,
+         "res": 55
+      },
+      "stats": {
+         "hp": 16,
+         "atk": 10,
+         "spd": 8,
+         "def": 3,
+         "res": 7
+      },
+      "movementType": "infantry",
+      "color": "blue",
+      "weaponType": "tome"
+   },
+   "Donnel: Village Hero": {
+      "growthRates": {
+         "hp": 60,
+         "atk": 65,
+         "spd": 55,
+         "def": 60,
+         "res": 45
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 7,
+         "spd": 5,
+         "def": 6,
+         "res": 4
+      },
+      "movementType": "infantry",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Dorcas: Serene Warrior": {
+      "growthRates": {
+         "hp": 60,
+         "atk": 60,
+         "spd": 40,
+         "def": 60,
+         "res": 45
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 9,
+         "spd": 6,
+         "def": 9,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "green",
+      "weaponType": "axe"
+   },
+   "Draug: Gentle Giant": {
+      "growthRates": {
+         "hp": 60,
+         "atk": 50,
+         "spd": 60,
+         "def": 60,
+         "res": 35
+      },
+      "stats": {
+         "hp": 24,
+         "atk": 8,
+         "spd": 6,
+         "def": 13,
+         "res": 3
+      },
+      "movementType": "armored",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Effie: Army of One": {
+      "growthRates": {
+         "hp": 65,
+         "atk": 65,
+         "spd": 40,
+         "def": 50,
+         "res": 45
+      },
+      "stats": {
+         "hp": 22,
+         "atk": 12,
+         "spd": 5,
+         "def": 11,
+         "res": 4
+      },
+      "movementType": "armored",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Eirika: Restoration Lady": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 45,
+         "spd": 60,
+         "def": 45,
+         "res": 50
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 7,
+         "spd": 9,
+         "def": 7,
+         "res": 6
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Eldigan: Lionheart": {
+      "growthRates": {
+         "hp": 60,
+         "atk": 55,
+         "spd": 45,
+         "def": 60,
+         "res": 30
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 8,
+         "spd": 5,
+         "def": 8,
+         "res": 6
+      },
+      "movementType": "cavalry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Elincia: Lost Princess": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 60,
+         "spd": 60,
+         "def": 45,
+         "res": 45
+      },
+      "stats": {
+         "hp": 16,
+         "atk": 8,
+         "spd": 10,
+         "def": 5,
+         "res": 8
+      },
+      "movementType": "flier",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Elise: Budding Flower": {
+      "growthRates": {
+         "hp": 35,
+         "atk": 55,
+         "spd": 55,
+         "def": 35,
+         "res": 55
+      },
+      "stats": {
+         "hp": 15,
+         "atk": 8,
+         "spd": 8,
+         "def": 4,
+         "res": 8
+      },
+      "movementType": "cavalry",
+      "color": "colorless",
+      "weaponType": "staff"
+   },
+   "Elise: Tropical Flower": {
+      "growthRates": {
+         "hp": 40,
+         "atk": 60,
+         "spd": 60,
+         "def": 35,
+         "res": 45
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 10,
+         "spd": 8,
+         "def": 3,
+         "res": 6
+      },
+      "movementType": "infantry",
+      "color": "green",
+      "weaponType": "tome"
+   },
+   "Eliwood: Knight of Lycia": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 55,
+         "spd": 50,
+         "def": 40,
+         "res": 55
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 7,
+         "spd": 8,
+         "def": 6,
+         "res": 8
+      },
+      "movementType": "cavalry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Ephraim: Restoration Lord": {
+      "growthRates": {
+         "hp": 60,
+         "atk": 60,
+         "spd": 45,
+         "def": 55,
+         "res": 35
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 9,
+         "spd": 6,
+         "def": 8,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Est: Junior Whitewing": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 60,
+         "spd": 50,
+         "def": 45,
+         "res": 55
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 9,
+         "spd": 8,
+         "def": 5,
+         "res": 8
+      },
+      "movementType": "flier",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Fae: Divine Dragon": {
+      "growthRates": {
+         "hp": 70,
+         "atk": 65,
+         "spd": 55,
+         "def": 45,
+         "res": 50
+      },
+      "stats": {
+         "hp": 16,
+         "atk": 5,
+         "spd": 4,
+         "def": 6,
+         "res": 8
+      },
+      "movementType": "infantry",
+      "color": "green",
+      "weaponType": "breath"
+   },
+   "Faye: Devoted Heart": {
+      "growthRates": {
+         "hp": 60,
+         "atk": 55,
+         "spd": 50,
+         "def": 50,
+         "res": 55
+      },
+      "stats": {
+         "hp": 16,
+         "atk": 6,
+         "spd": 3,
+         "def": 4,
+         "res": 7
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "bow"
+   },
+   "Felicia: Maid Mayhem": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 40,
+         "spd": 60,
+         "def": 35,
+         "res": 60
+      },
+      "stats": {
+         "hp": 15,
+         "atk": 6,
+         "spd": 11,
+         "def": 3,
+         "res": 9
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "dagger"
+   },
+   "Fir: Sword Student": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 45,
+         "spd": 60,
+         "def": 45,
+         "res": 55
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 6,
+         "spd": 10,
+         "def": 5,
+         "res": 7
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Florina: Lovely Flier": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 50,
+         "spd": 45,
+         "def": 45,
+         "res": 60
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 7,
+         "spd": 8,
+         "def": 6,
+         "res": 8
+      },
+      "movementType": "flier",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Frederick: Horizon Watcher": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 55,
+         "spd": 55,
+         "def": 50,
+         "res": 30
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 8,
+         "spd": 7,
+         "def": 6,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "dagger"
+   },
+   "Frederick: Polite Knight": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 60,
+         "spd": 45,
+         "def": 65,
+         "res": 25
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 9,
+         "spd": 6,
+         "def": 8,
+         "res": 4
+      },
+      "movementType": "cavalry",
+      "color": "green",
+      "weaponType": "axe"
+   },
+   "Gaius: Candy Stealer": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 50,
+         "spd": 60,
+         "def": 40,
+         "res": 35
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 7,
+         "spd": 10,
+         "def": 5,
+         "res": 4
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "dagger"
+   },
+   "Gaius: Thief Exposed": {
+      "growthRates": {
+         "hp": 40,
+         "atk": 50,
+         "spd": 65,
+         "def": 35,
+         "res": 50
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 8,
+         "spd": 9,
+         "def": 4,
+         "res": 6
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "bow"
+   },
+   "Genny: Endearing Ally": {
+      "growthRates": {
+         "hp": 35,
+         "atk": 60,
+         "spd": 45,
+         "def": 40,
+         "res": 60
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 9,
+         "spd": 6,
+         "def": 4,
+         "res": 8
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "staff"
+   },
+   "Gordin: Altean Archer": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 55,
+         "spd": 45,
+         "def": 55,
+         "res": 30
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 7,
+         "spd": 6,
+         "def": 8,
+         "res": 4
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "bow"
+   },
+   "Gray: Wry Comrade": {
+      "growthRates": {
+         "hp": 60,
+         "atk": 65,
+         "spd": 60,
+         "def": 55,
+         "res": 45
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 7,
+         "spd": 6,
+         "def": 6,
+         "res": 3
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Gunter: Inveterate Soldier": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 50,
+         "spd": 40,
+         "def": 50,
+         "res": 30
+      },
+      "stats": {
+         "hp": 21,
+         "atk": 10,
+         "spd": 7,
+         "def": 11,
+         "res": 5
+      },
+      "movementType": "cavalry",
+      "color": "green",
+      "weaponType": "axe"
+   },
+   "Gwendolyn: Adorable Knight": {
+      "growthRates": {
+         "hp": 60,
+         "atk": 50,
+         "spd": 45,
+         "def": 60,
+         "res": 50
+      },
+      "stats": {
+         "hp": 23,
+         "atk": 8,
+         "spd": 5,
+         "def": 12,
+         "res": 6
+      },
+      "movementType": "armored",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Hana: Focused Samurai": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 60,
+         "spd": 60,
+         "def": 40,
+         "res": 50
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 9,
+         "spd": 10,
+         "def": 6,
+         "res": 4
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Hawkeye: Desert Guardian": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 55,
+         "spd": 40,
+         "def": 50,
+         "res": 55
+      },
+      "stats": {
+         "hp": 21,
+         "atk": 9,
+         "spd": 5,
+         "def": 6,
+         "res": 6
+      },
+      "movementType": "infantry",
+      "color": "green",
+      "weaponType": "axe"
+   },
+   "Hector: General of Ostia": {
+      "growthRates": {
+         "hp": 65,
+         "atk": 60,
+         "spd": 45,
+         "def": 60,
+         "res": 35
+      },
+      "stats": {
+         "hp": 24,
+         "atk": 10,
+         "spd": 5,
+         "def": 11,
+         "res": 4
+      },
+      "movementType": "armored",
+      "color": "green",
+      "weaponType": "axe"
+   },
+   "Henry: Happy Vampire": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 55,
+         "spd": 55,
+         "def": 50,
+         "res": 55
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 9,
+         "spd": 10,
+         "def": 4,
+         "res": 12
+      },
+      "movementType": "armored",
+      "color": "green",
+      "weaponType": "tome"
+   },
+   "Henry: Twisted Mind": {
+      "growthRates": {
+         "hp": 60,
+         "atk": 40,
+         "spd": 40,
+         "def": 55,
+         "res": 45
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 6,
+         "spd": 5,
+         "def": 8,
+         "res": 6
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "tome"
+   },
+   "Hinata: Wild Samurai": {
+      "growthRates": {
+         "hp": 60,
+         "atk": 55,
+         "spd": 45,
+         "def": 60,
+         "res": 35
+      },
+      "stats": {
+         "hp": 21,
+         "atk": 8,
+         "spd": 5,
+         "def": 10,
+         "res": 3
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Hinoka: Warrior Princess": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 65,
+         "spd": 55,
+         "def": 45,
+         "res": 40
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 7,
+         "spd": 8,
+         "def": 6,
+         "res": 7
+      },
+      "movementType": "flier",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Ike: Brave Mercenary": {
+      "growthRates": {
+         "hp": 60,
+         "atk": 60,
+         "spd": 50,
+         "def": 60,
+         "res": 35
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 10,
+         "spd": 6,
+         "def": 9,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "green",
+      "weaponType": "axe"
+   },
+   "Ike: Young Mercenary": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 60,
+         "spd": 55,
+         "def": 55,
+         "res": 30
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 9,
+         "spd": 7,
+         "def": 8,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Inigo: Indigo Dancer": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 50,
+         "spd": 60,
+         "def": 40,
+         "res": 40
+      },
+      "stats": {
+         "hp": 15,
+         "atk": 6,
+         "spd": 7,
+         "def": 5,
+         "res": 3
+      },
+      "movementType": "infantry",
+      "color": "green",
+      "weaponType": "tome"
+   },
+   "Innes: Regal Strategician": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 55,
+         "spd": 60,
+         "def": 25,
+         "res": 55
+      },
+      "stats": {
+         "hp": 16,
+         "atk": 9,
+         "spd": 8,
+         "def": 4,
+         "res": 7
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "bow"
+   },
+   "Jaffar: Angel of Death": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 45,
+         "spd": 55,
+         "def": 45,
+         "res": 40
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 7,
+         "spd": 9,
+         "def": 6,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "dagger"
+   },
+   "Jagen: Veteran Knight": {
+      "growthRates": {
+         "hp": 40,
+         "atk": 45,
+         "spd": 40,
+         "def": 40,
+         "res": 55
+      },
+      "stats": {
+         "hp": 20,
+         "atk": 8,
+         "spd": 7,
+         "def": 8,
+         "res": 11
+      },
+      "movementType": "cavalry",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Jakob: Devoted Monster": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 60,
+         "spd": 40,
+         "def": 55,
+         "res": 55
+      },
+      "stats": {
+         "hp": 20,
+         "atk": 9,
+         "spd": 6,
+         "def": 9,
+         "res": 8
+      },
+      "movementType": "armored",
+      "color": "colorless",
+      "weaponType": "bow"
+   },
+   "Jakob: Devoted Servant": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 50,
+         "spd": 50,
+         "def": 45,
+         "res": 45
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 7,
+         "spd": 9,
+         "def": 6,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "dagger"
+   },
+   "Jeorge: Perfect Shot": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 55,
+         "spd": 55,
+         "def": 45,
+         "res": 40
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 8,
+         "spd": 8,
+         "def": 5,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "bow"
+   },
+   "Joshua: Tempest King": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 55,
+         "spd": 60,
+         "def": 50,
+         "res": 50
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 7,
+         "spd": 9,
+         "def": 8,
+         "res": 6
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Julia: Naga's Blood": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 60,
+         "spd": 45,
+         "def": 30,
+         "res": 55
+      },
+      "stats": {
+         "hp": 16,
+         "atk": 9,
+         "spd": 7,
+         "def": 4,
+         "res": 8
+      },
+      "movementType": "infantry",
+      "color": "green",
+      "weaponType": "tome"
+   },
+   "Kagero: Honorable Ninja": {
+      "growthRates": {
+         "hp": 35,
+         "atk": 60,
+         "spd": 55,
+         "def": 40,
+         "res": 50
+      },
+      "stats": {
+         "hp": 16,
+         "atk": 9,
+         "spd": 8,
+         "def": 5,
+         "res": 6
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "dagger"
+   },
+   "Karel: Sword Demon": {
+      "growthRates": {
+         "hp": 65,
+         "atk": 50,
+         "spd": 60,
+         "def": 45,
+         "res": 35
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 8,
+         "spd": 9,
+         "def": 6,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Katarina: Wayward One": {
+      "growthRates": {
+         "hp": 40,
+         "atk": 60,
+         "spd": 60,
+         "def": 25,
+         "res": 55
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 6,
+         "spd": 8,
+         "def": 5,
+         "res": 8
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "tome"
+   },
+   "Klein: Silver Nobleman": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 50,
+         "spd": 60,
+         "def": 35,
+         "res": 45
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 9,
+         "spd": 7,
+         "def": 5,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "bow"
+   },
+   "Lachesis: Lionheart's Sister": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 60,
+         "spd": 40,
+         "def": 40,
+         "res": 50
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 6,
+         "spd": 8,
+         "def": 5,
+         "res": 8
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "staff"
+   },
+   "Laslow: Dancing Duelist": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 60,
+         "spd": 45,
+         "def": 55,
+         "res": 40
+      },
+      "stats": {
+         "hp": 20,
+         "atk": 9,
+         "spd": 7,
+         "def": 6,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Legion: Masked Maniac": {
+      "growthRates": {
+         "hp": 60,
+         "atk": 60,
+         "spd": 60,
+         "def": 40,
+         "res": 35
+      },
+      "stats": {
+         "hp": 20,
+         "atk": 10,
+         "spd": 9,
+         "def": 5,
+         "res": 3
+      },
+      "movementType": "infantry",
+      "color": "green",
+      "weaponType": "axe"
+   },
+   "Leo: Seashore's Prince": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 55,
+         "spd": 50,
+         "def": 25,
+         "res": 65
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 8,
+         "spd": 5,
+         "def": 6,
+         "res": 7
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "tome"
+   },
+   "Leo: Sorcerous Prince": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 50,
+         "spd": 40,
+         "def": 45,
+         "res": 50
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 7,
+         "spd": 5,
+         "def": 6,
+         "res": 8
+      },
+      "movementType": "cavalry",
+      "color": "red",
+      "weaponType": "tome"
+   },
+   "Leon: True of Heart": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 60,
+         "spd": 55,
+         "def": 50,
+         "res": 25
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 8,
+         "spd": 6,
+         "def": 8,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "bow"
+   },
+   "Lilina: Delightful Noble": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 65,
+         "spd": 45,
+         "def": 35,
+         "res": 50
+      },
+      "stats": {
+         "hp": 16,
+         "atk": 9,
+         "spd": 6,
+         "def": 4,
+         "res": 9
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "tome"
+   },
+   "Linde: Light Mage": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 60,
+         "spd": 60,
+         "def": 25,
+         "res": 50
+      },
+      "stats": {
+         "hp": 16,
+         "atk": 9,
+         "spd": 10,
+         "def": 4,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "blue",
+      "weaponType": "tome"
+   },
+   "Lissa: Sprightly Cleric": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 45,
+         "spd": 45,
+         "def": 50,
+         "res": 50
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 7,
+         "spd": 6,
+         "def": 6,
+         "res": 8
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "staff"
+   },
+   "Lloyd: White Wolf": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 55,
+         "spd": 60,
+         "def": 35,
+         "res": 50
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 8,
+         "spd": 9,
+         "def": 5,
+         "res": 8
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Lon'qu: Solitary Blade": {
+      "growthRates": {
+         "hp": 60,
+         "atk": 50,
+         "spd": 65,
+         "def": 40,
+         "res": 40
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 7,
+         "spd": 11,
+         "def": 5,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Lucina: Brave Princess": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 60,
+         "spd": 60,
+         "def": 45,
+         "res": 35
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 8,
+         "spd": 10,
+         "def": 8,
+         "res": 4
+      },
+      "movementType": "infantry",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Lucina: Future Witness": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 60,
+         "spd": 60,
+         "def": 45,
+         "res": 35
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 8,
+         "spd": 10,
+         "def": 6,
+         "res": 4
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Lucina: Spring Exalt": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 50,
+         "spd": 60,
+         "def": 40,
+         "res": 45
+      },
+      "stats": {
+         "hp": 16,
+         "atk": 7,
+         "spd": 10,
+         "def": 5,
+         "res": 6
+      },
+      "movementType": "infantry",
+      "color": "blue",
+      "weaponType": "tome"
+   },
+   "Lucius: The Light": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 60,
+         "spd": 50,
+         "def": 25,
+         "res": 60
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 6,
+         "spd": 8,
+         "def": 3,
+         "res": 9
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "staff"
+   },
+   "Lukas: Sharp Soldier": {
+      "growthRates": {
+         "hp": 60,
+         "atk": 60,
+         "spd": 40,
+         "def": 65,
+         "res": 30
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 9,
+         "spd": 5,
+         "def": 10,
+         "res": 4
+      },
+      "movementType": "infantry",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Luke: Rowdy Squire": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 60,
+         "spd": 50,
+         "def": 50,
+         "res": 35
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 8,
+         "spd": 6,
+         "def": 8,
+         "res": 5
+      },
+      "movementType": "cavalry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Lute: Prodigy": {
+      "growthRates": {
+         "hp": 40,
+         "atk": 60,
+         "spd": 55,
+         "def": 30,
+         "res": 60
+      },
+      "stats": {
+         "hp": 16,
+         "atk": 10,
+         "spd": 8,
+         "def": 3,
+         "res": 8
+      },
+      "movementType": "infantry",
+      "color": "blue",
+      "weaponType": "tome"
+   },
+   "Lyn: Brave Lady": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 60,
+         "spd": 60,
+         "def": 30,
+         "res": 50
+      },
+      "stats": {
+         "hp": 16,
+         "atk": 7,
+         "spd": 9,
+         "def": 5,
+         "res": 6
+      },
+      "movementType": "cavalry",
+      "color": "colorless",
+      "weaponType": "bow"
+   },
+   "Lyn: Bride of the Plains": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 50,
+         "spd": 55,
+         "def": 40,
+         "res": 45
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 6,
+         "spd": 10,
+         "def": 6,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "staff"
+   },
+   "Lyn: Lady of the Plains": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 50,
+         "spd": 60,
+         "def": 45,
+         "res": 55
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 6,
+         "spd": 11,
+         "def": 7,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Mae: Bundle of Energy": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 60,
+         "spd": 55,
+         "def": 30,
+         "res": 50
+      },
+      "stats": {
+         "hp": 16,
+         "atk": 10,
+         "spd": 7,
+         "def": 3,
+         "res": 8
+      },
+      "movementType": "infantry",
+      "color": "blue",
+      "weaponType": "tome"
+   },
+   "Marth: Altean Prince": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 55,
+         "spd": 60,
+         "def": 50,
+         "res": 40
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 7,
+         "spd": 8,
+         "def": 7,
+         "res": 6
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Marth: Enigmatic Blade": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 60,
+         "spd": 60,
+         "def": 45,
+         "res": 35
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 8,
+         "spd": 10,
+         "def": 6,
+         "res": 4
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Mathilda: Legendary Knight": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 50,
+         "spd": 55,
+         "def": 40,
+         "res": 60
+      },
+      "stats": {
+         "hp": 16,
+         "atk": 7,
+         "spd": 8,
+         "def": 7,
+         "res": 8
+      },
+      "movementType": "cavalry",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Matthew: Faithful Spy": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 45,
+         "spd": 55,
+         "def": 55,
+         "res": 30
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 6,
+         "spd": 10,
+         "def": 6,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "dagger"
+   },
+   "Merric: Wind Mage": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 45,
+         "spd": 55,
+         "def": 50,
+         "res": 35
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 7,
+         "spd": 8,
+         "def": 6,
+         "res": 4
+      },
+      "movementType": "infantry",
+      "color": "green",
+      "weaponType": "tome"
+   },
+   "Mia: Lady of Blades": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 55,
+         "spd": 65,
+         "def": 50,
+         "res": 45
+      },
+      "stats": {
+         "hp": 16,
+         "atk": 8,
+         "spd": 12,
+         "def": 6,
+         "res": 6
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Michalis: Ambitious King": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 60,
+         "spd": 45,
+         "def": 60,
+         "res": 35
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 8,
+         "spd": 7,
+         "def": 9,
+         "res": 4
+      },
+      "movementType": "flier",
+      "color": "green",
+      "weaponType": "axe"
+   },
+   "Minerva: Red Dragoon": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 55,
+         "spd": 55,
+         "def": 55,
+         "res": 40
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 7,
+         "spd": 9,
+         "def": 8,
+         "res": 5
+      },
+      "movementType": "flier",
+      "color": "green",
+      "weaponType": "axe"
+   },
+   "Mist: Helpful Sister": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 45,
+         "spd": 50,
+         "def": 35,
+         "res": 60
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 8,
+         "spd": 6,
+         "def": 5,
+         "res": 8
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "staff"
+   },
+   "Narcian: Wyvern General": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 50,
+         "spd": 50,
+         "def": 55,
+         "res": 45
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 7,
+         "spd": 7,
+         "def": 8,
+         "res": 7
+      },
+      "movementType": "flier",
+      "color": "green",
+      "weaponType": "axe"
+   },
+   "Navarre: Scarlet Sword": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 55,
+         "spd": 60,
+         "def": 40,
+         "res": 45
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 7,
+         "spd": 11,
+         "def": 6,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Nephenee: Fierce Halberdier": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 55,
+         "spd": 60,
+         "def": 60,
+         "res": 35
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 7,
+         "spd": 9,
+         "def": 8,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Niles: Cruel to Be Kind": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 45,
+         "spd": 60,
+         "def": 30,
+         "res": 60
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 6,
+         "spd": 8,
+         "def": 4,
+         "res": 8
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "bow"
+   },
+   "Ninian: Oracle of Destiny": {
+      "growthRates": {
+         "hp": 60,
+         "atk": 45,
+         "spd": 60,
+         "def": 40,
+         "res": 50
+      },
+      "stats": {
+         "hp": 16,
+         "atk": 5,
+         "spd": 7,
+         "def": 6,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "blue",
+      "weaponType": "breath"
+   },
+   "Nino: Pious Mage": {
+      "growthRates": {
+         "hp": 40,
+         "atk": 60,
+         "spd": 60,
+         "def": 35,
+         "res": 45
+      },
+      "stats": {
+         "hp": 16,
+         "atk": 7,
+         "spd": 10,
+         "def": 4,
+         "res": 7
+      },
+      "movementType": "infantry",
+      "color": "green",
+      "weaponType": "tome"
+   },
+   "Nowi: Eternal Witch": {
+      "growthRates": {
+         "hp": 40,
+         "atk": 60,
+         "spd": 60,
+         "def": 35,
+         "res": 45
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 8,
+         "spd": 6,
+         "def": 5,
+         "res": 8
+      },
+      "movementType": "flier",
+      "color": "red",
+      "weaponType": "tome"
+   },
+   "Nowi: Eternal Youth": {
+      "growthRates": {
+         "hp": 65,
+         "atk": 65,
+         "spd": 50,
+         "def": 55,
+         "res": 50
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 6,
+         "spd": 5,
+         "def": 6,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "blue",
+      "weaponType": "breath"
+   },
+   "Oboro: Fierce Fighter": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 55,
+         "spd": 45,
+         "def": 60,
+         "res": 45
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 8,
+         "spd": 7,
+         "def": 9,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Odin: Potent Force": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 40,
+         "spd": 55,
+         "def": 45,
+         "res": 45
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 5,
+         "spd": 8,
+         "def": 6,
+         "res": 6
+      },
+      "movementType": "infantry",
+      "color": "blue",
+      "weaponType": "tome"
+   },
+   "Ogma: Loyal Blade": {
+      "growthRates": {
+         "hp": 60,
+         "atk": 65,
+         "spd": 55,
+         "def": 50,
+         "res": 25
+      },
+      "stats": {
+         "hp": 21,
+         "atk": 7,
+         "spd": 10,
+         "def": 6,
+         "res": 3
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Olivia: Blushing Beauty": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 50,
+         "spd": 60,
+         "def": 50,
+         "res": 50
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 6,
+         "spd": 7,
+         "def": 5,
+         "res": 4
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Olivia: Festival Dancer": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 50,
+         "spd": 60,
+         "def": 30,
+         "res": 55
+      },
+      "stats": {
+         "hp": 15,
+         "atk": 6,
+         "spd": 8,
+         "def": 3,
+         "res": 4
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "dagger"
+   },
+   "Olwen: Blue Mage Knight": {
+      "growthRates": {
+         "hp": 40,
+         "atk": 45,
+         "spd": 60,
+         "def": 35,
+         "res": 55
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 7,
+         "spd": 8,
+         "def": 5,
+         "res": 6
+      },
+      "movementType": "cavalry",
+      "color": "blue",
+      "weaponType": "tome"
+   },
+   "Oscar: Agile Horseman": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 60,
+         "spd": 60,
+         "def": 45,
+         "res": 35
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 7,
+         "spd": 8,
+         "def": 7,
+         "res": 6
+      },
+      "movementType": "cavalry",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Palla: Eldest Whitewing": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 55,
+         "spd": 50,
+         "def": 50,
+         "res": 45
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 7,
+         "spd": 9,
+         "def": 6,
+         "res": 7
+      },
+      "movementType": "flier",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Priscilla: Delicate Princess": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 50,
+         "spd": 50,
+         "def": 35,
+         "res": 55
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 7,
+         "spd": 7,
+         "def": 4,
+         "res": 8
+      },
+      "movementType": "cavalry",
+      "color": "colorless",
+      "weaponType": "staff"
+   },
+   "Raigh: Dark Child": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 55,
+         "spd": 50,
+         "def": 40,
+         "res": 50
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 8,
+         "spd": 7,
+         "def": 5,
+         "res": 7
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "tome"
+   },
+   "Raven: Peerless Fighter": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 60,
+         "spd": 60,
+         "def": 45,
+         "res": 40
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 8,
+         "spd": 9,
+         "def": 6,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "green",
+      "weaponType": "axe"
+   },
+   "Rebecca: Wildflower": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 50,
+         "spd": 60,
+         "def": 35,
+         "res": 50
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 7,
+         "spd": 8,
+         "def": 6,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "bow"
+   },
+   "Reinhardt: Thunder's Fist": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 55,
+         "spd": 40,
+         "def": 50,
+         "res": 40
+      },
+      "stats": {
+         "hp": 16,
+         "atk": 8,
+         "spd": 6,
+         "def": 5,
+         "res": 8
+      },
+      "movementType": "cavalry",
+      "color": "blue",
+      "weaponType": "tome"
+   },
+   "Robin: High Deliverer": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 50,
+         "spd": 50,
+         "def": 50,
+         "res": 40
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 7,
+         "spd": 7,
+         "def": 7,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "blue",
+      "weaponType": "tome"
+   },
+   "Robin: Mystery Tactician": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 50,
+         "spd": 50,
+         "def": 50,
+         "res": 40
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 7,
+         "spd": 7,
+         "def": 7,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "green",
+      "weaponType": "tome"
+   },
+   "Robin: Seaside Tactician": {
+      "growthRates": {
+         "hp": 40,
+         "atk": 55,
+         "spd": 60,
+         "def": 50,
+         "res": 50
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 8,
+         "spd": 8,
+         "def": 6,
+         "res": 7
+      },
+      "movementType": "infantry",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Roderick: Steady Squire": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 55,
+         "spd": 60,
+         "def": 45,
+         "res": 40
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 7,
+         "spd": 8,
+         "def": 6,
+         "res": 7
+      },
+      "movementType": "cavalry",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Roy: Brave Lion": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 55,
+         "spd": 60,
+         "def": 45,
+         "res": 40
+      },
+      "stats": {
+         "hp": 16,
+         "atk": 8,
+         "spd": 8,
+         "def": 7,
+         "res": 7
+      },
+      "movementType": "cavalry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Ryoma: Peerless Samurai": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 60,
+         "spd": 55,
+         "def": 50,
+         "res": 40
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 8,
+         "spd": 11,
+         "def": 5,
+         "res": 4
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Saber: Driven Mercenary": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 55,
+         "spd": 55,
+         "def": 55,
+         "res": 40
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 7,
+         "spd": 9,
+         "def": 8,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Saizo: Angry Ninja": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 50,
+         "spd": 60,
+         "def": 55,
+         "res": 30
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 7,
+         "spd": 8,
+         "def": 9,
+         "res": 3
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "dagger"
+   },
+   "Sakura: Gentle Nekomata": {
+      "growthRates": {
+         "hp": 40,
+         "atk": 55,
+         "spd": 60,
+         "def": 25,
+         "res": 60
+      },
+      "stats": {
+         "hp": 16,
+         "atk": 8,
+         "spd": 8,
+         "def": 4,
+         "res": 8
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "dagger"
+   },
+   "Sakura: Loving Priestess": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 50,
+         "spd": 50,
+         "def": 45,
+         "res": 50
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 6,
+         "spd": 8,
+         "def": 5,
+         "res": 8
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "staff"
+   },
+   "Sanaki: Begnion's Apostle": {
+      "growthRates": {
+         "hp": 40,
+         "atk": 65,
+         "spd": 45,
+         "def": 30,
+         "res": 60
+      },
+      "stats": {
+         "hp": 16,
+         "atk": 9,
+         "spd": 7,
+         "def": 4,
+         "res": 8
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "tome"
+   },
+   "Selena: Cutting Wit": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 45,
+         "spd": 60,
+         "def": 55,
+         "res": 50
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 6,
+         "spd": 9,
+         "def": 8,
+         "res": 6
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Seliph: Heir of Light": {
+      "growthRates": {
+         "hp": 65,
+         "atk": 60,
+         "spd": 40,
+         "def": 50,
+         "res": 40
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 8,
+         "spd": 7,
+         "def": 8,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Serra: Outspoken Cleric": {
+      "growthRates": {
+         "hp": 40,
+         "atk": 55,
+         "spd": 50,
+         "def": 40,
+         "res": 55
+      },
+      "stats": {
+         "hp": 16,
+         "atk": 6,
+         "spd": 9,
+         "def": 4,
+         "res": 9
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "staff"
+   },
+   "Seth: Silver Knight": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 55,
+         "spd": 55,
+         "def": 55,
+         "res": 40
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 8,
+         "spd": 7,
+         "def": 8,
+         "res": 5
+      },
+      "movementType": "cavalry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Setsuna: Absent Archer": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 50,
+         "spd": 65,
+         "def": 40,
+         "res": 40
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 6,
+         "spd": 9,
+         "def": 5,
+         "res": 6
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "bow"
+   },
+   "Shanna: Sprightly Flier": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 50,
+         "spd": 60,
+         "def": 45,
+         "res": 50
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 8,
+         "spd": 9,
+         "def": 6,
+         "res": 7
+      },
+      "movementType": "flier",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Sharena: Princess of Askr": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 55,
+         "spd": 55,
+         "def": 50,
+         "res": 40
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 8,
+         "spd": 8,
+         "def": 7,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Sheena: Princess of Gra": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 50,
+         "spd": 45,
+         "def": 55,
+         "res": 60
+      },
+      "stats": {
+         "hp": 21,
+         "atk": 8,
+         "spd": 6,
+         "def": 12,
+         "res": 7
+      },
+      "movementType": "armored",
+      "color": "green",
+      "weaponType": "axe"
+   },
+   "Shigure: Dark Sky Singer": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 55,
+         "spd": 55,
+         "def": 40,
+         "res": 45
+      },
+      "stats": {
+         "hp": 15,
+         "atk": 7,
+         "spd": 5,
+         "def": 4,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "blue",
+      "weaponType": "tome"
+   },
+   "Sigurd: Holy Knight": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 60,
+         "spd": 55,
+         "def": 65,
+         "res": 30
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 9,
+         "spd": 8,
+         "def": 6,
+         "res": 4
+      },
+      "movementType": "cavalry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Sonya: Vengeful Mage": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 60,
+         "spd": 55,
+         "def": 25,
+         "res": 55
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 7,
+         "spd": 7,
+         "def": 5,
+         "res": 8
+      },
+      "movementType": "infantry",
+      "color": "green",
+      "weaponType": "tome"
+   },
+   "Sophia: Nabata Prophet": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 55,
+         "spd": 35,
+         "def": 50,
+         "res": 50
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 9,
+         "spd": 4,
+         "def": 6,
+         "res": 7
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "tome"
+   },
+   "Soren: Shrewd Strategist": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 60,
+         "spd": 55,
+         "def": 30,
+         "res": 50
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 7,
+         "spd": 9,
+         "def": 4,
+         "res": 7
+      },
+      "movementType": "infantry",
+      "color": "green",
+      "weaponType": "tome"
+   },
+   "Stahl: Viridian Knight": {
+      "growthRates": {
+         "hp": 60,
+         "atk": 55,
+         "spd": 45,
+         "def": 50,
+         "res": 40
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 7,
+         "spd": 7,
+         "def": 8,
+         "res": 5
+      },
+      "movementType": "cavalry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Subaki: Perfect Expert": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 45,
+         "spd": 60,
+         "def": 60,
+         "res": 40
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 6,
+         "spd": 9,
+         "def": 9,
+         "res": 5
+      },
+      "movementType": "flier",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Sully: Crimson Knight": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 45,
+         "spd": 60,
+         "def": 40,
+         "res": 50
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 7,
+         "spd": 8,
+         "def": 7,
+         "res": 6
+      },
+      "movementType": "cavalry",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Tailtiu: Thunder Noble": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 55,
+         "spd": 60,
+         "def": 30,
+         "res": 45
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 8,
+         "spd": 9,
+         "def": 4,
+         "res": 6
+      },
+      "movementType": "infantry",
+      "color": "blue",
+      "weaponType": "tome"
+   },
+   "Takumi: Wild Card": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 55,
+         "spd": 60,
+         "def": 45,
+         "res": 30
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 8,
+         "spd": 7,
+         "def": 6,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "bow"
+   },
+   "Tana: Winged Princess": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 60,
+         "spd": 60,
+         "def": 45,
+         "res": 45
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 8,
+         "spd": 10,
+         "def": 6,
+         "res": 6
+      },
+      "movementType": "flier",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Tharja: Dark Shadow": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 55,
+         "spd": 60,
+         "def": 40,
+         "res": 35
+      },
+      "stats": {
+         "hp": 17,
+         "atk": 8,
+         "spd": 8,
+         "def": 6,
+         "res": 5
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "tome"
+   },
+   "Tiki: Dragon Scion": {
+      "growthRates": {
+         "hp": 60,
+         "atk": 60,
+         "spd": 60,
+         "def": 55,
+         "res": 50
+      },
+      "stats": {
+         "hp": 15,
+         "atk": 5,
+         "spd": 4,
+         "def": 8,
+         "res": 7
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "breath"
+   },
+   "Tiki: Naga's Voice": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 65,
+         "spd": 40,
+         "def": 60,
+         "res": 40
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 7,
+         "spd": 6,
+         "def": 9,
+         "res": 7
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "breath"
+   },
+   "Tiki: Summering Scion": {
+      "growthRates": {
+         "hp": 40,
+         "atk": 65,
+         "spd": 55,
+         "def": 55,
+         "res": 40
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 8,
+         "spd": 6,
+         "def": 8,
+         "res": 7
+      },
+      "movementType": "infantry",
+      "color": "green",
+      "weaponType": "axe"
+   },
+   "Titania: Mighty Mercenary": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 50,
+         "spd": 60,
+         "def": 45,
+         "res": 50
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 6,
+         "spd": 8,
+         "def": 6,
+         "res": 8
+      },
+      "movementType": "cavalry",
+      "color": "green",
+      "weaponType": "axe"
+   },
+   "Tobin: The Clueless One": {
+      "growthRates": {
+         "hp": 65,
+         "atk": 55,
+         "spd": 50,
+         "def": 65,
+         "res": 50
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 7,
+         "spd": 5,
+         "def": 5,
+         "res": 4
+      },
+      "movementType": "infantry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Ursula: Blue Crow": {
+      "growthRates": {
+         "hp": 45,
+         "atk": 50,
+         "spd": 55,
+         "def": 35,
+         "res": 50
+      },
+      "stats": {
+         "hp": 16,
+         "atk": 7,
+         "spd": 8,
+         "def": 4,
+         "res": 8
+      },
+      "movementType": "cavalry",
+      "color": "blue",
+      "weaponType": "tome"
+   },
+   "Valter: Dark Moonstone": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 55,
+         "spd": 50,
+         "def": 60,
+         "res": 35
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 8,
+         "spd": 9,
+         "def": 8,
+         "res": 4
+      },
+      "movementType": "flier",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Virion: Elite Archer": {
+      "growthRates": {
+         "hp": 60,
+         "atk": 55,
+         "spd": 55,
+         "def": 45,
+         "res": 25
+      },
+      "stats": {
+         "hp": 20,
+         "atk": 7,
+         "spd": 7,
+         "def": 7,
+         "res": 3
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "bow"
+   },
+   "Wrys: Kindly Priest": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 45,
+         "spd": 40,
+         "def": 40,
+         "res": 60
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 5,
+         "spd": 6,
+         "def": 5,
+         "res": 10
+      },
+      "movementType": "infantry",
+      "color": "colorless",
+      "weaponType": "staff"
+   },
+   "Xander: Paragon Knight": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 55,
+         "spd": 45,
+         "def": 65,
+         "res": 30
+      },
+      "stats": {
+         "hp": 20,
+         "atk": 8,
+         "spd": 5,
+         "def": 9,
+         "res": 4
+      },
+      "movementType": "cavalry",
+      "color": "red",
+      "weaponType": "sword"
+   },
+   "Xander: Spring Prince": {
+      "growthRates": {
+         "hp": 50,
+         "atk": 45,
+         "spd": 50,
+         "def": 60,
+         "res": 45
+      },
+      "stats": {
+         "hp": 18,
+         "atk": 6,
+         "spd": 6,
+         "def": 9,
+         "res": 7
+      },
+      "movementType": "cavalry",
+      "color": "blue",
+      "weaponType": "lance"
+   },
+   "Xander: Student Swimmer": {
+      "growthRates": {
+         "hp": 55,
+         "atk": 55,
+         "spd": 55,
+         "def": 65,
+         "res": 25
+      },
+      "stats": {
+         "hp": 19,
+         "atk": 8,
+         "spd": 6,
+         "def": 8,
+         "res": 6
+      },
+      "movementType": "infantry",
+      "color": "green",
+      "weaponType": "axe"
+   },
+   "Zephiel: The Liberator": {
+      "growthRates": {
+         "hp": 70,
+         "atk": 60,
+         "spd": 30,
+         "def": 60,
+         "res": 45
+      },
+      "stats": {
+         "hp": 25,
+         "atk": 9,
+         "spd": 3,
+         "def": 12,
+         "res": 5
+      },
+      "movementType": "armored",
+      "color": "red",
+      "weaponType": "sword"
+   }
+}

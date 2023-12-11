@@ -7,7 +7,8 @@ import { MovementType, Stat, Stats } from "../types";
 import { WeaponColor, WeaponType } from "../weapon";
 import getAllies from "../utils/get-alies";
 import getEnemies from "../utils/get-enemies";
-import { mapBuffByMovementType, honeStat, combatBuffByRange, defiant, breaker, elementalBoost } from "./effects";
+import { mapBuffByMovementType, honeStat, combatBuffByRange, defiant, breaker, elementalBoost, renewal } from "./effects";
+import Characters from "./characters.json";
 
 interface PassivesDict {
     [k: string]: {
@@ -17,6 +18,7 @@ interface PassivesDict {
         allowedWeaponTypes?: WeaponType[];
         allowedColors?: WeaponColor[];
         protects?: (MovementType | WeaponType)[];
+        exclusiveTo?: (keyof typeof Characters)[];
         effectiveAgainst?: (MovementType | WeaponType)[];
         onCombatStart?(this: Skill, state: GameState, target: Entity): void;
         onEquip?(this: Skill, ...args: any[]): any;
@@ -305,6 +307,27 @@ const PASSIVES: PassivesDict = {
         allowedColors: ["colorless", "green", "red"],
         description: "If unit's HP ≥ 70% in combat against an axe foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
     },
+    "Renewal 1": {
+        description: "At the start of every fourth turn, restores 10 HP.",
+        onTurnStart(state) {
+            renewal(this, state.turn, (count) => count % 4 === 0, 10);
+        },
+        slot: "B",
+    },
+    "Renewal 2": {
+        description: "At the start of every third turn, restores 10 HP.",
+        onTurnStart(state) {
+            renewal(this, state.turn, (count) => count % 3 === 0, 10);
+        },
+        slot: "B",
+    },
+    "Renewal 3": {
+        description: "At start of odd-numbered turns, restores 10 HP.",
+        onTurnStart(state) {
+            renewal(this, state.turn, turnIsOdd, 10);
+        },
+        slot: "B",
+    },
     "Axebreaker 3": {
         onCombatStart(state, target) {
             breaker(this, target, "axe", 0.5);
@@ -371,6 +394,7 @@ const PASSIVES: PassivesDict = {
     "Follow-Up Ring": {
         description: "At start of combat, if unit's HP ≥ 50%, unit makes a guaranteed follow-up attack. (Skill cannot be inherited.)",
         slot: "B",
+        exclusiveTo: ["Arden: Strong and Tough"],
         onCombatStart() {
             const { maxHP, hp } = this.entity.getOne("Stats");
 
@@ -447,7 +471,8 @@ const PASSIVES: PassivesDict = {
                     stats: ["atk", "def", "res", "spd"]
                 });
             }
-        }
+        },
+        exclusiveTo: ["Ike: Brave Mercenary"]
     },
     "Defiant Atk 1": {
         slot: "A",

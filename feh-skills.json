@@ -347,16 +347,6 @@
         "Might": 14
     },
     {
-        "WeaponName": "Silver Axe+",
-        "CanUseWeapon": [
-            "Green Axe"
-        ],
-        "Exclusive": 0,
-        "Hero": "Gunter: Inveterate Soldier",
-        "Description": null,
-        "Might": 15
-    },
-    {
         "WeaponName": "Inveterate Axe",
         "CanUseWeapon": [
             "Green Axe"
@@ -801,19 +791,6 @@
         "Hero": "Lon'qu: Solitary Blade",
         "Description": "Accelerates Special trigger (cooldown count-1).",
         "Might": 16
-    },
-    {
-        "WeaponName": "Silver Bow+",
-        "CanUseWeapon": [
-            "Red Bow",
-            "  Blue Bow",
-            "  Green Bow",
-            "  Colorless Bow"
-        ],
-        "Exclusive": 0,
-        "Hero": "Virion: Elite Archer",
-        "Description": "Effective against flying foes.",
-        "Might": 13
     },
     {
         "WeaponName": "Dignified Bow",
@@ -1927,16 +1904,6 @@
         "Might": 14
     },
     {
-        "WeaponName": "Siegfried",
-        "CanUseWeapon": [
-            "Red Sword"
-        ],
-        "Exclusive": 1,
-        "Hero": "Xander: Paragon Knight",
-        "Description": "Unit can counterattack regardless of foe's range.",
-        "Might": 16
-    },
-    {
         "WeaponName": "Gronnowl",
         "CanUseWeapon": [
             "Green Tome"
@@ -2799,16 +2766,6 @@
         "Might": 16
     },
     {
-        "WeaponName": "Alondite",
-        "CanUseWeapon": [
-            "Red Sword"
-        ],
-        "Exclusive": 1,
-        "Hero": "Black Knight: Sinister General",
-        "Description": "Unit can counterattack regardless of foe's range.",
-        "Might": 16
-    },
-    {
         "WeaponName": "Dancer's Fan",
         "CanUseWeapon": [
             "Red Dagger",
@@ -3015,16 +2972,6 @@
         "Hero": "Nowi: Eternal Witch",
         "Description": "If unit's HP ≥ 50%, unit can move to a space adjacent to an ally within 2 spaces.",
         "Might": 14
-    },
-    {
-        "WeaponName": "Stout Tomahawk",
-        "CanUseWeapon": [
-            "Green Axe"
-        ],
-        "Exclusive": 1,
-        "Hero": "Dorcas: Serene Warrior",
-        "Description": "Unit can counterattack regardless of foe's range.",
-        "Might": 16
     },
     {
         "WeaponName": "Weirding Tome",

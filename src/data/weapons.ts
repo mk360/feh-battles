@@ -1,6 +1,6 @@
 import Hero from "../entities/hero";
 import GameState from "../systems/state";
-import { WeaponType } from "../weapon";
+import { WeaponColor, WeaponType } from "../weapon";
 import { MovementType } from "../types";
 import * as Effects from "./effects";
 import Skill from "../components/skill";
@@ -16,6 +16,7 @@ interface WeaponDict {
         might: number;
         displayName?: string;
         type: WeaponType;
+        color?: WeaponColor;
         exclusiveTo?: (keyof typeof Characters)[];
         effectiveAgainst?: (MovementType | WeaponType)[];
         protects?: (MovementType | WeaponType)[];
@@ -212,6 +213,15 @@ const WEAPONS: WeaponDict = {
         },
         might: 10,
         type: "dagger"
+    },
+    "Alondite": {
+        description: "Unit can counterattack regardless of enemy range.",
+        might: 16,
+        type: "sword",
+        onCombatStart() {
+            Effects.counterattack(this);
+        },
+        exclusiveTo: ["Black Knight: Sinister General"]
     },
     "Armorslayer": {
         description: "Effective against armored foes.",

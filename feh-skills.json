@@ -30,19 +30,6 @@
         "Might": 16
     },
     {
-        "WeaponName": "Breath of Fog",
-        "CanUseWeapon": [
-            "Red Breath",
-            "  Blue Breath",
-            "  Green Breath",
-            "  Colorless Breath"
-        ],
-        "Exclusive": 1,
-        "Hero": "Tiki: Dragon Scion",
-        "Description": "Effective against dragon foes. At start of odd-numbered turns, restores 10 HP. If foe's Range = 2, calculates damage using the lower of foe's Def or Res.",
-        "Might": 16
-    },
-    {
         "WeaponName": "Nóatún",
         "CanUseWeapon": [
             "Green Axe"
@@ -157,16 +144,6 @@
         "Hero": "Felicia: Maid Mayhem",
         "Description": "After combat, if unit attacked, inflicts Def/Res-7 on target and foes within 2 spaces through their next actions.&lt;br>Calculates damage using the lower of foe's Def or Res.",
         "Might": 14
-    },
-    {
-        "WeaponName": "Yato",
-        "CanUseWeapon": [
-            "Red Sword"
-        ],
-        "Exclusive": 1,
-        "Hero": "Corrin: Fateful Prince",
-        "Description": "If unit initiates combat, grants Spd+4 during combat.",
-        "Might": 16
     },
     {
         "WeaponName": "Emerald Axe",
@@ -440,26 +417,6 @@
         "Might": 6
     },
     {
-        "WeaponName": "Blárblade",
-        "CanUseWeapon": [
-            "Blue Tome"
-        ],
-        "Exclusive": 0,
-        "Hero": "Odin: Potent Force",
-        "Description": "Slows Special trigger (cooldown count+1).&lt;br>Grants bonus to unit's Atk = total bonuses on unit during combat.",
-        "Might": 9
-    },
-    {
-        "WeaponName": "Blárblade+",
-        "CanUseWeapon": [
-            "Blue Tome"
-        ],
-        "Exclusive": 0,
-        "Hero": "Odin: Potent Force",
-        "Description": "Slows Special trigger (cooldown count+1).&lt;br>Grants bonus to unit's Atk = total bonuses on unit during combat.",
-        "Might": 13
-    },
-    {
         "WeaponName": "Odin's Grimoire",
         "CanUseWeapon": [
             "Blue Tome"
@@ -468,36 +425,6 @@
         "Hero": "Odin: Potent Force",
         "Description": "Grants bonus to unit's Atk = total bonuses on unit during combat.",
         "Might": 14
-    },
-    {
-        "WeaponName": "Heavy Spear",
-        "CanUseWeapon": [
-            "Blue Lance"
-        ],
-        "Exclusive": 0,
-        "Hero": "Oboro: Fierce Fighter",
-        "Description": "Effective against armored foes.",
-        "Might": 8
-    },
-    {
-        "WeaponName": "Heavy Spear+",
-        "CanUseWeapon": [
-            "Blue Lance"
-        ],
-        "Exclusive": 0,
-        "Hero": "Oboro: Fierce Fighter",
-        "Description": "Effective against armored foes.",
-        "Might": 12
-    },
-    {
-        "WeaponName": "Oboro's Spear",
-        "CanUseWeapon": [
-            "Blue Lance"
-        ],
-        "Exclusive": 1,
-        "Hero": "Oboro: Fierce Fighter",
-        "Description": "Effective against armored foes.",
-        "Might": 16
     },
     {
         "WeaponName": "Raijinto",

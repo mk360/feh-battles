@@ -21,7 +21,7 @@ interface WeaponDict {
         protects?: (MovementType | WeaponType)[];
         onCombatStart?(this: Skill, battleState: GameState, target: Entity): void;
         onCombatAfter?(this: Skill, battleState: GameState, target: Entity, combat: CombatOutcome): void;
-        onInitiate?(...args: any[]): any;
+        onCombatInitiate?(this: Skill, state: GameState, target: Entity): void;
         onDefense?(...args: any[]): any;
         onEquip?(this: Skill): any;
         onTurnStart?(this: Skill, battleState: GameState): void;
@@ -64,6 +64,26 @@ const WEAPONS: WeaponDict = {
                 }
             }
         },
+    },
+    "Fire Breath": {
+        description: "",
+        type: "breath",
+        might: 6,
+    },
+    "Fire Breath+": {
+        description: "",
+        type: "breath",
+        might: 8,
+    },
+    "Flametongue": {
+        description: "",
+        type: "breath",
+        might: 11,
+    },
+    "Flametongue+": {
+        description: "",
+        type: "breath",
+        might: 15,
     },
     "Iron Sword": {
         description: "",
@@ -193,26 +213,6 @@ const WEAPONS: WeaponDict = {
         might: 10,
         type: "dagger"
     },
-    "Fire Breath": {
-        description: "",
-        type: "breath",
-        might: 6,
-    },
-    "Fire Breath+": {
-        description: "",
-        type: "breath",
-        might: 8,
-    },
-    "Flametongue": {
-        description: "",
-        type: "breath",
-        might: 11,
-    },
-    "Flametongue+": {
-        description: "",
-        type: "breath",
-        might: 15,
-    },
     "Armorslayer": {
         description: "Effective against armored foes.",
         might: 8,
@@ -224,6 +224,32 @@ const WEAPONS: WeaponDict = {
         might: 12,
         type: "sword",
         effectiveAgainst: ["armored"],
+    },
+    "Blárblade": {
+        description: "Slows Special trigger (cooldown count+1). Grants bonus to unit's Atk = total bonuses on unit during combat.",
+        type: "tome",
+        might: 9,
+        onEquip() {
+            this.entity.addComponent({
+                type: "ReduceSpecialCooldown"
+            });
+        },
+        onCombatStart() {
+            Effects.blade(this);
+        }
+    },
+    "Blárblade+": {
+        description: "Slows Special trigger (cooldown count+1). Grants bonus to unit's Atk = total bonuses on unit during combat.",
+        type: "tome",
+        might: 13,
+        onEquip() {
+            this.entity.addComponent({
+                type: "ReduceSpecialCooldown"
+            });
+        },
+        onCombatStart() {
+            Effects.blade(this);
+        }
     },
     "Breath of Fog": {
         description: "Effective against dragon foes. At start of odd-numbered turns, restores 10 HP. If foe's Range = 2, calculates damage using the lower of foe's Def or Res.",
@@ -241,13 +267,6 @@ const WEAPONS: WeaponDict = {
                 });
             }
         }
-    },
-    "Hana's Katana": {
-        description: "Effective against armored foes.",
-        might: 16,
-        type: "sword",
-        exclusiveTo: ["Hana: Focused Samurai"],
-        effectiveAgainst: ["armored"],
     },
     "Falchion (Awakening)": {
         description: "Effective against dragon foes. At the start of every third turn, restores 10 HP.",
@@ -291,6 +310,32 @@ const WEAPONS: WeaponDict = {
             Effects.counterattack(this);
         }
     },
+    "Hana's Katana": {
+        description: "Effective against armored foes.",
+        might: 16,
+        type: "sword",
+        exclusiveTo: ["Hana: Focused Samurai"],
+        effectiveAgainst: ["armored"],
+    },
+    "Heavy Spear": {
+        description: "Effective against armored foes.",
+        might: 8,
+        effectiveAgainst: ["armored"],
+        type: "lance"
+    },
+    "Heavy Spear+": {
+        description: "Effective against armored foes.",
+        might: 12,
+        effectiveAgainst: ["armored"],
+        type: "lance"
+    },
+    "Oboro's Spear": {
+        description: "Effective against armored foes.",
+        might: 16,
+        effectiveAgainst: ["armored"],
+        type: "lance",
+        exclusiveTo: ["Oboro: Fierce Fighter"]
+    },
     "Ragnell": {
         might: 16,
         description: "Unit can counterattack regardless of enemy range.",
@@ -299,6 +344,42 @@ const WEAPONS: WeaponDict = {
         onCombatStart() {
             Effects.counterattack(this);
         }
+    },
+    "Raijinto": {
+        description: "Unit can counterattack regardless of enemy range.",
+        might: 16,
+        type: "sword",
+        onCombatStart() {
+            Effects.counterattack(this);
+        },
+        exclusiveTo: ["Ryoma: Peerless Samurai"]
+    },
+    "Siegfried": {
+        description: "Unit can counterattack regardless of enemy range.",
+        might: 16,
+        type: "sword",
+        onCombatStart() {
+            Effects.counterattack(this);
+        },
+        exclusiveTo: ["Xander: Paragon Knight"]
+    },
+    "Sieglinde": {
+        description: "At start of turn, grants Atk+4 to adjacent allies for 1 turn.",
+        might: 16,
+        type: "sword",
+        onTurnStart: function (state) {
+            Effects.honeStat(this, state, "atk", 4);
+        },
+        exclusiveTo: ["Eirika: Restoration Lady"]
+    },
+    "Siegmund": {
+        description: "At start of turn, grants Atk+3 to adjacent allies for 1 turn.",
+        might: 16,
+        type: "lance",
+        onTurnStart(battleState) {
+            Effects.honeStat(this, battleState, "atk", 3);
+        },
+        exclusiveTo: ["Ephraim: Restoration Lord"]
     },
     "Stout Tomahawk": {
         might: 16,
@@ -339,42 +420,18 @@ const WEAPONS: WeaponDict = {
         },
         exclusiveTo: ["Arvis: Emperor of Flame"]
     },
-    "Raijinto": {
-        description: "Unit can counterattack regardless of enemy range.",
+    "Yato": {
+        description: "If unit initiates combat, grants Spd+4 during combat.",
+        exclusiveTo: ["Corrin: Fateful Prince"],
         might: 16,
         type: "sword",
-        onCombatStart() {
-            Effects.counterattack(this);
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                spd: 4
+            });
         },
-        exclusiveTo: ["Ryoma: Peerless Samurai"]
     },
-    "Siegfried": {
-        description: "Unit can counterattack regardless of enemy range.",
-        might: 16,
-        type: "sword",
-        onCombatStart() {
-            Effects.counterattack(this);
-        },
-        exclusiveTo: ["Xander: Paragon Knight"]
-    },
-    "Sieglinde": {
-        description: "At start of turn, grants Atk+4 to adjacent allies for 1 turn.",
-        might: 16,
-        type: "sword",
-        onTurnStart: function (state) {
-            Effects.honeStat(this, state, "atk", 4);
-        },
-        exclusiveTo: ["Eirika: Restoration Lady"]
-    },
-    "Siegmund": {
-        description: "At start of turn, grants Atk+3 to adjacent allies for 1 turn.",
-        might: 16,
-        type: "lance",
-        onTurnStart(battleState) {
-            Effects.honeStat(this, battleState, "atk", 3);
-        },
-        exclusiveTo: ["Ephraim: Restoration Lord"]
-    }
 };
 
 export default WEAPONS;

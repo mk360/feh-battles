@@ -111,4 +111,18 @@ export function counterattack(thisArg: Skill) {
     thisArg.entity.addComponent({
         type: "Counterattack"
     });
-}
+};
+
+export function blade(thisArg: Skill) {
+    const mapBuffs = thisArg.entity.getComponents("MapBuff");
+    let statsSum = 0;
+    mapBuffs.forEach((buff) => {
+        const { atk, def, res, spd } = buff;
+        statsSum += atk + def + res + spd;
+    });
+
+    thisArg.entity.addComponent({
+        type: "CombatBuff",
+        atk: statsSum
+    });
+};

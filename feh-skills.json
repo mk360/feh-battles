@@ -417,16 +417,6 @@
         "Might": 14
     },
     {
-        "WeaponName": "Raijinto",
-        "CanUseWeapon": [
-            "Red Sword"
-        ],
-        "Exclusive": 1,
-        "Hero": "Ryoma: Peerless Samurai",
-        "Description": "Unit can counterattack regardless of foe's range.",
-        "Might": 16
-    },
-    {
         "WeaponName": "Killer Bow",
         "CanUseWeapon": [
             "Red Bow",
@@ -573,36 +563,6 @@
         "Hero": "Sakura: Loving Priestess",
         "Description": "After combat, if unit attacked, inflicts Atk-7 on target and foes within 2 spaces of target through their next actions.",
         "Might": 12
-    },
-    {
-        "WeaponName": "Hammer",
-        "CanUseWeapon": [
-            "Green Axe"
-        ],
-        "Exclusive": 0,
-        "Hero": "Frederick: Polite Knight",
-        "Description": "Effective against armored foes.",
-        "Might": 8
-    },
-    {
-        "WeaponName": "Hammer+",
-        "CanUseWeapon": [
-            "Green Axe"
-        ],
-        "Exclusive": 0,
-        "Hero": "Frederick: Polite Knight",
-        "Description": "Effective against armored foes.",
-        "Might": 12
-    },
-    {
-        "WeaponName": "Frederick's Axe",
-        "CanUseWeapon": [
-            "Green Axe"
-        ],
-        "Exclusive": 1,
-        "Hero": "Frederick: Polite Knight",
-        "Description": "Effective against armored foes.",
-        "Might": 16
     },
     {
         "WeaponName": "Golden Naginata",
@@ -826,46 +786,6 @@
         "Might": 16
     },
     {
-        "WeaponName": "Gronnblade",
-        "CanUseWeapon": [
-            "Green Tome"
-        ],
-        "Exclusive": 0,
-        "Hero": "Nino: Pious Mage",
-        "Description": "Slows Special trigger (cooldown count+1).&lt;br>Grants bonus to unit's Atk = total bonuses on unit during combat.",
-        "Might": 9
-    },
-    {
-        "WeaponName": "Gronnblade+",
-        "CanUseWeapon": [
-            "Green Tome"
-        ],
-        "Exclusive": 0,
-        "Hero": "Nino: Pious Mage",
-        "Description": "Slows Special trigger (cooldown count+1).&lt;br>Grants bonus to unit's Atk = total bonuses on unit during combat.",
-        "Might": 13
-    },
-    {
-        "WeaponName": "Iris's Tome",
-        "CanUseWeapon": [
-            "Green Tome"
-        ],
-        "Exclusive": 1,
-        "Hero": "Nino: Pious Mage",
-        "Description": "Grants bonus to unit's Atk = total bonuses on unit during combat.",
-        "Might": 14
-    },
-    {
-        "WeaponName": "Axe of Virility",
-        "CanUseWeapon": [
-            "Green Axe"
-        ],
-        "Exclusive": 1,
-        "Hero": "Bartre: Fearless Warrior",
-        "Description": "Effective against armored foes.",
-        "Might": 16
-    },
-    {
         "WeaponName": "Guardian's Axe",
         "CanUseWeapon": [
             "Green Axe"
@@ -873,26 +793,6 @@
         "Exclusive": 1,
         "Hero": "Hawkeye: Desert Guardian",
         "Description": "Accelerates Special trigger (cooldown count-1).",
-        "Might": 16
-    },
-    {
-        "WeaponName": "Florina's Lance",
-        "CanUseWeapon": [
-            "Blue Lance"
-        ],
-        "Exclusive": 1,
-        "Hero": "Florina: Lovely Flier",
-        "Description": "Effective against armored foes.",
-        "Might": 16
-    },
-    {
-        "WeaponName": "Armads",
-        "CanUseWeapon": [
-            "Green Axe"
-        ],
-        "Exclusive": 1,
-        "Hero": "Hector: General of Ostia",
-        "Description": "If unit's HP ≥ 80% and foe initiates combat, unit makes a guaranteed follow-up attack.",
         "Might": 16
     },
     {

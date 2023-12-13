@@ -23,7 +23,7 @@ interface WeaponDict {
         onCombatStart?(this: Skill, battleState: GameState, target: Entity): void;
         onCombatAfter?(this: Skill, battleState: GameState, target: Entity, combat: CombatOutcome): void;
         onCombatInitiate?(this: Skill, state: GameState, target: Entity): void;
-        onDefense?(...args: any[]): any;
+        onCombatDefense?(this: Skill): any;
         onEquip?(this: Skill): any;
         onTurnStart?(this: Skill, battleState: GameState): void;
     }
@@ -223,6 +223,20 @@ const WEAPONS: WeaponDict = {
         },
         exclusiveTo: ["Black Knight: Sinister General"]
     },
+    "Armads": {
+        description: "If unit's HP ≥ 80% and foe initiates combat, unit makes a guaranteed follow-up attack.",
+        onCombatDefense() {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP >= 0.8) {
+                this.entity.addComponent({
+                    type: "GuaranteedFollowup"
+                });
+            }
+        },
+        type: "axe",
+        might: 16,
+        exclusiveTo: ["Hector: General of Ostia"]
+    },
     "Armorslayer": {
         description: "Effective against armored foes.",
         might: 8,
@@ -235,13 +249,22 @@ const WEAPONS: WeaponDict = {
         type: "sword",
         effectiveAgainst: ["armored"],
     },
+    "Axe of Virility": {
+        description: "Effective against armored foes.",
+        might: 16,
+        type: "axe",
+        effectiveAgainst: ["armored"],
+        exclusiveTo: ["Bartre: Fearless Warrior"]
+    },
     "Blárblade": {
         description: "Slows Special trigger (cooldown count+1). Grants bonus to unit's Atk = total bonuses on unit during combat.",
         type: "tome",
+        color: "blue",
         might: 9,
         onEquip() {
             this.entity.addComponent({
-                type: "ReduceSpecialCooldown"
+                type: "ModifySpecialCooldown",
+                value: 1
             });
         },
         onCombatStart() {
@@ -251,6 +274,7 @@ const WEAPONS: WeaponDict = {
     "Blárblade+": {
         description: "Slows Special trigger (cooldown count+1). Grants bonus to unit's Atk = total bonuses on unit during combat.",
         type: "tome",
+        color: "blue",
         might: 13,
         onEquip() {
             this.entity.addComponent({
@@ -311,6 +335,13 @@ const WEAPONS: WeaponDict = {
         },
         exclusiveTo: ["Alm: Hero of Prophecy"]
     },
+    "Florina's Lance": {
+        description: "Effective against armored foes.",
+        might: 16,
+        effectiveAgainst: ["armored"],
+        type: "lance",
+        exclusiveTo: ["Florina: Lovely Flier"]
+    },
     "Gradivus": {
         description: "Unit can counterattack regardless of enemy range.",
         might: 16,
@@ -319,6 +350,72 @@ const WEAPONS: WeaponDict = {
         onCombatStart() {
             Effects.counterattack(this);
         }
+    },
+    "Gronnblade": {
+        description: "Slows Special trigger (cooldown count+1). Grants bonus to unit's Atk = total bonuses on unit during combat.",
+        type: "tome",
+        color: "green",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: 1
+            });
+        },
+        onCombatStart() {
+            Effects.blade(this);
+        },
+        might: 9,
+    },
+    "Gronnblade+": {
+        description: "Slows Special trigger (cooldown count+1). Grants bonus to unit's Atk = total bonuses on unit during combat.",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: 1
+            });
+        },
+        onCombatStart() {
+            Effects.blade(this);
+        },
+        type: "tome",
+        color: "green",
+        might: 13
+    },
+    "Hammer": {
+        description: "Effective against armored foes.",
+        might: 8,
+        type: "axe",
+        effectiveAgainst: ["armored"],
+    },
+    "Hammer+": {
+        description: "Effective against armored foes.",
+        might: 12,
+        type: "axe",
+        effectiveAgainst: ["armored"],
+    },
+    "Felicia's Plate": {
+        description: "After combat, if unit attacked, inflicts Def/Res-7 on target and foes within 2 spaces through their next actions. Calculates damage using the lower of foe's Def or Res.",
+        type: "dagger",
+        might: 14,
+        exclusiveTo: ["Felicia: Maid Mayhem"],
+        onCombatStart() {
+            this.entity.addComponent({
+                type: "TargetLowestDefense"
+            });
+        },
+        onCombatAfter(battleState, target, combat) {
+            Effects.dagger(this, battleState, combat, target, {
+                def: -7,
+                res: -7
+            });
+        },
+    },
+    "Frederick's Axe": {
+        description: "Effective against armored foes.",
+        might: 16,
+        exclusiveTo: ["Frederick: Polite Knight"],
+        type: "axe",
+        effectiveAgainst: ["armored"],
     },
     "Hana's Katana": {
         description: "Effective against armored foes.",
@@ -338,6 +435,16 @@ const WEAPONS: WeaponDict = {
         might: 12,
         effectiveAgainst: ["armored"],
         type: "lance"
+    },
+    "Iris's Tome": {
+        type: "tome",
+        color: "green",
+        exclusiveTo: ["Nino: Pious Mage"],
+        might: 14,
+        description: "Grants bonus to unit's Atk = total bonuses on unit during combat.",
+        onCombatStart() {
+            Effects.blade(this);
+        }
     },
     "Oboro's Spear": {
         description: "Effective against armored foes.",
@@ -413,6 +520,7 @@ const WEAPONS: WeaponDict = {
     "Valflame": {
         description: "At start of turn, inflicts Atk/Res-4 on foes in cardinal directions with Res < unit's Res through their next actions.",
         type: "tome",
+        color: "red",
         might: 14,
         onTurnStart(battleState) {
             const enemies = getEnemies(battleState, this.entity);

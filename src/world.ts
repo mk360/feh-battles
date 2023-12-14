@@ -29,6 +29,10 @@ import Counterattack from "./components/counterattack";
 import MapBuff from "./components/map-buff";
 import NeutralizeMapBuffs from "./components/neutralize-map-buffs";
 import TargetLowestDefense from "./components/target-lowest-defense";
+import AccelerateSpecial from "./components/accelerate-special";
+import SlowSpecial from "./components/slow-special";
+import BraveWeapon from "./components/brave-weapon";
+import PreventCounterattack from "./components/prevent-counterattack";
 
 interface HeroData {
     name: string;
@@ -89,9 +93,13 @@ class GameWorld extends World {
         this.registerComponent(NeutralizeMapBuffs);
         this.registerComponent(CombatBuff);
         this.registerComponent(Battling);
+        this.registerComponent(PreventCounterattack);
         this.registerComponent(Boon);
         this.registerComponent(PreventEnemyAlliesInteraction);
         this.registerComponent(Name);
+        this.registerComponent(AccelerateSpecial);
+        this.registerComponent(SlowSpecial);
+        this.registerComponent(BraveWeapon)
         this.registerComponent(TargetLowestDefense);
         this.registerSystem("every-turn", MapEffects, [this.state]);
         this.registerSystem("combat", CombatSystem, [this.state]);

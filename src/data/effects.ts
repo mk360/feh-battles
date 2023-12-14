@@ -6,6 +6,7 @@ import { MovementType, Stat, Stats } from "../types";
 import getAllies from "../utils/get-alies";
 import { WeaponType } from "../weapon";
 import { CombatOutcome } from "../combat";
+import getEnemies from "../utils/get-enemies";
 
 export function honeStat(thisArg: Skill, state: GameState, stat: Stat, buff: number) {
     const allies = getAllies(state, thisArg.entity);
@@ -88,21 +89,31 @@ export function renewal(thisArg: Skill, turnCount: number, periodicity: (turnCou
     }
 }
 
-export function dagger(thisArg: Skill, state: GameState, combat: CombatOutcome, target: Entity, debuffs: Stats) {
-    if (true) {
-        const allies = getAllies(state, target);
-        target.addComponent({
-            type: "MapDebuff",
-            ...debuffs,
-        });
+export function threaten(thisArg: Skill, state: GameState, statDebuffs: Stats) {
+    const enemies = getEnemies(state, thisArg.entity);
+    for (let enemy of enemies) {
+        if (HeroSystem.getDistance(enemy, thisArg.entity) <= 2) {
+            enemy.addComponent({
+                type: "MapDebuff",
+                ...statDebuffs
+            });
+        }
+    }
+}
 
-        for (let ally of allies) {
-            if (HeroSystem.getDistance(ally, target) <= 2) {
-                ally.addComponent({
-                    type: "MapDebuff",
-                    ...debuffs,
-                });     
-            }
+export function dagger(state: GameState, target: Entity, debuffs: Stats) {
+    const allies = getAllies(state, target);
+    target.addComponent({
+        type: "MapDebuff",
+        ...debuffs,
+    });
+
+    for (let ally of allies) {
+        if (HeroSystem.getDistance(ally, target) <= 2) {
+            ally.addComponent({
+                type: "MapDebuff",
+                ...debuffs,
+            });     
         }
     }
 };

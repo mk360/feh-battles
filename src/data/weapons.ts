@@ -9,6 +9,7 @@ import { Entity } from "ape-ecs";
 import { CombatOutcome } from "../combat";
 import getEnemies from "../utils/get-enemies";
 import HeroSystem from "../systems/hero";
+import getAllies from "../utils/get-alies";
 
 interface WeaponDict {
     [k: string]: {
@@ -23,7 +24,7 @@ interface WeaponDict {
         onCombatStart?(this: Skill, battleState: GameState, target: Entity): void;
         onCombatAfter?(this: Skill, battleState: GameState, target: Entity, combat: CombatOutcome): void;
         onCombatInitiate?(this: Skill, state: GameState, target: Entity): void;
-        onCombatDefense?(this: Skill): any;
+        onCombatDefense?(this: Skill, state: GameState, attacker: Entity): void;
         onEquip?(this: Skill): any;
         onTurnStart?(this: Skill, battleState: GameState): void;
     }
@@ -111,10 +112,13 @@ const WEAPONS: WeaponDict = {
         description: "After combat, if unit attacked, inflicts Def/Res-3 on foe through its next action.",
         might: 3,
         onCombatAfter(state, target, combat) {
-            Effects.dagger(this, state, combat, target, {
-                def: -3,
-                res: -3
-            });
+            if (combat) { // TODO COMBAT API
+                target.addComponent({
+                    type: "MapDebuff",
+                    def: -3,
+                    res: -3
+                });
+            }
         },
         type: "dagger"
     },
@@ -144,10 +148,13 @@ const WEAPONS: WeaponDict = {
         type: "dagger",
         might: 5,
         onCombatAfter(state, target, combat) {
-            Effects.dagger(this, state, combat, target, {
-                def: -3,
-                res: -3
-            });
+            if (combat) { // TODO COMBAT API
+                target.addComponent({
+                    type: "MapDebuff",
+                    def: -3,
+                    res: -3
+                });
+            }
         }
     },
     "Silver Sword": {
@@ -174,10 +181,13 @@ const WEAPONS: WeaponDict = {
     "Silver Dagger": {
         description: "After combat, if unit attacked, inflicts Def/Res-5 on foe through its next action.",
         onCombatAfter(battleState, target, combat) {
-            Effects.dagger(this, battleState, combat, target, {
-                def: -5,
-                res: -5
-            });
+            if (combat) { // TODO COMBAT API
+                target.addComponent({
+                    type: "MapDebuff",
+                    def: -5,
+                    res: -5
+                });
+            }
         },
         might: 7,
         type: "dagger"
@@ -206,13 +216,106 @@ const WEAPONS: WeaponDict = {
     "Silver Dagger+": {
         description: "After combat, if unit attacked, inflicts Def/Res-7 on foe through its next action.",
         onCombatAfter(battleState, target, combat) {
-            Effects.dagger(this, battleState, combat, target, {
-                def: -7,
-                res: -7
-            });
+            if (combat) { // TODO COMBAT API
+                target.addComponent({
+                    type: "MapDebuff",
+                    def: -7,
+                    res: -7
+                });
+            }
         },
         might: 10,
         type: "dagger"
+    },
+    "Fire": {
+        description: "",
+        might: 4,
+        type: "tome",
+        color: "red",
+    },
+    "Elfire": {
+        description: "",
+        might: 6,
+        type: "tome",
+        color: "red",
+    },
+    "Bolganone": {
+        description: "",
+        might: 9,
+        type: "tome",
+        color: "red",
+    },
+    "Bolganone+": {
+        description: "",
+        might: 13,
+        type: "tome",
+        color: "red",
+    },
+    "Flux": {
+        color: "red",
+        type: "tome",
+        description: "",
+        might: 4
+    },
+    "Ruin": {
+        color: "red",
+        type: "tome",
+        might: 6,
+        description: ""
+    },
+    "Fenrir": {
+        might: 9,
+        description: "",
+        type: "tome",
+        color: "red"
+    },
+    "Fenrir+": {
+        might: 13,
+        type: "tome",
+        color: "red",
+        description: ""
+    },
+    "Thunder": {
+        description: "",
+        might: 4,
+        color: "blue",
+        type: "tome"
+    },
+    "Elthunder": {
+        description: "",
+        might: 6,
+        color: "blue",
+        type: "tome"
+    },
+    "Thoron": {
+        description: "",
+        type: "tome",
+        color: "blue",
+        might: 9
+    },
+    "Wind": {
+        description: "",
+        type: "tome",
+        color: "green",
+        might: 4
+    },
+    "Elwind": {
+        description: "",
+        type: "tome",
+        color: "green",
+        might: 6
+    },
+    "Rexcalibur": {
+        description: "",
+        might: 9,
+        type: "tome",
+        color: "green"
+    },
+    "Rexcalibur+": {
+        description: "",
+        might: 13,
+        type: "tome",
+        color: "green"
     },
     "Alondite": {
         description: "Unit can counterattack regardless of enemy range.",
@@ -222,6 +325,32 @@ const WEAPONS: WeaponDict = {
             Effects.counterattack(this);
         },
         exclusiveTo: ["Black Knight: Sinister General"]
+    },
+    "Arden's Blade": {
+        description: "Inflicts Spd-5. Unit attacks twice. (Even if foe initiates combat, unit attacks twice.)",
+        might: 10,
+        type: "sword",
+        exclusiveTo: ["Arden: Strong and Tough"],
+        onCombatStart() {
+            this.entity.addComponent({
+                type: "BraveWeapon"
+            });
+        }
+    },
+    "Argent Bow": {
+        description: "Effective against flying foes. Inflicts Spd-2. If unit initiates combat, unit attacks twice.",
+        effectiveAgainst: ["flier"],
+        onEquip() {
+            this.entity.getOne("Stats").spd -= 2;
+        },
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "BraveWeapon"
+            });
+        },
+        exclusiveTo: ["Klein: Silver Nobleman"],
+        might: 8,
+        type: "bow",
     },
     "Armads": {
         description: "If unit's HP ≥ 80% and foe initiates combat, unit makes a guaranteed follow-up attack.",
@@ -256,6 +385,18 @@ const WEAPONS: WeaponDict = {
         effectiveAgainst: ["armored"],
         exclusiveTo: ["Bartre: Fearless Warrior"]
     },
+    "Beruka's Axe": {
+        type: "axe",
+        might: 16,
+        description: "Accelerates Special trigger (cooldown count-1).",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        },
+        exclusiveTo: ["Beruka: Quiet Assassin"]
+    },
     "Blárblade": {
         description: "Slows Special trigger (cooldown count+1). Grants bonus to unit's Atk = total bonuses on unit during combat.",
         type: "tome",
@@ -285,6 +426,126 @@ const WEAPONS: WeaponDict = {
             Effects.blade(this);
         }
     },
+    "Blárwolf": {
+        description: "Effective against cavalry foes.",
+        type: "tome",
+        color: "blue",
+        effectiveAgainst: ["cavalry"],
+        might: 6
+    },
+    "Blárwolf+": {
+        description: "Effective against cavalry foes.",
+        type: "tome",
+        color: "blue",
+        effectiveAgainst: ["cavalry"],
+        might: 10
+    },
+    "Brave Axe": {
+        description: "Inflicts Spd-5. If unit initiates combat, unit attacks twice.",
+        onEquip() {
+            this.entity.getOne("Stats").spd -= 5;
+        },
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "BraveWeapon"
+            });
+        },
+        might: 5,
+        type: "axe"
+    },
+    "Brave Axe+": {
+        description: "Inflicts Spd-5. If unit initiates combat, unit attacks twice.",
+        onEquip() {
+            this.entity.getOne("Stats").spd -= 5;
+        },
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "BraveWeapon"
+            });
+        },
+        might: 8,
+        type: "axe"
+    },
+    "Brave Bow": {
+        description: "Effective against flying foes. Inflicts Spd-5. If unit initiates combat, unit attacks twice.",
+        effectiveAgainst: ["flier"],
+        onEquip() {
+            this.entity.getOne("Stats").spd -= 5;
+        },
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "BraveWeapon"
+            });
+        },
+        might: 4,
+        type: "bow",
+    },
+    "Brave Bow+": {
+        description: "Effective against flying foes. Inflicts Spd-5. If unit initiates combat, unit attacks twice.",
+        effectiveAgainst: ["flier"],
+        onEquip() {
+            this.entity.getOne("Stats").spd -= 5;
+        },
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "BraveWeapon"
+            });
+        },
+        might: 7,
+        type: "bow",
+    },
+    "Brave Lance": {
+        description: "Inflicts Spd-5. If unit initiates combat, unit attacks twice.",
+        onEquip() {
+            this.entity.getOne("Stats").spd -= 5;
+        },
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "BraveWeapon"
+            });
+        },
+        might: 5,
+        type: "lance"
+    },
+    "Brave Lance+": {
+        description: "Inflicts Spd-5. If unit initiates combat, unit attacks twice.",
+        onEquip() {
+            this.entity.getOne("Stats").spd -= 5;
+        },
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "BraveWeapon"
+            });
+        },
+        might: 8,
+        type: "lance"
+    },
+    "Brave Sword": {
+        description: "Inflicts Spd-5. If unit initiates combat, unit attacks twice.",
+        onEquip() {
+            this.entity.getOne("Stats").spd -= 5;
+        },
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "BraveWeapon"
+            });
+        },
+        might: 5,
+        type: "sword"
+    },
+    "Brave Sword+": {
+        description: "Inflicts Spd-5. If unit initiates combat, unit attacks twice.",
+        onEquip() {
+            this.entity.getOne("Stats").spd -= 5;
+        },
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "BraveWeapon"
+            });
+        },
+        might: 8,
+        type: "sword"
+    },
     "Breath of Fog": {
         description: "Effective against dragon foes. At start of odd-numbered turns, restores 10 HP. If foe's Range = 2, calculates damage using the lower of foe's Def or Res.",
         effectiveAgainst: ["breath"],
@@ -301,6 +562,71 @@ const WEAPONS: WeaponDict = {
                 });
             }
         }
+    },
+    "Bull Blade": {
+        description: "During combat, boosts unit's Atk/Def by number of allies within 2 spaces × 2. (Maximum bonus of +6 to each stat.)",
+        exclusiveTo: ["Cain: The Bull"],
+        type: "sword",
+        might: 16,
+        onCombatStart(battleState) {
+            const allies = getAllies(battleState, this.entity);
+            let alliesWithinRange = 0;
+            for (let ally of allies) {
+                if (HeroSystem.getDistance(ally, this.entity) <= 2) {
+                    alliesWithinRange++;
+                }
+            }
+
+            const maxBuff = Math.min(6, alliesWithinRange * 2);
+
+            this.entity.addComponent({
+                type: "CombatBuff",
+                atk: maxBuff,
+                def: maxBuff
+            });
+        }
+    },
+    "Crimson Axe": {
+        description: "Accelerates Special trigger (cooldown count-1).",
+        type: "axe",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        },
+        might: 16,
+        exclusiveTo: ["Sheena: Princess of Gra"]
+    },
+    "Daybreak Lance": {
+        description: "Accelerates Special trigger (cooldown count-1).",
+        exclusiveTo: ["Lukas: Sharp Soldier"],
+        type: "lance",
+        might: 16,
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: 1
+            });
+        },
+    },
+    "Eckesachs": {
+        description: "At start of turn, inflicts Def-4 on foes within 2 spaces through their next actions.",
+        exclusiveTo: ["Zephiel: The Liberator"],
+        might: 16,
+        type: "sword",
+        onTurnStart(battleState) {
+            Effects.threaten(this, battleState, {
+                def: -4
+            });
+        },
+    },
+    "Excalibur": {
+        description: "Effective against flying foes.",
+        effectiveAgainst: ["flier"],
+        might: 14,
+        exclusiveTo: ["Merric: Wind Mage"],
+        type: "tome"
     },
     "Falchion (Awakening)": {
         description: "Effective against dragon foes. At the start of every third turn, restores 10 HP.",
@@ -335,12 +661,89 @@ const WEAPONS: WeaponDict = {
         },
         exclusiveTo: ["Alm: Hero of Prophecy"]
     },
+    "Felicia's Plate": {
+        description: "After combat, if unit attacked, inflicts Def/Res-7 on target and foes within 2 spaces through their next actions. Calculates damage using the lower of foe's Def or Res.",
+        type: "dagger",
+        might: 14,
+        exclusiveTo: ["Felicia: Maid Mayhem"],
+        onCombatStart() {
+            this.entity.addComponent({
+                type: "TargetLowestDefense"
+            });
+        },
+        onCombatAfter(battleState, target, combat) {
+            Effects.dagger(battleState, target, {
+                def: -7,
+                res: -7
+            });
+        },
+    },
+    "Firesweep Bow": {
+        effectiveAgainst: ["flier"],
+        description: "Effective against flying foes. Unit and foe cannot counterattack.",
+        might: 7,
+        type: "bow",
+        onCombatStart(battleState, target) {
+            target.addComponent({
+                type: "PreventCounterattack"
+            });
+        },
+        onCombatDefense() {
+            this.entity.addComponent({
+                type: "PreventCounterattack"
+            });
+        },
+    },
+    "Firesweep Bow+": {
+        effectiveAgainst: ["flier"],
+        description: "Effective against flying foes. Unit and foe cannot counterattack.",
+        might: 11,
+        type: "bow",
+        onCombatStart(battleState, target) {
+            target.addComponent({
+                type: "PreventCounterattack"
+            });
+        },
+        onCombatDefense() {
+            this.entity.addComponent({
+                type: "PreventCounterattack"
+            });
+        },
+    },
     "Florina's Lance": {
         description: "Effective against armored foes.",
         might: 16,
         effectiveAgainst: ["armored"],
         type: "lance",
         exclusiveTo: ["Florina: Lovely Flier"]
+    },
+    "Forblaze": {
+        description: "At start of turn, inflicts Res-7 on foe on the enemy team with the highest Res through its next action.",
+        type: "tome",
+        exclusiveTo: ["Lilina: Delightful Noble"],
+        onTurnStart(battleState) {
+            const enemies = getEnemies(battleState, this.entity);
+
+            const [highestRes] = enemies.sort((hero1, hero2) => hero2.getOne("Stats").res - hero1.getOne("Stats").res);
+
+            highestRes.addComponent({
+                type: "MapDebuff",
+                res: -7
+            });
+        },
+        might: 14
+    },
+    "Frederick's Axe": {
+        description: "Effective against armored foes.",
+        might: 16,
+        exclusiveTo: ["Frederick: Polite Knight"],
+        type: "axe",
+        effectiveAgainst: ["armored"],
+    },
+    "Gladiator's Blade": {
+        description: "If unit's Atk > foe's Atk, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)",
+        might: 16,
+        type: "sword",
     },
     "Gradivus": {
         description: "Unit can counterattack regardless of enemy range.",
@@ -381,6 +784,20 @@ const WEAPONS: WeaponDict = {
         color: "green",
         might: 13
     },
+    "Gronnwolf": {
+        effectiveAgainst: ["cavalry"],
+        description: "Effective against cavalry foes.",
+        might: 6,
+        type: "tome",
+        color: "green"
+    },
+    "Gronnwolf+": {
+        effectiveAgainst: ["cavalry"],
+        description: "Effective against cavalry foes.",
+        might: 10,
+        type: "tome",
+        color: "green"
+    },
     "Hammer": {
         description: "Effective against armored foes.",
         might: 8,
@@ -393,29 +810,17 @@ const WEAPONS: WeaponDict = {
         type: "axe",
         effectiveAgainst: ["armored"],
     },
-    "Felicia's Plate": {
-        description: "After combat, if unit attacked, inflicts Def/Res-7 on target and foes within 2 spaces through their next actions. Calculates damage using the lower of foe's Def or Res.",
-        type: "dagger",
-        might: 14,
-        exclusiveTo: ["Felicia: Maid Mayhem"],
-        onCombatStart() {
-            this.entity.addComponent({
-                type: "TargetLowestDefense"
-            });
-        },
-        onCombatAfter(battleState, target, combat) {
-            Effects.dagger(this, battleState, combat, target, {
-                def: -7,
-                res: -7
-            });
-        },
-    },
-    "Frederick's Axe": {
-        description: "Effective against armored foes.",
-        might: 16,
-        exclusiveTo: ["Frederick: Polite Knight"],
+    "Hauteclere": {
+        description: "Accelerates Special trigger (cooldown count-1).",
         type: "axe",
-        effectiveAgainst: ["armored"],
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        },
+        might: 16,
+        exclusiveTo: ["Michalis: Ambitious King"]
     },
     "Hana's Katana": {
         description: "Effective against armored foes.",
@@ -446,12 +851,93 @@ const WEAPONS: WeaponDict = {
             Effects.blade(this);
         }
     },
+    "Killer Axe": {
+        type: "axe",
+        might: 7,
+        description: "Accelerates Special trigger (cooldown count-1).",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        },
+    },
+    "Killer Axe+": {
+        type: "axe",
+        might: 11,
+        description: "Accelerates Special trigger (cooldown count-1).",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        },
+    },
+    "Naga": {
+        description: "Effective against dragon foes. If foe initiates combat, grants Def/Res+2 during combat.",
+        effectiveAgainst: ["breath"],
+        onCombatDefense() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                def: 2,
+                res: 2
+            });
+        },
+        type: "tome",
+        might: 14,
+        exclusiveTo: ["Julia: Naga's Blood"]
+    },
     "Oboro's Spear": {
         description: "Effective against armored foes.",
         might: 16,
         effectiveAgainst: ["armored"],
         type: "lance",
         exclusiveTo: ["Oboro: Fierce Fighter"]
+    },
+    "Odin's Grimoire": {
+        might: 14,
+        description: "Grants bonus to unit's Atk = total bonuses on unit during combat.",
+        type: "tome",
+        exclusiveTo: ["Odin: Potent Force"],
+        onCombatStart() {
+            Effects.blade(this);
+        }
+    },
+    "Panther Lance": {
+        description: "During combat, boosts unit's Atk/Def by number of allies within 2 spaces × 2. (Maximum bonus of +6 to each stat.)",
+        exclusiveTo: ["Abel: The Panther"],
+        type: "sword",
+        might: 16,
+        onCombatStart(battleState) {
+            const allies = getAllies(battleState, this.entity);
+            let alliesWithinRange = 0;
+            for (let ally of allies) {
+                if (HeroSystem.getDistance(ally, this.entity) <= 2) {
+                    alliesWithinRange++;
+                }
+            }
+
+            const maxBuff = Math.min(6, alliesWithinRange * 2);
+
+            this.entity.addComponent({
+                type: "CombatBuff",
+                atk: maxBuff,
+                def: maxBuff
+            });
+        }
+    },
+    "Parthia": {
+        description: "Effective against flying foes. If unit initiates combat, grants Res+4 during combat.",
+        effectiveAgainst: ["flier"],
+        exclusiveTo: ["Jeorge: Perfect Shot"],
+        might: 14,
+        type: "bow",
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                res: 4
+            });
+        },
     },
     "Ragnell": {
         might: 16,
@@ -470,6 +956,48 @@ const WEAPONS: WeaponDict = {
             Effects.counterattack(this);
         },
         exclusiveTo: ["Ryoma: Peerless Samurai"]
+    },
+    "Renowned Bow": {
+        description: "Effective against flying foes. Inflicts Spd-5. If unit initiates combat, unit attacks twice.",
+        onEquip() {
+            this.entity.getOne("Stats").spd -= 5;
+        },
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "BraveWeapon"
+            });
+        },
+        might: 9,
+        effectiveAgainst: ["flier"],
+        exclusiveTo: ["Gordin: Altean Archer"],
+        type: "bow"
+    },
+    "Rhomphaia": {
+        effectiveAgainst: ["armored", "cavalry"],
+        description: "Effective against armored and cavalry foes.",
+        might: 16,
+        type: "lance",
+        exclusiveTo: ["Clair: Highborn Flier"]
+    },
+    "Sapphire Lance": {
+        description: "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
+        type: "lance",
+        might: 8,
+        onCombatStart() {
+            this.entity.addComponent({
+                type: "GemWeapon"
+            });
+        }
+    },
+    "Sapphire Lance+": {
+        description: "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
+        type: "lance",
+        might: 12,
+        onCombatStart() {
+            this.entity.addComponent({
+                type: "GemWeapon"
+            });
+        }
     },
     "Siegfried": {
         description: "Unit can counterattack regardless of enemy range.",
@@ -498,6 +1026,18 @@ const WEAPONS: WeaponDict = {
         },
         exclusiveTo: ["Ephraim: Restoration Lord"]
     },
+    "Stalwart Sword": {
+        description: "If foe initiates combat, inflicts Atk-6 on foe during combat.",
+        might: 16,
+        exclusiveTo: ["Draug: Gentle Giant"],
+        type: "sword",
+        onCombatDefense(state, attacker) {
+            attacker.addComponent({
+                type: "CombatDebuff",
+                atk: -6
+            });
+        },
+    },
     "Stout Tomahawk": {
         might: 16,
         description: "Unit can counterattack regardless of enemy range.",
@@ -507,15 +1047,12 @@ const WEAPONS: WeaponDict = {
             Effects.counterattack(this);
         }
     },
-    "Sapphire Lance": {
-        description: "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
-        type: "lance",
-        might: 8,
-        onCombatStart() {
-            this.entity.addComponent({
-                type: "GemWeapon"
-            });
-        }
+    "Tharja's Hex": {
+        description: "Grants bonus to unit's Atk = total bonuses on unit during combat.",
+        might: 14,
+        exclusiveTo: ["Tharja: Dark Shadow"],
+        type: "tome",
+        color: "red"
     },
     "Valflame": {
         description: "At start of turn, inflicts Atk/Res-4 on foes in cardinal directions with Res < unit's Res through their next actions.",
@@ -538,6 +1075,30 @@ const WEAPONS: WeaponDict = {
         },
         exclusiveTo: ["Arvis: Emperor of Flame"]
     },
+    "Veteran Lance": {
+        description: "If foe initiates combat or, at start of combat, if foe's HP ≥ 70%, grants Atk/Res+5 to unit during combat.",
+        exclusiveTo: ["Jagen: Veteran Knight"],
+        might: 16,
+        type: "lance",
+        onCombatInitiate(state, target) {
+            const { maxHP, hp } = target.getOne("Stats");
+
+            if (hp / maxHP >= 0.7) {
+                this.entity.addComponent({
+                    type: "CombatBuff",
+                    atk: 5,
+                    res: 5
+                });
+            }
+        },
+        onCombatDefense() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                atk: 5,
+                res: 5
+            });
+        },
+    },
     "Yato": {
         description: "If unit initiates combat, grants Spd+4 during combat.",
         exclusiveTo: ["Corrin: Fateful Prince"],
@@ -549,6 +1110,27 @@ const WEAPONS: WeaponDict = {
                 spd: 4
             });
         },
+    },
+    "Wind's Brand": {
+        description: "At start of turn, inflicts Atk-7 on foe on the enemy team with the highest Atk through its next action.",
+        might: 14,
+        exclusiveTo: ["Soren: Shrewd Strategist"],
+        type: "tome",
+        onTurnStart(battleState) {
+            const enemies = getEnemies(battleState, this.entity);
+            const [highestAtk] = enemies.sort((hero1, hero2) => hero2.getOne("Stats").atk - hero1.getOne("Stats").atk);
+            highestAtk.addComponent({
+                type: "MapDebuff",
+                atk: -7
+            });
+        },
+    },
+    "Wing Sword": {
+        description: "Effective against armored and cavalry foes.",
+        effectiveAgainst: ["armored", "cavalry"],
+        might: 16,
+        exclusiveTo: ["Caeda: Talys's Heart"],
+        type: "sword"
     },
 };
 

@@ -7,7 +7,7 @@ import { MovementType, Stat, Stats } from "../types";
 import { WeaponColor, WeaponType } from "../weapon";
 import getAllies from "../utils/get-alies";
 import getEnemies from "../utils/get-enemies";
-import { mapBuffByMovementType, honeStat, combatBuffByRange, defiant, breaker, elementalBoost, renewal } from "./effects";
+import { mapBuffByMovementType, honeStat, combatBuffByRange, defiant, breaker, elementalBoost, renewal, threaten } from "./effects";
 import Characters from "./characters.json";
 
 interface PassivesDict {
@@ -120,20 +120,6 @@ function movementBasedCombatBuff(buff: Stats, range: number) {
                 ally.addComponent({
                     type: "CombatBuff",
                     ...buff
-                });
-            }
-        }
-    }
-}
-
-function threaten(statDebuffs: Stats) {
-    return function (this: Skill, state: GameState) {
-        const enemies = getEnemies(state, this.entity);
-        for (let enemy of enemies) {
-            if (HeroSystem.getDistance(enemy, this.entity) <= 2) {
-                enemy.addComponent({
-                    type: "MapDebuff",
-                    ...statDebuffs
                 });
             }
         }
@@ -1473,62 +1459,86 @@ const PASSIVES: PassivesDict = {
     "Threaten Atk 1": {
         description: "At start of turn, inflicts Atk-3 on foes within 2 spaces through their next actions.",
         slot: "C",
-        onTurnStart: threaten({ atk: -3 })
+        onTurnStart(state) {
+            threaten(this, state, { atk: -3 });
+        }
     },
     "Threaten Atk 2": {
         description: "At start of turn, inflicts Atk-5 on foes within 2 spaces through their next actions.",
         slot: "C",
-        onTurnStart: threaten({ atk: -5 })
+        onTurnStart(state) {
+            threaten(this, state, { atk: -5 });
+        }
     },
     "Threaten Atk 3": {
-        description: "At start of turn, inflicts Atk-3 on foes within 2 spaces through their next actions.",
+        description: "At start of turn, inflicts Atk-7 on foes within 2 spaces through their next actions.",
         slot: "C",
-        onTurnStart: threaten({ atk: -7 })
+        onTurnStart(state) {
+            threaten(this, state, { atk: -7 });
+        }
     },
     "Threaten Def 1": {
         description: "At start of turn, inflicts Def-3 on foes within 2 spaces through their next actions.",
         slot: "C",
-        onTurnStart: threaten({ def: -3 })
+        onTurnStart(state) {
+            threaten(this, state, { def: -3 });
+        }
     },
     "Threaten Def 2": {
         description: "At start of turn, inflicts Def-5 on foes within 2 spaces through their next actions.",
         slot: "C",
-        onTurnStart: threaten({ def: -5 })
+        onTurnStart(state) {
+            threaten(this, state, { def: -5 });
+        }
     },
     "Threaten Def 3": {
         description: "At start of turn, inflicts Def-7 on foes within 2 spaces through their next actions.",
         slot: "C",
-        onTurnStart: threaten({ def: -7 })
+        onTurnStart(state) {
+            threaten(this, state, { def: -7 });
+        }
     },
     "Threaten Spd 1": {
         description: "At start of turn, inflicts Spd-3 on foes within 2 spaces through their next actions.",
         slot: "C",
-        onTurnStart: threaten({ spd: -3 })
+        onTurnStart(state) {
+            threaten(this, state, { spd: -3 });
+        }
     },
     "Threaten Spd 2": {
         description: "At start of turn, inflicts Spd-5 on foes within 2 spaces through their next actions.",
         slot: "C",
-        onTurnStart: threaten({ spd: -5 })
+        onTurnStart(state) {
+            threaten(this, state, { spd: -5 });
+        }
     },
     "Threaten Spd 3": {
         description: "At start of turn, inflicts Spd-7 on foes within 2 spaces through their next actions.",
         slot: "C",
-        onTurnStart: threaten({ spd: -7 })
+        onTurnStart(state) {
+            threaten(this, state, { spd: -7 });
+        }
     },
     "Threaten Res 1": {
         description: "At start of turn, inflicts Res-3 on foes within 2 spaces through their next actions.",
         slot: "C",
-        onTurnStart: threaten({ res: -3 })
+        onTurnStart(state) {
+            threaten(this, state, { res: -3 });
+        }
     },
     "Threaten Res 2": {
         description: "At start of turn, inflicts Res-5 on foes within 2 spaces through their next actions.",
         slot: "C",
-        onTurnStart: threaten({ res: -5 })
+        onTurnStart(state) {
+            threaten(this, state, { res: -5 });
+        }
     },
     "Threaten Res 3": {
         description: "At start of turn, inflicts Res-7 on foes within 2 spaces through their next actions.",
         slot: "C",
-        onTurnStart: threaten({ res: -7 })
+        onTurnStart(state) {
+            threaten(this, state, { res: -7 });
+        }
     },
     "Atk Smoke 1": {
         description: "Inflicts Atk-3 on foes within 2 spaces of target through their next actions after combat.",

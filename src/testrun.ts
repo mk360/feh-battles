@@ -1,4 +1,5 @@
 import GameWorld from "./world";
+import Map1 from "./data/maps/map1.json";
 
 const world = new GameWorld({
     trackChanges: true
@@ -41,6 +42,7 @@ world.initiate({
     }]
 });
 
-world.runSystems("every-turn");
+world.generateMap(Map1);
 
-world.runSystems("combat");
+// @ts-ignore
+console.log(world.state.map);

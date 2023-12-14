@@ -131,8 +131,8 @@ class GameWorld extends World {
     }
 
     generateMap(config: typeof Map1) {
-        for (let i = 0; i < config.length; i++) {
-            const line = config[i];
+        for (let i = 1; i <= config.length; i++) {
+            const line = config[i - 1];
             for (let j = 0; j < line.length; j++) {
                 const tile = line[j];
                 let bitField = 0;
@@ -144,7 +144,7 @@ class GameWorld extends World {
                     bitField |= (1 << 5);
                 }
                 uint8[0] = bitField;
-                this.state.map[i++][j] = uint8;
+                this.state.map[i][j] = uint8;
             }
         }
     };

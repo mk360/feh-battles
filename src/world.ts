@@ -138,6 +138,7 @@ class GameWorld extends World {
                 let bitField = 0;
                 const [tileType, addedCharacteristic] = tile.split("-");
                 const uint8 = new Uint8Array(1);
+                // initial 4 bits determine tile type
                 bitField |= TileTypes[tileType as keyof typeof TileTypes];
                 if (addedCharacteristic === "trench") {
                     bitField |= (1 << 5);

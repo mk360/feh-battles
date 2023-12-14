@@ -34,6 +34,7 @@ import SlowSpecial from "./components/slow-special";
 import BraveWeapon from "./components/brave-weapon";
 import PreventCounterattack from "./components/prevent-counterattack";
 import Map1 from "./data/maps/map1.json";
+import TileTypes from "./data/tile-types";
 
 const tileBitmasks = {
     type: {
@@ -130,11 +131,19 @@ class GameWorld extends World {
     }
 
     generateMap(config: typeof Map1) {
-        let startingBitfield = 0;
-        for (let line of config) {
-            for (let tile of line) {
+        for (let i = 0; i < config.length; i++) {
+            const line = config[i];
+            for (let j = 0; j < line.length; j++) {
+                const tile = line[j];
+                let bitField = 0;
                 const [tileType, addedCharacteristic] = tile.split("-");
-                const uint8 = new Uint8Array();
+                const uint8 = new Uint8Array(1);
+                bitField |= TileTypes[tileType as keyof typeof TileTypes];
+                if (addedCharacteristic === "trench") {
+                    bitField |= (1 << 5);
+                }
+                uint8[0] = bitField;
+                this.state.map[i++][j] = uint8;
             }
         }
     };

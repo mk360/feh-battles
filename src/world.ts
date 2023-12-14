@@ -33,6 +33,19 @@ import AccelerateSpecial from "./components/accelerate-special";
 import SlowSpecial from "./components/slow-special";
 import BraveWeapon from "./components/brave-weapon";
 import PreventCounterattack from "./components/prevent-counterattack";
+import Map1 from "./data/maps/map1.json";
+
+const tileBitmasks = {
+    type: {
+        floor: 0b1111,
+        wall: 0,
+        forest: 0b111,
+        void: 0b10
+    },
+    occupation: 0b110000,
+    trench: 0b1000000,
+    defensiveTile: 0b10000000
+} as const;
 
 interface HeroData {
     name: string;
@@ -58,6 +71,16 @@ interface InitialLineup {
 
 class GameWorld extends World {
     private state: GameState = {
+        map: {
+            1: [new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array()],
+            2: [new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array()],
+            3: [new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array()],
+            4: [new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array()],
+            5: [new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array()],
+            6: [new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array()],
+            7: [new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array()],
+            8: [new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array()],
+        },
         // TODO: concevoir la map state
         teams: {
             team1: [],
@@ -105,6 +128,16 @@ class GameWorld extends World {
         this.registerSystem("every-turn", MapEffects, [this.state]);
         this.registerSystem("combat", CombatSystem, [this.state]);
     }
+
+    generateMap(config: typeof Map1) {
+        let startingBitfield = 0;
+        for (let line of config) {
+            for (let tile of line) {
+                const [tileType, addedCharacteristic] = tile.split("-");
+                const uint8 = new Uint8Array();
+            }
+        }
+    };
 
     createHero(member: HeroData, team: "team1" | "team2") {
         const entity = this.createEntity({

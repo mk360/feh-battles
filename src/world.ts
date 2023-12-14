@@ -58,6 +58,7 @@ interface InitialLineup {
 
 class GameWorld extends World {
     private state: GameState = {
+        // TODO: concevoir la map state
         teams: {
             team1: [],
             team2: [],
@@ -99,7 +100,7 @@ class GameWorld extends World {
         this.registerComponent(Name);
         this.registerComponent(AccelerateSpecial);
         this.registerComponent(SlowSpecial);
-        this.registerComponent(BraveWeapon)
+        this.registerComponent(BraveWeapon);
         this.registerComponent(TargetLowestDefense);
         this.registerSystem("every-turn", MapEffects, [this.state]);
         this.registerSystem("combat", CombatSystem, [this.state]);

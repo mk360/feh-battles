@@ -5,6 +5,7 @@ class WalkableTile extends Component {
         x: 0,
         y: 0
     }
+    static serializeFields = ["x", "y"];
 };
 
 export default WalkableTile;

@@ -71,7 +71,7 @@ interface InitialLineup {
 }
 
 class GameWorld extends World {
-    private state: GameState = {
+    state: GameState = {
         map: {
             1: [new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array()],
             2: [new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array()],
@@ -82,7 +82,6 @@ class GameWorld extends World {
             7: [new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array()],
             8: [new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array()],
         },
-        // TODO: concevoir la map state
         teams: {
             team1: [],
             team2: [],
@@ -97,6 +96,7 @@ class GameWorld extends World {
         },
         currentSide: "team1",
         turn: 1,
+        tiles: this.createEntity({})
     };
 
     constructor(config?: IWorldConfig) {
@@ -174,11 +174,22 @@ class GameWorld extends World {
             });
         }
 
+        const { x, y } = member.initialPosition;
+
         entity.addComponent({
             type: "Position",
             x: member.initialPosition.x,
             y: member.initialPosition.y,
         });
+
+        const mapCell = this.state.map[y][x];
+
+        if (mapCell & tileBitmasks.occupation) {
+            throw new Error("Tile is already occupied");
+        }
+
+        this.state.map[y][x][0] |= tileBitmasks.occupation;
+
         entity.addComponent({
             type: "Battling"
         });

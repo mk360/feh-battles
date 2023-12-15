@@ -80,8 +80,8 @@ export function elementalBoost(thisArg: Skill, target: Entity, buffs: Stats) {
     }
 };
 
-export function renewal(thisArg: Skill, turnCount: number, periodicity: (turnCount: number) => boolean, amount: number) {
-    if (periodicity(turnCount)) {
+export function renewal(thisArg: Skill, shouldActivate: () => boolean, amount: number) {
+    if (shouldActivate()) {
         thisArg.entity.addComponent({
             type: "Heal",
             value: amount

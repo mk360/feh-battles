@@ -5,6 +5,8 @@ const world = new GameWorld({
     trackChanges: true
 });
 
+world.generateMap(Map1);
+
 world.initiate({
     team1: [{
         name: "Klein: Silver Nobleman",
@@ -37,12 +39,10 @@ world.initiate({
         rarity: 5,
         initialPosition: {
             x: 2,
-            y: 3
+            y: 5
         }
     }]
 });
-
-world.generateMap(Map1);
 
 // @ts-ignore
 console.log(world.state.map);

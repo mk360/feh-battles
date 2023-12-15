@@ -296,21 +296,21 @@ const PASSIVES: PassivesDict = {
     "Renewal 1": {
         description: "At the start of every fourth turn, restores 10 HP.",
         onTurnStart(state) {
-            renewal(this, state.turn, (count) => count % 4 === 0, 10);
+            renewal(this, () => state.turn % 4 === 0, 10);
         },
         slot: "B",
     },
     "Renewal 2": {
         description: "At the start of every third turn, restores 10 HP.",
         onTurnStart(state) {
-            renewal(this, state.turn, (count) => count % 3 === 0, 10);
+            renewal(this, () => state.turn % 3 === 0, 10);
         },
         slot: "B",
     },
     "Renewal 3": {
         description: "At start of odd-numbered turns, restores 10 HP.",
         onTurnStart(state) {
-            renewal(this, state.turn, turnIsOdd, 10);
+            renewal(this, () => state.turn % 2 === 1, 10);
         },
         slot: "B",
     },

@@ -12,11 +12,10 @@
     "esModuleInterop": true,
     "declaration": true,
     "declarationMap": true,
-    "declarationDir": "dec",
+    "declarationDir": "./dec",
     "rootDir": "./src",
     "outDir": "./lib"
   },
-  "exclude": [
-    "./src/__tests"
-  ],
+  "include": ["./src"],
+  "exclude": ["./src/__tests"]
 }

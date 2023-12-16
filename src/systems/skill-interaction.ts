@@ -13,6 +13,11 @@ NeutralizationMap.set(Counterattack, PreventCounterattack);
 NeutralizationMap.set(TargetLowestDefense, PreventTargetLowestDefense);
 NeutralizationMap.set(GuaranteedFollowup, PreventFollowUp);
 
+const MultipleNeutralizationMap = new Map<new () => Component, (new () => Component)[]>();
+
+MultipleNeutralizationMap.set(Prevent)
+
+
 class SkillInteractionSystem extends System {
     private state: GameState;
     private battlingQuery: Query;
@@ -33,7 +38,7 @@ class SkillInteractionSystem extends System {
                     secondHero.removeComponent(comp);
                     firstHero.removeComponent(matchingOffensiveComponent);
                 }
-            })
+            });
         });
     }
 };

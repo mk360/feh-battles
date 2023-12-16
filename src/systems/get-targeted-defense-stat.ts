@@ -2,7 +2,7 @@ import { Entity } from "ape-ecs";
 import { Stats } from "../types";
 
 function getTargetedDefenseStat(attacker: Entity, defender: Entity, defenderStats: Stats) {
-    if (defender.getOne("TargetLowestDefense")) {
+    if (attacker.getOne("TargetLowestDefense") && !defender.getOne("PreventTargetLowestDefense")) {
         return defenderStats.def < defenderStats.res ? "def" : "res";
     }
 

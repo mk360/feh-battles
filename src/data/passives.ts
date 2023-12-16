@@ -7,7 +7,7 @@ import { MovementType, Stat, Stats } from "../types";
 import { WeaponColor, WeaponType } from "../weapon";
 import getAllies from "../utils/get-alies";
 import getEnemies from "../utils/get-enemies";
-import { mapBuffByMovementType, honeStat, combatBuffByRange, defiant, breaker, elementalBoost, renewal, threaten } from "./effects";
+import { mapBuffByMovementType, honeStat, combatBuffByRange, defiant, breaker, elementalBoost, renewal, threaten, bond } from "./effects";
 import Characters from "./characters.json";
 
 interface PassivesDict {
@@ -21,9 +21,10 @@ interface PassivesDict {
         exclusiveTo?: (keyof typeof Characters)[];
         effectiveAgainst?: (MovementType | WeaponType)[];
         onCombatStart?(this: Skill, state: GameState, target: Entity): void;
-        onEquip?(this: Skill, ...args: any[]): any;
+        onEquip?(this: Skill): void;
         onCombatInitiate?(this: Skill, state: GameState, target: Entity): void;
         onCombatAllyStart?(this: Skill, state: GameState, ally: Entity): void;
+        onCombatDefense?(this: Skill, state: GameState, attacker: Entity): void;
         onCombatAfter?(this: Skill, state: GameState, target: Entity): void;
         onTurnStart?(this: Skill, state: GameState): void;
     }
@@ -74,41 +75,25 @@ function wave(affectedStat: Stat, parity: (turnCount: number) => boolean, buff: 
     }
 }
 
-function tactic(affectedStat: Stat, buff: number) {
-    return function (this: Skill, state: GameState) {
-        const movementTypeMap: {
-            [k in MovementType]: 0
-        } = {
-            "armored": 0,
-            "cavalry": 0,
-            "flier": 0,
-            "infantry": 0
-        };
-        const userMovementType = this.entity.getOne("MovementType").value;
-        movementTypeMap[userMovementType]++;
+function tactic(thisArg: Skill, state: GameState, affectedStat: Stat, buff: number) {
+    const userMovementType = thisArg.entity.getOne("MovementType").value;
 
-        const allies = getAllies(state, this.entity);
+    const allies = getAllies(state, thisArg.entity);
 
-        for (let ally of allies) {
-            const allyMovementType = ally.getOne("MovementType").value;
-            movementTypeMap[allyMovementType]++;
-        }
+    if (state.teamsByMovementTypes[thisArg.entity.getOne("Side").value][userMovementType] <= 2) {
+        this.entity.addComponent({
+            type: "MapBuff",
+            [affectedStat]: buff
+        });
+    }
 
-        if (movementTypeMap[userMovementType] <= 2) {
-            this.entity.addComponent({
+    for (let ally of allies) {
+        const allyMovementType = ally.getOne("MovementType").value;
+        if (state.teamsByMovementTypes[thisArg.entity.getOne("Side").value][allyMovementType] <= 2) {
+            ally.addComponent({
                 type: "MapBuff",
                 [affectedStat]: buff
             });
-        }
-
-        for (let ally of allies) {
-            const allyMovementType = ally.getOne("MovementType").value;
-            if (allyMovementType <= 2) {
-                ally.addComponent({
-                    type: "MapBuff",
-                    [affectedStat]: buff
-                });
-            }
         }
     }
 }
@@ -127,6 +112,16 @@ function movementBasedCombatBuff(buff: Stats, range: number) {
 }
 
 const PASSIVES: PassivesDict = {
+    "Distant Counter": {
+        description: "Unit can counterattack regardless of enemy range.",
+        slot: "A",
+        allowedWeaponTypes: ["sword", "axe", "lance", "beast", "breath"]
+    },
+    "Close Counter": {
+        description: "Unit can counterattack regardless of enemy range.",
+        slot: "A",
+        allowedWeaponTypes: ["bow", "dagger", "tome", "staff"]
+    },
     "Svalinn Shield": {
         slot: "A",
         protects: ["armored"],
@@ -138,6 +133,323 @@ const PASSIVES: PassivesDict = {
         description: 'Neutralizes "effective against flying" bonuses.',
         protects: ["flier"],
         allowedMovementTypes: ["flier"]
+    },
+    "Fury 1": {
+        description: "Grants Atk/Spd/Def/Res+1. After combat, deals 2 damage to unit.",
+        slot: "A",
+        onEquip() {
+            const stats = this.entity.getOne("Stats");
+            stats.atk++;
+            stats.def++;
+            stats.spd++;
+            stats.res++;
+        },
+        onCombatAfter() {
+            this.entity.addComponent({
+                type: "AfterCombatDamage",
+                value: 2
+            });
+        }
+    },
+    "Fury 2": {
+        description: "Grants Atk/Spd/Def/Res+2. After combat, deals 4 damage to unit.",
+        slot: "A",
+        onEquip() {
+            const stats = this.entity.getOne("Stats");
+            stats.atk += 2;
+            stats.def += 2;
+            stats.spd += 2;
+            stats.res += 2;
+        },
+        onCombatAfter() {
+            this.entity.addComponent({
+                type: "AfterCombatDamage",
+                value: 4
+            });
+        }
+    },
+    "Fury 3": {
+        description: "Grants Atk/Spd/Def/Res+3. After combat, deals 6 damage to unit.",
+        slot: "A",
+        onEquip() {
+            const stats = this.entity.getOne("Stats");
+            stats.atk += 3;
+            stats.def += 3;
+            stats.spd += 3;
+            stats.res += 3;
+        },
+        onCombatAfter() {
+            this.entity.addComponent({
+                type: "AfterCombatDamage",
+                value: 6
+            });
+        }
+    },
+    "Close Def 1": {
+        description: "If foe initiates combat and uses sword, lance, axe, dragonstone, or beast damage, grants Def/Res+2 during combat.",
+        slot: "A",
+        onCombatDefense(state, attacker) {
+            const { range } = attacker.getOne("Weapon");
+            if (range === 1) {
+                this.entity.addComponent({
+                    type: "CombatBuff",
+                    def: 2,
+                    res: 2
+                });
+            }
+        },
+    },
+    "Close Def 2": {
+        description: "If foe initiates combat and uses sword, lance, axe, dragonstone, or beast damage, grants Def/Res+4 during combat.",
+        slot: "A",
+        onCombatDefense(state, attacker) {
+            const { range } = attacker.getOne("Weapon");
+            if (range === 1) {
+                this.entity.addComponent({
+                    type: "CombatBuff",
+                    def: 4,
+                    res: 4
+                });
+            }
+        },
+    },
+    "Close Def 3": {
+        description: "If foe initiates combat and uses sword, lance, axe, dragonstone, or beast damage, grants Def/Res+6 during combat.",
+        slot: "A",
+        onCombatDefense(state, attacker) {
+            const { range } = attacker.getOne("Weapon");
+            if (range === 1) {
+                this.entity.addComponent({
+                    type: "CombatBuff",
+                    def: 6,
+                    res: 6
+                });
+            }
+        },
+    },
+    "Distant Def 1": {
+        description: "If foe initiates combat and uses bow, dagger, magic, or staff, grants Def/Res+2 during combat.",
+        slot: "A",
+        onCombatDefense(state, attacker) {
+            const { range } = attacker.getOne("Weapon");
+            if (range === 2) {
+                this.entity.addComponent({
+                    type: "CombatBuff",
+                    def: 2,
+                    res: 2
+                });
+            }
+        },
+    },
+    "Distant Def 2": {
+        description: "If foe initiates combat and uses bow, dagger, magic, or staff, grants Def/Res+4 during combat.",
+        slot: "A",
+        onCombatDefense(state, attacker) {
+            const { range } = attacker.getOne("Weapon");
+            if (range === 2) {
+                this.entity.addComponent({
+                    type: "CombatBuff",
+                    def: 4,
+                    res: 4
+                });
+            }
+        },
+    },
+    "Distant Def 3": {
+        description: "If foe initiates combat and uses bow, dagger, magic, or staff, grants Def/Res+6 during combat.",
+        slot: "A",
+        onCombatDefense(state, attacker) {
+            const { range } = attacker.getOne("Weapon");
+            if (range === 2) {
+                this.entity.addComponent({
+                    type: "CombatBuff",
+                    def: 6,
+                    res: 6
+                });
+            }
+        },
+    },
+    "Atk/Def Bond 1": {
+        description: "If unit is adjacent to an ally, grants Atk/Def+3 during combat.",
+        slot: "A",
+        onCombatStart(state) {
+            bond(this, state, {
+                atk: 3,
+                def: 3
+            });
+        }
+    },
+    "Atk/Def Bond 2": {
+        description: "If unit is adjacent to an ally, grants Atk/Def+4 during combat.",
+        slot: "A",
+        onCombatStart(state) {
+            bond(this, state, {
+                atk: 4,
+                def: 4
+            });
+        }
+    },
+    "Atk/Def Bond 3": {
+        description: "If unit is adjacent to an ally, grants Atk/Def+5 during combat.",
+        slot: "A",
+        onCombatStart(state) {
+            bond(this, state, {
+                atk: 5,
+                def: 5
+            });
+        }
+    },
+    "Atk/Res Bond 1": {
+        description: "If unit is adjacent to an ally, grants Atk/Res+3 during combat.",
+        slot: "A",
+        onCombatStart(state) {
+            bond(this, state, {
+                atk: 3,
+                res: 3
+            });
+        }
+    },
+    "Atk/Res Bond 2": {
+        description: "If unit is adjacent to an ally, grants Atk/Res+4 during combat.",
+        slot: "A",
+        onCombatStart(state) {
+            bond(this, state, {
+                atk: 4,
+                res: 4
+            });
+        }
+    },
+    "Atk/Res Bond 3": {
+        description: "If unit is adjacent to an ally, grants Atk/Res+5 during combat.",
+        slot: "A",
+        onCombatStart(state) {
+            bond(this, state, {
+                atk: 5,
+                res: 5
+            });
+        }
+    },
+    "Death Blow 1": {
+        slot: "A",
+        description: "If unit initiates combat, grants Atk+2 during combat.",
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                atk: 2
+            });
+        }
+    },
+    "Death Blow 2": {
+        slot: "A",
+        description: "If unit initiates combat, grants Atk+4 during combat.",
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                atk: 4
+            });
+        }
+    },
+    "Death Blow 3": {
+        slot: "A",
+        description: "If unit initiates combat, grants Atk+6 during combat.",
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                atk: 6
+            });
+        }
+    },
+    "Armored Blow 1": {
+        slot: "A",
+        description: "If unit initiates combat, grants Def+2 during combat.",
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                def: 2
+            });
+        }
+    },
+    "Armored Blow 2": {
+        slot: "A",
+        description: "If unit initiates combat, grants Def+4 during combat.",
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                def: 4
+            });
+        }
+    },
+    "Armored Blow 3": {
+        slot: "A",
+        description: "If unit initiates combat, grants Def+6 during combat.",
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                def: 6
+            });
+        }
+    },
+    "Steady Blow 1": {
+        description: "If unit initiates combat, grants Spd/Def+2 during combat.",
+        slot: "A",
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                spd: 2,
+                def: 2
+            });
+        }
+    },
+    "Steady Blow 2": {
+        description: "If unit initiates combat, grants Spd/Def+4 during combat.",
+        slot: "A",
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                spd: 4,
+                def: 4
+            });
+        }
+    },
+    "Sturdy Blow 1": {
+        description: "If unit initiates combat, grants Atk/Def+2 during combat.",
+        slot: "A",
+        onCombatInitiate() {
+            this.entity.addComponent({
+                atk: 2,
+                def: 2
+            });
+        }
+    },
+    "Sturdy Blow 2": {
+        description: "If unit initiates combat, grants Atk/Def+4 during combat.",
+        slot: "A",
+        onCombatInitiate() {
+            this.entity.addComponent({
+                atk: 4,
+                def: 4
+            });
+        }
+    },
+    "Swift Strike 1": {
+        description: "If unit initiates combat, grants Spd/Res+2 during combat.",
+        slot: "A",
+        onCombatInitiate() {
+            this.entity.addComponent({
+                spd: 2,
+                res: 2
+            });
+        }
+    },
+    "Swift Strike 2": {
+        description: "If unit initiates combat, grants Spd/Res+4 during combat.",
+        slot: "A",
+        onCombatInitiate() {
+            this.entity.addComponent({
+                spd: 4,
+                res: 4
+            });
+        }
     },
     "Swift Sparrow 1": {
         slot: "A",
@@ -275,6 +587,39 @@ const PASSIVES: PassivesDict = {
         protects: ["cavalry"],
         allowedMovementTypes: ["cavalry"]
     },
+    "Life and Death 1": {
+        description: "Grants Atk/Spd+3. Inflicts Def/Res-3.",
+        slot: "A",
+        onEquip() {
+            const stats = this.entity.getOne("Stats");
+            stats.atk += 3;
+            stats.spd += 3;
+            stats.def -= 3;
+            stats.res -= 3;
+        }
+    },
+    "Life and Death 2": {
+        description: "Grants Atk/Spd+4. Inflicts Def/Res-4.",
+        slot: "A",
+        onEquip() {
+            const stats = this.entity.getOne("Stats");
+            stats.atk += 4;
+            stats.spd += 4;
+            stats.def -= 4;
+            stats.res -= 4;
+        }
+    },
+    "Life and Death 3": {
+        description: "Grants Atk/Spd+5. Inflicts Def/Res-5.",
+        slot: "A",
+        onEquip() {
+            const stats = this.entity.getOne("Stats");
+            stats.atk += 5;
+            stats.spd += 5;
+            stats.def -= 5;
+            stats.res -= 5;
+        }
+    },
     "Axebreaker 1": {
         onCombatStart(state, target) {
             breaker(this, target, "axe", 0.9);
@@ -296,21 +641,21 @@ const PASSIVES: PassivesDict = {
     "Renewal 1": {
         description: "At the start of every fourth turn, restores 10 HP.",
         onTurnStart(state) {
-            renewal(this, () => state.turn % 4 === 0, 10);
+            renewal(this, state.turn % 4 === 0, 10);
         },
         slot: "B",
     },
     "Renewal 2": {
         description: "At the start of every third turn, restores 10 HP.",
         onTurnStart(state) {
-            renewal(this, () => state.turn % 3 === 0, 10);
+            renewal(this, state.turn % 3 === 0, 10);
         },
         slot: "B",
     },
     "Renewal 3": {
         description: "At start of odd-numbered turns, restores 10 HP.",
         onTurnStart(state) {
-            renewal(this, () => state.turn % 2 === 1, 10);
+            renewal(this, state.turn % 2 === 1, 10);
         },
         slot: "B",
     },
@@ -1077,62 +1422,86 @@ const PASSIVES: PassivesDict = {
     "Atk Tactic 1": {
         slot: "C",
         description: "At start of turn, grants Atk+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
-        onTurnStart: tactic("atk", 2),
+        onTurnStart(state) {
+            tactic(this, state, "atk", 2);
+        }
     },
     "Atk Tactic 2": {
         slot: "C",
         description: "At start of turn, grants Atk+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
-        onTurnStart: tactic("atk", 4),
+        onTurnStart(state) {
+            tactic(this, state, "atk", 4);
+        }
     },
     "Atk Tactic 3": {
         slot: "C",
         description: "At start of turn, grants Atk+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
-        onTurnStart: tactic("atk", 6),
+        onTurnStart(state) {
+            tactic(this, state, "atk", 6);
+        }
     },
     "Spd Tactic 1": {
         slot: "C",
         description: "At start of turn, grants Spd+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
-        onTurnStart: tactic("spd", 2),
+        onTurnStart(state) {
+            tactic(this, state, "spd", 2);
+        }
     },
     "Spd Tactic 2": {
         slot: "C",
         description: "At start of turn, grants Spd+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
-        onTurnStart: tactic("spd", 4),
+        onTurnStart(state) {
+            tactic(this, state, "spd", 4);
+        }
     },
     "Spd Tactic 3": {
         slot: "C",
         description: "At start of turn, grants Spd+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
-        onTurnStart: tactic("spd", 6),
+        onTurnStart(state) {
+            tactic(this, state, "spd", 6);
+        }
     },
     "Def Tactic 1": {
         slot: "C",
         description: "At start of turn, grants Def+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
-        onTurnStart: tactic("def", 2),
+        onTurnStart(state) {
+            tactic(this, state, "def", 2);
+        }
     },
     "Def Tactic 2": {
         slot: "C",
         description: "At start of turn, grants Def+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
-        onTurnStart: tactic("def", 4),
+        onTurnStart(state) {
+            tactic(this, state, "def", 4);
+        }
     },
     "Def Tactic 3": {
         slot: "C",
         description: "At start of turn, grants Def+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
-        onTurnStart: tactic("def", 6),
+        onTurnStart(state) {
+            tactic(this, state, "def", 6);
+        }
     },
     "Res Tactic 1": {
         slot: "C",
         description: "At start of turn, grants Res+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
-        onTurnStart: tactic("res", 2),
+        onTurnStart(state) {
+            tactic(this, state, "res", 2);
+        }
     },
     "Res Tactic 2": {
         slot: "C",
         description: "At start of turn, grants Res+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
-        onTurnStart: tactic("res", 4),
+        onTurnStart(state) {
+            tactic(this, state, "res", 4);
+        }
     },
     "Res Tactic 3": {
         slot: "C",
         description: "At start of turn, grants Res+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
-        onTurnStart: tactic("res", 6),
+        onTurnStart(state) {
+            tactic(this, state, "res", 6);
+        }
     },
     "Odd Atk Wave 1": {
         description: "On odd turns, adds +2 Atk for unit and nearby allies for 1 turn.",

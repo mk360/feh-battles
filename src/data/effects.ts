@@ -68,6 +68,19 @@ export function breaker(thisArg: Skill, enemy: Entity, targetWeaponType: WeaponT
     }
 }
 
+export function bond(thisArg: Skill, state: GameState, buffs: Stats) {
+    const allies = getAllies(state, thisArg.entity);
+    for (let ally of allies) {
+        if (HeroSystem.getDistance(ally, thisArg.entity) === 1) {
+            thisArg.entity.addComponent({
+                type: "CombatBuff",
+                ...buffs
+            });
+            return;
+        }
+    }
+}
+
 export function elementalBoost(thisArg: Skill, target: Entity, buffs: Stats) {
     const wielderHP = thisArg.entity.getOne("Stats").hp;
     const enemyHP = target.getOne("Stats").hp;
@@ -80,8 +93,8 @@ export function elementalBoost(thisArg: Skill, target: Entity, buffs: Stats) {
     }
 };
 
-export function renewal(thisArg: Skill, shouldActivate: () => boolean, amount: number) {
-    if (shouldActivate()) {
+export function renewal(thisArg: Skill, shouldActivate: boolean, amount: number) {
+    if (shouldActivate) {
         thisArg.entity.addComponent({
             type: "Heal",
             value: amount
@@ -113,7 +126,7 @@ export function dagger(state: GameState, target: Entity, debuffs: Stats) {
             ally.addComponent({
                 type: "MapDebuff",
                 ...debuffs,
-            });     
+            });
         }
     }
 };

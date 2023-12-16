@@ -35,6 +35,12 @@ import BraveWeapon from "./components/brave-weapon";
 import PreventCounterattack from "./components/prevent-counterattack";
 import Map1 from "./data/maps/map1.json";
 import TileTypes from "./data/tile-types";
+import SkillInteractionSystem from "./systems/skill-interaction";
+import PreventTargetLowestDefense from "./components/prevent-target-lowest-defense";
+import GuaranteedFollowup from "./components/guaranteed-followup";
+import PreventFollowUp from "./components/prevent-followup";
+import FlatDamageReduction from "./components/flat-damage-reduction";
+import PercentageDamageReduction from "./components/percentage-damage-reduction";
 
 const tileBitmasks = {
     type: {
@@ -105,7 +111,7 @@ class GameWorld extends World {
     };
 
     getMapOptions(hero: Entity) {
-        
+
     }
 
     constructor(config?: IWorldConfig) {
@@ -123,6 +129,8 @@ class GameWorld extends World {
         this.registerComponent(Counterattack);
         this.registerComponent(MapBuff);
         this.registerComponent(Immunity);
+        this.registerComponent(FlatDamageReduction);
+        this.registerComponent(PercentageDamageReduction);
         this.registerComponent(Bane);
         this.registerComponent(NeutralizeMapBuffs);
         this.registerComponent(CombatBuff);
@@ -135,7 +143,11 @@ class GameWorld extends World {
         this.registerComponent(SlowSpecial);
         this.registerComponent(BraveWeapon);
         this.registerComponent(TargetLowestDefense);
+        this.registerComponent(PreventTargetLowestDefense);
+        this.registerComponent(GuaranteedFollowup);
+        this.registerComponent(PreventFollowUp);
         this.registerSystem("every-turn", MapEffects, [this.state]);
+        this.registerSystem("combats", SkillInteractionSystem, [this.state]);
         this.registerSystem("combat", CombatSystem, [this.state]);
     }
 

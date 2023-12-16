@@ -6,6 +6,7 @@ import { Stats } from "../types";
 import checkBattleEffectiveness from "./effectiveness";
 import getTargetedDefenseStat from "./get-targeted-defense-stat";
 import generateTurns from "./generate-turns";
+import PreventEnemyAlliesInteraction from "../components/prevent-enemy-allies-interaction";
 
 interface CombatTurnOutcome {
     turnNumber: number;
@@ -88,8 +89,14 @@ class CombatSystem extends System {
     update() {
         const [unit1, unit2] = this.battlingQuery.execute();
         if (unit1 && unit2) {
-            this.runAllySkills(unit1);
-            this.runAllySkills(unit2);
+            if (!unit2.getOne(PreventEnemyAlliesInteraction)) {
+                this.runAllySkills(unit1);
+            }
+
+            if (!unit1.getOne(PreventEnemyAlliesInteraction)) {
+                this.runAllySkills(unit2);
+            }
+
             const combatMap = new Map<Entity, {
                 stats: Stats,
                 effective: boolean

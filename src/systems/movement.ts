@@ -1,18 +1,25 @@
 import { Entity, Query, System } from "ape-ecs";
+import getEnemies from "../utils/get-enemies";
 import GameState from "./state";
 
 class MovementSystem extends System {
-    private increasedMovementQuery: Query;
     private obstructQuery: Query;
+    private checkRangeQuery: Query;
     private state: GameState;
 
     init(state: GameState): void {
         this.state = state;
         this.obstructQuery = this.createQuery().from("Obstruct");
+        this.checkRangeQuery = this.createQuery().from("CheckRange");
     }
 
     update() {
-        const obstruct = Array.from(this.obstructQuery.execute()).filter((entity) => entity.getOne("Side").value !== this.state.currentSide);
+        this.state.tiles.getComponents("WalkTile").forEach((c) => this.state.tiles.removeComponent(c));
+        this.state.tiles.getComponents("WarpTile").forEach((c) => this.state.tiles.removeComponent(c));
+        this.state.tiles.getComponents("AttackTile").forEach((c) => this.state.tiles.removeComponent(c));
+        this.state.tiles.getComponents("AssistTile").forEach((c) => this.state.tiles.removeComponent(c));
+        // 
+        const checkedPositionEntity = this.checkRangeQuery.execute();
     }
 
     getFinalMovementRange(unit: Entity): number {

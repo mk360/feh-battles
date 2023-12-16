@@ -553,11 +553,11 @@ const WEAPONS: WeaponDict = {
         type: "breath",
         might: 16,
         onTurnStart(battleState) {
-            Effects.renewal(this, () => battleState.turn % 2 === 1, 10);
+            Effects.renewal(this, battleState.turn % 2 === 1, 10);
         },
         onCombatStart(battleState, target) {
             if (target.getOne("Weapon").range === 2) {
-                target.addComponent({
+                this.entity.addComponent({
                     type: "TargetLowestDefense"
                 });
             }
@@ -635,7 +635,7 @@ const WEAPONS: WeaponDict = {
         displayName: "Falchion",
         type: "sword",
         onTurnStart(battleState) {
-            Effects.renewal(this, () => battleState.turn % 3 === 0, 10);
+            Effects.renewal(this, battleState.turn % 3 === 0, 10);
         },
         exclusiveTo: ["Chrom: Exalted Prince", "Lucina: Future Witness"]
     },
@@ -646,7 +646,7 @@ const WEAPONS: WeaponDict = {
         displayName: "Falchion",
         type: "sword",
         onTurnStart(battleState) {
-            Effects.renewal(this, () => battleState.turn % 3 === 0, 10);
+            Effects.renewal(this, battleState.turn % 3 === 0, 10);
         },
         exclusiveTo: ["Marth: Altean Prince"]
     },
@@ -657,7 +657,7 @@ const WEAPONS: WeaponDict = {
         displayName: "Falchion",
         type: "sword",
         onTurnStart(battleState) {
-            Effects.renewal(this, () => battleState.turn % 3 === 0, 10);
+            Effects.renewal(this, battleState.turn % 3 === 0, 10);
         },
         exclusiveTo: ["Alm: Hero of Prophecy"]
     },

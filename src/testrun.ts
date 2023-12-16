@@ -44,5 +44,4 @@ world.initiate({
     }]
 });
 
-// @ts-ignore
-console.log(world.state.map);
+world.runSystems("combats");

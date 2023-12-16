@@ -8,6 +8,7 @@ interface GameState {
         team2: Entity[];
     };
     tiles: Entity;
+    combat: Entity;
     map: {
         1: [Uint8Array, Uint8Array, Uint8Array, Uint8Array, Uint8Array, Uint8Array];
         2: [Uint8Array, Uint8Array, Uint8Array, Uint8Array, Uint8Array, Uint8Array];

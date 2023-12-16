@@ -5,7 +5,6 @@ import GameState from "../systems/state";
 import { MovementType, Stat, Stats } from "../types";
 import getAllies from "../utils/get-alies";
 import { WeaponType } from "../weapon";
-import { CombatOutcome } from "../combat";
 import getEnemies from "../utils/get-enemies";
 
 export function honeStat(thisArg: Skill, state: GameState, stat: Stat, buff: number) {

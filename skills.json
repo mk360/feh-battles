@@ -202,13 +202,9 @@
         "Cancel Affinity 1",
         "Cancel Affinity 2",
         "Cancel Affinity 3",
-        "Daggerbreaker 1",
-        "Daggerbreaker 2",
-        "Daggerbreaker 3",
         "Guard 1",
         "Guard 2",
         "Guard 3",
-        "Sacae's Blessing",
         "Dazzling Staff 1",
         "Dazzling Staff 2",
         "Dazzling Staff 3",
@@ -228,11 +224,7 @@
         "Seal Atk/Def 2",
         "Geyser Dance 1",
         "Geyser Dance 2",
-        "Torrent Dance 1",
-        "Crusader's Ward",
-        "Watersweep 1",
-        "Watersweep 2",
-        "Watersweep 3"
+        "Torrent Dance 1"
     ],
     "passivec": [],
     "assist": [

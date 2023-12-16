@@ -9,6 +9,9 @@ import getAllies from "../utils/get-alies";
 import getEnemies from "../utils/get-enemies";
 import { mapBuffByMovementType, honeStat, combatBuffByRange, defiant, breaker, elementalBoost, renewal, threaten, bond } from "./effects";
 import Characters from "./characters.json";
+import getCombatStats from "../systems/get-combat-stats";
+import PreventCounterattack from "../components/prevent-counterattack";
+import PreventFollowUp from "../components/prevent-followup";
 
 interface PassivesDict {
     [k: string]: {
@@ -27,6 +30,7 @@ interface PassivesDict {
         onCombatDefense?(this: Skill, state: GameState, attacker: Entity): void;
         onCombatAfter?(this: Skill, state: GameState, target: Entity): void;
         onTurnStart?(this: Skill, state: GameState): void;
+        onCombatRoundDefense?(this: Skill, enemy: Entity, combatRound: any): void;
     }
 }
 
@@ -121,6 +125,45 @@ const PASSIVES: PassivesDict = {
         description: "Unit can counterattack regardless of enemy range.",
         slot: "A",
         allowedWeaponTypes: ["bow", "dagger", "tome", "staff"]
+    },
+    "Crusader's Ward": {
+        description: "If unit receives consecutive attacks and foe's Range = 2, reduces damage from foe's second attack onward by 80%. (Skill cannot be inherited.)",
+        exclusiveTo: ["Sigurd: Holy Knight"],
+        onCombatRoundDefense(enemy, combatRound) {
+            if (combatRound.consecutiveTurns > 1 && enemy.getOne("Weapon").range === 2) {
+                this.entity.addComponent({
+                    type: "DamageReduction",
+                    percentage: 0.8
+                });
+            }
+        },
+        slot: "B",
+    },
+    "Follow-Up Ring": {
+        description: "At start of combat, if unit's HP ≥ 50%, unit makes a guaranteed follow-up attack. (Skill cannot be inherited.)",
+        slot: "B",
+        exclusiveTo: ["Arden: Strong and Tough"],
+        onCombatStart() {
+            const { maxHP, hp } = this.entity.getOne("Stats");
+
+            if (hp / maxHP >= 0.5) {
+                this.entity.addComponent({
+                    type: "GuaranteedFollowup"
+                });
+            }
+        }
+    },
+    "Sacae's Blessing": {
+        description: "If foe uses sword, lance, or axe, foe cannot counterattack. (Skill cannot be inherited.)",
+        slot: "A",
+        exclusiveTo: ["Lyn: Brave Lady"],
+        onCombatInitiate(state, target) {
+            if (["sword", "axe", "lance"].includes(target.getOne("Weapon").weaponType)) {
+                this.entity.addComponent({
+                    type: "PreventCounterattack"
+                });
+            }
+        },
     },
     "Svalinn Shield": {
         slot: "A",
@@ -721,20 +764,6 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: ["lance", "axe", "beast", "bow", "dagger", "breath", "tome", "staff"],
         allowedColors: ["colorless", "green", "blue"],
         description: "If unit's HP ≥ 50% in combat against a lance foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
-    },
-    "Follow-Up Ring": {
-        description: "At start of combat, if unit's HP ≥ 50%, unit makes a guaranteed follow-up attack. (Skill cannot be inherited.)",
-        slot: "B",
-        exclusiveTo: ["Arden: Strong and Tough"],
-        onCombatStart() {
-            const { maxHP, hp } = this.entity.getOne("Stats");
-
-            if (hp / maxHP >= 0.5) {
-                this.entity.addComponent({
-                    type: "GuaranteedFollowup"
-                });
-            }
-        }
     },
     "Swordbreaker 1": {
         onCombatStart(state, target) {
@@ -2025,6 +2054,57 @@ const PASSIVES: PassivesDict = {
             }
         }
     },
+    "Watersweep 1": {
+        description: "If unit initiates combat, unit cannot make a follow-up attack. If unit’s Spd ≥ foe’s Spd+5 and foe uses sword, lance, axe, bow, dagger, or beast damage, foe cannot counterattack.",
+        slot: "B",
+        onCombatInitiate(state, target) {
+            target.addComponent({
+                type: "PreventFollowup"
+            });
+            const { spd } = getCombatStats(this.entity);
+            const { spd: enemySpd } = getCombatStats(target);
+
+            if (spd >= enemySpd + 5 && ["sword", "lance", "axe", "bow", "dagger", "beast"].includes(target.getOne("Weapon").weaponType)) {
+                this.entity.addComponent({
+                    type: "PreventCounterattack"
+                });
+            }
+        },
+    },
+    "Watersweep 2": {
+        description: "If unit initiates combat, unit cannot make a follow-up attack. If unit’s Spd ≥ foe’s Spd+3 and foe uses sword, lance, axe, bow, dagger, or beast damage, foe cannot counterattack.",
+        slot: "B",
+        onCombatInitiate(state, target) {
+            target.addComponent({
+                type: "PreventFollowUp",
+            });
+            const { spd } = getCombatStats(this.entity);
+            const { spd: enemySpd } = getCombatStats(target);
+
+            if (spd >= enemySpd + 3 && ["sword", "lance", "axe", "bow", "dagger", "beast"].includes(target.getOne("Weapon").weaponType)) {
+                this.entity.addComponent({
+                    type: "PreventCounterattack"
+                });
+            }
+        },
+    },
+    "Watersweep 3": {
+        description: "If unit initiates combat, unit cannot make a follow-up attack. If unit’s Spd > foe’s Spd and foe uses sword, lance, axe, bow, dagger, or beast damage, foe cannot counterattack.",
+        slot: "B",
+        onCombatInitiate(state, target) {
+            target.addComponent({
+                type: "PreventFollowUp",
+            });
+            const { spd } = getCombatStats(this.entity);
+            const { spd: enemySpd } = getCombatStats(target);
+
+            if (spd > enemySpd && ["sword", "lance", "axe", "bow", "dagger", "beast"].includes(target.getOne("Weapon").weaponType)) {
+                this.entity.addComponent({
+                    type: "PreventCounterattack"
+                });
+            }
+        },
+    }
 };
 
 export default PASSIVES;

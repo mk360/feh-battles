@@ -419,7 +419,8 @@ const WEAPONS: WeaponDict = {
         might: 13,
         onEquip() {
             this.entity.addComponent({
-                type: "ReduceSpecialCooldown"
+                type: "ModifySpecialCooldown",
+                value: 1
             });
         },
         onCombatStart() {
@@ -606,7 +607,7 @@ const WEAPONS: WeaponDict = {
         onEquip() {
             this.entity.addComponent({
                 type: "ModifySpecialCooldown",
-                value: 1
+                value: -1
             });
         },
     },
@@ -683,13 +684,13 @@ const WEAPONS: WeaponDict = {
         description: "Effective against flying foes. Unit and foe cannot counterattack.",
         might: 7,
         type: "bow",
-        onCombatStart(battleState, target) {
-            target.addComponent({
+        onCombatStart() {
+            this.entity.addComponent({
                 type: "PreventCounterattack"
             });
         },
-        onCombatDefense() {
-            this.entity.addComponent({
+        onCombatDefense(state, attacker) {
+            attacker.addComponent({
                 type: "PreventCounterattack"
             });
         },
@@ -699,13 +700,13 @@ const WEAPONS: WeaponDict = {
         description: "Effective against flying foes. Unit and foe cannot counterattack.",
         might: 11,
         type: "bow",
-        onCombatStart(battleState, target) {
-            target.addComponent({
+        onCombatStart() {
+            this.entity.addComponent({
                 type: "PreventCounterattack"
             });
         },
-        onCombatDefense() {
-            this.entity.addComponent({
+        onCombatDefense(state, attacker) {
+            attacker.addComponent({
                 type: "PreventCounterattack"
             });
         },

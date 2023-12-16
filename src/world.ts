@@ -39,8 +39,6 @@ import SkillInteractionSystem from "./systems/skill-interaction";
 import PreventTargetLowestDefense from "./components/prevent-target-lowest-defense";
 import GuaranteedFollowup from "./components/guaranteed-followup";
 import PreventFollowUp from "./components/prevent-followup";
-import FlatDamageReduction from "./components/flat-damage-reduction";
-import PercentageDamageReduction from "./components/percentage-damage-reduction";
 
 const tileBitmasks = {
     type: {
@@ -107,12 +105,9 @@ class GameWorld extends World {
         },
         currentSide: "team1",
         turn: 1,
-        tiles: this.createEntity({})
+        tiles: this.createEntity({}),
+        combat: this.createEntity({})
     };
-
-    getMapOptions(hero: Entity) {
-
-    }
 
     constructor(config?: IWorldConfig) {
         super(config);
@@ -129,8 +124,6 @@ class GameWorld extends World {
         this.registerComponent(Counterattack);
         this.registerComponent(MapBuff);
         this.registerComponent(Immunity);
-        this.registerComponent(FlatDamageReduction);
-        this.registerComponent(PercentageDamageReduction);
         this.registerComponent(Bane);
         this.registerComponent(NeutralizeMapBuffs);
         this.registerComponent(CombatBuff);

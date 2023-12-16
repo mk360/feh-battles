@@ -26,7 +26,7 @@ function generateTurns(attacker: Entity, defender: Entity, attackerCombatStats: 
 };
 
 function defenderCanDefend(attacker: Entity, defender: Entity) {
-    const attackerPreventedCounterattacks = defender.getOne("PreventCounterattack");
+    const attackerPreventedCounterattacks = attacker.getOne("PreventCounterattack");
     const isCounterattackAllowed = defender.getOne("Counterattack") && !attackerPreventedCounterattacks;
     const rangeIsTheSame = attacker.getOne("Weapon").range === defender.getOne("Weapon").range;
 

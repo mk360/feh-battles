@@ -8,17 +8,11 @@ class MovementSystem extends System {
 
     init(state: GameState): void {
         this.state = state;
-        this.increasedMovementQuery = this.createQuery().from("IncreasedMovement");
         this.obstructQuery = this.createQuery().from("Obstruct");
     }
 
     update() {
-        const team = this.state.teams[this.state.currentSide];
-
-        for (let member of team) {
-            const movementRange = this.getFinalMovementRange(member);
-            
-        }
+        const obstruct = Array.from(this.obstructQuery.execute()).filter((entity) => entity.getOne("Side").value !== this.state.currentSide);
     }
 
     getFinalMovementRange(unit: Entity): number {

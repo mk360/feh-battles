@@ -72,6 +72,11 @@ interface InitialLineup {
 
 class GameWorld extends World {
     state: GameState = {
+        /**
+         * Map is stored in an 8x6 matrix of 8 bits for each cell (column x row, top-left is indexed at [1][0]).
+         * This map is used to store basic information on what's the cell's type, does it have anything special
+         * (trench, defensive tile) added. It acts as the source of truth in case any state or data conflict arises.
+         */
         map: {
             1: [new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array()],
             2: [new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array()],
@@ -98,6 +103,10 @@ class GameWorld extends World {
         turn: 1,
         tiles: this.createEntity({})
     };
+
+    getMapOptions(hero: Entity) {
+        
+    }
 
     constructor(config?: IWorldConfig) {
         super(config);
@@ -188,7 +197,13 @@ class GameWorld extends World {
             throw new Error("Tile is already occupied");
         }
 
-        this.state.map[y][x][0] |= tileBitmasks.occupation;
+        if (team === "team1") {
+            this.state.map[y][x][0] |= 0b010000;
+        }
+
+        if (team === "team2") {
+            this.state.map[y][x][0] |= 0b100000;
+        }
 
         entity.addComponent({
             type: "Battling"

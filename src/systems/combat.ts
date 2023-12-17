@@ -7,34 +7,7 @@ import checkBattleEffectiveness from "./effectiveness";
 import getTargetedDefenseStat from "./get-targeted-defense-stat";
 import generateTurns from "./generate-turns";
 import PreventEnemyAlliesInteraction from "../components/prevent-enemy-allies-interaction";
-
-interface CombatTurnOutcome {
-    turnNumber: number;
-    consecutiveTurnNumber: number;
-    attacker: Entity;
-    defender: Entity;
-    damage: number;
-    attackerSpecialCooldown: number;
-    defenderSpecialCooldown: number;
-}
-
-interface CombatOutcome {
-    attacker: {
-        id: string;
-        turnCount: number;
-        effectiveness: boolean;
-        damageByTurn: number;
-        hp: number;
-    };
-    defender: {
-        id: string;
-        turnCount: number;
-        effectiveness: boolean;
-        damageByTurn: number;
-        hp: number;
-    };
-    turns: CombatTurnOutcome[];
-}
+import CombatTurnOutcome from "../interfaces/combat-turn-outcome";
 
 function getCombatStats(entity: Entity) {
     const combatBuffs = entity.getComponents("CombatBuff");
@@ -99,26 +72,47 @@ class CombatSystem extends System {
 
             const combatMap = new Map<Entity, {
                 stats: Stats,
-                effective: boolean
+                effective: boolean,
+                turns: number,
+                consecutiveTurns: number,
             }>();
             combatMap.set(unit1, {
                 effective: checkBattleEffectiveness(unit1, unit2),
-                stats: getCombatStats(unit1)
+                stats: getCombatStats(unit1),
+                turns: 0,
+                consecutiveTurns: 0,
             });
             combatMap.set(unit2, {
                 effective: checkBattleEffectiveness(unit2, unit1),
-                stats: getCombatStats(unit2)
+                stats: getCombatStats(unit2),
+                turns: 0,
+                consecutiveTurns: 0
             });
             const turns = generateTurns(unit1, unit2, combatMap.get(unit1).stats, combatMap.get(unit2).stats);
-
-            for (let turn of turns) {
+            let lastAttacker: Entity;
+            for (let i = 0; i < turns.length; i++) {
+                const turn = turns[i];
+                turn.getComponents("Skill").forEach((skill) => {
+                    const skillData = PASSIVES[skill.name];
+                });
+                if (lastAttacker === turn) {
+                    combatMap.get(turn).consecutiveTurns++;
+                } else {
+                    combatMap.get(lastAttacker).consecutiveTurns = 0;
+                }
+                combatMap.get(turn).turns++;
                 const defender = turn === unit1 ? unit2 : unit1;
                 const defenderStats = combatMap.get(defender).stats;
                 const defenseStat = defenderStats[getTargetedDefenseStat(turn, defender, defenderStats)];
                 const effectivenessMultiplier = combatMap.get(defender).effective ? 1.5 : 1;
                 const atkStat = combatMap.get(turn).stats.atk;
-                const damage = Math.max(0, Math.floor((atkStat - defenseStat) * effectivenessMultiplier));
-                console.log({ damage });
+                const damage = Math.max(0, (atkStat - defenseStat) * effectivenessMultiplier);
+                const turnData: CombatTurnOutcome = {
+                    attacker: turn,
+                    defender,
+                    consecutiveTurnNumber: combatMap.get(turn).consecutiveTurns,
+                    damage,
+                }
             }
         }
     }

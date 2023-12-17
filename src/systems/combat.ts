@@ -80,39 +80,56 @@ class CombatSystem extends System {
                 effective: checkBattleEffectiveness(unit1, unit2),
                 stats: getCombatStats(unit1),
                 turns: 0,
-                consecutiveTurns: 0,
+                consecutiveTurns: 1,
             });
             combatMap.set(unit2, {
                 effective: checkBattleEffectiveness(unit2, unit1),
                 stats: getCombatStats(unit2),
                 turns: 0,
-                consecutiveTurns: 0
+                consecutiveTurns: 1
             });
             const turns = generateTurns(unit1, unit2, combatMap.get(unit1).stats, combatMap.get(unit2).stats);
             let lastAttacker: Entity;
             for (let i = 0; i < turns.length; i++) {
                 const turn = turns[i];
-                turn.getComponents("Skill").forEach((skill) => {
-                    const skillData = PASSIVES[skill.name];
-                });
+                const defender = turn === unit1 ? unit2 : unit1;
                 if (lastAttacker === turn) {
                     combatMap.get(turn).consecutiveTurns++;
                 } else {
-                    combatMap.get(lastAttacker).consecutiveTurns = 0;
+                    combatMap.get(defender).consecutiveTurns = 0;
                 }
+                // turn.getComponents("Skill").forEach((skill) => {
+                //     const skillData = PASSIVES[skill.name];
+                // });
                 combatMap.get(turn).turns++;
-                const defender = turn === unit1 ? unit2 : unit1;
+                const turnData: Partial<CombatTurnOutcome> = {
+                    attacker: turn,
+                    defender,
+                    consecutiveTurnNumber: combatMap.get(turn).consecutiveTurns,
+                };
+                defender.getComponents("Skill").forEach((skill) => {
+                    const dexData = PASSIVES[skill.name];
+                    if (dexData && dexData.onCombatRoundDefense) {
+                        dexData.onCombatRoundDefense.call(skill, turn, turnData);
+                    }
+                })
                 const defenderStats = combatMap.get(defender).stats;
                 const defenseStat = defenderStats[getTargetedDefenseStat(turn, defender, defenderStats)];
                 const effectivenessMultiplier = combatMap.get(defender).effective ? 1.5 : 1;
                 const atkStat = combatMap.get(turn).stats.atk;
-                const damage = Math.max(0, (atkStat - defenseStat) * effectivenessMultiplier);
-                const turnData: CombatTurnOutcome = {
-                    attacker: turn,
-                    defender,
-                    consecutiveTurnNumber: combatMap.get(turn).consecutiveTurns,
-                    damage,
-                }
+                const damageReductionComponents = defender.getComponents("DamageReduction");
+                let flatReduction = 0;
+                let damagePercentage = 100;
+                damageReductionComponents.forEach((comp) => {
+                    if (comp.percentage) {
+                        damagePercentage *= (1 - comp.percentage);
+                    }
+                    if (comp.amount) {
+                        flatReduction += comp.amount;
+                    }
+                });
+                const damage = Math.floor(Math.max(0, (atkStat - defenseStat) * effectivenessMultiplier) * damagePercentage / 100);
+                lastAttacker = turn;
             }
         }
     }

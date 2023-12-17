@@ -39,6 +39,9 @@ import SkillInteractionSystem from "./systems/skill-interaction";
 import PreventTargetLowestDefense from "./components/prevent-target-lowest-defense";
 import GuaranteedFollowup from "./components/guaranteed-followup";
 import PreventFollowUp from "./components/prevent-followup";
+import GuaranteedAdvantage from "./components/guaranteed-advantage";
+import NeutralizeAffinity from "./components/neutralize-affinity";
+import DamageReduction from "./components/damage-reduction";
 
 const tileBitmasks = {
     type: {
@@ -128,6 +131,7 @@ class GameWorld extends World {
         this.registerComponent(NeutralizeMapBuffs);
         this.registerComponent(CombatBuff);
         this.registerComponent(Battling);
+        this.registerComponent(DamageReduction);
         this.registerComponent(PreventCounterattack);
         this.registerComponent(Boon);
         this.registerComponent(PreventEnemyAlliesInteraction);
@@ -135,6 +139,8 @@ class GameWorld extends World {
         this.registerComponent(AccelerateSpecial);
         this.registerComponent(SlowSpecial);
         this.registerComponent(BraveWeapon);
+        this.registerComponent(GuaranteedAdvantage);
+        this.registerComponent(NeutralizeAffinity);
         this.registerComponent(TargetLowestDefense);
         this.registerComponent(PreventTargetLowestDefense);
         this.registerComponent(GuaranteedFollowup);

@@ -10,8 +10,7 @@ import getEnemies from "../utils/get-enemies";
 import { mapBuffByMovementType, honeStat, combatBuffByRange, defiant, breaker, elementalBoost, renewal, threaten, bond } from "./effects";
 import Characters from "./characters.json";
 import getCombatStats from "../systems/get-combat-stats";
-import PreventCounterattack from "../components/prevent-counterattack";
-import PreventFollowUp from "../components/prevent-followup";
+import CombatTurnOutcome from "../interfaces/combat-turn-outcome";
 
 interface PassivesDict {
     [k: string]: {
@@ -30,7 +29,7 @@ interface PassivesDict {
         onCombatDefense?(this: Skill, state: GameState, attacker: Entity): void;
         onCombatAfter?(this: Skill, state: GameState, target: Entity): void;
         onTurnStart?(this: Skill, state: GameState): void;
-        onCombatRoundDefense?(this: Skill, enemy: Entity, combatRound: any): void;
+        onCombatRoundDefense?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): void;
     }
 }
 
@@ -130,11 +129,13 @@ const PASSIVES: PassivesDict = {
         description: "If unit receives consecutive attacks and foe's Range = 2, reduces damage from foe's second attack onward by 80%. (Skill cannot be inherited.)",
         exclusiveTo: ["Sigurd: Holy Knight"],
         onCombatRoundDefense(enemy, combatRound) {
-            if (combatRound.consecutiveTurns > 1 && enemy.getOne("Weapon").range === 2) {
+            if (combatRound.consecutiveTurnNumber > 1 && enemy.getOne("Weapon").range === 2) {
                 this.entity.addComponent({
                     type: "DamageReduction",
                     percentage: 0.8
                 });
+            } else {
+                this.entity.removeComponent("DamageReduction");
             }
         },
         slot: "B",

@@ -14,10 +14,10 @@ world.initiate({
         skills: {
             assist: null,
             special: null,
-            A: null,
+            A: "Fury 3",
             B: null,
             C: "Threaten Atk 3",
-            S: null,
+            S: "Fury 3",
         },
         rarity: 5,
         initialPosition: {
@@ -26,13 +26,13 @@ world.initiate({
         }
     }],
     team2: [{
-        name: "Klein: Silver Nobleman",
-        weapon: "Silver Bow",
+        name: "Sigurd: Holy Knight",
+        weapon: "Silver Sword+",
         skills: {
             assist: null,
             special: null,
             A: null,
-            B: null,
+            B: "Crusader's Ward",
             C: "Threaten Atk 3",
             S: null,
         },
@@ -43,5 +43,6 @@ world.initiate({
         }
     }]
 });
-
-world.runSystems("combats");
+console.time("combat");
+world.runSystems("combat");
+console.timeEnd("combat");

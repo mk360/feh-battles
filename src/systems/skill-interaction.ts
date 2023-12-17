@@ -2,6 +2,10 @@ import { Component, Query, System } from "ape-ecs";
 import Counterattack from "../components/counterattack";
 import DamageReduction from "../components/damage-reduction";
 import GuaranteedFollowup from "../components/guaranteed-followup";
+import MapBuff from "../components/map-buff";
+import NeutralizeMapBuffs from "../components/neutralize-map-buffs";
+import NeutralizeNormalizeStaffDamage from "../components/neutralize-normalize-staff-damage";
+import NormalizeStaffDamage from "../components/normalize-staff-damage";
 import PreventCounterattack from "../components/prevent-counterattack";
 import PreventDamageReduction from "../components/prevent-damage-reduction";
 import PreventFollowUp from "../components/prevent-followup";
@@ -15,11 +19,13 @@ const NeutralizationMap = new Map<new () => Component, new () => Component>();
 NeutralizationMap.set(Counterattack, PreventCounterattack);
 NeutralizationMap.set(TargetLowestDefense, PreventTargetLowestDefense);
 NeutralizationMap.set(GuaranteedFollowup, PreventFollowUp);
+NeutralizationMap.set(NormalizeStaffDamage, NeutralizeNormalizeStaffDamage);
 
 // 1-to-many neutralizations, e.g. one effect is enough to neutralize all target effects
 const MultipleNeutralizationsMap = new Map<new () => Component, new () => Component>();
 
-MultipleNeutralizationsMap.set(PreventDamageReduction, DamageReduction)
+MultipleNeutralizationsMap.set(PreventDamageReduction, DamageReduction);
+MultipleNeutralizationsMap.set(NeutralizeMapBuffs, MapBuff);
 
 class SkillInteractionSystem extends System {
     private state: GameState;
@@ -34,8 +40,7 @@ class SkillInteractionSystem extends System {
         const [firstHero, secondHero] = this.battlingQuery.execute();
 
         NeutralizationMap.forEach((neutralizingComponent, neutralizedComponent) => {
-            const defenderComponents = secondHero.getComponents(neutralizingComponent);
-            defenderComponents.forEach((comp) => {
+            secondHero.getComponents(neutralizingComponent).forEach((comp) => {
                 const matchingOffensiveComponent = firstHero.getOne(neutralizedComponent);
                 if (comp && matchingOffensiveComponent) {
                     secondHero.removeComponent(comp);
@@ -43,8 +48,7 @@ class SkillInteractionSystem extends System {
                 }
             });
 
-            const attackerComponents = secondHero.getComponents(neutralizingComponent);
-            attackerComponents.forEach((comp) => {
+            secondHero.getComponents(neutralizingComponent).forEach((comp) => {
                 const matchingDefensiveComponent = secondHero.getOne(neutralizedComponent);
                 if (comp && matchingDefensiveComponent) {
                     firstHero.removeComponent(comp);
@@ -58,16 +62,14 @@ class SkillInteractionSystem extends System {
             const attackerComponent = firstHero.getOne(neutralizer);
 
             if (defenderComponent) {
-                const attackerComponents = firstHero.getComponents(neutralizedComponent);
-                attackerComponents.forEach((comp) => {
+                firstHero.getComponents(neutralizedComponent).forEach((comp) => {
                     firstHero.removeComponent(comp);
                 });
                 secondHero.removeComponent(defenderComponent);
             }
 
             if (attackerComponent) {
-                const defenderComponents = secondHero.getComponents(neutralizedComponent);
-                defenderComponents.forEach((comp) => {
+                secondHero.getComponents(neutralizedComponent).forEach((comp) => {
                     secondHero.removeComponent(comp);
                 });
                 firstHero.removeComponent(defenderComponent);

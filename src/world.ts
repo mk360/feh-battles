@@ -42,6 +42,8 @@ import PreventFollowUp from "./components/prevent-followup";
 import GuaranteedAdvantage from "./components/guaranteed-advantage";
 import NeutralizeAffinity from "./components/neutralize-affinity";
 import DamageReduction from "./components/damage-reduction";
+import NeutralizeNormalizeStaffDamage from "./components/neutralize-normalize-staff-damage";
+import NormalizeStaffDamage from "./components/normalize-staff-damage";
 
 const tileBitmasks = {
     type: {
@@ -120,6 +122,8 @@ class GameWorld extends World {
         this.registerComponent(MapDebuff);
         this.registerComponent(Position);
         this.registerComponent(WarpableTile);
+        this.registerComponent(NeutralizeNormalizeStaffDamage);
+        this.registerComponent(NormalizeStaffDamage);
         this.registerComponent(WalkableTile);
         this.registerComponent(Effectiveness);
         this.registerComponent(MovementType);

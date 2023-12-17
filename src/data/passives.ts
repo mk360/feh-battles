@@ -140,6 +140,14 @@ const PASSIVES: PassivesDict = {
         },
         slot: "B",
     },
+    "Recover Ring": {
+        description: "At start of turn, restores 10 HP. (Skill cannot be inherited.)",
+        exclusiveTo: ["Arvis: Emperor of Flame"],
+        slot: "B",
+        onTurnStart() {
+            renewal(this, true, 10);
+        },
+    },
     "Follow-Up Ring": {
         description: "At start of combat, if unit's HP ≥ 50%, unit makes a guaranteed follow-up attack. (Skill cannot be inherited.)",
         slot: "B",
@@ -153,6 +161,20 @@ const PASSIVES: PassivesDict = {
                 });
             }
         }
+    },
+    "Beorc's Blessing": {
+        slot: "B",
+        description: `Neutralizes cavalry and flying foes' bonuses (from skills like Fortify, Rally, etc.) during combat. (Skill cannot be inherited.)`,
+        onCombatStart(state, target) {
+            if (target.has("Panic")) return;
+            if (["flier", "cavalry"].includes(target.getOne("MovementType").value)) {
+                target.addComponent({
+                    type: "NeutralizeMapBuffs",
+                    stats: ["atk", "def", "res", "spd"]
+                });
+            }
+        },
+        exclusiveTo: ["Ike: Brave Mercenary"]
     },
     "Sacae's Blessing": {
         description: "If foe uses sword, lance, or axe, foe cannot counterattack. (Skill cannot be inherited.)",
@@ -312,6 +334,42 @@ const PASSIVES: PassivesDict = {
                 });
             }
         },
+    },
+    "Dazzling Staff 1": {
+        allowedWeaponTypes: ["staff"],
+        slot: "B",
+        description: "At start of combat, if unit's HP = 100%, foe cannot counterattack.",
+        onCombatInitiate() {
+            const { maxHP, hp } = this.entity.getOne("Stats");
+            if (maxHP === hp) {
+                this.entity.addComponent({
+                    type: "PreventCounterattack"
+                });
+            }
+        }
+    },
+    "Dazzling Staff 2": {
+        allowedWeaponTypes: ["staff"],
+        slot: "B",
+        description: "At start of combat, if unit's HP ≥ 50%, foe cannot counterattack.",
+        onCombatInitiate() {
+            const { maxHP, hp } = this.entity.getOne("Stats");
+            if (hp / maxHP >= 0.5) {
+                this.entity.addComponent({
+                    type: "PreventCounterattack"
+                });
+            }
+        }
+    },
+    "Dazzling Staff 3": {
+        allowedWeaponTypes: ["staff"],
+        slot: "B",
+        description: "Foe cannot counterattack.",
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "PreventCounterattack"
+            });
+        }
     },
     "Atk/Def Bond 1": {
         description: "If unit is adjacent to an ally, grants Atk/Def+3 during combat.",
@@ -793,6 +851,96 @@ const PASSIVES: PassivesDict = {
         allowedColors: ["colorless", "red", "blue"],
         description: "If unit's HP ≥ 50% in combat against a sword foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
     },
+    "R Tomebreaker 1": {
+        onCombatStart(state, target) {
+            if (target.getOne("Weapon").color === "red") {
+                breaker(this, target, "tome", 0.9);
+            }
+        },
+        slot: "B",
+        allowedColors: ["red", "blue", "colorless"],
+        description: "If unit's HP ≥ 90% in combat against a red tome foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+    },
+    "R Tomebreaker 2": {
+        onCombatStart(state, target) {
+            if (target.getOne("Weapon").color === "red") {
+                breaker(this, target, "tome", 0.7);
+            }
+        },
+        slot: "B",
+        allowedColors: ["red", "blue", "colorless"],
+        description: "If unit's HP ≥ 70% in combat against a red tome foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+    },
+    "R Tomebreaker 3": {
+        onCombatStart(state, target) {
+            if (target.getOne("Weapon").color === "red") {
+                breaker(this, target, "tome", 0.5);
+            }
+        },
+        slot: "B",
+        allowedColors: ["red", "blue", "colorless"],
+        description: "If unit's HP ≥ 50% in combat against a red tome foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+    },
+    "B Tomebreaker 1": {
+        onCombatStart(state, target) {
+            if (target.getOne("Weapon").color === "blue") {
+                breaker(this, target, "tome", 0.9);
+            }
+        },
+        slot: "B",
+        allowedColors: ["blue", "green", "colorless"],
+        description: "If unit's HP ≥ 90% in combat against a blue tome foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+    },
+    "B Tomebreaker 2": {
+        onCombatStart(state, target) {
+            if (target.getOne("Weapon").color === "blue") {
+                breaker(this, target, "tome", 0.7);
+            }
+        },
+        slot: "B",
+        allowedColors: ["blue", "green", "colorless"],
+        description: "If unit's HP ≥ 70% in combat against a blue tome foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+    },
+    "B Tomebreaker 3": {
+        onCombatStart(state, target) {
+            if (target.getOne("Weapon").color === "blue") {
+                breaker(this, target, "tome", 0.5);
+            }
+        },
+        allowedColors: ["blue", "green", "colorless"],
+        slot: "B",
+        description: "If unit's HP ≥ 50% in combat against a blue tome foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+    },
+    "G Tomebreaker 1": {
+        onCombatStart(state, target) {
+            if (target.getOne("Weapon").color === "green") {
+                breaker(this, target, "tome", 0.9);
+            }
+        },
+        slot: "B",
+        allowedColors: ["red", "green", "colorless"],
+        description: "If unit's HP ≥ 90% in combat against a green tome foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+    },
+    "G Tomebreaker 2": {
+        onCombatStart(state, target) {
+            if (target.getOne("Weapon").color === "green") {
+                breaker(this, target, "tome", 0.7);
+            }
+        },
+        slot: "B",
+        allowedColors: ["red", "green", "colorless"],
+        description: "If unit's HP ≥ 70% in combat against a green tome foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+    },
+    "G Tomebreaker 3": {
+        onCombatStart(state, target) {
+            if (target.getOne("Weapon").color === "green") {
+                breaker(this, target, "tome", 0.5);
+            }
+        },
+        allowedColors: ["red", "green", "colorless"],
+        slot: "B",
+        description: "If unit's HP ≥ 50% in combat against a green tome foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+    },
     "Bowbreaker 1": {
         onCombatStart(state, target) {
             if (target.getOne("Weapon").color === "colorless") {
@@ -820,20 +968,6 @@ const PASSIVES: PassivesDict = {
         slot: "B",
         allowedMovementTypes: ["armored", "cavalry", "infantry"],
         description: "If unit's HP ≥ 50% in combat against a colorless bow foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
-    },
-    "Beorc's Blessing": {
-        slot: "B",
-        description: `Neutralizes cavalry and flying foes' bonuses (from skills like Fortify, Rally, etc.) during combat.
-(Skill cannot be inherited.)`,
-        onCombatStart(state, target) {
-            if (["flier", "cavalry"].includes(target.getOne("MovementType").value)) {
-                target.addComponent({
-                    type: "NeutralizeMapBuffs",
-                    stats: ["atk", "def", "res", "spd"]
-                });
-            }
-        },
-        exclusiveTo: ["Ike: Brave Mercenary"]
     },
     "Defiant Atk 1": {
         slot: "A",
@@ -1548,6 +1682,88 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         onTurnStart: wave("atk", turnIsOdd, 6)
     },
+    "Wary Fighter 1": {
+        slot: "B",
+        description: "If unit's HP ≥ 90%, unit and foe cannot make a follow-up attack.",
+        onCombatStart(state, target) {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP >= 0.9) {
+                this.entity.addComponent({
+                    type: "PreventFollowup"
+                });
+                target.addComponent({
+                    type: "PreventFollowup"
+                });
+            }
+        },
+    },
+    "Wary Fighter 2": {
+        slot: "B",
+        description: "If unit's HP ≥ 70%, unit and foe cannot make a follow-up attack.",
+        onCombatStart(state, target) {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP >= 0.7) {
+                this.entity.addComponent({
+                    type: "PreventFollowup"
+                });
+                target.addComponent({
+                    type: "PreventFollowup"
+                });
+            }
+        },
+    },
+    "Wary Fighter 3": {
+        slot: "B",
+        description: "If unit's HP ≥ 50%, unit and foe cannot make a follow-up attack.",
+        allowedMovementTypes: ["armored"],
+        onCombatStart(state, target) {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP >= 0.5) {
+                this.entity.addComponent({
+                    type: "PreventFollowup"
+                });
+                target.addComponent({
+                    type: "PreventFollowup"
+                });
+            }
+        },
+    },
+    "Quick Riposte 1": {
+        description: "If unit's HP ≥ 90% and foe initiates combat, unit makes a guaranteed follow-up attack.",
+        onCombatDefense() {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP >= 0.9) {
+                this.entity.addComponent({
+                    type: "GuaranteedFollowup"
+                });
+            }
+        },
+        slot: "B"
+    },
+    "Quick Riposte 2": {
+        description: "If unit's HP ≥ 70% and foe initiates combat, unit makes a guaranteed follow-up attack.",
+        onCombatDefense() {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP >= 0.7) {
+                this.entity.addComponent({
+                    type: "GuaranteedFollowup"
+                });
+            }
+        },
+        slot: "B"
+    },
+    "Quick Riposte 3": {
+        description: "If unit's HP ≥ 50% and foe initiates combat, unit makes a guaranteed follow-up attack.",
+        onCombatDefense() {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP >= 0.5) {
+                this.entity.addComponent({
+                    type: "GuaranteedFollowup"
+                });
+            }
+        },
+        slot: "B"
+    },
     "Armor March 1": {
         slot: "C",
         description: "At start of turn, if unit's HP = 100% and unit is adjacent to an armored ally, unit and adjacent armored allies can move 1 extra space. (That turn only. Does not stack.)",
@@ -2056,6 +2272,57 @@ const PASSIVES: PassivesDict = {
         }
     },
     "Watersweep 1": {
+        description: "If unit initiates combat, unit cannot make a follow-up attack. If unit’s Spd ≥ foe’s Spd+5 and foe uses magic, staff, or dragonstone damage, foe cannot counterattack.",
+        slot: "B",
+        onCombatInitiate(state, target) {
+            target.addComponent({
+                type: "PreventFollowup"
+            });
+            const { spd } = getCombatStats(this.entity);
+            const { spd: enemySpd } = getCombatStats(target);
+
+            if (spd >= enemySpd + 5 && ["breath", "tome", "staff"].includes(target.getOne("Weapon").weaponType)) {
+                this.entity.addComponent({
+                    type: "PreventCounterattack"
+                });
+            }
+        },
+    },
+    "Watersweep 2": {
+        description: "If unit initiates combat, unit cannot make a follow-up attack. If unit’s Spd ≥ foe’s Spd+3 and foe uses magic, staff, or dragonstone damage, foe cannot counterattack.",
+        slot: "B",
+        onCombatInitiate(state, target) {
+            target.addComponent({
+                type: "PreventFollowUp",
+            });
+            const { spd } = getCombatStats(this.entity);
+            const { spd: enemySpd } = getCombatStats(target);
+
+            if (spd >= enemySpd + 3 && ["breath", "tome", "staff"].includes(target.getOne("Weapon").weaponType)) {
+                this.entity.addComponent({
+                    type: "PreventCounterattack"
+                });
+            }
+        },
+    },
+    "Watersweep 3": {
+        description: "If unit initiates combat, unit cannot make a follow-up attack. If unit’s Spd > foe’s Spd and foe uses magic, staff, or dragonstone damage, foe cannot counterattack.",
+        slot: "B",
+        onCombatInitiate(state, target) {
+            target.addComponent({
+                type: "PreventFollowUp",
+            });
+            const { spd } = getCombatStats(this.entity);
+            const { spd: enemySpd } = getCombatStats(target);
+
+            if (spd > enemySpd && ["breath", "tome", "staff"].includes(target.getOne("Weapon").weaponType)) {
+                this.entity.addComponent({
+                    type: "PreventCounterattack"
+                });
+            }
+        },
+    },
+    "Windsweep 1": {
         description: "If unit initiates combat, unit cannot make a follow-up attack. If unit’s Spd ≥ foe’s Spd+5 and foe uses sword, lance, axe, bow, dagger, or beast damage, foe cannot counterattack.",
         slot: "B",
         onCombatInitiate(state, target) {
@@ -2072,7 +2339,7 @@ const PASSIVES: PassivesDict = {
             }
         },
     },
-    "Watersweep 2": {
+    "Windsweep 2": {
         description: "If unit initiates combat, unit cannot make a follow-up attack. If unit’s Spd ≥ foe’s Spd+3 and foe uses sword, lance, axe, bow, dagger, or beast damage, foe cannot counterattack.",
         slot: "B",
         onCombatInitiate(state, target) {
@@ -2089,7 +2356,7 @@ const PASSIVES: PassivesDict = {
             }
         },
     },
-    "Watersweep 3": {
+    "Windsweep 3": {
         description: "If unit initiates combat, unit cannot make a follow-up attack. If unit’s Spd > foe’s Spd and foe uses sword, lance, axe, bow, dagger, or beast damage, foe cannot counterattack.",
         slot: "B",
         onCombatInitiate(state, target) {

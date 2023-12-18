@@ -125,6 +125,9 @@ class CombatSystem extends System {
                     const dexData = PASSIVES[skill.name];
                     if (dexData && dexData.onCombatRoundDefense) {
                         dexData.onCombatRoundDefense.call(skill, turn, turnData);
+                        if (skill.slot === "special") {
+                            turnData.defenderTriggeredSpecial = true;
+                        }
                     }
                 });
                 const defenderStats = combatMap.get(defender).stats;

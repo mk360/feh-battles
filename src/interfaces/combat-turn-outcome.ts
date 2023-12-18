@@ -6,6 +6,8 @@ interface CombatTurnOutcome {
     attacker: Entity;
     defender: Entity;
     damage: number;
+    attackerTriggeredSpecial: boolean;
+    defenderTriggeredSpecial: boolean;
     attackerSpecialCooldown: number;
     defenderSpecialCooldown: number;
 }

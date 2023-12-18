@@ -6,6 +6,7 @@ import { MovementType, Stat, Stats } from "../types";
 import getAllies from "../utils/get-alies";
 import { WeaponType } from "../weapon";
 import getEnemies from "../utils/get-enemies";
+import getCombatStats from "../systems/get-combat-stats";
 
 export function honeStat(thisArg: Skill, state: GameState, stat: Stat, buff: number) {
     const allies = getAllies(state, thisArg.entity);
@@ -28,6 +29,18 @@ export function mapBuffByMovementType(thisArg: Skill, state: GameState, movement
                 ...buffs
             });
         }
+    }
+}
+
+export function dodgeStat(thisArg: Skill, enemy: Entity, comparedStat: Stat) {
+    const heroStats = getCombatStats(thisArg.entity);
+    const enemyStats = getCombatStats(enemy);
+    if (heroStats[comparedStat] > enemyStats[comparedStat]) {
+        const diff = heroStats[comparedStat] - enemyStats[comparedStat];
+        thisArg.entity.addComponent({
+            type: "DamageReduction",
+            percentage: Math.min(40, diff * 4) / 100
+        });
     }
 }
 

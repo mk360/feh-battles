@@ -70,6 +70,23 @@ class CombatSystem extends System {
                 this.runAllySkills(unit2);
             }
 
+            const attackerSkills = unit1.getComponents("Skill");
+            const defenderSkills = unit2.getComponents("Skill");
+
+            attackerSkills.forEach((skill) => {
+                const skillData = PASSIVES[skill.name];
+                if (skillData?.onCombatStart) {
+                    skillData.onCombatStart.call(skill, this.state, unit2);
+                }
+            })
+
+            defenderSkills.forEach((skill) => {
+                const skillData = PASSIVES[skill.name];
+                if (skillData?.onCombatStart) {
+                    skillData.onCombatStart.call(skill, this.state, unit1)
+                }
+            });
+
             const combatMap = new Map<Entity, {
                 stats: Stats,
                 effective: boolean,
@@ -98,9 +115,6 @@ class CombatSystem extends System {
                 } else {
                     combatMap.get(defender).consecutiveTurns = 0;
                 }
-                // turn.getComponents("Skill").forEach((skill) => {
-                //     const skillData = PASSIVES[skill.name];
-                // });
                 combatMap.get(turn).turns++;
                 const turnData: Partial<CombatTurnOutcome> = {
                     attacker: turn,
@@ -112,7 +126,7 @@ class CombatSystem extends System {
                     if (dexData && dexData.onCombatRoundDefense) {
                         dexData.onCombatRoundDefense.call(skill, turn, turnData);
                     }
-                })
+                });
                 const defenderStats = combatMap.get(defender).stats;
                 const defenseStat = defenderStats[getTargetedDefenseStat(turn, defender, defenderStats)];
                 const effectivenessMultiplier = combatMap.get(defender).effective ? 1.5 : 1;
@@ -128,7 +142,7 @@ class CombatSystem extends System {
                         flatReduction += comp.amount;
                     }
                 });
-                const damage = Math.floor(Math.max(0, (atkStat - defenseStat) * effectivenessMultiplier) * damagePercentage / 100);
+                const damage = Math.floor(Math.max(0, (atkStat - defenseStat) * effectivenessMultiplier) * damagePercentage / 100) - flatReduction;
                 lastAttacker = turn;
             }
         }

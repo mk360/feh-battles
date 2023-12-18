@@ -1,5 +1,7 @@
 import GameWorld from "./world";
 import Map1 from "./data/maps/map1.json";
+import generateTurns from "./systems/generate-turns";
+import getCombatStats from "./systems/get-combat-stats";
 
 const world = new GameWorld({
     trackChanges: true
@@ -10,7 +12,7 @@ world.generateMap(Map1);
 world.initiate({
     team1: [{
         name: "Klein: Silver Nobleman",
-        weapon: "Silver Bow",
+        weapon: "Silver Bow+",
         skills: {
             assist: null,
             special: null,
@@ -27,11 +29,11 @@ world.initiate({
     }],
     team2: [{
         name: "Sigurd: Holy Knight",
-        weapon: "Silver Sword+",
+        weapon: "Ragnell",
         skills: {
             assist: null,
             special: null,
-            A: null,
+            A: "Distant Counter",
             B: "Crusader's Ward",
             C: "Threaten Atk 3",
             S: null,
@@ -43,6 +45,7 @@ world.initiate({
         }
     }]
 });
+// const [klein, sigurd] = world.getEntities("Side");
 console.time("combat");
 world.runSystems("combat");
 console.timeEnd("combat");

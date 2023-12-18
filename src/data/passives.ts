@@ -7,7 +7,7 @@ import { MovementType, Stat, Stats } from "../types";
 import { WeaponColor, WeaponType } from "../weapon";
 import getAllies from "../utils/get-alies";
 import getEnemies from "../utils/get-enemies";
-import { mapBuffByMovementType, honeStat, combatBuffByRange, defiant, breaker, elementalBoost, renewal, threaten, bond } from "./effects";
+import { mapBuffByMovementType, honeStat, combatBuffByRange, defiant, breaker, elementalBoost, renewal, threaten, bond, counterattack } from "./effects";
 import Characters from "./characters.json";
 import getCombatStats from "../systems/get-combat-stats";
 import CombatTurnOutcome from "../interfaces/combat-turn-outcome";
@@ -118,6 +118,9 @@ const PASSIVES: PassivesDict = {
     "Distant Counter": {
         description: "Unit can counterattack regardless of enemy range.",
         slot: "A",
+        onCombatStart() {
+            counterattack(this);
+        },
         allowedWeaponTypes: ["sword", "axe", "lance", "beast", "breath"]
     },
     "Close Counter": {
@@ -170,7 +173,6 @@ const PASSIVES: PassivesDict = {
             if (["flier", "cavalry"].includes(target.getOne("MovementType").value)) {
                 target.addComponent({
                     type: "NeutralizeMapBuffs",
-                    stats: ["atk", "def", "res", "spd"]
                 });
             }
         },
@@ -232,6 +234,194 @@ const PASSIVES: PassivesDict = {
                 type: "AfterCombatDamage",
                 value: 4
             });
+        }
+    },
+    "HP +3": {
+        description: "Grants HP +3.",
+        slot: "A",
+        onEquip() {
+            this.entity.getOne("Stats").maxHP += 3;
+            this.entity.getOne("Stats").hp += 3;
+        },
+    },
+    "HP +4": {
+        description: "Grants HP +4.",
+        slot: "A",
+        onEquip() {
+            this.entity.getOne("Stats").maxHP += 4;
+            this.entity.getOne("Stats").hp += 4;
+        },
+    },
+    "HP +5": {
+        description: "Grants HP +5.",
+        slot: "A",
+        onEquip() {
+            this.entity.getOne("Stats").maxHP += 5;
+            this.entity.getOne("Stats").hp += 5;
+        },
+    },
+    "Attack +1": {
+        description: "Grants Attack +1.",
+        slot: "A",
+        onEquip() {
+            this.entity.getOne("Stats").atk++;
+        },
+    },
+    "Attack +2": {
+        description: "Grants Attack +2.",
+        slot: "A",
+        onEquip() {
+            this.entity.getOne("Stats").atk += 2;
+        },
+    },
+    "Attack +3": {
+        description: "Grants Attack +3.",
+        slot: "A",
+        onEquip() {
+            this.entity.getOne("Stats").atk += 3;
+        },
+    },
+    "Defense +1": {
+        description: "Grants Defense +1.",
+        slot: "A",
+        onEquip() {
+            this.entity.getOne("Stats").def++;
+        },
+    },
+    "Defense +2": {
+        description: "Grants Defense +2.",
+        slot: "A",
+        onEquip() {
+            this.entity.getOne("Stats").def += 2;
+        },
+    },
+    "Defense +3": {
+        description: "Grants Defense +3.",
+        slot: "A",
+        onEquip() {
+            this.entity.getOne("Stats").def += 3;
+        },
+    },
+    "Resistance +1": {
+        description: "Grants Resistance +1.",
+        slot: "A",
+        onEquip() {
+            this.entity.getOne("Stats").res++;
+        },
+    },
+    "Resistance +2": {
+        description: "Grants Resistance +2.",
+        slot: "A",
+        onEquip() {
+            this.entity.getOne("Stats").res += 2;
+        },
+    },
+    "Resistance +3": {
+        description: "Grants Resistance +3.",
+        slot: "A",
+        onEquip() {
+            this.entity.getOne("Stats").res += 3;
+        },
+    },
+    "Speed +1": {
+        description: "Grants Speed +1.",
+        slot: "A",
+        onEquip() {
+            this.entity.getOne("Stats").spd++;
+        },
+    },
+    "Speed +2": {
+        description: "Grants Speed +2.",
+        slot: "A",
+        onEquip() {
+            this.entity.getOne("Stats").spd += 2;
+        },
+    },
+    "Speed +3": {
+        description: "Grants Speed +3.",
+        slot: "A",
+        onEquip() {
+            this.entity.getOne("Stats").spd += 3;
+        },
+    },
+    "Attack/Res 1": {
+        description: "Grants Atk/Res+1.",
+        slot: "A",
+        onEquip() {
+            this.entity.getOne("Stats").atk++;
+            this.entity.getOne("Stats").res++;
+        }
+    },
+    "Attack/Res 2": {
+        description: "Grants Atk/Res+2.",
+        slot: "A",
+        onEquip() {
+            this.entity.getOne("Stats").atk += 2;
+            this.entity.getOne("Stats").res += 2;
+        }
+    },
+    "Attack/Def 1": {
+        description: "Grants Atk/Def+1.",
+        slot: "A",
+        onEquip() {
+            this.entity.getOne("Stats").atk++;
+            this.entity.getOne("Stats").def++;
+        }
+    },
+    "Attack/Def 2": {
+        description: "Grants Atk/Def+2.",
+        slot: "A",
+        onEquip() {
+            this.entity.getOne("Stats").atk += 2;
+            this.entity.getOne("Stats").def += 2;
+        }
+    },
+    "Spd/Def 1": {
+        description: "Grants Spd/Def+1.",
+        slot: "A",
+        onEquip() {
+            this.entity.getOne("Stats").spd++;
+            this.entity.getOne("Stats").def++;
+        }
+    },
+    "Spd/Def 2": {
+        description: "Grants Spd/Def+2.",
+        slot: "A",
+        onEquip() {
+            this.entity.getOne("Stats").spd += 2;
+            this.entity.getOne("Stats").def += 2;
+        }
+    },
+    "Spd/Res 1": {
+        description: "Grants Spd/Res+1.",
+        slot: "A",
+        onEquip() {
+            this.entity.getOne("Stats").spd++;
+            this.entity.getOne("Stats").res++;
+        }
+    },
+    "Spd/Res 2": {
+        description: "Grants Spd/Res+2.",
+        slot: "A",
+        onEquip() {
+            this.entity.getOne("Stats").spd += 2;
+            this.entity.getOne("Stats").res += 2;
+        }
+    },
+    "Atk/Spd 1": {
+        description: "Grants Atk/Spd+1.",
+        slot: "A",
+        onEquip() {
+            this.entity.getOne("Stats").atk++;
+            this.entity.getOne("Stats").res++;
+        }
+    },
+    "Atk/Spd 2": {
+        description: "Grants Atk/Spd+2.",
+        slot: "A",
+        onEquip() {
+            this.entity.getOne("Stats").atk += 2;
+            this.entity.getOne("Stats").res += 2;
         }
     },
     "Fury 3": {
@@ -461,6 +651,36 @@ const PASSIVES: PassivesDict = {
             });
         }
     },
+    "Darting Blow 1": {
+        slot: "A",
+        description: "If unit initiates combat, grants Spd+2 during combat.",
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                spd: 2
+            });
+        }
+    },
+    "Darting Blow 2": {
+        slot: "A",
+        description: "If unit initiates combat, grants Spd+4 during combat.",
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                spd: 4
+            });
+        }
+    },
+    "Darting Blow 3": {
+        slot: "A",
+        description: "If unit initiates combat, grants Spd+6 during combat.",
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                spd: 6
+            });
+        }
+    },
     "Armored Blow 1": {
         slot: "A",
         description: "If unit initiates combat, grants Def+2 during combat.",
@@ -490,6 +710,118 @@ const PASSIVES: PassivesDict = {
                 def: 6
             });
         }
+    },
+    "Warding Blow 1": {
+        description: "If unit initiates combat, grants Res+2 during combat.",
+        slot: "A",
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                res: 2
+            });
+        }
+    },
+    "Warding Blow 2": {
+        description: "If unit initiates combat, grants Res+4 during combat.",
+        slot: "A",
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                res: 4
+            });
+        }
+    },
+    "Warding Blow 3": {
+        description: "If unit initiates combat, grants Res+6 during combat.",
+        slot: "A",
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                res: 6
+            });
+        }
+    },
+    "Fierce Stance 1": {
+        slot: "A",
+        description: "If foe initiates combat, grants Atk+2 during combat.",
+        onCombatDefense() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                atk: 2
+            });
+        },
+    },
+    "Fierce Stance 2": {
+        slot: "A",
+        description: "If foe initiates combat, grants Atk+4 during combat.",
+        onCombatDefense() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                atk: 4
+            });
+        },
+    },
+    "Fierce Stance 3": {
+        slot: "A",
+        description: "If foe initiates combat, grants Atk+6 during combat.",
+        onCombatDefense() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                atk: 6
+            });
+        },
+    },
+    "Steady Stance 1": {
+        slot: "A",
+        description: "If foe initiates combat, grants Def+2 during combat.",
+        onCombatDefense() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                def: 2
+            });
+        },
+    },
+    "Steady Stance 2": {
+        slot: "A",
+        description: "If foe initiates combat, grants Def+4 during combat.",
+        onCombatDefense() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                def: 4
+            });
+        },
+    },
+    "Steady Stance 3": {
+        slot: "A",
+        description: "If foe initiates combat, grants Def+6 during combat.",
+        onCombatDefense() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                def: 6
+            });
+        },
+    },
+    "Bracing Blow 1": {
+        description: "If unit initiates combat, grants Def/Res+2 during combat.",
+        slot: "A",
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                def: 2,
+                res: 2
+            });
+        },
+    },
+    "Bracing Blow 2": {
+        description: "If unit initiates combat, grants Def/Res+4 during combat.",
+        slot: "A",
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                def: 4,
+                res: 4
+            });
+        },
     },
     "Steady Blow 1": {
         description: "If unit initiates combat, grants Spd/Def+2 during combat.",
@@ -553,6 +885,26 @@ const PASSIVES: PassivesDict = {
             });
         }
     },
+    "Mirror Strike 1": {
+        description: "If unit initiates combat, grants Atk/Res+2 during combat.",
+        slot: "A",
+        onCombatInitiate() {
+            this.entity.addComponent({
+                atk: 2,
+                res: 2
+            });
+        }
+    },
+    "Mirror Strike 2": {
+        description: "If unit initiates combat, grants Atk/Res+4 during combat.",
+        slot: "A",
+        onCombatInitiate() {
+            this.entity.addComponent({
+                atk: 4,
+                res: 4
+            });
+        }
+    },
     "Swift Sparrow 1": {
         slot: "A",
         description: "If unit initiates combat, grants Atk/Spd+2 during combat.",
@@ -574,6 +926,28 @@ const PASSIVES: PassivesDict = {
                 spd: 4
             });
         }
+    },
+    "Mirror Stance 1": {
+        description: "If foe initiates combat, grants Atk/Res+2 during combat.",
+        onCombatDefense() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                atk: 2,
+                res: 2
+            });
+        },
+        slot: "A"
+    },
+    "Mirror Stance 2": {
+        description: "If foe initiates combat, grants Atk/Res+4 during combat.",
+        onCombatDefense() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                atk: 4,
+                res: 4
+            });
+        },
+        slot: "A"
     },
     "Water Boost 1": {
         slot: "A",
@@ -2040,7 +2414,7 @@ const PASSIVES: PassivesDict = {
         },
     },
     "Infantry Pulse 2": {
-        description: "At the start of turn 1, grants Special cooldown count-1 to all infantry allies on team with HP ≤ unit’s HP-3. (Stacks with similar skills.)",
+        description: "At the start of turn 1, grants Special cooldown count-1 to all infantry allies on team with HP ≤ unit's HP-3. (Stacks with similar skills.)",
         slot: "C",
         onTurnStart(battleState) {
             if (battleState.turn === 1) {
@@ -2272,7 +2646,7 @@ const PASSIVES: PassivesDict = {
         }
     },
     "Watersweep 1": {
-        description: "If unit initiates combat, unit cannot make a follow-up attack. If unit’s Spd ≥ foe’s Spd+5 and foe uses magic, staff, or dragonstone damage, foe cannot counterattack.",
+        description: "If unit initiates combat, unit cannot make a follow-up attack. If unit's Spd ≥ foe's Spd+5 and foe uses magic, staff, or dragonstone damage, foe cannot counterattack.",
         slot: "B",
         onCombatInitiate(state, target) {
             target.addComponent({
@@ -2289,7 +2663,7 @@ const PASSIVES: PassivesDict = {
         },
     },
     "Watersweep 2": {
-        description: "If unit initiates combat, unit cannot make a follow-up attack. If unit’s Spd ≥ foe’s Spd+3 and foe uses magic, staff, or dragonstone damage, foe cannot counterattack.",
+        description: "If unit initiates combat, unit cannot make a follow-up attack. If unit's Spd ≥ foe's Spd+3 and foe uses magic, staff, or dragonstone damage, foe cannot counterattack.",
         slot: "B",
         onCombatInitiate(state, target) {
             target.addComponent({
@@ -2306,7 +2680,7 @@ const PASSIVES: PassivesDict = {
         },
     },
     "Watersweep 3": {
-        description: "If unit initiates combat, unit cannot make a follow-up attack. If unit’s Spd > foe’s Spd and foe uses magic, staff, or dragonstone damage, foe cannot counterattack.",
+        description: "If unit initiates combat, unit cannot make a follow-up attack. If unit's Spd > foe's Spd and foe uses magic, staff, or dragonstone damage, foe cannot counterattack.",
         slot: "B",
         onCombatInitiate(state, target) {
             target.addComponent({
@@ -2323,7 +2697,7 @@ const PASSIVES: PassivesDict = {
         },
     },
     "Windsweep 1": {
-        description: "If unit initiates combat, unit cannot make a follow-up attack. If unit’s Spd ≥ foe’s Spd+5 and foe uses sword, lance, axe, bow, dagger, or beast damage, foe cannot counterattack.",
+        description: "If unit initiates combat, unit cannot make a follow-up attack. If unit's Spd ≥ foe's Spd+5 and foe uses sword, lance, axe, bow, dagger, or beast damage, foe cannot counterattack.",
         slot: "B",
         onCombatInitiate(state, target) {
             target.addComponent({
@@ -2340,7 +2714,7 @@ const PASSIVES: PassivesDict = {
         },
     },
     "Windsweep 2": {
-        description: "If unit initiates combat, unit cannot make a follow-up attack. If unit’s Spd ≥ foe’s Spd+3 and foe uses sword, lance, axe, bow, dagger, or beast damage, foe cannot counterattack.",
+        description: "If unit initiates combat, unit cannot make a follow-up attack. If unit's Spd ≥ foe's Spd+3 and foe uses sword, lance, axe, bow, dagger, or beast damage, foe cannot counterattack.",
         slot: "B",
         onCombatInitiate(state, target) {
             target.addComponent({
@@ -2357,7 +2731,7 @@ const PASSIVES: PassivesDict = {
         },
     },
     "Windsweep 3": {
-        description: "If unit initiates combat, unit cannot make a follow-up attack. If unit’s Spd > foe’s Spd and foe uses sword, lance, axe, bow, dagger, or beast damage, foe cannot counterattack.",
+        description: "If unit initiates combat, unit cannot make a follow-up attack. If unit's Spd > foe's Spd and foe uses sword, lance, axe, bow, dagger, or beast damage, foe cannot counterattack.",
         slot: "B",
         onCombatInitiate(state, target) {
             target.addComponent({

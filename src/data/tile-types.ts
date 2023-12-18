@@ -1,5 +1,3 @@
-type TileType = "void" | "ground" | "forest" | "wall";
-
 const TileTypes = {
     void: 0b1,
     ground: 0b1111,

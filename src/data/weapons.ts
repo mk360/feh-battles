@@ -10,6 +10,7 @@ import { CombatOutcome } from "../combat";
 import getEnemies from "../utils/get-enemies";
 import HeroSystem from "../systems/hero";
 import getAllies from "../utils/get-alies";
+import CombatTurnOutcome from "../interfaces/combat-turn-outcome";
 
 interface WeaponDict {
     [k: string]: {
@@ -25,6 +26,7 @@ interface WeaponDict {
         onCombatAfter?(this: Skill, battleState: GameState, target: Entity, combat: CombatOutcome): void;
         onCombatInitiate?(this: Skill, state: GameState, target: Entity): void;
         onCombatDefense?(this: Skill, state: GameState, attacker: Entity): void;
+        onCombatRoundDefense?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): void;
         onEquip?(this: Skill): any;
         onTurnStart?(this: Skill, battleState: GameState): void;
     }
@@ -326,6 +328,20 @@ const WEAPONS: WeaponDict = {
         },
         exclusiveTo: ["Black Knight: Sinister General"]
     },
+    "Amiti": {
+        description: "Inflicts Spd-2. If unit initiates combat, unit attacks twice.",
+        onEquip() {
+            this.entity.getOne("Stats").spd -= 2;
+        },
+        exclusiveTo: ["Elincia: Lost Princess"],
+        might: 11,
+        type: "sword",
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "BraveWeapon"
+            });
+        }
+    },
     "Arden's Blade": {
         description: "Inflicts Spd-5. Unit attacks twice. (Even if foe initiates combat, unit attacks twice.)",
         might: 10,
@@ -427,6 +443,24 @@ const WEAPONS: WeaponDict = {
             Effects.blade(this);
         }
     },
+    "Blárowl": {
+        description: "During combat, boosts unit's Atk/Spd/Def/Res by number of adjacent allies × 2.",
+        type: "tome",
+        color: "blue",
+        might: 10,
+        onCombatStart(state) {
+            Effects.owl(this, state);
+        }
+    },
+    "Blárowl+": {
+        description: "During combat, boosts unit's Atk/Spd/Def/Res by number of adjacent allies × 2.",
+        type: "tome",
+        color: "blue",
+        might: 14,
+        onCombatStart(state) {
+            Effects.owl(this, state);
+        }
+    },
     "Blárwolf": {
         description: "Effective against cavalry foes.",
         type: "tome",
@@ -440,6 +474,18 @@ const WEAPONS: WeaponDict = {
         color: "blue",
         effectiveAgainst: ["cavalry"],
         might: 10
+    },
+    "Book of Orchids": {
+        description: "If unit initiates combat, grants Atk+6 during combat.",
+        exclusiveTo: ["Mae: Bundle of Energy"],
+        might: 16,
+        type: "tome",
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                atk: 6
+            });
+        }
     },
     "Brave Axe": {
         description: "Inflicts Spd-5. If unit initiates combat, unit attacks twice.",
@@ -611,6 +657,37 @@ const WEAPONS: WeaponDict = {
             });
         },
     },
+    "Dire Thunder": {
+        description: "Inflicts Spd-5. If unit initiates combat, unit attacks twice.",
+        type: "tome",
+        exclusiveTo: ["Reinhardt: Thunder's Fist"],
+        might: 9,
+        onEquip() {
+            this.entity.getOne("Stats").spd -= 5;
+        },
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "BraveWeapon"
+            });
+        }
+    },
+    "Divine Tyrfing": {
+        description: "Grants Res+3. Reduces damage from magic foe's first attack by 50%.",
+        exclusiveTo: ["Sigurd: Holy Knight"],
+        onEquip() {
+            this.entity.getOne("Stats").res += 3;
+        },
+        onCombatRoundDefense(enemy, combatRound) {
+            if (combatRound.turnNumber === 1 && enemy.getOne("Weapon").weaponType === "tome") {
+                this.entity.addComponent({
+                    type: "DamageReduction",
+                    percentage: 0.5
+                });
+            }
+        },
+        type: "sword",
+        might: 16
+    },
     "Eckesachs": {
         description: "At start of turn, inflicts Def-4 on foes within 2 spaces through their next actions.",
         exclusiveTo: ["Zephiel: The Liberator"],
@@ -621,6 +698,46 @@ const WEAPONS: WeaponDict = {
                 def: -4
             });
         },
+    },
+    "Eternal Breath": {
+        type: "breath",
+        might: 16,
+        exclusiveTo: ["Fae: Divine Dragon"],
+        description: "At start of turn, if an ally is within 2 spaces of unit, grants Atk/Spd/Def/Res+5 to unit and allies within 2 spaces for 1 turn. If foe's Range = 2, calculates damage using the lower of foe's Def or Res.",
+        onTurnStart(battleState) {
+            const allies = getAllies(battleState, this.entity);
+            let affectWielder = false;
+
+            for (let ally of allies) {
+                if (HeroSystem.getDistance(ally, this.entity) <= 2) {
+                    affectWielder = true;
+                    ally.addComponent({
+                        type: "MapBuff",
+                        atk: 5,
+                        spd: 5,
+                        def: 5,
+                        res: 5,
+                    });
+                }
+            }
+
+            if (affectWielder) {
+                this.entity.addComponent({
+                    type: "MapBuff",
+                    atk: 5,
+                    spd: 5,
+                    def: 5,
+                    res: 5,
+                });
+            }
+        },
+        onCombatStart(state, target) {
+            if (target.getOne("Weapon").range === 2) {
+                this.entity.addComponent({
+                    type: "TargetLowestDefense"
+                });
+            }
+        }
     },
     "Excalibur": {
         description: "Effective against flying foes.",
@@ -785,6 +902,24 @@ const WEAPONS: WeaponDict = {
         color: "green",
         might: 13
     },
+    "Gronnowl": {
+        description: "During combat, boosts unit's Atk/Spd/Def/Res by number of adjacent allies × 2.",
+        type: "tome",
+        color: "green",
+        might: 6,
+        onCombatStart(battleState) {
+            Effects.owl(this, battleState);
+        },
+    },
+    "Gronnowl+": {
+        description: "During combat, boosts unit's Atk/Spd/Def/Res by number of adjacent allies × 2.",
+        type: "tome",
+        color: "green",
+        might: 10,
+        onCombatStart(battleState) {
+            Effects.owl(this, battleState);
+        },
+    },
     "Gronnwolf": {
         effectiveAgainst: ["cavalry"],
         description: "Effective against cavalry foes.",
@@ -842,6 +977,20 @@ const WEAPONS: WeaponDict = {
         effectiveAgainst: ["armored"],
         type: "lance"
     },
+    "Hermit's Tome": {
+        description: "Effective against cavalry foes. If foe uses bow, dagger, magic, or staff, neutralizes foe's bonuses (from skills like Fortify, Rally, etc.) during combat.",
+        exclusiveTo: ["Raigh: Dark Child"],
+        might: 14,
+        type: "tome",
+        effectiveAgainst: ["cavalry"],
+        onCombatStart(battleState, target) {
+            if (target.getOne("Weapon").range === 2) {
+                this.entity.addComponent({
+                    type: "NeutralizeMapBuffs"
+                });
+            }
+        },
+    },
     "Iris's Tome": {
         type: "tome",
         color: "green",
@@ -851,6 +1000,13 @@ const WEAPONS: WeaponDict = {
         onCombatStart() {
             Effects.blade(this);
         }
+    },
+    "Jubilant Blade": {
+        description: "Effective against armored foes.",
+        exclusiveTo: ["Tobin: The Clueless One"],
+        effectiveAgainst: ["armored"],
+        might: 16,
+        type: "sword"
     },
     "Killer Axe": {
         type: "axe",
@@ -874,6 +1030,44 @@ const WEAPONS: WeaponDict = {
             });
         },
     },
+    "Laid-Back Blade": {
+        exclusiveTo: ["Gray: Wry Comrade"],
+        might: 16,
+        type: "sword",
+        effectiveAgainst: ["cavalry"],
+        description: "Effective against cavalry foes. At start of combat, if unit's HP ≥ 50%, grants Atk/Spd/Def/Res+3 during combat.",
+        onCombatStart() {
+            const { maxHP, hp } = this.entity.getOne("Stats");
+            if (hp / maxHP >= 0.5) {
+                this.entity.addComponent({
+                    type: "CombatBuff",
+                    atk: 3,
+                    spd: 3,
+                    def: 3,
+                    res: 3
+                });
+            }
+        }
+    },
+    "Lordly Lance": {
+        description: "Effective against armored foes.",
+        effectiveAgainst: ["armored"],
+        might: 16,
+        type: "lance",
+        exclusiveTo: ["Clive: Idealistic Knight"]
+    },
+    "Mulagir": {
+        description: "Effective against flying foes. Grants Spd+3. Neutralizes magic foe's bonuses (from skills like Fortify, Rally, etc.) during combat.",
+        effectiveAgainst: ["flier"],
+        onCombatStart() {
+            this.entity.addComponent({
+                type: "NeutralizeMapBuffs"
+            });
+        },
+        might: 14,
+        exclusiveTo: ["Lyn: Brave Lady"],
+        type: "bow"
+    },
     "Naga": {
         description: "Effective against dragon foes. If foe initiates combat, grants Def/Res+2 during combat.",
         effectiveAgainst: ["breath"],
@@ -887,6 +1081,15 @@ const WEAPONS: WeaponDict = {
         type: "tome",
         might: 14,
         exclusiveTo: ["Julia: Naga's Blood"]
+    },
+    "Nidhogg": {
+        description: "Effective against flying foes. During combat, boosts unit's Atk/Spd/Def/Res by number of adjacent allies × 2.",
+        type: "bow",
+        might: 14,
+        effectiveAgainst: ["flier"],
+        onCombatStart(state) {
+            Effects.owl(this, state);
+        }
     },
     "Oboro's Spear": {
         description: "Effective against armored foes.",
@@ -940,6 +1143,25 @@ const WEAPONS: WeaponDict = {
             });
         },
     },
+    "Ragnarok": {
+        description: "At start of combat, if unit's HP = 100%, grants Atk/Spd+5, but after combat, if unit attacked, deals 5 damage to unit.",
+        type: "tome",
+        might: 14,
+        onCombatStart() {
+            const { maxHP, hp } = this.entity.getOne("Stats");
+            if (hp === maxHP) {
+                this.entity.addComponent({
+                    type: "CombatBuff",
+                    atk: 5,
+                    spd: 5
+                });
+            }
+        },
+        onCombatAfter() {
+
+        },
+        exclusiveTo: ["Celica: Caring Princess"]
+    },
     "Ragnell": {
         might: 16,
         description: "Unit can counterattack regardless of enemy range.",
@@ -957,6 +1179,63 @@ const WEAPONS: WeaponDict = {
             Effects.counterattack(this);
         },
         exclusiveTo: ["Ryoma: Peerless Samurai"]
+    },
+    "Rauðrowl": {
+        might: 6,
+        type: "tome",
+        description: "During combat, boosts unit's Atk/Spd/Def/Res by number of adjacent allies × 2.",
+        color: "red",
+        onCombatStart(battleState) {
+            Effects.owl(this, battleState);
+        },
+    },
+    "Rauðrowl+": {
+        might: 10,
+        type: "tome",
+        description: "During combat, boosts unit's Atk/Spd/Def/Res by number of adjacent allies × 2.",
+        color: "red",
+        onCombatStart(battleState) {
+            Effects.owl(this, battleState);
+        },
+    },
+    "Rauðrwolf": {
+        description: "Effective against cavalry foes.",
+        effectiveAgainst: ["cavalry"],
+        might: 6,
+        type: "tome",
+        color: "red"
+    },
+    "Rauðrwolf+": {
+        description: "Effective against cavalry foes.",
+        effectiveAgainst: ["cavalry"],
+        might: 10,
+        type: "tome",
+        color: "red"
+    },
+    "Reese's Tome": {
+        description: "During combat, boosts unit's Atk/Spd/Def/Res by number of adjacent allies × 2.",
+        type: "tome",
+        might: 14,
+        exclusiveTo: ["Katarina: Wayward One"],
+        onCombatStart(battleState) {
+            Effects.owl(this, battleState);
+        },
+    },
+    "Regal Blade": {
+        description: "At start of combat, if foe's HP = 100%, grants Atk/Spd+2 during combat.",
+        exclusiveTo: ["Lloyd: White Wolf"],
+        type: "sword",
+        might: 16,
+        onCombatStart(battleState, target) {
+            const { maxHP, hp } = target.getOne("Stats");
+            if (hp === maxHP) {
+                this.entity.addComponent({
+                    type: "CombatBuff",
+                    atk: 2,
+                    spd: 2
+                });
+            }
+        },
     },
     "Renowned Bow": {
         description: "Effective against flying foes. Inflicts Spd-5. If unit initiates combat, unit attacks twice.",
@@ -979,6 +1258,32 @@ const WEAPONS: WeaponDict = {
         might: 16,
         type: "lance",
         exclusiveTo: ["Clair: Highborn Flier"]
+    },
+    "Ridersbane": {
+        description: "Effective against cavalry foes.",
+        effectiveAgainst: ["cavalry"],
+        might: 10,
+        type: "lance"
+    },
+    "Ridersbane+": {
+        description: "Effective against cavalry foes.",
+        effectiveAgainst: ["cavalry"],
+        might: 14,
+        type: "lance"
+    },
+    "Rowdy Sword": {
+        might: 11,
+        type: "sword",
+        description: "Inflicts Spd-5. If unit initiates combat, unit attacks twice.",
+        exclusiveTo: ["Luke: Rowdy Squire"],
+        onEquip() {
+            this.entity.getOne("Stats").spd -= 5;
+        },
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "BraveWeapon"
+            });
+        }
     },
     "Sapphire Lance": {
         description: "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
@@ -1053,7 +1358,25 @@ const WEAPONS: WeaponDict = {
         might: 14,
         exclusiveTo: ["Tharja: Dark Shadow"],
         type: "tome",
-        color: "red"
+        color: "red",
+        onCombatStart() {
+            Effects.blade(this);
+        }
+    },
+    "Tyrfing": {
+        description: "If unit's HP ≤ 50%, grants Def+4 during combat.",
+        type: "sword",
+        might: 16,
+        exclusiveTo: ["Seliph: Heir of Light"],
+        onCombatStart() {
+            const { maxHP, hp } = this.entity.getOne("Stats");
+            if (hp / maxHP <= 0.5) {
+                this.entity.addComponent({
+                    type: "CombatBuff",
+                    def: 4
+                });
+            }
+        }
     },
     "Valflame": {
         description: "At start of turn, inflicts Atk/Res-4 on foes in cardinal directions with Res < unit's Res through their next actions.",
@@ -1100,6 +1423,20 @@ const WEAPONS: WeaponDict = {
             });
         },
     },
+    "Vidofnir": {
+        description: "If foe initiates combat and uses sword, lance, or axe, grants Def+7 during combat.",
+        onCombatDefense(state, attacker) {
+            if (["sword", "lance", "axe"].includes(attacker.getOne("Weapon").weaponType)) {
+                this.entity.addComponent({
+                    type: "CombatBuff",
+                    def: 7
+                });
+            }
+        },
+        type: "lance",
+        might: 16,
+        exclusiveTo: ["Tana: Winged Princess"]
+    },
     "Yato": {
         description: "If unit initiates combat, grants Spd+4 during combat.",
         exclusiveTo: ["Corrin: Fateful Prince"],
@@ -1132,6 +1469,25 @@ const WEAPONS: WeaponDict = {
         might: 16,
         exclusiveTo: ["Caeda: Talys's Heart"],
         type: "sword"
+    },
+    "Whitewing Spear": {
+        description: "Effective against armored and cavalry foes.",
+        type: "lance",
+        might: 16,
+        effectiveAgainst: ["armored"],
+        exclusiveTo: ["Est: Junior Whitewing"],
+    },
+    "Zanbato": {
+        description: "Effective against cavalry foes.",
+        effectiveAgainst: ["cavalry"],
+        might: 10,
+        type: "sword",
+    },
+    "Zanbato+": {
+        description: "Effective against cavalry foes.",
+        effectiveAgainst: ["cavalry"],
+        might: 14,
+        type: "sword",
     },
 };
 

@@ -32,6 +32,18 @@ export function mapBuffByMovementType(thisArg: Skill, state: GameState, movement
     }
 }
 
+export function mapBuffByRange(thisArg: Skill, state: GameState, range: number, buffs: Stats) {
+    const allies = getAllies(state, thisArg.entity);
+    for (let ally of allies) {
+        if (HeroSystem.getDistance(ally, thisArg.entity) <= range) {
+            ally.addComponent({
+                type: "MapBuff",
+                ...buffs
+            });
+        }
+    }
+}
+
 export function dodgeStat(thisArg: Skill, enemy: Entity, comparedStat: Stat) {
     const heroStats = getCombatStats(thisArg.entity);
     const enemyStats = getCombatStats(enemy);
@@ -148,6 +160,17 @@ export function counterattack(thisArg: Skill) {
         type: "Counterattack"
     });
 };
+
+export function owl(thisArg: Skill, state: GameState) {
+    const allies = getAllies(state, this.entity).filter((ally) => HeroSystem.getDistance(ally, this.entity) === 1);
+    thisArg.entity.addComponent({
+        type: "CombatBuff",
+        atk: allies.length * 2,
+        def: allies.length * 2,
+        spd: allies.length * 2,
+        res: allies.length * 2,
+    });   
+}
 
 export function blade(thisArg: Skill) {
     const mapBuffs = thisArg.entity.getComponents("MapBuff");

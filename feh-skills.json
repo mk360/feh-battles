@@ -722,49 +722,6 @@
         "Might": 13
     },
     {
-        "WeaponName": "Eternal Breath",
-        "CanUseWeapon": [
-            "Red Breath",
-            "  Blue Breath",
-            "  Green Breath",
-            "  Colorless Breath"
-        ],
-        "Exclusive": 1,
-        "Hero": "Fae: Divine Dragon",
-        "Description": "At start of turn, if an ally is within 2 spaces of unit, grants Atk/Spd/Def/Res+5 to unit and allies within 2 spaces for 1 turn. If foe's Range = 2, calculates damage using the lower of foe's Def or Res.",
-        "Might": 16
-    },
-    {
-        "WeaponName": "Rauðrwolf",
-        "CanUseWeapon": [
-            "Red Tome"
-        ],
-        "Exclusive": 0,
-        "Hero": "Raigh: Dark Child",
-        "Description": "Effective against cavalry foes.",
-        "Might": 6
-    },
-    {
-        "WeaponName": "Rauðrwolf+",
-        "CanUseWeapon": [
-            "Red Tome"
-        ],
-        "Exclusive": 0,
-        "Hero": "Raigh: Dark Child",
-        "Description": "Effective against cavalry foes.",
-        "Might": 10
-    },
-    {
-        "WeaponName": "Hermit's Tome",
-        "CanUseWeapon": [
-            "Red Tome"
-        ],
-        "Exclusive": 1,
-        "Hero": "Raigh: Dark Child",
-        "Description": "Effective against cavalry foes. If foe uses bow, dagger, magic, or staff, neutralizes foe's bonuses (from skills like Fortify, Rally, etc.) during combat.",
-        "Might": 14
-    },
-    {
         "WeaponName": "Shanna's Lance",
         "CanUseWeapon": [
             "Blue Lance"
@@ -793,16 +750,6 @@
         "Hero": "Sophia: Nabata Prophet",
         "Description": "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
         "Might": 14
-    },
-    {
-        "WeaponName": "Whitewing Spear",
-        "CanUseWeapon": [
-            "Blue Lance"
-        ],
-        "Exclusive": 1,
-        "Hero": "Est: Junior Whitewing",
-        "Description": "Effective against armored foes.",
-        "Might": 16
     },
     {
         "WeaponName": "Devil Axe",
@@ -992,16 +939,6 @@
         "Hero": "Sanaki: Begnion's Apostle",
         "Description": "If unit initiates combat, grants Atk+4 to adjacent allies for 1 turn after combat.",
         "Might": 14
-    },
-    {
-        "WeaponName": "Dire Thunder",
-        "CanUseWeapon": [
-            "Blue Tome"
-        ],
-        "Exclusive": 1,
-        "Hero": "Reinhardt: Thunder's Fist",
-        "Description": "Inflicts Spd-5. If unit initiates combat, unit attacks twice.",
-        "Might": 9
     },
     {
         "WeaponName": "Mystletainn",
@@ -1210,26 +1147,6 @@
         "Might": 14
     },
     {
-        "WeaponName": "Gronnowl",
-        "CanUseWeapon": [
-            "Green Tome"
-        ],
-        "Exclusive": 0,
-        "Hero": "Boey: Skillful Survivor",
-        "Description": "During combat, boosts unit's Atk/Spd/Def/Res by number of adjacent allies × 2.",
-        "Might": 6
-    },
-    {
-        "WeaponName": "Gronnowl+",
-        "CanUseWeapon": [
-            "Green Tome"
-        ],
-        "Exclusive": 0,
-        "Hero": "Boey: Skillful Survivor",
-        "Description": "During combat, boosts unit's Atk/Spd/Def/Res by number of adjacent allies × 2.",
-        "Might": 10
-    },
-    {
         "WeaponName": "Inscribed Tome",
         "CanUseWeapon": [
             "Green Tome"
@@ -1237,36 +1154,6 @@
         "Exclusive": 1,
         "Hero": "Boey: Skillful Survivor",
         "Description": "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
-        "Might": 14
-    },
-    {
-        "WeaponName": "Blárowl",
-        "CanUseWeapon": [
-            "Blue Tome"
-        ],
-        "Exclusive": 0,
-        "Hero": "Mae: Bundle of Energy",
-        "Description": "During combat, boosts unit's Atk/Spd/Def/Res by number of adjacent allies × 2.",
-        "Might": 6
-    },
-    {
-        "WeaponName": "Blárowl+",
-        "CanUseWeapon": [
-            "Blue Tome"
-        ],
-        "Exclusive": 0,
-        "Hero": "Mae: Bundle of Energy",
-        "Description": "During combat, boosts unit's Atk/Spd/Def/Res by number of adjacent allies × 2.",
-        "Might": 10
-    },
-    {
-        "WeaponName": "Book of Orchids",
-        "CanUseWeapon": [
-            "Blue Tome"
-        ],
-        "Exclusive": 1,
-        "Hero": "Mae: Bundle of Energy",
-        "Description": "If unit initiates combat, grants Atk+6 during combat.",
         "Might": 14
     },
     {
@@ -1278,26 +1165,6 @@
         "Hero": "Genny: Endearing Ally",
         "Description": "Grants Atk+3. Foe cannot counterattack. After combat, if unit attacked, inflicts \u3010Gravity\u3011on target and foes within 1 space of target. &lt;br>&lt;br>\u3010Gravity\u3011&lt;br>Restricts target's movement to 1 space through its next action.",
         "Might": 14
-    },
-    {
-        "WeaponName": "Ragnarok",
-        "CanUseWeapon": [
-            "Red Tome"
-        ],
-        "Exclusive": 1,
-        "Hero": "Celica: Caring Princess",
-        "Description": "At start of combat, if unit's HP = 100%, grants Atk/Spd+5, but after combat, if unit attacked, deals 5 damage to unit.",
-        "Might": 14
-    },
-    {
-        "WeaponName": "Regal Blade",
-        "CanUseWeapon": [
-            "Red Sword"
-        ],
-        "Exclusive": 1,
-        "Hero": "Lloyd: White Wolf",
-        "Description": "At start of combat, if foe's HP = 100%, grants Atk/Spd+2 during combat.",
-        "Might": 16
     },
     {
         "WeaponName": "First Bite",
@@ -1386,46 +1253,6 @@
         "Might": 12
     },
     {
-        "WeaponName": "Gradivus",
-        "CanUseWeapon": [
-            "Blue Lance"
-        ],
-        "Exclusive": 1,
-        "Hero": "Camus: Sable Knight",
-        "Description": "Unit can counterattack regardless of foe's range.",
-        "Might": 16
-    },
-    {
-        "WeaponName": "Rauðrowl",
-        "CanUseWeapon": [
-            "Red Tome"
-        ],
-        "Exclusive": 0,
-        "Hero": "Katarina: Wayward One",
-        "Description": "During combat, boosts unit's Atk/Spd/Def/Res by number of adjacent allies × 2.",
-        "Might": 6
-    },
-    {
-        "WeaponName": "Rauðrowl+",
-        "CanUseWeapon": [
-            "Red Tome"
-        ],
-        "Exclusive": 0,
-        "Hero": "Katarina: Wayward One",
-        "Description": "During combat, boosts unit's Atk/Spd/Def/Res by number of adjacent allies × 2.",
-        "Might": 10
-    },
-    {
-        "WeaponName": "Reese's Tome",
-        "CanUseWeapon": [
-            "Red Tome"
-        ],
-        "Exclusive": 1,
-        "Hero": "Katarina: Wayward One",
-        "Description": "During combat, boosts unit's Atk/Spd/Def/Res by number of adjacent allies × 2.",
-        "Might": 14
-    },
-    {
         "WeaponName": "Concealed Blade",
         "CanUseWeapon": [
             "Red Sword"
@@ -1434,16 +1261,6 @@
         "Hero": "Athena: Borderland Sword",
         "Description": "Deals +10 damage when Special triggers.",
         "Might": 16
-    },
-    {
-        "WeaponName": "Rowdy Sword",
-        "CanUseWeapon": [
-            "Red Sword"
-        ],
-        "Exclusive": 1,
-        "Hero": "Luke: Rowdy Squire",
-        "Description": "Inflicts Spd-5. If unit initiates combat, unit attacks twice.",
-        "Might": 11
     },
     {
         "WeaponName": "Firesweep Lance",
@@ -1627,36 +1444,6 @@
         "Might": 10
     },
     {
-        "WeaponName": "Jubilant Blade",
-        "CanUseWeapon": [
-            "Red Sword"
-        ],
-        "Exclusive": 1,
-        "Hero": "Tobin: The Clueless One",
-        "Description": "Effective against armored foes.",
-        "Might": 16
-    },
-    {
-        "WeaponName": "Ridersbane",
-        "CanUseWeapon": [
-            "Blue Lance"
-        ],
-        "Exclusive": 0,
-        "Hero": "Mathilda: Legendary Knight",
-        "Description": "Effective against cavalry foes.",
-        "Might": 10
-    },
-    {
-        "WeaponName": "Ridersbane+",
-        "CanUseWeapon": [
-            "Blue Lance"
-        ],
-        "Exclusive": 0,
-        "Hero": "Mathilda: Legendary Knight",
-        "Description": "Effective against cavalry foes.",
-        "Might": 14
-    },
-    {
         "WeaponName": "Knightly Lance",
         "CanUseWeapon": [
             "Blue Lance"
@@ -1664,36 +1451,6 @@
         "Exclusive": 1,
         "Hero": "Mathilda: Legendary Knight",
         "Description": "Accelerates Special trigger (cooldown count-1).",
-        "Might": 16
-    },
-    {
-        "WeaponName": "Zanbato",
-        "CanUseWeapon": [
-            "Red Sword"
-        ],
-        "Exclusive": 0,
-        "Hero": "Gray: Wry Comrade",
-        "Description": "Effective against cavalry foes.",
-        "Might": 10
-    },
-    {
-        "WeaponName": "Zanbato+",
-        "CanUseWeapon": [
-            "Red Sword"
-        ],
-        "Exclusive": 0,
-        "Hero": "Gray: Wry Comrade",
-        "Description": "Effective against cavalry foes.",
-        "Might": 14
-    },
-    {
-        "WeaponName": "Laid-Back Blade",
-        "CanUseWeapon": [
-            "Red Sword"
-        ],
-        "Exclusive": 1,
-        "Hero": "Gray: Wry Comrade",
-        "Description": "Effective against cavalry foes. At start of combat, if unit's HP ≥ 50%, grants Atk/Spd/Def/Res+3 during combat.",
         "Might": 16
     },
     {
@@ -1896,26 +1653,6 @@
         "Might": 12
     },
     {
-        "WeaponName": "Lordly Lance",
-        "CanUseWeapon": [
-            "Blue Lance"
-        ],
-        "Exclusive": 1,
-        "Hero": "Clive: Idealistic Knight",
-        "Description": "Effective against armored foes.",
-        "Might": 16
-    },
-    {
-        "WeaponName": "Vidofnir",
-        "CanUseWeapon": [
-            "Blue Lance"
-        ],
-        "Exclusive": 1,
-        "Hero": "Tana: Winged Princess",
-        "Description": "If foe initiates combat and uses sword, lance, or axe, grants Def+7 during combat.",
-        "Might": 16
-    },
-    {
         "WeaponName": "Slaying Axe",
         "CanUseWeapon": [
             "Green Axe"
@@ -1956,19 +1693,6 @@
         "Might": 16
     },
     {
-        "WeaponName": "Nidhogg",
-        "CanUseWeapon": [
-            "Red Bow",
-            "  Blue Bow",
-            "  Green Bow",
-            "  Colorless Bow"
-        ],
-        "Exclusive": 1,
-        "Hero": "Innes: Regal Strategician",
-        "Description": "Effective against flying foes. During combat, boosts unit's Atk/Spd/Def/Res by number of adjacent allies × 2.",
-        "Might": 14
-    },
-    {
         "WeaponName": "Cursed Lance",
         "CanUseWeapon": [
             "Blue Lance"
@@ -1977,19 +1701,6 @@
         "Hero": "Valter: Dark Moonstone",
         "Description": "Accelerates Special trigger (cooldown count-1). Grants Atk/Spd+2. Deals 4 damage to unit after combat.",
         "Might": 16
-    },
-    {
-        "WeaponName": "Mulagir",
-        "CanUseWeapon": [
-            "Red Bow",
-            "  Blue Bow",
-            "  Green Bow",
-            "  Colorless Bow"
-        ],
-        "Exclusive": 1,
-        "Hero": "Lyn: Brave Lady",
-        "Description": "Effective against flying foes. Grants Spd+3. Neutralizes magic foe's bonuses (from skills like Fortify, Rally, etc.) during combat.",
-        "Might": 14
     },
     {
         "WeaponName": "Blazing Durandal",
@@ -2012,7 +1723,7 @@
         "Might": 16
     },
     {
-        "WeaponName": "Geirsk\u00f6gul",
+        "WeaponName": "Geirskögul",
         "CanUseWeapon": [
             "Blue Lance"
         ],
@@ -2030,16 +1741,6 @@
         "Hero": "Oscar: Agile Horseman",
         "Description": "Accelerates Special trigger (cooldown count-1).",
         "Might": 16
-    },
-    {
-        "WeaponName": "Amiti",
-        "CanUseWeapon": [
-            "Red Sword"
-        ],
-        "Exclusive": 1,
-        "Hero": "Elincia: Lost Princess",
-        "Description": "Inflicts Spd-2. If unit initiates combat, unit attacks twice.",
-        "Might": 11
     },
     {
         "WeaponName": "Slaying Lance",
@@ -2166,16 +1867,6 @@
         "Hero": "Tailtiu: Thunder Noble",
         "Description": "At start of turn, if unit's HP ≤ 75% and unit's attack can trigger their Special, grants Special cooldown count-1, and deals +10 damage when Special triggers.",
         "Might": 14
-    },
-    {
-        "WeaponName": "Divine Tyrfing",
-        "CanUseWeapon": [
-            "Red Sword"
-        ],
-        "Exclusive": 1,
-        "Hero": "Sigurd: Holy Knight",
-        "Description": "Grants Res+3. Reduces damage from magic foe's first attack by 50%.",
-        "Might": 16
     },
     {
         "WeaponName": "Ayra's Blade",

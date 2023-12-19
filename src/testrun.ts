@@ -12,7 +12,7 @@ world.generateMap(Map1);
 world.initiate({
     team1: [{
         name: "Klein: Silver Nobleman",
-        weapon: "Silver Bow+",
+        weapon: "Argent Bow",
         skills: {
             assist: null,
             special: null,
@@ -45,7 +45,4 @@ world.initiate({
         }
     }]
 });
-// const [klein, sigurd] = world.getEntities("Side");
-console.time("combat");
-world.runSystems("combat");
-console.timeEnd("combat");
+console.log(world.skillMap);

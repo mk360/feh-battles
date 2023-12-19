@@ -1,4 +1,4 @@
-import { Entity, IWorldConfig, World } from "ape-ecs";
+import { Component, Entity, IWorldConfig, World } from "ape-ecs";
 import Weapon from "./components/weapon";
 import MapEffects from "./systems/map-effects";
 import Stats from "./components/stats";
@@ -44,6 +44,7 @@ import NeutralizeAffinity from "./components/neutralize-affinity";
 import DamageReduction from "./components/damage-reduction";
 import NeutralizeNormalizeStaffDamage from "./components/neutralize-normalize-staff-damage";
 import NormalizeStaffDamage from "./components/normalize-staff-damage";
+import Teams from "./data/teams";
 
 const tileBitmasks = {
     type: {
@@ -114,6 +115,10 @@ class GameWorld extends World {
         combat: this.createEntity({})
     };
 
+    skillMap: Map<Entity, Partial<{
+        [k in "onTurnStart" | "onCombatStart"]: Skill
+    }>>;
+
     constructor(config?: IWorldConfig) {
         super(config);
         this.registerComponent(Weapon);
@@ -152,6 +157,7 @@ class GameWorld extends World {
         this.registerSystem("every-turn", MapEffects, [this.state]);
         this.registerSystem("combats", SkillInteractionSystem, [this.state]);
         this.registerSystem("combat", CombatSystem, [this.state]);
+        this.skillMap = new Map();
     }
 
     generateMap(config: typeof Map1) {
@@ -212,17 +218,13 @@ class GameWorld extends World {
             throw new Error("Tile is already occupied");
         }
 
-        if (team === "team1") {
-            this.state.map[y][x][0] |= 0b010000;
-        }
-
-        if (team === "team2") {
-            this.state.map[y][x][0] |= 0b100000;
-        }
+        this.state.map[y][x][0] |= Teams[team];
 
         entity.addComponent({
             type: "Battling"
         });
+
+        const entitySkillDict: { [k: string]: any } = {};
 
         if (member.weapon) {
             const skillData = WEAPONS[member.weapon];
@@ -238,6 +240,14 @@ class GameWorld extends World {
             if (skillData.onEquip) {
                 skillData.onEquip.call(weaponComponent);
             }
+            for (let hook in skillData) {
+                const castHook = hook as keyof typeof skillData;
+                if (typeof skillData[castHook] === "function") {
+                    entitySkillDict[castHook] = weaponComponent
+                }
+            }
+
+            this.skillMap.set(entity, entitySkillDict);
         }
 
         for (let skill in member.skills) {
@@ -253,6 +263,14 @@ class GameWorld extends World {
 
                 const internalComponent = entity.addComponent(skillComponent);
                 if (skillData.onEquip) skillData.onEquip.call(internalComponent);
+
+                for (let hook in skillData) {
+                    const castHook = hook as keyof typeof skillData;
+                    if (typeof skillData[castHook] === "function") {
+                        this.skillMap[castHook] = this.skillMap[castHook] || {};
+                        this.skillMap[castHook][internalComponent.id] = skillData[castHook];
+                    }
+                }
 
                 if (skillData.protects) {
                     for (let immunity of skillData.protects) {
@@ -323,7 +341,8 @@ class GameWorld extends World {
             },
             {
                 type: "Side",
-                value: team
+                value: team,
+                bitfield: Teams[team]
             },
             {
                 type: "MovementType",

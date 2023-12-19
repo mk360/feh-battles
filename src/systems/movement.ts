@@ -1,7 +1,8 @@
 import { Entity, Query, System } from "ape-ecs";
 import GameState from "./state";
 
-function getSurroundings(map: GameState["map"], y: number, x: number, checkedTiles: string[]) {
+function getSurroundings(map: GameState["map"], hero: Entity, y: number, x: number, checkedTiles: string[]) {
+    const { bitfield } = hero.getOne("Side");
     const arr = [];
     if (map[y - 1]) {
         arr.push(map[y - 1][x - 1]);

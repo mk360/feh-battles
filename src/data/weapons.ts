@@ -25,6 +25,7 @@ interface WeaponDict {
         onCombatStart?(this: Skill, battleState: GameState, target: Entity): void;
         onCombatAfter?(this: Skill, battleState: GameState, target: Entity, combat: CombatOutcome): void;
         onCombatInitiate?(this: Skill, state: GameState, target: Entity): void;
+        onCombatAllyStart?(this: Skill, state: GameState, ally: Entity): void;
         onCombatDefense?(this: Skill, state: GameState, attacker: Entity): void;
         onCombatRoundDefense?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): void;
         onEquip?(this: Skill): any;
@@ -401,6 +402,28 @@ const WEAPONS: WeaponDict = {
         effectiveAgainst: ["armored"],
         exclusiveTo: ["Bartre: Fearless Warrior"]
     },
+    "Berkut's Lance": {
+        description: "If foe initiates combat, grants Res+4 during combat.",
+        might: 10,
+        type: "lance",
+        onCombatDefense() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                res: 4
+            });
+        }
+    },
+    "Berkut's Lance+": {
+        description: "If foe initiates combat, grants Res+4 during combat.",
+        might: 14,
+        type: "lance",
+        onCombatDefense() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                res: 4
+            });
+        }
+    },
     "Beruka's Axe": {
         type: "axe",
         might: 16,
@@ -645,6 +668,48 @@ const WEAPONS: WeaponDict = {
         might: 16,
         exclusiveTo: ["Sheena: Princess of Gra"]
     },
+    "Dark Aura": {
+        description: "At start of turn, if adjacent allies use sword, axe, lance, dragonstone, or beast damage, grants Atk+6 to those allies for 1 turn.",
+        type: "tome",
+        color: "blue",
+        might: 14,
+        exclusiveTo: ["Delthea: Free Spirit"],
+        onTurnStart(battleState) {
+            const allies = getAllies(battleState, this.entity);
+            for (let ally of allies) {
+                if (HeroSystem.getDistance(this.entity, ally) === 1 && ["sword", "lance", "axe", "breath", "beast"].includes(ally.getOne("Weapon").weaponType)) {
+                    ally.addComponent({
+                        type: "MapBuff",
+                        atk: 6
+                    });
+                }
+            }
+        },
+    },
+    "Dark Royal Spear": {
+        exclusiveTo: ["Berkut: Prideful Prince"],
+        might: 16,
+        type: "lance",
+        description: "If foe initiates combat or if foe's HP = 100% at start of combat, grants Atk/Def/Res+5 to unit during combat.",
+        onCombatDefense() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                atk: 5,
+                def: 5,
+                res: 5
+            });
+        },
+        onCombatInitiate(state, target) {
+            const { maxHP, hp } = target.getOne("Stats");
+            if (hp === maxHP) {
+                this.entity.addComponent({
+                    atk: 5,
+                    def: 5,
+                    res: 5
+                });
+            }
+        },
+    },
     "Daybreak Lance": {
         description: "Accelerates Special trigger (cooldown count-1).",
         exclusiveTo: ["Lukas: Sharp Soldier"],
@@ -857,6 +922,24 @@ const WEAPONS: WeaponDict = {
         exclusiveTo: ["Frederick: Polite Knight"],
         type: "axe",
         effectiveAgainst: ["armored"],
+    },
+    "Geirskögul": {
+        description: "Grants Def+3. If allies within 2 spaces use sword, lance, axe, bow, dagger, or beast damage, grants Atk/Spd+3 to those allies during combat.",
+        exclusiveTo: ["Lucina: Brave Princess"],
+        might: 16,
+        type: "lance",
+        onEquip() {
+            this.entity.getOne("Stats").def += 3;
+        },
+        onCombatAllyStart(state, ally) {
+            if (HeroSystem.getDistance(this.entity, ally) <= 2 && ["sword", "lance", "axe", "dagger", "bow", "beast"].includes(ally.getOne("Weapon").weaponType)) {
+                ally.addComponent({
+                    type: "CombatBuff",
+                    atk: 3,
+                    spd: 3
+                });
+            }
+        },
     },
     "Gladiator's Blade": {
         description: "If unit's Atk > foe's Atk, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)",

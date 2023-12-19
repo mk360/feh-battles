@@ -112,12 +112,9 @@ class GameWorld extends World {
         currentSide: "team1",
         turn: 1,
         tiles: this.createEntity({}),
-        combat: this.createEntity({})
+        combat: this.createEntity({}),
+        skillMap: new Map()
     };
-
-    skillMap: Map<Entity, Partial<{
-        [k in "onTurnStart" | "onCombatStart"]: Set<Skill>;
-    }>>;
 
     constructor(config?: IWorldConfig) {
         super(config);
@@ -157,7 +154,6 @@ class GameWorld extends World {
         this.registerSystem("every-turn", MapEffects, [this.state]);
         this.registerSystem("combats", SkillInteractionSystem, [this.state]);
         this.registerSystem("combat", CombatSystem, [this.state]);
-        this.skillMap = new Map();
     }
 
     generateMap(config: typeof Map1) {
@@ -272,7 +268,7 @@ class GameWorld extends World {
                     }
                 }
 
-                this.skillMap.set(entity, entitySkillDict);
+                this.state.skillMap.set(entity, entitySkillDict);
 
                 if (skillData.protects) {
                     for (let immunity of skillData.protects) {

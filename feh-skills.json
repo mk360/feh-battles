@@ -1414,7 +1414,7 @@
         ],
         "Exclusive": 0,
         "Hero": "Gaius: Thief Exposed",
-        "Description": "Effective against flying foes. &lt;br/>At start of combat, if unit's HP = 100%, grants Atk/Spd/Def/Res+2, but after combat, if unit attacked, deals 2 damage to unit.",
+        "Description": "Effective against flying foes. At start of combat, if unit's HP = 100%, grants Atk/Spd/Def/Res+2, but after combat, if unit attacked, deals 2 damage to unit.",
         "Might": 12
     },
     {
@@ -1494,16 +1494,6 @@
         "Might": 14
     },
     {
-        "WeaponName": "Dark Aura",
-        "CanUseWeapon": [
-            "Blue Tome"
-        ],
-        "Exclusive": 1,
-        "Hero": "Delthea: Free Spirit",
-        "Description": "At start of turn, if adjacent allies use sword, axe, lance, dragonstone, or beast damage, grants Atk+6 to those allies for 1 turn.",
-        "Might": 14
-    },
-    {
         "WeaponName": "Slaying Bow",
         "CanUseWeapon": [
             "Red Bow",
@@ -1541,36 +1531,6 @@
         "Hero": "Leon: True of Heart",
         "Description": "Accelerates Special trigger (cooldown count-1). Effective against flying foes.",
         "Might": 14
-    },
-    {
-        "WeaponName": "Berkut's Lance",
-        "CanUseWeapon": [
-            "Blue Lance"
-        ],
-        "Exclusive": 0,
-        "Hero": "Berkut: Prideful Prince",
-        "Description": "If foe initiates combat, grants Res+4 during combat.",
-        "Might": 10
-    },
-    {
-        "WeaponName": "Berkut's Lance+",
-        "CanUseWeapon": [
-            "Blue Lance"
-        ],
-        "Exclusive": 0,
-        "Hero": "Berkut: Prideful Prince",
-        "Description": "If foe initiates combat, grants Res+4 during combat.",
-        "Might": 14
-    },
-    {
-        "WeaponName": "Dark Royal Spear",
-        "CanUseWeapon": [
-            "Blue Lance"
-        ],
-        "Exclusive": 1,
-        "Hero": "Berkut: Prideful Prince",
-        "Description": "If foe initiates combat or if foe's HP = 100% at start of combat, grants Atk/Def/Res+5 to unit during combat.",
-        "Might": 16
     },
     {
         "WeaponName": "Lilith Floatie",
@@ -1720,16 +1680,6 @@
         "Exclusive": 1,
         "Hero": "Ike: Brave Mercenary",
         "Description": "Accelerates Special trigger (cooldown count-1). If unit receives consecutive attacks, reduces damage from foe's second attack onward by 80%.",
-        "Might": 16
-    },
-    {
-        "WeaponName": "Geirskögul",
-        "CanUseWeapon": [
-            "Blue Lance"
-        ],
-        "Exclusive": 1,
-        "Hero": "Lucina: Brave Princess",
-        "Description": "Grants Def+3. If allies within 2 spaces use sword, lance, axe, bow, dagger, or beast damage, grants Atk/Spd+3 to those allies during combat.",
         "Might": 16
     },
     {

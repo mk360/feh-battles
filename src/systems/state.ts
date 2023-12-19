@@ -1,6 +1,8 @@
 import { Entity } from "ape-ecs";
 import { WeaponType } from "../weapon";
 import { MovementType } from "../types";
+import Skill from "../components/skill";
+import SkillHook from "../interfaces/skill-hook";
 
 interface GameState {
     teams: {
@@ -37,6 +39,9 @@ interface GameState {
     };
     currentSide: "team1" | "team2";
     turn: number;
+    skillMap: Map<Entity, Partial<{
+        [k in SkillHook]: Set<Skill>;
+    }>>;
 }
 
 export default GameState;

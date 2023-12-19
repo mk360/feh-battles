@@ -8,6 +8,7 @@ import getTargetedDefenseStat from "./get-targeted-defense-stat";
 import generateTurns from "./generate-turns";
 import PreventEnemyAlliesInteraction from "../components/prevent-enemy-allies-interaction";
 import CombatTurnOutcome from "../interfaces/combat-turn-outcome";
+import SKILLS from "../data/skill-dex";
 
 function getCombatStats(entity: Entity) {
     const combatBuffs = entity.getComponents("CombatBuff");
@@ -70,21 +71,22 @@ class CombatSystem extends System {
                 this.runAllySkills(unit2);
             }
 
-            const attackerSkills = unit1.getComponents("Skill");
-            const defenderSkills = unit2.getComponents("Skill");
+            const attackerSkills = this.state.skillMap.get(unit1);
+            const defenderSkills = this.state.skillMap.get(unit2);
+            attackerSkills.onCombatStart?.forEach((skill) => {
+                SKILLS[skill.name].onCombatStart.call(skill, this.state, unit2);
+            });
 
-            attackerSkills.forEach((skill) => {
-                const skillData = PASSIVES[skill.name];
-                if (skillData?.onCombatStart) {
-                    skillData.onCombatStart.call(skill, this.state, unit2);
-                }
-            })
+            attackerSkills.onCombatInitiate?.forEach((skill) => {
+                SKILLS[skill.name].onCombatInitiate.call(skill, this.state, unit2);
+            });
 
-            defenderSkills.forEach((skill) => {
-                const skillData = PASSIVES[skill.name];
-                if (skillData?.onCombatStart) {
-                    skillData.onCombatStart.call(skill, this.state, unit1)
-                }
+            defenderSkills.onCombatStart?.forEach((skill) => {
+                SKILLS[skill.name].onCombatStart.call(skill, this.state, unit1);
+            });
+
+            defenderSkills.onCombatDefense?.forEach((skill) => {
+                SKILLS[skill.name].onCombatDefense.call(skill, this.state, unit1);
             });
 
             const combatMap = new Map<Entity, {
@@ -121,13 +123,12 @@ class CombatSystem extends System {
                     defender,
                     consecutiveTurnNumber: combatMap.get(turn).consecutiveTurns,
                 };
-                defender.getComponents("Skill").forEach((skill) => {
-                    const dexData = PASSIVES[skill.name];
-                    if (dexData && dexData.onCombatRoundDefense) {
-                        dexData.onCombatRoundDefense.call(skill, turn, turnData);
-                        if (skill.slot === "special") {
-                            turnData.defenderTriggeredSpecial = true;
-                        }
+                const defenderSkills = this.state.skillMap.get(defender);
+                defenderSkills.onCombatRoundDefense?.forEach((skill) => {
+                    const dexData = SKILLS[skill.name];
+                    dexData.onCombatRoundDefense.call(skill, turn, turnData);
+                    if (skill.slot === "special") {
+                        turnData.defenderTriggeredSpecial = true;
                     }
                 });
                 const defenderStats = combatMap.get(defender).stats;
@@ -146,18 +147,17 @@ class CombatSystem extends System {
                     }
                 });
                 const damage = Math.floor(Math.max(0, (atkStat - defenseStat) * effectivenessMultiplier) * damagePercentage / 100) - flatReduction;
+                console.log({ damage });
                 lastAttacker = turn;
             }
         }
     }
 
-    runAllySkills(hero: Entity) {
-        const allies = getAllies(this.state, hero);
+    runAllySkills(ally: Entity) {
+        const allies = getAllies(this.state, ally);
         for (let ally of allies) {
-            ally.getComponents("Skill").forEach((skill) => {
-                if (PASSIVES[skill.name].onCombatAllyStart) {
-                    PASSIVES[skill.name].onCombatAllyStart.call(skill, this.state, hero);
-                }
+            this.state.skillMap.get(ally).onCombatAllyStart?.forEach((skill) => {
+                SKILLS[skill.name].onCombatAllyStart.call(skill, this.state, ally);
             });
         }
     }

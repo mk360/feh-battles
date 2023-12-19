@@ -15,11 +15,11 @@ world.initiate({
         weapon: "Argent Bow",
         skills: {
             assist: null,
-            special: null,
-            A: "Fury 3",
+            special: "Iceberg",
+            A: "Death Blow 3",
             B: null,
             C: "Threaten Atk 3",
-            S: "Fury 3",
+            S: "Def +3",
         },
         rarity: 5,
         initialPosition: {
@@ -33,7 +33,7 @@ world.initiate({
         skills: {
             assist: null,
             special: null,
-            A: "Distant Counter",
+            A: null,
             B: "Crusader's Ward",
             C: "Threaten Atk 3",
             S: null,
@@ -45,4 +45,6 @@ world.initiate({
         }
     }]
 });
-console.log(world.skillMap);
+console.time("combat");
+world.runSystems("combat");
+console.timeEnd("combat");

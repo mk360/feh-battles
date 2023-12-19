@@ -98,8 +98,8 @@ class GameWorld extends World {
             8: [new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array()],
         },
         teams: {
-            team1: [],
-            team2: [],
+            team1: new Set(),
+            team2: new Set(),
         },
         teamsByMovementTypes: {
             team1: {},
@@ -116,7 +116,7 @@ class GameWorld extends World {
     };
 
     skillMap: Map<Entity, Partial<{
-        [k in "onTurnStart" | "onCombatStart"]: Skill
+        [k in "onTurnStart" | "onCombatStart"]: Set<Skill>;
     }>>;
 
     constructor(config?: IWorldConfig) {
@@ -224,7 +224,7 @@ class GameWorld extends World {
             type: "Battling"
         });
 
-        const entitySkillDict: { [k: string]: any } = {};
+        const entitySkillDict: { [k: string]: Set<Component> } = {};
 
         if (member.weapon) {
             const skillData = WEAPONS[member.weapon];
@@ -237,17 +237,16 @@ class GameWorld extends World {
                 name: member.weapon,
             };
             const weaponComponent = entity.addComponent(weaponComponentData)
-            if (skillData.onEquip) {
-                skillData.onEquip.call(weaponComponent);
-            }
+
             for (let hook in skillData) {
                 const castHook = hook as keyof typeof skillData;
-                if (typeof skillData[castHook] === "function") {
-                    entitySkillDict[castHook] = weaponComponent
+                if (castHook === "onEquip") {
+                    skillData.onEquip.call(weaponComponent);
+                } else if (typeof skillData[castHook] === "function") {
+                    entitySkillDict[castHook] = entitySkillDict[castHook] || new Set();
+                    entitySkillDict[castHook].add(weaponComponent);
                 }
             }
-
-            this.skillMap.set(entity, entitySkillDict);
         }
 
         for (let skill in member.skills) {
@@ -262,15 +261,18 @@ class GameWorld extends World {
                 };
 
                 const internalComponent = entity.addComponent(skillComponent);
-                if (skillData.onEquip) skillData.onEquip.call(internalComponent);
 
                 for (let hook in skillData) {
                     const castHook = hook as keyof typeof skillData;
-                    if (typeof skillData[castHook] === "function") {
-                        this.skillMap[castHook] = this.skillMap[castHook] || {};
-                        this.skillMap[castHook][internalComponent.id] = skillData[castHook];
+                    if (castHook === "onEquip") {
+                        skillData.onEquip.call(internalComponent);
+                    } else if (typeof skillData[castHook] === "function") {
+                        entitySkillDict[castHook] = entitySkillDict[castHook] || new Set();
+                        entitySkillDict[castHook].add(internalComponent);
                     }
                 }
+
+                this.skillMap.set(entity, entitySkillDict);
 
                 if (skillData.protects) {
                     for (let immunity of skillData.protects) {
@@ -292,7 +294,7 @@ class GameWorld extends World {
             }
         }
 
-        this.state.teams[team].push(entity);
+        this.state.teams[team].add(entity);
 
         return entity;
     }

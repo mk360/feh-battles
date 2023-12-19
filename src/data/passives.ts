@@ -5,7 +5,7 @@ import HeroSystem from "../systems/hero";
 import GameState from "../systems/state";
 import { MovementType, Stat, Stats } from "../types";
 import { WeaponColor, WeaponType } from "../weapon";
-import getAllies from "../utils/get-alies";
+import getAllies from "../utils/get-allies";
 import getEnemies from "../utils/get-enemies";
 import { mapBuffByMovementType, honeStat, combatBuffByRange, defiant, breaker, elementalBoost, renewal, threaten, bond, counterattack } from "./effects";
 import Characters from "./characters.json";

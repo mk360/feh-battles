@@ -9,7 +9,7 @@ import { Entity } from "ape-ecs";
 import { CombatOutcome } from "../combat";
 import getEnemies from "../utils/get-enemies";
 import HeroSystem from "../systems/hero";
-import getAllies from "../utils/get-alies";
+import getAllies from "../utils/get-allies";
 import CombatTurnOutcome from "../interfaces/combat-turn-outcome";
 
 interface WeaponDict {

@@ -1,6 +1,6 @@
 import { Entity, Query, System } from "ape-ecs";
 import GameState from "./state";
-import getAllies from "../utils/get-alies";
+import getAllies from "../utils/get-allies";
 import PASSIVES from "../data/passives";
 import { Stats } from "../types";
 import checkBattleEffectiveness from "./effectiveness";

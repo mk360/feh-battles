@@ -4,8 +4,8 @@ import { MovementType } from "../types";
 
 interface GameState {
     teams: {
-        team1: Entity[];
-        team2: Entity[];
+        team1: Set<Entity>;
+        team2: Set<Entity>;
     };
     tiles: Entity;
     combat: Entity;

@@ -1,7 +1,7 @@
 import { Entity, Query, System } from "ape-ecs";
 import GameState from "./state";
 
-function getSurroundings(map: GameState["map"], y: number, x: number) {
+function getSurroundings(map: GameState["map"], y: number, x: number, checkedTiles: string[]) {
     const arr = [];
     if (map[y - 1]) {
         arr.push(map[y - 1][x - 1]);
@@ -10,6 +10,8 @@ function getSurroundings(map: GameState["map"], y: number, x: number) {
 
     if (map[y][x - 1]) arr.push(map[y][x - 1]);
     if (map[y][x + 1]) arr.push(map[y][x + 1]);
+
+    // if occupied by a foe or if it's an invalid tile type, filter out
 }
 
 class MovementSystem extends System {

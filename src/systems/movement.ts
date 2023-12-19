@@ -1,6 +1,16 @@
 import { Entity, Query, System } from "ape-ecs";
-import getEnemies from "../utils/get-enemies";
 import GameState from "./state";
+
+function getSurroundings(map: GameState["map"], y: number, x: number) {
+    const arr = [];
+    if (map[y - 1]) {
+        arr.push(map[y - 1][x - 1]);
+        arr.push(map[y - 1][x + 1]);
+    }
+
+    if (map[y][x - 1]) arr.push(map[y][x - 1]);
+    if (map[y][x + 1]) arr.push(map[y][x + 1]);
+}
 
 class MovementSystem extends System {
     private obstructQuery: Query;
@@ -18,8 +28,10 @@ class MovementSystem extends System {
         this.state.tiles.getComponents("WarpTile").forEach((c) => this.state.tiles.removeComponent(c));
         this.state.tiles.getComponents("AttackTile").forEach((c) => this.state.tiles.removeComponent(c));
         this.state.tiles.getComponents("AssistTile").forEach((c) => this.state.tiles.removeComponent(c));
-        // 
-        const checkedPositionEntity = this.checkRangeQuery.execute();
+        const [unit] = this.createQuery().from("Movable").execute();
+        const finalMovementRange = this.getFinalMovementRange(unit);
+        const { x, y } = unit.getOne("Position");
+        
     }
 
     getFinalMovementRange(unit: Entity): number {

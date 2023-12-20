@@ -603,16 +603,6 @@
         "Might": 14
     },
     {
-        "WeaponName": "Durandal",
-        "CanUseWeapon": [
-            "Red Sword"
-        ],
-        "Exclusive": 1,
-        "Hero": "Eliwood: Knight of Lycia",
-        "Description": "If unit initiates combat, grants Atk+4 during combat.",
-        "Might": 16
-    },
-    {
         "WeaponName": "Bull Spear",
         "CanUseWeapon": [
             "Blue Lance"
@@ -1263,36 +1253,6 @@
         "Might": 16
     },
     {
-        "WeaponName": "Firesweep Lance",
-        "CanUseWeapon": [
-            "Blue Lance"
-        ],
-        "Exclusive": 0,
-        "Hero": "Roderick: Steady Squire",
-        "Description": "Unit and foe cannot counterattack.",
-        "Might": 11
-    },
-    {
-        "WeaponName": "Firesweep L+",
-        "CanUseWeapon": [
-            "Blue Lance"
-        ],
-        "Exclusive": 0,
-        "Hero": "Roderick: Steady Squire",
-        "Description": "Unit and foe cannot counterattack.",
-        "Might": 15
-    },
-    {
-        "WeaponName": "Steady Lance",
-        "CanUseWeapon": [
-            "Blue Lance"
-        ],
-        "Exclusive": 1,
-        "Hero": "Roderick: Steady Squire",
-        "Description": "Unit and foe cannot counterattack.",
-        "Might": 16
-    },
-    {
         "WeaponName": "Legion's Axe",
         "CanUseWeapon": [
             "Green Axe"
@@ -1797,16 +1757,6 @@
         "Hero": "Azura: Lady of Ballads",
         "Description": "If Sing or Dance is used, grants Atk/Spd/Def/Res+3 to target.",
         "Might": 16
-    },
-    {
-        "WeaponName": "Divine Naga",
-        "CanUseWeapon": [
-            "Green Tome"
-        ],
-        "Exclusive": 1,
-        "Hero": "Deirdre: Lady of the Forest",
-        "Description": "Effective against dragon foes. Neutralizes foe's bonuses (from skills like Fortify, Rally, etc.) during combat.",
-        "Might": 14
     },
     {
         "WeaponName": "Tome of Thoron",

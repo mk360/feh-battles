@@ -736,6 +736,19 @@ const WEAPONS: WeaponDict = {
             });
         }
     },
+    "Divine Naga": {
+        exclusiveTo: ["Deirdre: Lady of the Forest"],
+        might: 14,
+        type: "tome",
+        color: "green",
+        description: "Effective against dragon foes. Neutralizes foe's bonuses (from skills like Fortify, Rally, etc.) during combat.",
+        effectiveAgainst: ["breath"],
+        onCombatStart() {
+            this.entity.addComponent({
+                type: "NeutralizeMapBuffs"
+            });
+        },
+    },
     "Divine Tyrfing": {
         description: "Grants Res+3. Reduces damage from magic foe's first attack by 50%.",
         exclusiveTo: ["Sigurd: Holy Knight"],
@@ -752,6 +765,18 @@ const WEAPONS: WeaponDict = {
         },
         type: "sword",
         might: 16
+    },
+    "Durandal": {
+        might: 16,
+        type: "sword",
+        description: "If unit initiates combat, grants Atk+4 during combat.",
+        exclusiveTo: ["Eliwood: Knight of Lycia"],
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                atk: 4
+            });
+        }
     },
     "Eckesachs": {
         description: "At start of turn, inflicts Def-4 on foes within 2 spaces through their next actions.",
@@ -893,6 +918,36 @@ const WEAPONS: WeaponDict = {
             });
         },
     },
+    "Firesweep Lance": {
+        description: "Unit and foe cannot counterattack.",
+        might: 11,
+        type: "lance",
+        onCombatStart() {
+            this.entity.addComponent({
+                type: "PreventCounterattack"
+            });
+        },
+        onCombatDefense(state, attacker) {
+            attacker.addComponent({
+                type: "PreventCounterattack"
+            });
+        },
+    },
+    "Firesweep Lance+": {
+        description: "Unit and foe cannot counterattack.",
+        might: 15,
+        type: "lance",
+        onCombatStart() {
+            this.entity.addComponent({
+                type: "PreventCounterattack"
+            });
+        },
+        onCombatDefense(state, attacker) {
+            attacker.addComponent({
+                type: "PreventCounterattack"
+            });
+        },
+    },
     "Florina's Lance": {
         description: "Effective against armored foes.",
         might: 16,
@@ -922,6 +977,24 @@ const WEAPONS: WeaponDict = {
         exclusiveTo: ["Frederick: Polite Knight"],
         type: "axe",
         effectiveAgainst: ["armored"],
+    },
+    "Jakob's Tray": {
+        exclusiveTo: ["Jakob: Devoted Servant"],
+        type: "dagger",
+        might: 16,
+        description: "If unit initiates combat, inflicts Atk/Spd/Def/Res-4 on foe during combat.&lt;br>Effect:\u3010Dagger \uff17\u3011&lt;br>&lt;br>\u3010Dagger \uff17\u3011&lt;br>After combat, if unit attacked, inflicts Def/Res-\uff17 on target and foes within 2 spaces of target through their next actions.",
+        onCombatInitiate(state, target) {
+            this.entity.addComponent({
+                type: "CombatDebuff",
+                atk: 4,
+                spd: 4,
+                def: 4,
+                res: 4
+            });
+        },
+        onCombatAfter(battleState, target, combat) {
+
+        },
     },
     "Geirskögul": {
         description: "Grants Def+3. If allies within 2 spaces use sword, lance, axe, bow, dagger, or beast damage, grants Atk/Spd+3 to those allies during combat.",
@@ -1424,6 +1497,22 @@ const WEAPONS: WeaponDict = {
             attacker.addComponent({
                 type: "CombatDebuff",
                 atk: -6
+            });
+        },
+    },
+    "Steady Lance": {
+        description: "Unit and foe cannot counterattack.",
+        might: 16,
+        type: "lance",
+        exclusiveTo: ["Roderick: Steady Squire"],
+        onCombatStart() {
+            this.entity.addComponent({
+                type: "PreventCounterattack"
+            });
+        },
+        onCombatDefense(state, attacker) {
+            attacker.addComponent({
+                type: "PreventCounterattack"
             });
         },
     },

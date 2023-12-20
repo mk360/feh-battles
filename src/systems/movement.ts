@@ -1,18 +1,33 @@
 import { Entity, Query, System } from "ape-ecs";
 import GameState from "./state";
 
-function getSurroundings(map: GameState["map"], hero: Entity, y: number, x: number, checkedTiles: string[]) {
+function getSurroundings(map: GameState["map"], hero: Entity, y: number, x: number, checkedTiles: Set<Uint8Array>) {
     const { bitfield } = hero.getOne("Side");
-    const arr = [];
-    if (map[y - 1]) {
-        arr.push(map[y - 1][x - 1]);
-        arr.push(map[y - 1][x + 1]);
+    const { bitfield: mvtBitfield } = hero.getOne("MovementType");
+    const arr: Uint8Array[] = [];
+    if (map[y - 1] && map[y - 1][x]) {
+        arr.push(map[y - 1][x]);
     }
 
-    if (map[y][x - 1]) arr.push(map[y][x - 1]);
-    if (map[y][x + 1]) arr.push(map[y][x + 1]);
+    if (map[y][x - 1]) {
+        arr.push(map[y][x - 1]);
+    }
 
-    // if occupied by a foe or if it's an invalid tile type, filter out
+    if (map[y][x + 1]) {
+        arr.push(map[y][x + 1]);
+    }
+
+    if (map[y + 1] && map[y + 1][x]) {
+        arr.push(map[y + 1][x]);
+    }
+
+    const tilesWithoutEnemies = arr.filter((uint8) => {
+        return (uint8[0] & bitfield) || ((uint8[0] >> 4 & 0b11) === 0);
+    });
+
+    const validTiles = tilesWithoutEnemies.filter((uint8) => {
+        return uint8[0] & mvtBitfield
+    });
 }
 
 class MovementSystem extends System {

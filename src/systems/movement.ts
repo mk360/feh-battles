@@ -1,32 +1,36 @@
 import { Entity, Query, System } from "ape-ecs";
+import tileBitmasks from "../data/tile-bitmasks";
 import GameState from "./state";
 
-function getSurroundings(map: GameState["map"], hero: Entity, y: number, x: number, checkedTiles: Set<string>) {
-    const { bitfield } = hero.getOne("Side");
-    const { bitfield: mvtBitfield } = hero.getOne("MovementType");
-    const arr: Uint8Array[] = [];
+function getSurroundings(map: GameState["map"], y: number, x: number, checkedTiles: Set<Uint16Array>, sideBitfield: number, mvtBitfield: number) {
+    if (checkedTiles.has(map[y][x])) return [];
+    const arr: Uint16Array[] = [map[y][x]];
     if (map[y - 1] && map[y - 1][x]) {
+        checkedTiles.add(map[y - 1][x]);
         arr.push(map[y - 1][x]);
     }
 
-    if (map[y][x - 1]) {
+    if (map[y][x - 1] && !checkedTiles.has(map[y][x - 1])) {
+        checkedTiles.add(map[y][x - 1]);
         arr.push(map[y][x - 1]);
     }
 
-    if (map[y][x + 1]) {
+    if (map[y][x + 1] && !checkedTiles.has(map[y][x + 1])) {
+        checkedTiles.add(map[y][x + 1]);
         arr.push(map[y][x + 1]);
     }
 
-    if (map[y + 1] && map[y + 1][x]) {
+    if (map[y + 1] && map[y + 1][x] && !checkedTiles.has(map[y + 1][x])) {
+        checkedTiles.add(map[y + 1][x]);
         arr.push(map[y + 1][x]);
     }
 
     const tilesWithoutEnemies = arr.filter((uint8) => {
-        return (uint8[0] & bitfield) || ((uint8[0] >> 4 & 0b11) === 0);
+        return (uint8[0] & sideBitfield) || ((uint8[0] >> tileBitmasks.occupation & 0b11) === 0);
     });
 
     const validTiles = tilesWithoutEnemies.filter((uint8) => {
-        return uint8[0] & mvtBitfield
+        return uint8[0] & mvtBitfield;
     });
 
     return validTiles;
@@ -39,7 +43,7 @@ class MovementSystem extends System {
 
     init(state: GameState): void {
         this.state = state;
-        this.obstructQuery = this.createQuery().from("Obstruct");
+        this.obstructQuery = this.createQuery().fromAll("Obstruct");
         this.checkRangeQuery = this.createQuery().from("CheckRange");
     }
 
@@ -49,11 +53,16 @@ class MovementSystem extends System {
         this.state.tiles.getComponents("AttackTile").forEach((c) => this.state.tiles.removeComponent(c));
         this.state.tiles.getComponents("AssistTile").forEach((c) => this.state.tiles.removeComponent(c));
         const [unit] = this.createQuery().fromAll("Movable").execute();
-        console.log(this.createQuery().fromAll("Movable").execute());
-        console.log(getSurroundings(this.state.map, unit, 1, 0, new Set()));
-        const finalMovementRange = this.getFinalMovementRange(unit);
+        const { bitfield: sideBitfield } = unit.getOne("Side");
+        const { bitfield: mvtBitfield } = unit.getOne("Side");
         const { x, y } = unit.getOne("Position");
-        
+        const walkMap = new Set<Uint16Array>();
+        const obstructors = this.obstructQuery.execute();
+        for (let obstructor of obstructors) {
+            for (let skill of this.state.skillMap.get(obstructor).onEnemyCheckRange) {
+
+            }
+        }
     }
 
     getFinalMovementRange(unit: Entity): number {

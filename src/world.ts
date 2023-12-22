@@ -47,19 +47,7 @@ import NormalizeStaffDamage from "./components/normalize-staff-damage";
 import Teams from "./data/teams";
 import Movable from "./components/movable";
 import MovementSystem from "./systems/movement";
-
-const tileBitmasks = {
-    type: {
-        floor: 0b1111,
-        wall: 0,
-        forest: 0b111,
-        void: 0b10
-    },
-    occupation: 0b110000,
-    trench: 0b1000000,
-    defensiveTile: 0b10000000,
-    coordinates: 0b11100000000
-} as const;
+import tileBitmasks from "./data/tile-bitmasks";
 
 interface HeroData {
     name: string;
@@ -168,18 +156,16 @@ class GameWorld extends World {
                 const tile = line[j];
                 let bitField = 0;
                 const [tileType, addedCharacteristic] = tile.split("-");
-                const uint8 = new Uint16Array(1);
+                const uint16 = new Uint16Array(1);
                 // initial 4 bits determine tile type
                 bitField |= TileTypes[tileType as keyof typeof TileTypes];
                 if (addedCharacteristic === "trench") {
-                    bitField |= (1 << 5);
+                    bitField |= (1 << 4);
                 }
-                bitField |= (8 << 9);
-                bitField |= (6 << 12);
-                console.log({ bitField: bitField.toString(2) });
-                if (1 === 1) process.exit(1);
-                uint8[0] = bitField;
-                this.state.map[i][j] = uint8;
+                bitField |= (i << tileBitmasks.x);
+                bitField |= (j << tileBitmasks.y);
+                uint16[0] = bitField;
+                this.state.map[i][j] = uint16;
             }
         }
     };

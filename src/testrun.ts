@@ -46,5 +46,5 @@ world.initiate({
     }]
 });
 console.time("combat");
-world.runSystems("combat");
+world.runSystems("movement");
 console.timeEnd("combat");

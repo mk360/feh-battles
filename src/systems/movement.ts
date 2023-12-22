@@ -1,7 +1,7 @@
 import { Entity, Query, System } from "ape-ecs";
 import GameState from "./state";
 
-function getSurroundings(map: GameState["map"], hero: Entity, y: number, x: number, checkedTiles: Set<Uint8Array>) {
+function getSurroundings(map: GameState["map"], hero: Entity, y: number, x: number, checkedTiles: Set<string>) {
     const { bitfield } = hero.getOne("Side");
     const { bitfield: mvtBitfield } = hero.getOne("MovementType");
     const arr: Uint8Array[] = [];
@@ -28,6 +28,8 @@ function getSurroundings(map: GameState["map"], hero: Entity, y: number, x: numb
     const validTiles = tilesWithoutEnemies.filter((uint8) => {
         return uint8[0] & mvtBitfield
     });
+
+    return validTiles;
 }
 
 class MovementSystem extends System {
@@ -46,7 +48,9 @@ class MovementSystem extends System {
         this.state.tiles.getComponents("WarpTile").forEach((c) => this.state.tiles.removeComponent(c));
         this.state.tiles.getComponents("AttackTile").forEach((c) => this.state.tiles.removeComponent(c));
         this.state.tiles.getComponents("AssistTile").forEach((c) => this.state.tiles.removeComponent(c));
-        const [unit] = this.createQuery().from("Movable").execute();
+        const [unit] = this.createQuery().fromAll("Movable").execute();
+        console.log(this.createQuery().fromAll("Movable").execute());
+        console.log(getSurroundings(this.state.map, unit, 1, 0, new Set()));
         const finalMovementRange = this.getFinalMovementRange(unit);
         const { x, y } = unit.getOne("Position");
         

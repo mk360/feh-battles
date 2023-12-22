@@ -45,6 +45,8 @@ import DamageReduction from "./components/damage-reduction";
 import NeutralizeNormalizeStaffDamage from "./components/neutralize-normalize-staff-damage";
 import NormalizeStaffDamage from "./components/normalize-staff-damage";
 import Teams from "./data/teams";
+import Movable from "./components/movable";
+import MovementSystem from "./systems/movement";
 
 const tileBitmasks = {
     type: {
@@ -55,7 +57,8 @@ const tileBitmasks = {
     },
     occupation: 0b110000,
     trench: 0b1000000,
-    defensiveTile: 0b10000000
+    defensiveTile: 0b10000000,
+    coordinates: 0b11100000000
 } as const;
 
 interface HeroData {
@@ -83,19 +86,19 @@ interface InitialLineup {
 class GameWorld extends World {
     state: GameState = {
         /**
-         * Map is stored in an 8x6 matrix of 8 bits for each cell (column x row, top-left is indexed at [1][0]).
-         * This map is used to store basic information on what's the cell's type, does it have anything special
+         * Map is stored in an 8x6 matrix of 16 bits for each cell (column x row, top-left is indexed at [1][0]).
+         * This map is used to store basic information on the cell coordinates, what's the cell's type, does it have anything special
          * (trench, defensive tile) added. It acts as the source of truth in case any state or data conflict arises.
          */
         map: {
-            1: [new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array()],
-            2: [new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array()],
-            3: [new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array()],
-            4: [new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array()],
-            5: [new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array()],
-            6: [new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array()],
-            7: [new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array()],
-            8: [new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array(), new Uint8Array()],
+            1: [new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
+            2: [new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
+            3: [new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
+            4: [new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
+            5: [new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
+            6: [new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
+            7: [new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
+            8: [new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
         },
         teams: {
             team1: new Set(),
@@ -123,6 +126,7 @@ class GameWorld extends World {
         this.registerComponent(Side);
         this.registerComponent(MapDebuff);
         this.registerComponent(Position);
+        this.registerComponent(Movable);
         this.registerComponent(WarpableTile);
         this.registerComponent(NeutralizeNormalizeStaffDamage);
         this.registerComponent(NormalizeStaffDamage);
@@ -154,6 +158,7 @@ class GameWorld extends World {
         this.registerSystem("every-turn", MapEffects, [this.state]);
         this.registerSystem("combats", SkillInteractionSystem, [this.state]);
         this.registerSystem("combat", CombatSystem, [this.state]);
+        this.registerSystem("movement", MovementSystem, [this.state]);
     }
 
     generateMap(config: typeof Map1) {
@@ -163,12 +168,16 @@ class GameWorld extends World {
                 const tile = line[j];
                 let bitField = 0;
                 const [tileType, addedCharacteristic] = tile.split("-");
-                const uint8 = new Uint8Array(1);
+                const uint8 = new Uint16Array(1);
                 // initial 4 bits determine tile type
                 bitField |= TileTypes[tileType as keyof typeof TileTypes];
                 if (addedCharacteristic === "trench") {
                     bitField |= (1 << 5);
                 }
+                bitField |= (8 << 9);
+                bitField |= (6 << 12);
+                console.log({ bitField: bitField.toString(2) });
+                if (1 === 1) process.exit(1);
                 uint8[0] = bitField;
                 this.state.map[i][j] = uint8;
             }
@@ -182,6 +191,12 @@ class GameWorld extends World {
                 value: member.name
             }]
         });
+
+        if (team === "team1") {
+            entity.addComponent({
+                type: "Movable"
+            });
+        }
 
         const components = this.createCharacterComponents(entity, team, member.rarity);
 

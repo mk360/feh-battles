@@ -12,14 +12,14 @@ interface GameState {
     tiles: Entity;
     combat: Entity;
     map: {
-        1: [Uint8Array, Uint8Array, Uint8Array, Uint8Array, Uint8Array, Uint8Array];
-        2: [Uint8Array, Uint8Array, Uint8Array, Uint8Array, Uint8Array, Uint8Array];
-        3: [Uint8Array, Uint8Array, Uint8Array, Uint8Array, Uint8Array, Uint8Array];
-        4: [Uint8Array, Uint8Array, Uint8Array, Uint8Array, Uint8Array, Uint8Array];
-        5: [Uint8Array, Uint8Array, Uint8Array, Uint8Array, Uint8Array, Uint8Array];
-        6: [Uint8Array, Uint8Array, Uint8Array, Uint8Array, Uint8Array, Uint8Array];
-        7: [Uint8Array, Uint8Array, Uint8Array, Uint8Array, Uint8Array, Uint8Array];
-        8: [Uint8Array, Uint8Array, Uint8Array, Uint8Array, Uint8Array, Uint8Array];
+        1: [Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array];
+        2: [Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array];
+        3: [Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array];
+        4: [Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array];
+        5: [Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array];
+        6: [Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array];
+        7: [Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array];
+        8: [Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array];
     };
     teamsByWeaponTypes: {
         team1: Partial<{

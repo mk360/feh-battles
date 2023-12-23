@@ -1,4 +1,4 @@
-import { Entity } from "ape-ecs";
+import { Component, Entity } from "ape-ecs";
 import Skill from "../components/skill";
 import PassiveSkill from "../passive_skill";
 import HeroSystem from "../systems/hero";
@@ -30,6 +30,9 @@ interface PassivesDict {
         onCombatAfter?(this: Skill, state: GameState, target: Entity): void;
         onTurnStart?(this: Skill, state: GameState): void;
         onCombatRoundDefense?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): void;
+        onTurnCheckRange?(this: Skill, state: GameState): void;
+        onTurnAllyCheckRange?(this: Skill, state: GameState, ally: Entity): void;
+        onTurnEnemyCheckRange?(this: Skill, state: GameState, ally: Entity): void;
     }
 }
 
@@ -132,13 +135,15 @@ const PASSIVES: PassivesDict = {
         description: "If unit receives consecutive attacks and foe's Range = 2, reduces damage from foe's second attack onward by 80%. (Skill cannot be inherited.)",
         exclusiveTo: ["Sigurd: Holy Knight"],
         onCombatRoundDefense(enemy, combatRound) {
+            let comp: Component;
             if (combatRound.consecutiveTurnNumber > 1 && enemy.getOne("Weapon").range === 2) {
-                this.entity.addComponent({
+                comp = this.entity.addComponent({
                     type: "DamageReduction",
                     percentage: 0.8
                 });
-            } else {
-                this.entity.removeComponent("DamageReduction");
+            } else if (comp) {
+                this.entity.removeComponent(comp);
+                comp = null;
             }
         },
         slot: "B",
@@ -1475,17 +1480,11 @@ const PASSIVES: PassivesDict = {
     "Guidance 1": {
         slot: "C",
         description: "If unit's HP = 100%, infantry and armored allies within 2 spaces can move to a space adjacent to unit.",
-        onTurnStart(state) {
+        onTurnAllyCheckRange(state, ally) {
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp === maxHP) {
-                const allies = getAllies(state, this.entity);
-                for (let ally of allies) {
-                    if (["armored", "infantry"].includes(ally.getOne("MovementType").value) && HeroSystem.getDistance(ally, this.entity) <= 2) {
-                        ally.addComponent({
-                            type: "Status",
-                            value: "Guidance"
-                        });
-                    }
+                if (["armored", "infantry"].includes(ally.getOne("MovementType").value) && HeroSystem.getDistance(ally, this.entity) <= 2) {
+
                 }
             }
         }

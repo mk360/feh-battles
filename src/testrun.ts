@@ -48,3 +48,4 @@ world.initiate({
 console.time("combat");
 world.runSystems("movement");
 console.timeEnd("combat");
+console.log(process.memoryUsage().heapUsed / 1024 / 1024);

@@ -36,20 +36,18 @@ interface PassivesDict {
     }
 }
 
-function ploy(affectedStat: Stat, debuff: number) {
-    return function (this: Skill, state: GameState) {
-        const { x, y } = this.entity.getOne("Position");
-        const enemies = getEnemies(state, this.entity);
-        for (let enemy of enemies) {
-            const enemyPos = enemy.getOne("Position");
-            const isCardinal = x === enemyPos.x || y === enemyPos.y;
-            const resIsHigher = this.entity.getOne("Stats").res > enemy.getOne("Stats").res;
-            if (isCardinal && resIsHigher) {
-                enemy.addComponent({
-                    type: "MapDebuff",
-                    [affectedStat]: debuff
-                });
-            }
+function ploy(thisArg: Skill, state: GameState, affectedStat: Stat, debuff: number) {
+    const { x, y } = thisArg.entity.getOne("Position");
+    const enemies = getEnemies(state, thisArg.entity);
+    for (let enemy of enemies) {
+        const enemyPos = enemy.getOne("Position");
+        const isCardinal = x === enemyPos.x || y === enemyPos.y;
+        const resIsHigher = thisArg.entity.getOne("Stats").res > enemy.getOne("Stats").res;
+        if (isCardinal && resIsHigher) {
+            enemy.addComponent({
+                type: "MapDebuff",
+                [affectedStat]: debuff
+            });
         }
     }
 }
@@ -1899,62 +1897,86 @@ const PASSIVES: PassivesDict = {
     "Atk Ploy 1": {
         slot: "C",
         description: "At start of turn, inflicts Atk-3 on foes in cardinal directions with Res < unit's Res through their next actions.",
-        onTurnStart: ploy("atk", -3)
+        onTurnStart(state) {
+            ploy(this, state, "atk", -3);
+        },
     },
     "Atk Ploy 2": {
         slot: "C",
         description: "At start of turn, inflicts Atk-4 on foes in cardinal directions with Res < unit's Res through their next actions.",
-        onTurnStart: ploy("atk", -4)
+        onTurnStart(state) {
+            ploy(this, state, "atk", -4);
+        },
     },
     "Atk Ploy 3": {
         slot: "C",
         description: "At start of turn, inflicts Atk-5 on foes in cardinal directions with Res < unit's Res through their next actions.",
-        onTurnStart: ploy("atk", -5)
+        onTurnStart(state) {
+            ploy(this, state, "atk", -5);
+        },
     },
     "Spd Ploy 1": {
         slot: "C",
         description: "At start of turn, inflicts Spd-3 on foes in cardinal directions with Res < unit's Res through their next actions.",
-        onTurnStart: ploy("spd", -3)
+        onTurnStart(state) {
+            ploy(this, state, "spd", -3);
+        },
     },
     "Spd Ploy 2": {
         slot: "C",
         description: "At start of turn, inflicts Spd-4 on foes in cardinal directions with Res < unit's Res through their next actions.",
-        onTurnStart: ploy("spd", -4)
+        onTurnStart(state) {
+            ploy(this, state, "spd", -4);
+        },
     },
     "Spd Ploy 3": {
         slot: "C",
         description: "At start of turn, inflicts Spd-5 on foes in cardinal directions with Res < unit's Res through their next actions.",
-        onTurnStart: ploy("spd", -5)
+        onTurnStart(state) {
+            ploy(this, state, "spd", -5);
+        },
     },
     "Def Ploy 1": {
         slot: "C",
         description: "At start of turn, inflicts Def-3 on foes in cardinal directions with Res < unit's Res through their next actions.",
-        onTurnStart: ploy("def", -3)
+        onTurnStart(state) {
+            ploy(this, state, "def", -3);
+        },
     },
     "Def Ploy 2": {
         slot: "C",
         description: "At start of turn, inflicts Def-4 on foes in cardinal directions with Res < unit's Res through their next actions.",
-        onTurnStart: ploy("def", -4)
+        onTurnStart(state) {
+            ploy(this, state, "def", -4);
+        },
     },
     "Def Ploy 3": {
         slot: "C",
         description: "At start of turn, inflicts Def-5 on foes in cardinal directions with Res < unit's Res through their next actions.",
-        onTurnStart: ploy("def", -5)
+        onTurnStart(state) {
+            ploy(this, state, "def", -5);
+        }
     },
     "Res Ploy 1": {
         slot: "C",
         description: "At start of turn, inflicts Res-3 on foes in cardinal directions with Res < unit's Res through their next actions.",
-        onTurnStart: ploy("res", -3)
+        onTurnStart(state) {
+            ploy(this, state, "res", -3);
+        }
     },
     "Res Ploy 2": {
         slot: "C",
         description: "At start of turn, inflicts Res-4 on foes in cardinal directions with Res < unit's Res through their next actions.",
-        onTurnStart: ploy("res", -4)
+        onTurnStart(state) {
+            ploy(this, state, "res", -4);
+        },
     },
     "Res Ploy 3": {
         slot: "C",
         description: "At start of turn, inflicts Res-5 on foes in cardinal directions with Res < unit's Res through their next actions.",
-        onTurnStart: ploy("res", -5)
+        onTurnStart(state) {
+            ploy(this, state, "res", -5);
+        },
     },
     "Atk Tactic 1": {
         slot: "C",

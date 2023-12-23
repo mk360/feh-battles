@@ -28,13 +28,16 @@ class MovementSystem extends System {
         const allies = getAllies(this.state, unit);
         const obstructors = getEnemies(this.state, unit);
         for (let ally of allies) {
-            for (let skill of this.state.skillMap.get(ally).onTurnAllyCheckRange) {
+            if (this.state.skillMap.get(ally).onTurnAllyCheckRange) {
+                for (let skill of this.state.skillMap.get(ally).onTurnAllyCheckRange) {
 
+                }
             }
         }
         for (let obstructor of obstructors) {
-            for (let skill of this.state.skillMap.get(obstructor).onTurnEnemyCheckRange) {
-
+            if (this.state.skillMap.get(obstructor).onTurnAllyCheckRange) {
+                for (let skill of this.state.skillMap.get(obstructor).onTurnEnemyCheckRange) {
+                }
             }
         }
     }

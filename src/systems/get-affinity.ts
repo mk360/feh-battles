@@ -1,8 +1,11 @@
 import { Entity } from "ape-ecs";
 import { WeaponColor } from "../weapon";
 
+// todo: improve when building Cancel Affinity skills
 function getAffinity(unit1: Entity, unit2: Entity) {
+    if (unit2.getOne("NeutralizeAffinity")) return 0;
     if (unit1.getOne("GuaranteedAffinity")) return 20;
+
     const { color: color1 } = unit1.getOne("WeaponType");
     const { color: color2 } = unit2.getOne("WeaponType");
     let colorRelationship: "advantage" | "disadvantage" | "neutral" = getColorRelationship(color1, color2);

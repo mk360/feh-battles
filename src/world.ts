@@ -39,7 +39,7 @@ import SkillInteractionSystem from "./systems/skill-interaction";
 import PreventTargetLowestDefense from "./components/prevent-target-lowest-defense";
 import GuaranteedFollowup from "./components/guaranteed-followup";
 import PreventFollowUp from "./components/prevent-followup";
-import GuaranteedAdvantage from "./components/guaranteed-advantage";
+import GuaranteedAffinity from "./components/guaranteed-affinity";
 import NeutralizeAffinity from "./components/neutralize-affinity";
 import DamageReduction from "./components/damage-reduction";
 import NeutralizeNormalizeStaffDamage from "./components/neutralize-normalize-staff-damage";
@@ -137,7 +137,7 @@ class GameWorld extends World {
         this.registerComponent(AccelerateSpecial);
         this.registerComponent(SlowSpecial);
         this.registerComponent(BraveWeapon);
-        this.registerComponent(GuaranteedAdvantage);
+        this.registerComponent(GuaranteedAffinity);
         this.registerComponent(NeutralizeAffinity);
         this.registerComponent(TargetLowestDefense);
         this.registerComponent(PreventTargetLowestDefense);
@@ -331,7 +331,7 @@ class GameWorld extends World {
                 weaponType: dexData.weaponType,
                 color: dexData.color,
                 range: ["sword", "lance", "axe", "beast", "breath"].includes(dexData.weaponType) ? 1 : 2,
-                useMagic: ["tome", "breath"].includes(dexData.weaponType)
+                useMagic: ["tome", "breath", "staff"].includes(dexData.weaponType)
             },
             {
                 type: "Stats",

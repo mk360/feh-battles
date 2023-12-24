@@ -1,13 +1,18 @@
 import GameWorld from "./world";
 import Map1 from "./data/maps/map1.json";
-import generateTurns from "./systems/generate-turns";
-import getCombatStats from "./systems/get-combat-stats";
+import SkillDex from "./data/skill-dex";
+
+console.log("pulling imports and data", (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2));
 
 const world = new GameWorld({
     trackChanges: true
 });
 
+console.log("initial world setup", (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2));
+
 world.generateMap(Map1);
+
+console.log("with a map", (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2));
 
 world.initiate({
     team1: [{
@@ -29,7 +34,7 @@ world.initiate({
     }],
     team2: [{
         name: "Sigurd: Holy Knight",
-        weapon: "Ragnell",
+        weapon: "Tyrfing",
         skills: {
             assist: null,
             special: null,
@@ -43,9 +48,25 @@ world.initiate({
             x: 2,
             y: 5
         }
+    }, {
+        name: "Berkut: Prideful Prince",
+        weapon: "Dark Royal Spear",
+        skills: {
+            assist: null,
+            special: null,
+            A: null,
+            B: null,
+            C: "Spur Atk 3",
+            S: "Spur Def 3"
+        },
+        rarity: 5,
+        initialPosition: {
+            x: 3,
+            y: 5
+        }
     }]
 });
-console.time("combat");
-world.runSystems("movement");
-console.timeEnd("combat");
-console.log(process.memoryUsage().heapUsed / 1024 / 1024);
+// console.time("combat");
+// world.runSystems("movement");
+// console.timeEnd("combat");
+// console.log(process.memoryUsage().heapUsed / 1024 / 1024);

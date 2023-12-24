@@ -1,8 +1,10 @@
 import { Component, Query, System } from "ape-ecs";
 import Counterattack from "../components/counterattack";
 import DamageReduction from "../components/damage-reduction";
+import GuaranteedAffinity from "../components/guaranteed-affinity";
 import GuaranteedFollowup from "../components/guaranteed-followup";
 import MapBuff from "../components/map-buff";
+import NeutralizeAffinity from "../components/neutralize-affinity";
 import NeutralizeMapBuffs from "../components/neutralize-map-buffs";
 import NeutralizeNormalizeStaffDamage from "../components/neutralize-normalize-staff-damage";
 import NormalizeStaffDamage from "../components/normalize-staff-damage";
@@ -20,6 +22,7 @@ NeutralizationMap.set(Counterattack, PreventCounterattack);
 NeutralizationMap.set(TargetLowestDefense, PreventTargetLowestDefense);
 NeutralizationMap.set(GuaranteedFollowup, PreventFollowUp);
 NeutralizationMap.set(NormalizeStaffDamage, NeutralizeNormalizeStaffDamage);
+NeutralizationMap.set(GuaranteedAffinity, NeutralizeAffinity);
 
 // 1-to-many neutralizations, e.g. one effect is enough to neutralize all target effects
 const MultipleNeutralizationsMap = new Map<new () => Component, new () => Component>();
@@ -37,42 +40,42 @@ class SkillInteractionSystem extends System {
     }
 
     update() {
-        const [firstHero, secondHero] = this.battlingQuery.execute();
+        const [attacker, defender] = this.battlingQuery.execute();
 
         NeutralizationMap.forEach((neutralizingComponent, neutralizedComponent) => {
-            secondHero.getComponents(neutralizingComponent).forEach((comp) => {
-                const matchingOffensiveComponent = firstHero.getOne(neutralizedComponent);
+            defender.getComponents(neutralizingComponent).forEach((comp) => {
+                const matchingOffensiveComponent = attacker.getOne(neutralizedComponent);
                 if (comp && matchingOffensiveComponent) {
-                    secondHero.removeComponent(comp);
-                    firstHero.removeComponent(matchingOffensiveComponent);
+                    defender.removeComponent(comp);
+                    attacker.removeComponent(matchingOffensiveComponent);
                 }
             });
 
-            secondHero.getComponents(neutralizingComponent).forEach((comp) => {
-                const matchingDefensiveComponent = secondHero.getOne(neutralizedComponent);
+            defender.getComponents(neutralizingComponent).forEach((comp) => {
+                const matchingDefensiveComponent = defender.getOne(neutralizedComponent);
                 if (comp && matchingDefensiveComponent) {
-                    firstHero.removeComponent(comp);
-                    secondHero.removeComponent(matchingDefensiveComponent);
+                    attacker.removeComponent(comp);
+                    defender.removeComponent(matchingDefensiveComponent);
                 }
             });
         });
 
         MultipleNeutralizationsMap.forEach((neutralizedComponent, neutralizer) => {
-            const defenderComponent = secondHero.getOne(neutralizer);
-            const attackerComponent = firstHero.getOne(neutralizer);
+            const defenderComponent = defender.getOne(neutralizer);
+            const attackerComponent = attacker.getOne(neutralizer);
 
             if (defenderComponent) {
-                firstHero.getComponents(neutralizedComponent).forEach((comp) => {
-                    firstHero.removeComponent(comp);
+                attacker.getComponents(neutralizedComponent).forEach((comp) => {
+                    attacker.removeComponent(comp);
                 });
-                secondHero.removeComponent(defenderComponent);
+                defender.removeComponent(defenderComponent);
             }
 
             if (attackerComponent) {
-                secondHero.getComponents(neutralizedComponent).forEach((comp) => {
-                    secondHero.removeComponent(comp);
+                defender.getComponents(neutralizedComponent).forEach((comp) => {
+                    defender.removeComponent(comp);
                 });
-                firstHero.removeComponent(defenderComponent);
+                attacker.removeComponent(defenderComponent);
             }
         });
     }

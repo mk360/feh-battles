@@ -9,6 +9,8 @@ import generateTurns from "./generate-turns";
 import PreventEnemyAlliesInteraction from "../components/prevent-enemy-allies-interaction";
 import CombatTurnOutcome from "../interfaces/combat-turn-outcome";
 import SKILLS from "../data/skill-dex";
+import getAttackerAdvantage from "./get-attacker-advantage";
+import getAffinity from "./get-affinity";
 
 function getCombatStats(entity: Entity) {
     const combatBuffs = entity.getComponents("CombatBuff");
@@ -146,8 +148,15 @@ class CombatSystem extends System {
                         flatReduction += comp.amount;
                     }
                 });
-                const damage = Math.floor(Math.max(0, (atkStat - defenseStat) * effectivenessMultiplier) * damagePercentage / 100) - flatReduction;
-                console.log({ damage });
+
+                const advantage = getAttackerAdvantage(unit1, unit2);
+                let affinity = 1;
+                if (unit1.getOne("ApplyAffinity") || unit2.getOne("ApplyAffinity")) {
+                    affinity = getAffinity(unit1, unit2);
+                }
+
+                const damage = Math.floor(atkStat * effectivenessMultiplier) + Math.trunc(Math.floor(atkStat * effectivenessMultiplier) * (advantage * (affinity + 20) / 20)) - defenseStat - flatReduction;
+
                 lastAttacker = turn;
             }
         }

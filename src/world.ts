@@ -48,6 +48,7 @@ import Teams from "./data/teams";
 import Movable from "./components/movable";
 import MovementSystem from "./systems/movement";
 import tileBitmasks from "./data/tile-bitmasks";
+import ApplyAffinity from "./components/apply-affinity";
 
 interface HeroData {
     name: string;
@@ -143,6 +144,7 @@ class GameWorld extends World {
         this.registerComponent(PreventTargetLowestDefense);
         this.registerComponent(GuaranteedFollowup);
         this.registerComponent(PreventFollowUp);
+        this.registerComponent(ApplyAffinity);
         this.registerSystem("every-turn", MapEffects, [this.state]);
         this.registerSystem("combats", SkillInteractionSystem, [this.state]);
         this.registerSystem("combat", CombatSystem, [this.state]);

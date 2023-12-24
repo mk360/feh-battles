@@ -30,19 +30,6 @@
         "Might": 16
     },
     {
-        "WeaponName": "Fujin Yumi",
-        "CanUseWeapon": [
-            "Red Bow",
-            "  Blue Bow",
-            "  Green Bow",
-            "  Colorless Bow"
-        ],
-        "Exclusive": 1,
-        "Hero": "Takumi: Wild Card",
-        "Description": "Effective against flying foes. If unit's HP ≥ 50%, unit can move through foes' spaces.",
-        "Might": 14
-    },
-    {
         "WeaponName": "Gronnraven",
         "CanUseWeapon": [
             "Green Tome"
@@ -61,36 +48,6 @@
         "Hero": "Cecilia: Etrurian General",
         "Description": "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
         "Might": 11
-    },
-    {
-        "WeaponName": "Emerald Axe",
-        "CanUseWeapon": [
-            "Green Axe"
-        ],
-        "Exclusive": 0,
-        "Hero": "Arthur: Hapless Hero",
-        "Description": "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
-        "Might": 8
-    },
-    {
-        "WeaponName": "Emerald Axe+",
-        "CanUseWeapon": [
-            "Green Axe"
-        ],
-        "Exclusive": 0,
-        "Hero": "Arthur: Hapless Hero",
-        "Description": "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
-        "Might": 12
-    },
-    {
-        "WeaponName": "Arthur's Axe",
-        "CanUseWeapon": [
-            "Green Axe"
-        ],
-        "Exclusive": 1,
-        "Hero": "Arthur: Hapless Hero",
-        "Description": "If a bonus granted by a skill like Rally or Hone is active on unit, grants Atk/Spd/Def/Res+3 during combat.",
-        "Might": 16
     },
     {
         "WeaponName": "Assault",

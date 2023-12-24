@@ -395,6 +395,23 @@ const WEAPONS: WeaponDict = {
         type: "sword",
         effectiveAgainst: ["armored"],
     },
+    "Arthur's Axe": {
+        description: "If a bonus granted by a skill like Rally or Hone is active on unit, grants Atk/Spd/Def/Res+3 during combat.",
+        exclusiveTo: ["Arthur: Hapless Hero"],
+        type: "axe",
+        might: 16,
+        onCombatStart() {
+            if (this.entity.getOne("MapBuff")) {
+                this.entity.addComponent({
+                    type: "CombatBuff",
+                    atk: 3,
+                    spd: 3,
+                    def: 3,
+                    res: 3
+                });
+            }
+        }
+    },
     "Axe of Virility": {
         description: "Effective against armored foes.",
         might: 16,
@@ -789,6 +806,26 @@ const WEAPONS: WeaponDict = {
             });
         },
     },
+    "Emerald Axe": {
+        description: "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
+        type: "axe",
+        might: 8,
+        onCombatStart() {
+            this.entity.addComponent({
+                type: "ApplyAffinity"
+            });
+        }
+    },
+    "Emerald Axe+": {
+        description: "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
+        type: "axe",
+        might: 12,
+        onCombatStart() {
+            this.entity.addComponent({
+                type: "ApplyAffinity"
+            });
+        }
+    },
     "Eternal Breath": {
         type: "breath",
         might: 16,
@@ -978,23 +1015,20 @@ const WEAPONS: WeaponDict = {
         type: "axe",
         effectiveAgainst: ["armored"],
     },
-    "Jakob's Tray": {
-        exclusiveTo: ["Jakob: Devoted Servant"],
-        type: "dagger",
-        might: 16,
-        description: "If unit initiates combat, inflicts Atk/Spd/Def/Res-4 on foe during combat.&lt;br>Effect:\u3010Dagger \uff17\u3011&lt;br>&lt;br>\u3010Dagger \uff17\u3011&lt;br>After combat, if unit attacked, inflicts Def/Res-\uff17 on target and foes within 2 spaces of target through their next actions.",
-        onCombatInitiate(state, target) {
-            this.entity.addComponent({
-                type: "CombatDebuff",
-                atk: 4,
-                spd: 4,
-                def: 4,
-                res: 4
-            });
-        },
-        onCombatAfter(battleState, target, combat) {
-
-        },
+    "Fujin Yumi": {
+        effectiveAgainst: ["flier"],
+        description: "Effective against flying foes. If unit's HP ≥ 50%, unit can move through foes' spaces.",
+        might: 14,
+        type: "bow",
+        exclusiveTo: ["Takumi: Wild Card"],
+        onTurnStart() {
+            const { maxHP, hp } = this.entity.getOne("Stats");
+            if (hp / maxHP >= 0.5) {
+                this.entity.addComponent({
+                    type: "Pass"
+                });
+            }
+        }
     },
     "Geirskögul": {
         description: "Grants Def+3. If allies within 2 spaces use sword, lance, axe, bow, dagger, or beast damage, grants Atk/Spd+3 to those allies during combat.",
@@ -1156,6 +1190,24 @@ const WEAPONS: WeaponDict = {
         onCombatStart() {
             Effects.blade(this);
         }
+    },
+    "Jakob's Tray": {
+        exclusiveTo: ["Jakob: Devoted Servant"],
+        type: "dagger",
+        might: 16,
+        description: "If unit initiates combat, inflicts Atk/Spd/Def/Res-4 on foe during combat.&lt;br>Effect:\u3010Dagger \uff17\u3011&lt;br>&lt;br>\u3010Dagger \uff17\u3011&lt;br>After combat, if unit attacked, inflicts Def/Res-\uff17 on target and foes within 2 spaces of target through their next actions.",
+        onCombatInitiate(state, target) {
+            this.entity.addComponent({
+                type: "CombatDebuff",
+                atk: 4,
+                spd: 4,
+                def: 4,
+                res: 4
+            });
+        },
+        onCombatAfter(battleState, target, combat) {
+
+        },
     },
     "Jubilant Blade": {
         description: "Effective against armored foes.",

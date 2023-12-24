@@ -34,9 +34,11 @@ class MovementSystem extends System {
                 }
             }
         }
-        for (let obstructor of obstructors) {
-            if (this.state.skillMap.get(obstructor).onTurnAllyCheckRange) {
-                for (let skill of this.state.skillMap.get(obstructor).onTurnEnemyCheckRange) {
+        if (!unit.getOne("Pass")) {
+            for (let obstructor of obstructors) {
+                if (this.state.skillMap.get(obstructor).onTurnAllyCheckRange) {
+                    for (let skill of this.state.skillMap.get(obstructor).onTurnEnemyCheckRange) {
+                    }
                 }
             }
         }

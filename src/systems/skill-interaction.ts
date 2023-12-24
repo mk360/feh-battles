@@ -14,6 +14,7 @@ import PreventFollowUp from "../components/prevent-followup";
 import PreventTargetLowestDefense from "../components/prevent-target-lowest-defense";
 import TargetLowestDefense from "../components/target-lowest-defense";
 import GameState from "./state";
+import ApplyAffinity from "../components/apply-affinity";
 
 const NeutralizationMap = new Map<new () => Component, new () => Component>();
 
@@ -23,6 +24,7 @@ NeutralizationMap.set(TargetLowestDefense, PreventTargetLowestDefense);
 NeutralizationMap.set(GuaranteedFollowup, PreventFollowUp);
 NeutralizationMap.set(NormalizeStaffDamage, NeutralizeNormalizeStaffDamage);
 NeutralizationMap.set(GuaranteedAffinity, NeutralizeAffinity);
+NeutralizationMap.set(ApplyAffinity, NeutralizeAffinity);
 
 // 1-to-many neutralizations, e.g. one effect is enough to neutralize all target effects
 const MultipleNeutralizationsMap = new Map<new () => Component, new () => Component>();

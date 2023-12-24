@@ -191,45 +191,6 @@
         "Might": 16
     },
     {
-        "WeaponName": "Killer Bow",
-        "CanUseWeapon": [
-            "Red Bow",
-            "  Blue Bow",
-            "  Green Bow",
-            "  Colorless Bow"
-        ],
-        "Exclusive": 0,
-        "Hero": "Niles: Cruel to Be Kind",
-        "Description": "Accelerates Special trigger (cooldown count-1). Effective against flying foes.",
-        "Might": 5
-    },
-    {
-        "WeaponName": "Killer Bow+",
-        "CanUseWeapon": [
-            "Red Bow",
-            "  Blue Bow",
-            "  Green Bow",
-            "  Colorless Bow"
-        ],
-        "Exclusive": 0,
-        "Hero": "Niles: Cruel to Be Kind",
-        "Description": "Accelerates Special trigger (cooldown count-1). Effective against flying foes.",
-        "Might": 9
-    },
-    {
-        "WeaponName": "Niles's Bow",
-        "CanUseWeapon": [
-            "Red Bow",
-            "  Blue Bow",
-            "  Green Bow",
-            "  Colorless Bow"
-        ],
-        "Exclusive": 1,
-        "Hero": "Niles: Cruel to Be Kind",
-        "Description": "Accelerates Special trigger (cooldown count-1). Effective against flying foes. If foe's Def ≥ foe's Res+5, deals +7 damage.",
-        "Might": 14
-    },
-    {
         "WeaponName": "Brynhildr",
         "CanUseWeapon": [
             "Red Tome"
@@ -391,26 +352,6 @@
         "Might": 14
     },
     {
-        "WeaponName": "Bull Spear",
-        "CanUseWeapon": [
-            "Blue Lance"
-        ],
-        "Exclusive": 1,
-        "Hero": "Sully: Crimson Knight",
-        "Description": "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
-        "Might": 16
-    },
-    {
-        "WeaponName": "Guardian's Axe",
-        "CanUseWeapon": [
-            "Green Axe"
-        ],
-        "Exclusive": 1,
-        "Hero": "Hawkeye: Desert Guardian",
-        "Description": "Accelerates Special trigger (cooldown count-1).",
-        "Might": 16
-    },
-    {
         "WeaponName": "Absorb",
         "CanUseWeapon": [
             "Colorless Staff"
@@ -444,36 +385,6 @@
         "Might": 14
     },
     {
-        "WeaponName": "Basilikos",
-        "CanUseWeapon": [
-            "Green Axe"
-        ],
-        "Exclusive": 1,
-        "Hero": "Raven: Peerless Fighter",
-        "Description": "Accelerates Special trigger (cooldown count-1).",
-        "Might": 16
-    },
-    {
-        "WeaponName": "Killer Lance",
-        "CanUseWeapon": [
-            "Blue Lance"
-        ],
-        "Exclusive": 0,
-        "Hero": "Gwendolyn: Adorable Knight",
-        "Description": "Accelerates Special trigger (cooldown count-1).",
-        "Might": 7
-    },
-    {
-        "WeaponName": "Killer Lance+",
-        "CanUseWeapon": [
-            "Blue Lance"
-        ],
-        "Exclusive": 0,
-        "Hero": "Gwendolyn: Adorable Knight",
-        "Description": "Accelerates Special trigger (cooldown count-1).",
-        "Might": 11
-    },
-    {
         "WeaponName": "Light Breath",
         "CanUseWeapon": [
             "Red Breath",
@@ -500,36 +411,6 @@
         "Might": 13
     },
     {
-        "WeaponName": "Shanna's Lance",
-        "CanUseWeapon": [
-            "Blue Lance"
-        ],
-        "Exclusive": 1,
-        "Hero": "Shanna: Sprightly Flier",
-        "Description": "Accelerates Special trigger (cooldown count-1).",
-        "Might": 16
-    },
-    {
-        "WeaponName": "Whitewing Lance",
-        "CanUseWeapon": [
-            "Blue Lance"
-        ],
-        "Exclusive": 1,
-        "Hero": "Catria: Middle Whitewing",
-        "Description": "Accelerates Special trigger (cooldown count-1).",
-        "Might": 16
-    },
-    {
-        "WeaponName": "Eternal Tome",
-        "CanUseWeapon": [
-            "Red Tome"
-        ],
-        "Exclusive": 1,
-        "Hero": "Sophia: Nabata Prophet",
-        "Description": "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
-        "Might": 14
-    },
-    {
         "WeaponName": "Devil Axe",
         "CanUseWeapon": [
             "Green Axe"
@@ -537,16 +418,6 @@
         "Exclusive": 1,
         "Hero": "Barst: The Hatchet",
         "Description": "Grants Atk/Spd/Def/Res+4 during combat, but if unit attacked, deals 4 damage to unit after combat.",
-        "Might": 16
-    },
-    {
-        "WeaponName": "Whitewing Blade",
-        "CanUseWeapon": [
-            "Red Sword"
-        ],
-        "Exclusive": 1,
-        "Hero": "Palla: Eldest Whitewing",
-        "Description": "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
         "Might": 16
     },
     {
@@ -629,56 +500,6 @@
         "Might": 14
     },
     {
-        "WeaponName": "Blárraven",
-        "CanUseWeapon": [
-            "Blue Tome"
-        ],
-        "Exclusive": 0,
-        "Hero": "Robin: High Deliverer",
-        "Description": "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
-        "Might": 7
-    },
-    {
-        "WeaponName": "Blárraven+",
-        "CanUseWeapon": [
-            "Blue Tome"
-        ],
-        "Exclusive": 0,
-        "Hero": "Robin: High Deliverer",
-        "Description": "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
-        "Might": 11
-    },
-    {
-        "WeaponName": "Tactical Bolt",
-        "CanUseWeapon": [
-            "Blue Tome"
-        ],
-        "Exclusive": 1,
-        "Hero": "Robin: High Deliverer",
-        "Description": "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
-        "Might": 14
-    },
-    {
-        "WeaponName": "Rauðrblade",
-        "CanUseWeapon": [
-            "Red Tome"
-        ],
-        "Exclusive": 0,
-        "Hero": "Tharja: Dark Shadow",
-        "Description": "Slows Special trigger (cooldown count+1). Grants bonus to unit's Atk = total bonuses on unit during combat.",
-        "Might": 9
-    },
-    {
-        "WeaponName": "Rauðrblade+",
-        "CanUseWeapon": [
-            "Red Tome"
-        ],
-        "Exclusive": 0,
-        "Hero": "Tharja: Dark Shadow",
-        "Description": "Slows Special trigger (cooldown count+1).&lt;br>Grants bonus to unit's Atk = total bonuses on unit during combat.",
-        "Might": 13
-    },
-    {
         "WeaponName": "Runeaxe",
         "CanUseWeapon": [
             "Green Axe"
@@ -687,26 +508,6 @@
         "Hero": "Narcian: Wyvern General",
         "Description": "When unit deals damage to foe during combat, restores 7 HP to unit. (Triggers even if 0 damage is dealt.)",
         "Might": 16
-    },
-    {
-        "WeaponName": "Tyrfing",
-        "CanUseWeapon": [
-            "Red Sword"
-        ],
-        "Exclusive": 1,
-        "Hero": "Seliph: Heir of Light",
-        "Description": "If unit's HP ≤ 50%, grants Def+4 during combat.",
-        "Might": 16
-    },
-    {
-        "WeaponName": "Tactical Gale",
-        "CanUseWeapon": [
-            "Green Tome"
-        ],
-        "Exclusive": 1,
-        "Hero": "Robin: Mystery Tactician",
-        "Description": "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
-        "Might": 14
     },
     {
         "WeaponName": "Cymbeline",

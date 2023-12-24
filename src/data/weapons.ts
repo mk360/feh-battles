@@ -443,6 +443,18 @@ const WEAPONS: WeaponDict = {
         effectiveAgainst: ["armored"],
         exclusiveTo: ["Bartre: Fearless Warrior"]
     },
+    "Basilikos": {
+        description: "Accelerates Special trigger (cooldown count-1).",
+        might: 16,
+        exclusiveTo: ["Raven: Peerless Fighter"],
+        type: "axe",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        }
+    },
     "Berkut's Lance": {
         description: "If foe initiates combat, grants Res+4 during combat.",
         might: 10,
@@ -523,6 +535,24 @@ const WEAPONS: WeaponDict = {
         might: 14,
         onCombatStart(state) {
             Effects.owl(this, state);
+        }
+    },
+    "Blárraven": {
+        description: "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
+        might: 7,
+        type: "tome",
+        color: "blue",
+        onCombatStart(state, target) {
+            Effects.raven(this, target);
+        }
+    },
+    "Blárraven+": {
+        description: "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
+        might: 11,
+        type: "tome",
+        color: "blue",
+        onCombatStart(state, target) {
+            Effects.raven(this, target);
         }
     },
     "Blárwolf": {
@@ -694,6 +724,17 @@ const WEAPONS: WeaponDict = {
                 type: "CombatBuff",
                 atk: maxBuff,
                 def: maxBuff
+            });
+        }
+    },
+    "Bull Spear": {
+        description: "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
+        exclusiveTo: ["Sully: Crimson Knight"],
+        type: "lance",
+        might: 16,
+        onCombatStart() {
+            this.entity.addComponent({
+                type: "ApplyAffinity"
             });
         }
     },
@@ -946,6 +987,16 @@ const WEAPONS: WeaponDict = {
                 });
             }
         }
+    },
+    "Eternal Tome": {
+        might: 14,
+        type: "tome",
+        color: "red",
+        description: "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
+        onCombatStart(state, enemy) {
+            Effects.raven(this, enemy);
+        },
+        exclusiveTo: ["Sophia: Nabata Prophet"]
     },
     "Excalibur": {
         description: "Effective against flying foes.",
@@ -1205,6 +1256,18 @@ const WEAPONS: WeaponDict = {
         type: "tome",
         color: "green"
     },
+    "Guardian's Axe": {
+        description: "Accelerates Special trigger (cooldown count-1).",
+        might: 16,
+        exclusiveTo: ["Hawkeye: Desert Guardian"],
+        type: "axe",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        }
+    },
     "Hammer": {
         description: "Effective against armored foes.",
         might: 8,
@@ -1365,6 +1428,52 @@ const WEAPONS: WeaponDict = {
             });
         },
     },
+    "Killer Bow": {
+        type: "bow",
+        might: 5,
+        description: "Accelerates Special trigger (cooldown count-1). Effective against flying foes.",
+        effectiveAgainst: ["flier"],
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        },
+    },
+    "Killer Bow+": {
+        type: "bow",
+        might: 9,
+        description: "Accelerates Special trigger (cooldown count-1). Effective against flying foes.",
+        effectiveAgainst: ["flier"],
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        },
+    },
+    "Killer Lance": {
+        type: "lance",
+        might: 7,
+        description: "Accelerates Special trigger (cooldown count-1).",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        },
+    },
+    "Killer Lance+": {
+        type: "lance",
+        might: 11,
+        description: "Accelerates Special trigger (cooldown count-1).",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        },
+    },
     "Laid-Back Blade": {
         exclusiveTo: ["Gray: Wry Comrade"],
         might: 16,
@@ -1425,6 +1534,28 @@ const WEAPONS: WeaponDict = {
         onCombatStart(state) {
             Effects.owl(this, state);
         }
+    },
+    "Niles's Bow": {
+        description: "Accelerates Special trigger (cooldown count-1). Effective against flying foes. If foe's Def ≥ foe's Res+5, deals +7 damage.",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        },
+        effectiveAgainst: ["flier"],
+        onCombatStart(state, target) {
+            const { def, res } = target.getOne("Stats");
+            if (def >= res + 5) {
+                this.entity.addComponent({
+                    type: "DamageIncrease",
+                    value: 7
+                });
+            }
+        },
+        exclusiveTo: ["Niles: Cruel to Be Kind"],
+        type: "bow",
+        might: 14
     },
     "Oboro's Spear": {
         description: "Effective against armored foes.",
@@ -1525,6 +1656,36 @@ const WEAPONS: WeaponDict = {
             Effects.counterattack(this);
         },
         exclusiveTo: ["Ryoma: Peerless Samurai"]
+    },
+    "Rauðrblade": {
+        description: "Slows Special trigger (cooldown count+1). Grants bonus to unit's Atk = total bonuses on unit during combat.",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: 1
+            });
+        },
+        onCombatStart() {
+            Effects.blade(this);
+        },
+        type: "tome",
+        color: "red",
+        might: 9
+    },
+    "Rauðrblade+": {
+        description: "Slows Special trigger (cooldown count+1). Grants bonus to unit's Atk = total bonuses on unit during combat.",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: 1
+            });
+        },
+        onCombatStart() {
+            Effects.blade(this);
+        },
+        type: "tome",
+        color: "red",
+        might: 13
     },
     "Rauðrowl": {
         might: 6,
@@ -1725,6 +1886,18 @@ const WEAPONS: WeaponDict = {
             });
         }
     },
+    "Shanna's Lance": {
+        type: "lance",
+        exclusiveTo: ["Shanna: Sprightly Flier"],
+        description: "Accelerates Special trigger (cooldown count-1).",
+        might: 16,
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        }
+    },
     "Siegfried": {
         description: "Unit can counterattack regardless of enemy range.",
         might: 16,
@@ -1787,6 +1960,26 @@ const WEAPONS: WeaponDict = {
         exclusiveTo: ["Dorcas: Serene Warrior"],
         onCombatStart() {
             Effects.counterattack(this);
+        }
+    },
+    "Tactical Bolt": {
+        description: "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
+        exclusiveTo: ["Robin: High Deliverer"],
+        type: "tome",
+        color: "blue",
+        might: 14,
+        onCombatStart(state, target) {
+            Effects.raven(this, target);
+        }
+    },
+    "Tactical Gale": {
+        description: "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
+        exclusiveTo: ["Robin: Mystery Tactician"],
+        type: "tome",
+        color: "green",
+        might: 14,
+        onCombatStart(state, target) {
+            Effects.raven(this, target);
         }
     },
     "Tharja's Hex": {
@@ -1905,6 +2098,29 @@ const WEAPONS: WeaponDict = {
         might: 16,
         exclusiveTo: ["Caeda: Talys's Heart"],
         type: "sword"
+    },
+    "Whitewing Blade": {
+        might: 16,
+        type: "sword",
+        description: "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
+        onCombatStart() {
+            this.entity.addComponent({
+                type: "ApplyAffinity"
+            });
+        },
+        exclusiveTo: ["Palla: Eldest Whitewing"]
+    },
+    "Whitewing Lance": {
+        description: "Accelerates Special trigger (cooldown count-1).",
+        might: 16,
+        exclusiveTo: ["Catria: Middle Whitewing"],
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        },
+        type: "lance"
     },
     "Whitewing Spear": {
         description: "Effective against armored and cavalry foes.",

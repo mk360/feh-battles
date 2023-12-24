@@ -92,6 +92,14 @@ export function breaker(thisArg: Skill, enemy: Entity, targetWeaponType: WeaponT
     }
 }
 
+export function raven(thisArg: Skill, enemy: Entity) {
+    if (enemy.getOne("Weapon").color === "colorless") {
+        thisArg.entity.addComponent({
+            type: "GuaranteedAdvantage"
+        });
+    }
+}
+
 export function bond(thisArg: Skill, state: GameState, buffs: Stats) {
     const allies = getAllies(state, thisArg.entity);
     for (let ally of allies) {
@@ -169,7 +177,7 @@ export function owl(thisArg: Skill, state: GameState) {
         def: allies.length * 2,
         spd: allies.length * 2,
         res: allies.length * 2,
-    });   
+    });
 }
 
 export function blade(thisArg: Skill) {

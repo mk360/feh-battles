@@ -1,7 +1,6 @@
 import { Entity, Query, System } from "ape-ecs";
 import GameState from "./state";
 import getAllies from "../utils/get-allies";
-import PASSIVES from "../data/passives";
 import { Stats } from "../types";
 import checkBattleEffectiveness from "./effectiveness";
 import getTargetedDefenseStat from "./get-targeted-defense-stat";
@@ -75,19 +74,19 @@ class CombatSystem extends System {
 
             const attackerSkills = this.state.skillMap.get(unit1);
             const defenderSkills = this.state.skillMap.get(unit2);
-            attackerSkills.onCombatStart?.forEach((skill) => {
+            attackerSkills?.onCombatStart?.forEach((skill) => {
                 SKILLS[skill.name].onCombatStart.call(skill, this.state, unit2);
             });
 
-            attackerSkills.onCombatInitiate?.forEach((skill) => {
+            attackerSkills?.onCombatInitiate?.forEach((skill) => {
                 SKILLS[skill.name].onCombatInitiate.call(skill, this.state, unit2);
             });
 
-            defenderSkills.onCombatStart?.forEach((skill) => {
+            defenderSkills?.onCombatStart?.forEach((skill) => {
                 SKILLS[skill.name].onCombatStart.call(skill, this.state, unit1);
             });
 
-            defenderSkills.onCombatDefense?.forEach((skill) => {
+            defenderSkills?.onCombatDefense?.forEach((skill) => {
                 SKILLS[skill.name].onCombatDefense.call(skill, this.state, unit1);
             });
 
@@ -126,7 +125,7 @@ class CombatSystem extends System {
                     consecutiveTurnNumber: combatMap.get(turn).consecutiveTurns,
                 };
                 const defenderSkills = this.state.skillMap.get(defender);
-                defenderSkills.onCombatRoundDefense?.forEach((skill) => {
+                defenderSkills?.onCombatRoundDefense?.forEach((skill) => {
                     const dexData = SKILLS[skill.name];
                     dexData.onCombatRoundDefense.call(skill, turn, turnData);
                     if (skill.slot === "special") {
@@ -155,8 +154,8 @@ class CombatSystem extends System {
                     affinity = getAffinity(unit1, unit2);
                 }
 
-                const damage = Math.floor(atkStat * effectivenessMultiplier) + Math.trunc(Math.floor(atkStat * effectivenessMultiplier) * (advantage * (affinity + 20) / 20)) - defenseStat - flatReduction;
-
+                const damage = Math.floor((Math.floor(atkStat * effectivenessMultiplier) + Math.trunc(Math.floor(atkStat * effectivenessMultiplier) * (advantage * (affinity + 20) / 20)) - defenseStat - flatReduction) * damagePercentage);
+                console.log({ damage });
                 lastAttacker = turn;
             }
         }

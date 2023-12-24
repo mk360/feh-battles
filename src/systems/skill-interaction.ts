@@ -1,4 +1,4 @@
-import { Component, Query, System } from "ape-ecs";
+import { Component, ComponentClass, Query, System } from "ape-ecs";
 import Counterattack from "../components/counterattack";
 import DamageReduction from "../components/damage-reduction";
 import GuaranteedAffinity from "../components/guaranteed-affinity";
@@ -16,7 +16,7 @@ import TargetLowestDefense from "../components/target-lowest-defense";
 import GameState from "./state";
 import ApplyAffinity from "../components/apply-affinity";
 
-const NeutralizationMap = new Map<new () => Component, new () => Component>();
+const NeutralizationMap = new Map<ComponentClass, ComponentClass>();
 
 // 1-to-1 neutralizations
 NeutralizationMap.set(Counterattack, PreventCounterattack);

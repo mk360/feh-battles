@@ -20,16 +20,6 @@
         "Might": 16
     },
     {
-        "WeaponName": "Camilla's Axe",
-        "CanUseWeapon": [
-            "Green Axe"
-        ],
-        "Exclusive": 1,
-        "Hero": "Camilla: Bewitching Beauty",
-        "Description": "If unit is within 2 spaces of a cavalry or flying ally, grants Atk/Spd+4 during combat.",
-        "Might": 16
-    },
-    {
         "WeaponName": "Gronnraven",
         "CanUseWeapon": [
             "Green Tome"
@@ -152,16 +142,6 @@
         "Might": 16
     },
     {
-        "WeaponName": "Hinoka's Spear",
-        "CanUseWeapon": [
-            "Blue Lance"
-        ],
-        "Exclusive": 1,
-        "Hero": "Hinoka: Warrior Princess",
-        "Description": "If unit is within 2 spaces of a flying or infantry ally, grants Atk/Spd+4 during combat.",
-        "Might": 16
-    },
-    {
         "WeaponName": "Poison Dagger",
         "CanUseWeapon": [
             "Red Dagger",
@@ -211,36 +191,6 @@
         "Might": 16
     },
     {
-        "WeaponName": "Ruby Sword",
-        "CanUseWeapon": [
-            "Red Sword"
-        ],
-        "Exclusive": 0,
-        "Hero": "Hinata: Wild Samurai",
-        "Description": "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
-        "Might": 8
-    },
-    {
-        "WeaponName": "Ruby Sword+",
-        "CanUseWeapon": [
-            "Red Sword"
-        ],
-        "Exclusive": 0,
-        "Hero": "Hinata: Wild Samurai",
-        "Description": "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
-        "Might": 12
-    },
-    {
-        "WeaponName": "Hinata's Katana",
-        "CanUseWeapon": [
-            "Red Sword"
-        ],
-        "Exclusive": 1,
-        "Hero": "Hinata: Wild Samurai",
-        "Description": "If foe initiates combat, grants Atk/Def+4 during combat.",
-        "Might": 16
-    },
-    {
         "WeaponName": "Killer Bow",
         "CanUseWeapon": [
             "Red Bow",
@@ -280,45 +230,6 @@
         "Might": 14
     },
     {
-        "WeaponName": "Assassin's Bow",
-        "CanUseWeapon": [
-            "Red Bow",
-            "  Blue Bow",
-            "  Green Bow",
-            "  Colorless Bow"
-        ],
-        "Exclusive": 0,
-        "Hero": "Setsuna: Absent Archer",
-        "Description": "Effective against flying foes.&lt;br />In combat against a colorless dagger foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack.",
-        "Might": 7
-    },
-    {
-        "WeaponName": "Assassin's Bow+",
-        "CanUseWeapon": [
-            "Red Bow",
-            "  Blue Bow",
-            "  Green Bow",
-            "  Colorless Bow"
-        ],
-        "Exclusive": 0,
-        "Hero": "Setsuna: Absent Archer",
-        "Description": "Effective against flying foes. In combat against a colorless dagger foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack.",
-        "Might": 11
-    },
-    {
-        "WeaponName": "Setsuna's Yumi",
-        "CanUseWeapon": [
-            "Red Bow",
-            "  Blue Bow",
-            "  Green Bow",
-            "  Colorless Bow"
-        ],
-        "Exclusive": 1,
-        "Hero": "Setsuna: Absent Archer",
-        "Description": "Effective against flying foes. If foe uses bow, dagger, magic, or staff, grants Atk/Spd/Def/Res+4 during combat.",
-        "Might": 14
-    },
-    {
         "WeaponName": "Brynhildr",
         "CanUseWeapon": [
             "Red Tome"
@@ -327,16 +238,6 @@
         "Hero": "Leo: Sorcerous Prince",
         "Description": "If unit initiates combat, inflicts status on foe restricting movement to 1 space through its next action.",
         "Might": 14
-    },
-    {
-        "WeaponName": "Selena's Blade",
-        "CanUseWeapon": [
-            "Red Sword"
-        ],
-        "Exclusive": 1,
-        "Hero": "Selena: Cutting Wit",
-        "Description": "Effective against armored foes. At start of combat, if foe's Atk ≥ unit's Atk+3, grants Atk/Spd/Def/Res+3 during combat.",
-        "Might": 16
     },
     {
         "WeaponName": "Fear",
@@ -367,66 +268,6 @@
         "Hero": "Subaki: Perfect Expert",
         "Description": "Accelerates Special trigger (cooldown count-1). At start of combat, if foe's Atk ≥ unit's Atk+3, grants Atk/Spd/Def/Res+3 during combat.",
         "Might": 16
-    },
-    {
-        "WeaponName": "Hewn Lance",
-        "CanUseWeapon": [
-            "Blue Lance"
-        ],
-        "Exclusive": 1,
-        "Hero": "Donnel: Village Hero",
-        "Description": "Inflicts Spd-5. If unit initiates combat, unit attacks twice.",
-        "Might": 11
-    },
-    {
-        "WeaponName": "Rauðrraven",
-        "CanUseWeapon": [
-            "Red Tome"
-        ],
-        "Exclusive": 0,
-        "Hero": "Henry: Twisted Mind",
-        "Description": "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
-        "Might": 7
-    },
-    {
-        "WeaponName": "Rauðrraven+",
-        "CanUseWeapon": [
-            "Red Tome"
-        ],
-        "Exclusive": 0,
-        "Hero": "Henry: Twisted Mind",
-        "Description": "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
-        "Might": 11
-    },
-    {
-        "WeaponName": "Corvus Tome",
-        "CanUseWeapon": [
-            "Red Tome"
-        ],
-        "Exclusive": 1,
-        "Hero": "Henry: Twisted Mind",
-        "Description": "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
-        "Might": 14
-    },
-    {
-        "WeaponName": "Cordelia's Lance",
-        "CanUseWeapon": [
-            "Blue Lance"
-        ],
-        "Exclusive": 1,
-        "Hero": "Cordelia: Knight Paragon",
-        "Description": "Inflicts Spd-2. If unit initiates combat, unit attacks twice.",
-        "Might": 10
-    },
-    {
-        "WeaponName": "Cherche's Axe",
-        "CanUseWeapon": [
-            "Green Axe"
-        ],
-        "Exclusive": 1,
-        "Hero": "Cherche: Wyvern Friend",
-        "Description": "Inflicts Spd-5. If unit initiates combat, unit attacks twice.",
-        "Might": 11
     },
     {
         "WeaponName": "Rogue Dagger",
@@ -505,16 +346,6 @@
         "Hero": "Nowi: Eternal Youth",
         "Description": "Slows Special trigger (cooldown count+1). Unit can counterattack regardless of foe's range. If foe's Range = 2, calculates damage using the lower of foe's Def or Res.",
         "Might": 14
-    },
-    {
-        "WeaponName": "Panther Sword",
-        "CanUseWeapon": [
-            "Red Sword"
-        ],
-        "Exclusive": 1,
-        "Hero": "Stahl: Viridian Knight",
-        "Description": "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
-        "Might": 16
     },
     {
         "WeaponName": "Killing Edge",

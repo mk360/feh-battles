@@ -412,6 +412,30 @@ const WEAPONS: WeaponDict = {
             }
         }
     },
+    "Assassin's Bow": {
+        type: "bow",
+        effectiveAgainst: ["flier"],
+        might: 7,
+        description: "Effective against flying foes. In combat against a colorless dagger foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack.",
+        onCombatStart(state, target) {
+            const enemyWeapon = target.getOne("Weapon");
+            if (enemyWeapon.color === "colorless") {
+                Effects.breaker(this, target, "dagger", 0);
+            }
+        }
+    },
+    "Assassin's Bow+": {
+        type: "bow",
+        effectiveAgainst: ["flier"],
+        might: 11,
+        description: "Effective against flying foes. In combat against a colorless dagger foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack.",
+        onCombatStart(state, target) {
+            const enemyWeapon = target.getOne("Weapon");
+            if (enemyWeapon.color === "colorless") {
+                Effects.breaker(this, target, "dagger", 0);
+            }
+        }
+    },
     "Axe of Virility": {
         description: "Effective against armored foes.",
         might: 16,
@@ -672,6 +696,63 @@ const WEAPONS: WeaponDict = {
                 def: maxBuff
             });
         }
+    },
+    "Camilla's Axe": {
+        description: "If unit is within 2 spaces of a cavalry or flying ally, grants Atk/Spd+4 during combat.",
+        might: 16,
+        type: "axe",
+        exclusiveTo: ["Camilla: Bewitching Beauty"],
+        onCombatStart(battleState) {
+            const allies = getAllies(battleState, this.entity);
+            for (let ally of allies) {
+                if (["cavalry", "flier"].includes(ally.getOne("MovementType").value) && HeroSystem.getDistance(this.entity, ally) <= 2) {
+                    this.entity.addComponent({
+                        type: "CombatBuff",
+                        atk: 4,
+                        spd: 4,
+                    });
+                    return;
+                }
+            }
+        },
+    },
+    "Cherche's Axe": {
+        type: "axe",
+        might: 11,
+        exclusiveTo: ["Cherche: Wyvern Friend"],
+        description: "Inflicts Spd-5. If unit initiates combat, unit attacks twice.",
+        onEquip() {
+            this.entity.getOne("Stats").spd -= 5;
+        },
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "BraveWeapon"
+            });
+        }
+    },
+    "Cordelia's Lance": {
+        type: "lance",
+        might: 10,
+        exclusiveTo: ["Cordelia: Knight Paragon"],
+        description: "Inflicts Spd-2. If unit initiates combat, unit attacks twice.",
+        onEquip() {
+            this.entity.getOne("Stats").spd -= 2;
+        },
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "BraveWeapon"
+            });
+        }
+    },
+    "Corvus Tome": {
+        type: "tome",
+        color: "red",
+        might: 14,
+        description: "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
+        onCombatStart(battleState, target) {
+            Effects.raven(this, target);
+        },
+        exclusiveTo: ["Henry: Twisted Mind"]
     },
     "Crimson Axe": {
         description: "Accelerates Special trigger (cooldown count-1).",
@@ -1181,6 +1262,52 @@ const WEAPONS: WeaponDict = {
             }
         },
     },
+    "Hewn Lance": {
+        type: "lance",
+        might: 11,
+        exclusiveTo: ["Donnel: Village Hero"],
+        description: "Inflicts Spd-5. If unit initiates combat, unit attacks twice.",
+        onEquip() {
+            this.entity.getOne("Stats").spd -= 5;
+        },
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "BraveWeapon"
+            });
+        }
+    },
+    "Hinata's Katana": {
+        description: "If foe initiates combat, grants Atk/Def+4 during combat.",
+        might: 16,
+        type: "sword",
+        exclusiveTo: ["Hinata: Wild Samurai"],
+        onCombatDefense() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                atk: 4,
+                def: 4
+            });
+        }
+    },
+    "Hinoka's Spear": {
+        description: "If unit is within 2 spaces of a flying or infantry ally, grants Atk/Spd+4 during combat.",
+        exclusiveTo: ["Hinoka: Warrior Princess"],
+        type: "lance",
+        might: 16,
+        onCombatStart(state) {
+            const allies = getAllies(state, this.entity);
+            for (let ally of allies) {
+                if (HeroSystem.getDistance(this.entity, ally) <= 2) {
+                    this.entity.addComponent({
+                        type: "CombatBuff",
+                        atk: 4,
+                        spd: 4
+                    });
+                    return;
+                }
+            }
+        }
+    },
     "Iris's Tome": {
         type: "tome",
         color: "green",
@@ -1338,6 +1465,17 @@ const WEAPONS: WeaponDict = {
             });
         }
     },
+    "Panther Sword": {
+        description: "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
+        exclusiveTo: ["Stahl: Viridian Knight"],
+        type: "sword",
+        might: 16,
+        onCombatStart() {
+            this.entity.addComponent({
+                type: "ApplyAffinity"
+            });
+        }
+    },
     "Parthia": {
         description: "Effective against flying foes. If unit initiates combat, grants Res+4 during combat.",
         effectiveAgainst: ["flier"],
@@ -1404,6 +1542,24 @@ const WEAPONS: WeaponDict = {
         color: "red",
         onCombatStart(battleState) {
             Effects.owl(this, battleState);
+        },
+    },
+    "Rauðrraven": {
+        type: "tome",
+        color: "red",
+        might: 7,
+        description: "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
+        onCombatStart(battleState, target) {
+            Effects.raven(this, target);
+        },
+    },
+    "Rauðrraven+": {
+        type: "tome",
+        color: "red",
+        might: 11,
+        description: "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
+        onCombatStart(battleState, target) {
+            Effects.raven(this, target);
         },
     },
     "Rauðrwolf": {
@@ -1493,13 +1649,33 @@ const WEAPONS: WeaponDict = {
             });
         }
     },
+    "Ruby Sword": {
+        description: "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
+        type: "sword",
+        might: 8,
+        onCombatStart() {
+            this.entity.addComponent({
+                type: "ApplyAffinity"
+            });
+        }
+    },
+    "Ruby Sword+": {
+        description: "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
+        type: "sword",
+        might: 12,
+        onCombatStart() {
+            this.entity.addComponent({
+                type: "ApplyAffinity"
+            });
+        }
+    },
     "Sapphire Lance": {
         description: "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
         type: "lance",
         might: 8,
         onCombatStart() {
             this.entity.addComponent({
-                type: "GemWeapon"
+                type: "ApplyAffinity"
             });
         }
     },
@@ -1509,7 +1685,43 @@ const WEAPONS: WeaponDict = {
         might: 12,
         onCombatStart() {
             this.entity.addComponent({
-                type: "GemWeapon"
+                type: "ApplyAffinity"
+            });
+        }
+    },
+    "Selena's Blade": {
+        type: "sword",
+        description: "Effective against armored foes. At start of combat, if foe's Atk ≥ unit's Atk+3, grants Atk/Spd/Def/Res+3 during combat.",
+        might: 16,
+        effectiveAgainst: ["armored"],
+        exclusiveTo: ["Selena: Cutting Wit"],
+        onCombatStart(state, target) {
+            const { atk: unitAtk } = this.entity.getOne("Stats");
+            const { atk: enemyAtk } = target.getOne("Stats");
+            if (enemyAtk >= unitAtk + 3) {
+                this.entity.addComponent({
+                    type: "CombatBuff",
+                    atk: 3,
+                    spd: 3,
+                    def: 3,
+                    res: 3
+                });
+            }
+        }
+    },
+    "Setsuna's Yumi": {
+        exclusiveTo: ["Setsuna: Absent Archer"],
+        type: "bow",
+        might: 14,
+        description: "Effective against flying foes. If foe uses bow, dagger, magic, or staff, grants Atk/Spd/Def/Res+4 during combat.",
+        effectiveAgainst: ["flier"],
+        onCombatStart() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                atk: 4,
+                spd: 4,
+                def: 4,
+                res: 4
             });
         }
     },

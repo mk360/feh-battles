@@ -19,17 +19,18 @@ interface SpecialsDict {
 }
 
 const SPECIALS: SpecialsDict = {
-    "Iceberg": {
-        description: "Boosts damage by 50% of unit's Res.",
-        cooldown: 3,
-        onCombatRoundAttack() {
-            const { res } = getCombatStats(this.entity);
+    "Black Luna": {
+        description: "Treats foe's Def/Res as if reduced by 80% during combat. (Skill cannot be inherited.)",
+        exclusiveTo: ["Black Knight: Sinister General"],
+        onCombatRoundAttack(target) {
+            const combatStats = getCombatStats(target);
+            const defStat = getTargetedDefenseStat(this.entity, target, combatStats);
             this.entity.addComponent({
                 type: "DamageIncrease",
-                value: Math.floor(res / 2)
+                value: Math.floor(combatStats[defStat] * 0.8)
             });
         },
-        allowedWeaponTypes: ["axe", "beast", "bow", "breath", "tome", "sword", "lance", "dagger"]
+        cooldown: 3
     },
     "Dragon Fang": {
         description: "Boosts damage by 50% of unit's Atk.",
@@ -43,18 +44,17 @@ const SPECIALS: SpecialsDict = {
         },
         allowedWeaponTypes: ["axe", "beast", "bow", "breath", "tome", "sword", "lance", "dagger"]
     },
-    "Black Luna": {
-        description: "Treats foe's Def/Res as if reduced by 80% during combat. (Skill cannot be inherited.)",
-        exclusiveTo: ["Black Knight: Sinister General"],
-        onCombatRoundAttack(target) {
-            const combatStats = getCombatStats(target);
-            const defStat = getTargetedDefenseStat(this.entity, target, combatStats);
+    "Iceberg": {
+        description: "Boosts damage by 50% of unit's Res.",
+        cooldown: 3,
+        onCombatRoundAttack() {
+            const { res } = getCombatStats(this.entity);
             this.entity.addComponent({
                 type: "DamageIncrease",
-                value: Math.floor(combatStats[defStat] * 0.8)
+                value: Math.floor(res / 2)
             });
         },
-        cooldown: 3
+        allowedWeaponTypes: ["axe", "beast", "bow", "breath", "tome", "sword", "lance", "dagger"]
     },
 };
 

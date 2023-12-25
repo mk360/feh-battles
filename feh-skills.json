@@ -1456,7 +1456,7 @@
         ],
         "Exclusive": 1,
         "Hero": "Lute: Prodigy",
-        "Description": "Grants Spd+3. At start of turn, inflicts Spd-5 on foes in cardinal directions with Res &lt; unit's Res through their next actions.",
+        "Description": "Grants Spd+3. At start of turn, inflicts Spd-5 on foes in cardinal directions with Res < unit's Res through their next actions.",
         "Might": 14
     },
     {

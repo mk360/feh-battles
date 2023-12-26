@@ -25,4 +25,4 @@ All Skill Hooks are automatically bound to their Skill component. Use standard f
 - Create a component
 - Register it in the GameWorld
 - Assign each component to the entity whose behavior it should affect: while it seems obvious, behaviors like "guaranteed follow-up" and "prevent counterattack" could be assigned to both an attacker and a defender, hence the distinction.
-- If an attacker has guaranteed followup, assign the "guaranteed follow-up" effect to the attacker. If the defender can prevent a follow-up, add the "prevent follow-up" effect to the defender. 
+- If an attacker has guaranteed followup, assign the "guaranteed follow-up" effect to the attacker. If the defender can prevent a follow-up, add the "prevent follow-up" effect to the defender.

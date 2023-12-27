@@ -1,4 +1,5 @@
 # Game Architecture
+
 ## History
 
 This game engine was first designed using a classical Object-Oriented Programming approach. Each hero would be their own class, with properties filled as we go with skills, movement type, weapon type, etc. But I had to find a way to describe FEH's effects, in a way that allows for a "allow / neutral / disallow" mechanism. So I came up with the concept of Cursors.
@@ -42,21 +43,26 @@ Let's start with the Pros:
 ### Cons
 
 - A clear direction needs to be provided when assigning components. Since a lot of behaviors affect the unit in relation to their enemy (for example, guaranteed or prevented follow-up), it's really important to make sure component assignments stay consistent in their receiving entity.
-Components need to be assigned to their actors, not to their targets: if Unit 1 prevents Unit 2 from counterattacking, the "PreventCounterattack" component should go to Unit1. If Unit 2 prevents Unit 1 from making follow-ups, Unit 2 receives the "PreventFollowup" component. And so on.
-- ECS is more suited to real-time games who need to evaluate their state frame by frame. The nature of a turn-based game makes it so that any logic or behavior can be created in custom functions.
+  Components need to be assigned to their actors, not to their targets: if Unit 1 prevents Unit 2 from counterattacking, the "PreventCounterattack" component should go to Unit1. If Unit 2 prevents Unit 1 from making follow-ups, Unit 2 receives the "PreventFollowup" component. And so on.
+- ECS is more suited to real-time games who need to evaluate their state frame by frame. The nature of a turn-based game makes it so that any logic or behavior can be created in custom functions, outside of the framework's ecosystem.
 - Given that this package contains the Game World that will directly interact with external integrations, extra care should be taken to design a proper interactive API.
 
 ## Game Data
+
 ### Characters
+
 Characters are parsed straight from a JSON file. The file contains identifying information, Weapon Type and Color, Movement Type, as well as Level 1 Stats and Growth Rates.
 
 ### Skills and Skill Hooks
 
-Skills are packed inside Skilldexes (open to name suggestions). A Skill has its mandatory identifying information, such as name, slot and description, with details varying depending on skill type (Weapons have a Might, Assists have a Range, etc.). In order to express their effects, these Skills rely on Event Hooks (henceforth referred to as Skill Hooks) that get called when the engine reaches a certain matching event. For example, on Turn Start, all Skills with an `onTurnStart` hook get called.
+Skills are packed inside Skilldexes (open to name suggestions). A Skill has its mandatory identifying information, such as name, slot and description, with details varying depending on skill type (Weapons have a Might, Assists have a Range, etc.).
 
-Combat Skill Hooks make a difference between whether you're the initiator or the defender at the start of combat: the example Death Blow above only applies when initiating, so it receives an `onCombatInitiate` hook. Same goes for defensive hooks, and so on. There are certain skills, such as Specials, that only trigger when a Combat Round is reached _and_ the unit is in a certain position: Specials such as Aether trigger when unit attacks during the Round, so they receive an `onCombatRoundAttack` hook.
+In order to express their effects, these Skills rely on Event Hooks (referred to as Skill Hooks) that get called when the engine reaches a certain matching event. For example, on Turn Start, all Skills with an `onTurnStart` hook get called.
+
+Combat Skill Hooks distinguish between whether you're the initiator or the defender at the start of combat: the example Death Blow above only applies when initiating, so it receives an `onCombatInitiate` hook. Same goes for defensive hooks, and so on. There are certain skills, such as Specials, that only trigger when a Combat Round is reached _and_ the unit is in a certain position: Specials such as Aether trigger when unit attacks during the Round, so they receive an `onCombatRoundAttack` hook.
 
 Hooks' naming follows a "least-to-most-precise" naming convention. Dissecting the `onCombatRoundAttack` gives us:
+
 - `on` a certain event,
 - which is a `Combat`,
 - during a Combat `Round`,
@@ -69,8 +75,9 @@ Not the most English, but it's pretty consistent most of the time.
 ### Map Representation
 
 A 8x6 1-indexed Object of `Uint16Array`s represents the global map topology: coordinates, whether a Hero occupies it, what kind of tile are we on, does it have a trench, a defensive tile.... All this is packed into a 16-bit bitfield, which, in detail, goes as follows:
+
 - Lowest 4 bits are the Tile Type. 4 bits are used despite having just 4 tile types (which could fit into 3 bits), as each bit represents one of the 4 movement types that could legally reach the tile (so a Plain has a bitfield of 0b1111). Walls and other blocking structures have a bitfield of 0, preventing any movement on them.
-- Next 2 bits (5-6) are used to determine if the tile is occupied, and by which team. This group is set to 0 if the tile is free, 1 if Team 1 occupies it and 2 if Team 2 is on it. Since the value 0b11 is unused, we could create a third team.....?
+- Next 2 bits (5-6) are used to determine if the tile is occupied, and by which team. This group is set to 0 if the tile is free, 1 if Team 1 occupies it and 0b10 if Team 2 is on it. Since 0b11 is unused, we could create a third team.....?
 - Next 3 (7-9) bits are used to encode the x coordinate, from 1 to 6.
 - Next 3 (10-13) bits are used to encode the y coordinate, from 0 to 7 (0b111). The y-coordinate is 0-indexed to pack 8 values into 3 bits. These coordinate bits might be deprecated. If deprecated, these 6 bits could be replaced by a team slot bitfield (e.g. if the value is 0b10, that means the unit on this tile is the 2nd of its team, which could help tighten up state validation).
 - 14th bit determines whether the tile is a trench. While technically a tile type, it still uses a bit, and has special treatment regarding cavalry movement.
@@ -85,6 +92,7 @@ So I met an interesting problem. Let's say I want to run any `onCombatInitiate` 
 Enter, Skill Maps. Each Entity (Hero) is mapped to their Skill Hooks, with each Hook containing all the Components whose matching Skills contain this hook.
 
 Back to the Death Blow example, Ike's Skill Map would be:
+
 ```
 -> Create Ike: Brave Mercenary
 -> Ike: Brave Mercenary has Death Blow 3 as a Skill
@@ -103,6 +111,7 @@ Ike: Brave Mercenary initiates combat.
 ```
 
 This approach guarantees that we only:
+
 - Limit the stored effects to what's necessary.
 - Guarantee that we only run the few effects that directly relate to the current engine event.
 

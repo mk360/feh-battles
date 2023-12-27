@@ -39,15 +39,14 @@ Let's start with the Pros:
 - More of a library thing than FEH or ECS related, but the tiny memory footprint the game consumes thanks to Components and Entities being basic JS objects is a huge improvement over the previous bloated functions. The library exploits reference equality in JavaScript to create an efficient memory management mechanism, as well as being full of Sets and Maps which guarantee protection against data duplication. And since Components are pure Objects, the Skills logic can live elsewhere.
 - Components can be added and removed on the fly, so a Combat Preview would only need to add then remove the temporary components (e.g. Combat Buffs) after it has finished computing the preview.
 
-### Cons
+### Cons
 
 - A clear direction needs to be provided when assigning components. Since a lot of behaviors affect the unit in relation to their enemy (for example, guaranteed or prevented follow-up), it's really important to make sure component assignments stay consistent in their receiving entity.
 Components need to be assigned to their actors, not to their targets: if Unit 1 prevents Unit 2 from counterattacking, the "PreventCounterattack" component should go to Unit1. If Unit 2 prevents Unit 1 from making follow-ups, Unit 2 receives the "PreventFollowup" component. And so on.
 - ECS is more suited to real-time games who need to evaluate their state frame by frame. The nature of a turn-based game makes it so that any logic or behavior can be created in custom functions.
 - Given that this package contains the Game World that will directly interact with external integrations, extra care should be taken to design a proper interactive API.
 
-## Game Data
-
+## Game Data
 ### Characters
 Characters are parsed straight from a JSON file. The file contains identifying information, Weapon Type and Color, Movement Type, as well as Level 1 Stats and Growth Rates.
 
@@ -71,7 +70,7 @@ Not the most English, but it's pretty consistent most of the time.
 
 A 8x6 1-indexed Object of `Uint16Array`s represents the global map topology: coordinates, whether a Hero occupies it, what kind of tile are we on, does it have a trench, a defensive tile.... All this is packed into a 16-bit bitfield, which, in detail, goes as follows:
 - Lowest 4 bits are the Tile Type. 4 bits are used despite having just 4 tile types (which could fit into 3 bits), as each bit represents one of the 4 movement types that could legally reach the tile (so a Plain has a bitfield of 0b1111). Walls and other blocking structures have a bitfield of 0, preventing any movement on them.
-- Next 2 bits (5-6) are used to determine if the tile is occupied, and by which team. This group is set to 0 if the tile is free, 1 if Team 1 occupies it and 2 if Team 2 is on it. Since the value Ob11 is unused, we could create a third team.....?
+- Next 2 bits (5-6) are used to determine if the tile is occupied, and by which team. This group is set to 0 if the tile is free, 1 if Team 1 occupies it and 2 if Team 2 is on it. Since the value 0b11 is unused, we could create a third team.....?
 - Next 3 (7-9) bits are used to encode the x coordinate, from 1 to 6.
 - Next 3 (10-13) bits are used to encode the y coordinate, from 0 to 7 (0b111). The y-coordinate is 0-indexed to pack 8 values into 3 bits. These coordinate bits might be deprecated. If deprecated, these 6 bits could be replaced by a team slot bitfield (e.g. if the value is 0b10, that means the unit on this tile is the 2nd of its team, which could help tighten up state validation).
 - 14th bit determines whether the tile is a trench. While technically a tile type, it still uses a bit, and has special treatment regarding cavalry movement.

@@ -1,5 +1,11 @@
 # Game Architecture
 
+## Terminology
+
+- Combat: the phase where two opposing units interact and fight against each other.
+- Combat Round or Turn: the unit of time inside a Combat, where a single unit attacks and a single unit defends. Combats are made of one or several Combat Rounds.
+- Battle: the overall battle state, with its map, teams, members, their own states, etc.
+
 ## History
 
 This game engine was first designed using a classical Object-Oriented Programming approach. Each hero would be their own class, with properties filled as we go with skills, movement type, weapon type, etc. But I had to find a way to describe FEH's effects, in a way that allows for a "allow / neutral / disallow" mechanism. So I came up with the concept of Cursors.
@@ -85,7 +91,16 @@ Hooks' naming follows a "least-to-most-precise" naming convention. Dissecting th
 - during a Combat `Round`,
 - when in position to `Attack` during that round.
 
-Not the most English, but it's pretty consistent most of the time.
+Not the most English, but it's pretty consistent most of the time. A list of common Skill Hooks includes:
+
+- `onEquip`: Runs when the skill is first equipped to the unit. Effectiveness, stat changes, or any permanent effect goes here.
+- `onTurnStart`: Runs when a new turn starts. Takes the current Battle State (from which you can access turn count, current team, team composition, etc) as an argument.
+- `onCombatStart`: Runs when this skill's wielder enters a combat, regardless of the side.
+- `onCombatInitiate`: Runs when this skill's wielder initiates the combat.
+- `onCombatDefend`: Runs when an enemy initiates combat against this skill's wielder.
+- `onCombatAllyStart`: Runs when an ally of this skill's wielder enters a combat, regardless of the side.
+- `onCombatAllyInitiate`: Runs when an ally of this skill's wielder initiates combat against their enemy.
+- `onCombatAllyDefend`: Runs when an enemy initiates combat against an ally of this skill's wielder.
 
 ## Game State
 

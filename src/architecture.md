@@ -47,15 +47,28 @@ Let's start with the Pros:
 - ECS is more suited to real-time games who need to evaluate their state frame by frame. The nature of a turn-based game makes it so that any logic or behavior can be created in custom functions, outside of the framework's ecosystem.
 - Given that this package contains the Game World that will directly interact with external integrations, extra care should be taken to design a proper interactive API.
 
+## Game Logic
+
+Luckily, FEH Skills, however complex they could be, still rely on "blocks" or "parts" that get assembled and combined with each other.
+
+Let's take the [Axebreaker 3](https://feheroes.fandom.com/wiki/Axebreaker). The skill breaks down to the following:
+
+- If the enemy has a specific weapon,
+- And unit meets a certain health threshold,
+- Add an effect that guarantees followups to unit,
+- And add an effect to unit preventing the enemy to make followups.
+
+This pattern is seen and used across three levels of the same skill, where the only difference is the health threshold, which is why it can be isolated into its own generic function.
+
 ## Game Data
 
 ### Characters
 
-Characters are parsed straight from a JSON file. The file contains identifying information, Weapon Type and Color, Movement Type, as well as Level 1 Stats and Growth Rates.
+Characters are parsed straight from a [JSON file](./data/characters.json). The file contains identifying information, Weapon Type and Color, Movement Type, as well as Level 1 Stats and Growth Rates.
 
 ### Skills and Skill Hooks
 
-Skills are packed inside Skilldexes (open to name suggestions). A Skill has its mandatory identifying information, such as name, slot and description, with details varying depending on skill type (Weapons have a Might, Assists have a Range, etc.).
+Skills are packed inside Skilldexes (open to name suggestions), such as [Passives](./data/passives.ts) and [Weapons](./data/weapons.ts). A Skill has its mandatory identifying information, such as name, slot and description, with details varying depending on skill type (Weapons have a Might, Assists have a Range, etc.).
 
 In order to express their effects, these Skills rely on Event Hooks (referred to as Skill Hooks) that get called when the engine reaches a certain matching event. For example, on Turn Start, all Skills with an `onTurnStart` hook get called.
 

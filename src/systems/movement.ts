@@ -6,6 +6,7 @@ import GameState from "./state";
 import TileTypes from "../data/tile-types";
 import canReachTile from "./can-reach-tile";
 import getSurroundings from "./get-surroundings";
+import PASSIVES from "../data/passives";
 
 class MovementSystem extends System {
     private obstructQuery: Query;
@@ -33,7 +34,8 @@ class MovementSystem extends System {
         for (let ally of allies) {
             if (this.state.skillMap.get(ally).onTurnAllyCheckRange) {
                 for (let skill of this.state.skillMap.get(ally).onTurnAllyCheckRange) {
-
+                    const skillData = PASSIVES[skill.name];
+                    skillData.onTurnAllyCheckRange.call(skill, this.state, unit);
                 }
             }
         }
@@ -76,5 +78,15 @@ class MovementSystem extends System {
         return unit.getOne("MovementType").range;
     }
 };
+
+// get initial coordinates
+// check surrounding tiles
+// filter out tiles we've already checked
+// for each tile, check if it's crossable
+// if yes, store the tile
+// if no, store the tile in a separate reference
+// also check if the unit on it is of the same team and has Pathfinder
+// if yes, lower the cost of that tile to 0
+// repeat until unit range reaches 0
 
 export default MovementSystem;

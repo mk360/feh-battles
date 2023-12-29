@@ -11,7 +11,7 @@ So a Cursor is simply a stateful class that stores a number. That number would b
 
 The issue is, I had to figure out how to make battle previews, which should be stateless and be computed separately. Simply clone the whole Hero, so that the Cursors attached to them would not point to the main class. Problem solved.
 
-That turned out to be a terrible naive approach for a few reasons:
+That turned out to be a naive approach for a few reasons:
 
 - Huge memory consumption. FEH has a lot of varied effects and each effect is ruled by a Cursor. So for x Heroes on the field, I have around 20x the amount of cursors, the majority of which wouldn't be used. With each Cursor having 7 operations to change the numerical value (raise, lower, reset, as well as the classic arithmetic functions), we'd end up with 140x the amount of functions per Hero, so up to 1120, assuming a standard 8-Hero, 4v4 battle.
 - High Garbage Collector activity. I'm duplicating two objects, each filled with a lot of properties and references, since a preview needs two Heroes to work. Then these objects need to be destroyed, and I could slow the game down by repeatedly allocating memory and making GC sweeps.
@@ -43,22 +43,26 @@ Let's start with the Pros:
 ### Cons
 
 - A clear direction needs to be provided when assigning components. Since a lot of behaviors affect the unit in relation to their enemy (for example, guaranteed or prevented follow-up), it's really important to make sure component assignments stay consistent in their receiving entity.
-  Components need to be assigned to their actors, not to their targets: if Unit 1 prevents Unit 2 from counterattacking, the "PreventCounterattack" component should go to Unit1. If Unit 2 prevents Unit 1 from making follow-ups, Unit 2 receives the "PreventFollowup" component. And so on.
-- ECS is more suited to real-time games who need to evaluate their state frame by frame. The nature of a turn-based game makes it so that any logic or behavior can be created in custom functions, outside of the framework's ecosystem.
+Components need to be assigned to their actors, not to their targets: if Unit 1 prevents Unit 2 from counterattacking, the "PreventCounterattack" component should go to Unit1. If Unit 2 prevents Unit 1 from making follow-ups, Unit 2 receives the "PreventFollowup" component. And so on.
+- ECS is more suited to real-time games who need to evaluate their state frame by frame. The nature of a turn-based game makes it so that any logic or behavior can be created in custom functions, which can be hard to reconcile with the framework's ecosystem.
 - Given that this package contains the Game World that will directly interact with external integrations, extra care should be taken to design a proper interactive API.
 
 ## Game Logic
 
-Luckily, FEH Skills, however complex they could be, still rely on "blocks" or "parts" that get assembled and combined with each other.
+It's no surprise that since the game's launch in 2017, Skills started simple and then went on to become more and more convoluted, requiring stacking damage reduction calculations, buffs and debuffs that rely on some weird criteria, or completely new mechanics and status effects.
 
-Let's take the [Axebreaker 3](https://feheroes.fandom.com/wiki/Axebreaker). The skill breaks down to the following:
+Luckily, however complex they could be, they still rely on "blocks" or "parts" that get assembled and combined with each other.
+
+Let's take [Axebreaker 3](https://feheroes.fandom.com/wiki/Axebreaker). The skill breaks down to the following:
 
 - If the enemy has a specific weapon,
 - And unit meets a certain health threshold,
 - Add an effect that guarantees followups to unit,
 - And add an effect to unit preventing the enemy to make followups.
 
-This pattern is seen and used across three levels of the same skill, where the only difference is the health threshold, which is why it can be isolated into its own generic function.
+This pattern is seen and used across three levels of the same skill, where the only difference is the health threshold, which is why it can be isolated into its own generic function. This pattern is also used across different weapon types (Swordbreaker, Lancebreaker, Bowbreaker), so the function can also take into account a variation in weapons.
+
+And now what happens is whenever a Skill has this "breaker" effect baked into it, we can just throw this function and guarantee the behavior we need. A single function, with enough flexibility, covered for 18 "simple" skills, and countless others more, with the obvious benefits of the DRY principle. Build [enough functions for each effect](./data/effects.ts), and what you end up with is an immense variety of Skills that can be composed with these simple blocks.
 
 ## Game Data
 

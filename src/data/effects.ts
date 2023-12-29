@@ -171,12 +171,14 @@ export function counterattack(thisArg: Skill) {
 
 export function owl(thisArg: Skill, state: GameState) {
     const allies = getAllies(state, this.entity).filter((ally) => HeroSystem.getDistance(ally, this.entity) === 1);
+    const buff = allies.length * 2;
+
     thisArg.entity.addComponent({
         type: "CombatBuff",
-        atk: allies.length * 2,
-        def: allies.length * 2,
-        spd: allies.length * 2,
-        res: allies.length * 2,
+        atk: buff,
+        def: buff,
+        spd: buff,
+        res: buff,
     });
 }
 

@@ -3,6 +3,9 @@ import tileBitmasks from "../data/tile-bitmasks";
 import getAllies from "../utils/get-allies";
 import getEnemies from "../utils/get-enemies";
 import GameState from "./state";
+import TileTypes from "../data/tile-types";
+import canReachTile from "./can-reach-tile";
+import getSurroundings from "./get-surroundings";
 
 class MovementSystem extends System {
     private obstructQuery: Query;
@@ -42,6 +45,27 @@ class MovementSystem extends System {
                 }
             }
         }
+    }
+
+    geTileCost(hero: Entity, tile: Uint16Array) {
+        const [tileBitfield] = tile;
+        const movementType = hero.getOne("MovementType");
+        if ((tileBitfield & TileTypes.forest) && movementType.value === "infantry") {
+            return 2;
+        }
+
+        if ((tileBitfield & tileBitmasks.trench) && movementType.value === "cavalry") {
+            return 3;
+        }
+
+        return 1;
+    }
+
+    getMovementTiles(hero: Entity, checkedX: number, checkedY: number, range?: number) {
+        let finalRange = range ?? this.getFinalMovementRange(hero);
+        const collectedTiles = new Set<Uint16Array>(this.state.map[checkedY][checkedX]);
+        // y >> 3
+        // x & 111
     }
 
     getFinalMovementRange(unit: Entity): number {

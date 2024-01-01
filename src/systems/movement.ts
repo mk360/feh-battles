@@ -92,8 +92,6 @@ class MovementSystem extends System {
             collectedTiles.add(tile);
         }
 
-        console.log({ collectedTiles });
-
         if (finalRange > 1 && validTiles.length) {
             for (let tile of validTiles) {
                 const y = (tile[0] >> TileBitshifts.y) & 0b111;

@@ -155,7 +155,6 @@ class CombatSystem extends System {
                 }
 
                 const damage = Math.floor((Math.floor(atkStat * effectivenessMultiplier) + Math.trunc(Math.floor(atkStat * effectivenessMultiplier) * (advantage * (affinity + 20) / 20)) - defenseStat - flatReduction) * damagePercentage);
-                console.log({ damage });
                 lastAttacker = turn;
             }
         }

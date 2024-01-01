@@ -49,6 +49,7 @@ import Movable from "./components/movable";
 import MovementSystem from "./systems/movement";
 import tileBitmasks from "./data/tile-bitmasks";
 import ApplyAffinity from "./components/apply-affinity";
+import TileBitshifts from "./data/tile-bitshifts";
 
 interface HeroData {
     name: string;
@@ -80,14 +81,14 @@ class GameWorld extends World {
          * (trench, defensive tile) added. It acts as the source of truth in case any state or data conflict arises.
          */
         map: {
-            1: [new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
-            2: [new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
-            3: [new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
-            4: [new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
-            5: [new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
-            6: [new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
-            7: [new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
-            8: [new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
+            1: [null, new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
+            2: [null, new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
+            3: [null, new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
+            4: [null, new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
+            5: [null, new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
+            6: [null, new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
+            7: [null, new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
+            8: [null, new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
         },
         teams: {
             team1: new Set(),
@@ -154,7 +155,7 @@ class GameWorld extends World {
     generateMap(config: typeof Map1) {
         for (let i = 1; i <= config.length; i++) {
             const line = config[i - 1];
-            for (let j = 0; j < line.length; j++) {
+            for (let j = 1; j < line.length; j++) {
                 const tile = line[j];
                 let bitField = 0;
                 const [tileType, addedCharacteristic] = tile.split("-");
@@ -164,8 +165,8 @@ class GameWorld extends World {
                 if (addedCharacteristic === "trench") {
                     bitField |= (1 << 4);
                 }
-                bitField |= (i << tileBitmasks.x);
-                bitField |= (j << tileBitmasks.y);
+                bitField |= (i << TileBitshifts.y);
+                bitField |= (j << TileBitshifts.x);
                 uint16[0] = bitField;
                 this.state.map[i][j] = uint16;
             }
@@ -211,7 +212,7 @@ class GameWorld extends World {
             y: member.initialPosition.y,
         });
 
-        const mapCell = this.state.map[y][x];
+        const mapCell = this.state.map[y][x - 1];
 
         if (mapCell & tileBitmasks.occupation) {
             throw new Error("Tile is already occupied");
@@ -219,9 +220,11 @@ class GameWorld extends World {
 
         this.state.map[y][x][0] |= Teams[team];
 
-        entity.addComponent({
-            type: "Battling"
-        });
+        if (team === "team1") {
+            entity.addComponent({
+                type: "Movable"
+            });
+        }
 
         const entitySkillDict: { [k: string]: Set<Component> } = {};
 

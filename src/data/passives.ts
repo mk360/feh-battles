@@ -528,6 +528,16 @@ const PASSIVES: PassivesDict = {
             }
         },
     },
+    "Obstruct 1": {
+        description: "If unit's HP ≥ 90%, foes cannot move through spaces adjacent to unit. (Does not affect foes with Pass skills.)",
+        slot: "B",
+        onTurnEnemyCheckRange(state, ally) {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP >= 0.9) {
+                
+            }
+        },
+    },
     "Dazzling Staff 1": {
         allowedWeaponTypes: ["staff"],
         slot: "B",

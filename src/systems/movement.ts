@@ -3,10 +3,12 @@ import tileBitmasks from "../data/tile-bitmasks";
 import getAllies from "../utils/get-allies";
 import getEnemies from "../utils/get-enemies";
 import GameState from "./state";
+import Map1 from "../data/maps/map1.json";
 import TileTypes from "../data/tile-types";
 import canReachTile from "./can-reach-tile";
 import getSurroundings from "./get-surroundings";
 import PASSIVES from "../data/passives";
+import TileBitshifts from "../data/tile-bitshifts";
 
 class MovementSystem extends System {
     private obstructQuery: Query;
@@ -25,12 +27,13 @@ class MovementSystem extends System {
         this.state.tiles.getComponents("AttackTile").forEach((c) => this.state.tiles.removeComponent(c));
         this.state.tiles.getComponents("AssistTile").forEach((c) => this.state.tiles.removeComponent(c));
         const [unit] = this.createQuery().fromAll("Movable").execute();
-        const { bitfield: sideBitfield } = unit.getOne("Side");
-        const { bitfield: mvtBitfield } = unit.getOne("Side");
+        
         const { x, y } = unit.getOne("Position");
-        const walkMap = new Set<Uint16Array>();
+        const walkableTiles = new Set<Uint16Array>();
         const allies = getAllies(this.state, unit);
         const obstructors = getEnemies(this.state, unit);
+        const obstructedTiles = new Set<Uint16Array>();
+
         for (let ally of allies) {
             if (this.state.skillMap.get(ally).onTurnAllyCheckRange) {
                 for (let skill of this.state.skillMap.get(ally).onTurnAllyCheckRange) {
@@ -38,36 +41,66 @@ class MovementSystem extends System {
                     skillData.onTurnAllyCheckRange.call(skill, this.state, unit);
                 }
             }
-        }
+        }        
+
         if (!unit.getOne("Pass")) {
             for (let obstructor of obstructors) {
-                if (this.state.skillMap.get(obstructor).onTurnAllyCheckRange) {
+                if (this.state.skillMap.get(obstructor)?.onTurnAllyCheckRange) {
                     for (let skill of this.state.skillMap.get(obstructor).onTurnEnemyCheckRange) {
+
                     }
                 }
             }
         }
+
+        this.getMovementTiles(unit, x, y, walkableTiles);
+
+        walkableTiles.forEach(([t]) => {
+            const x = (t >> TileBitshifts.x) & 0b111;
+            const y = (t >> TileBitshifts.y) & 0b111;
+        });
     }
 
-    geTileCost(hero: Entity, tile: Uint16Array) {
+    geTileCost(hero: Entity, tile: Uint16Array, pathfinder: Uint16Array[]) {
         const [tileBitfield] = tile;
+
+        if (pathfinder.includes(tile)) {
+            return 0;
+        }
+
         const movementType = hero.getOne("MovementType");
         if ((tileBitfield & TileTypes.forest) && movementType.value === "infantry") {
             return 2;
         }
 
-        if ((tileBitfield & tileBitmasks.trench) && movementType.value === "cavalry") {
+        if ((tileBitfield >> TileBitshifts.trench) && movementType.value === "cavalry") {
             return 3;
         }
 
         return 1;
     }
 
-    getMovementTiles(hero: Entity, checkedX: number, checkedY: number, range?: number) {
+    getMovementTiles(hero: Entity, checkedX: number, checkedY: number, collectedTiles: Set<Uint16Array>, range?: number) {
         let finalRange = range ?? this.getFinalMovementRange(hero);
-        const collectedTiles = new Set<Uint16Array>(this.state.map[checkedY][checkedX]);
-        // y >> 3
-        // x & 111
+        console.log({ finalRange });
+        const surroundings = getSurroundings(this.state.map, checkedY, checkedX, collectedTiles);
+        const validTiles = Array.from(surroundings).filter((tile) => {
+            return canReachTile(hero, tile);
+        });
+
+        for (let tile of validTiles) {
+            collectedTiles.add(tile);
+        }
+
+        console.log({ collectedTiles });
+
+        if (finalRange > 1 && validTiles.length) {
+            for (let tile of validTiles) {
+                const y = (tile[0] >> TileBitshifts.y) & 0b111;
+                const x = (tile[0] >> TileBitshifts.x) & 0b111;
+                this.getMovementTiles(hero, x, y, collectedTiles, finalRange - 1);
+            }
+        }
     }
 
     getFinalMovementRange(unit: Entity): number {

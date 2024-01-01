@@ -14,10 +14,6 @@ const tileBitmasks = {
         void: 0b10
     },
     occupation: 0b110000,
-    trench: 1 << 12,
-    defensiveTile: 1 << 13,
-    x: 0b111 << 6,
-    y: 0b111 << 9
 } as const;
 
 export default tileBitmasks;

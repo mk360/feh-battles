@@ -21,8 +21,8 @@ world.initiate({
         },
         rarity: 5,
         initialPosition: {
-            x: 2,
-            y: 3
+            x: 1,
+            y: 1
         }
     }],
     team2: [{
@@ -38,12 +38,10 @@ world.initiate({
         },
         rarity: 5,
         initialPosition: {
-            x: 2,
-            y: 5
+            x: 6,
+            y: 8
         }
     }]
 });
 
-// console.time("combat");
-// world.runSystems("combat");
-// console.timeEnd("combat");
+world.runSystems("movement");

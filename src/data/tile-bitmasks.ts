@@ -8,7 +8,7 @@
 
 const tileBitmasks = {
     type: {
-        floor: 0b1111,
+        ground: 0b1111,
         wall: 0,
         forest: 0b111,
         void: 0b10

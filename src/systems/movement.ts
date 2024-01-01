@@ -4,7 +4,6 @@ import getAllies from "../utils/get-allies";
 import getEnemies from "../utils/get-enemies";
 import GameState from "./state";
 import Map1 from "../data/maps/map1.json";
-import TileTypes from "../data/tile-types";
 import canReachTile from "./can-reach-tile";
 import getSurroundings from "./get-surroundings";
 import PASSIVES from "../data/passives";
@@ -27,7 +26,7 @@ class MovementSystem extends System {
         this.state.tiles.getComponents("AttackTile").forEach((c) => this.state.tiles.removeComponent(c));
         this.state.tiles.getComponents("AssistTile").forEach((c) => this.state.tiles.removeComponent(c));
         const [unit] = this.createQuery().fromAll("Movable").execute();
-        
+
         const { x, y } = unit.getOne("Position");
         const walkableTiles = new Set<Uint16Array>();
         const allies = getAllies(this.state, unit);
@@ -41,7 +40,7 @@ class MovementSystem extends System {
                     skillData.onTurnAllyCheckRange.call(skill, this.state, unit);
                 }
             }
-        }        
+        }
 
         if (!unit.getOne("Pass")) {
             for (let obstructor of obstructors) {
@@ -69,7 +68,7 @@ class MovementSystem extends System {
         }
 
         const movementType = hero.getOne("MovementType");
-        if ((tileBitfield & TileTypes.forest) && movementType.value === "infantry") {
+        if ((tileBitfield & tileBitmasks.type.forest) && movementType.value === "infantry") {
             return 2;
         }
 

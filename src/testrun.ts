@@ -1,5 +1,6 @@
 import GameWorld from "./world";
 import Map1 from "./data/maps/map1.json";
+import Debugger from "./debugger";
 
 const world = new GameWorld({
     trackChanges: true
@@ -45,3 +46,10 @@ world.initiate({
 });
 
 world.runSystems("movement");
+
+const debug = new Debugger(world);
+
+debug.drawMap({
+    includeUnits: true,
+    highlightTiles: new Set()
+})

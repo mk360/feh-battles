@@ -34,7 +34,6 @@ import SlowSpecial from "./components/slow-special";
 import BraveWeapon from "./components/brave-weapon";
 import PreventCounterattack from "./components/prevent-counterattack";
 import Map1 from "./data/maps/map1.json";
-import TileTypes from "./data/tile-types";
 import SkillInteractionSystem from "./systems/skill-interaction";
 import PreventTargetLowestDefense from "./components/prevent-target-lowest-defense";
 import GuaranteedFollowup from "./components/guaranteed-followup";
@@ -153,22 +152,29 @@ class GameWorld extends World {
     }
 
     generateMap(config: typeof Map1) {
-        for (let i = 1; i <= config.length; i++) {
-            const line = config[i - 1];
-            for (let j = 1; j < line.length; j++) {
-                const tile = line[j];
+        for (let y = 1; y <= config.length; y++) {
+            const line = config[y - 1];
+            for (let x = 0; x < line.length; x++) {
+                const tile = line[x];
                 let bitField = 0;
-                const [tileType, addedCharacteristic] = tile.split("-");
+                const [tileType, ...addedCharacteristics] = tile.split("-");
                 const uint16 = new Uint16Array(1);
                 // initial 4 bits determine tile type
-                bitField |= TileTypes[tileType as keyof typeof TileTypes];
-                if (addedCharacteristic === "trench") {
-                    bitField |= (1 << 4);
+                bitField |= tileBitmasks.type[tileType as keyof typeof tileBitmasks.type];
+
+                for (let addedCharacteristic of addedCharacteristics) {
+                    if (addedCharacteristic === "trench") {
+                        bitField |= 1 << TileBitshifts.trench;
+                    }
+                    if (addedCharacteristic === "defensive") {
+                        bitField |= 1 << TileBitshifts.defensiveTile;
+                    }
                 }
-                bitField |= (i << TileBitshifts.y);
-                bitField |= (j << TileBitshifts.x);
+
+                bitField |= ((y - 1) << TileBitshifts.y);
+                bitField |= (x << TileBitshifts.x);
                 uint16[0] = bitField;
-                this.state.map[i][j] = uint16;
+                this.state.map[y][x + 1] = uint16;
             }
         }
     };

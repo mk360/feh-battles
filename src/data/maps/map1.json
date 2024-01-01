@@ -5,6 +5,28 @@
         "ground",
         "void",
         "void",
+        "void"
+    ],
+    [
+        "ground",
+        "ground-trench",
+        "ground",
+        "void",
+        "void",
+        "void"
+    ],
+    [
+        "ground",
+        "ground-trench",
+        "ground",
+        "ground",
+        "void",
+        "void"
+    ],
+    [
+        "ground",
+        "ground-trench",
+        "ground",
         "void",
         "void",
         "void"
@@ -15,6 +37,12 @@
         "ground",
         "void",
         "void",
+        "void"
+    ],
+    [
+        "ground",
+        "ground-trench",
+        "ground",
         "void",
         "void",
         "void"
@@ -23,60 +51,16 @@
         "ground",
         "ground-trench",
         "ground",
-        "ground",
         "void",
         "void",
-        "void",
-        "ground"
+        "void"
     ],
     [
         "ground",
-        "ground-trench",
+        "ground-trench-defensive",
         "ground",
         "void",
         "void",
-        "void",
-        "void",
-        "ground"
-    ],
-    [
-        "ground",
-        "ground-trench",
-        "ground",
-        "void",
-        "void",
-        "void",
-        "void",
-        "ground"
-    ],
-    [
-        "ground",
-        "ground-trench",
-        "ground",
-        "void",
-        "void",
-        "void",
-        "void",
-        "ground"
-    ],
-    [
-        "ground",
-        "ground-trench",
-        "ground",
-        "void",
-        "void",
-        "void",
-        "void",
-        "ground"
-    ],
-    [
-        "ground",
-        "ground-trench",
-        "ground",
-        "void",
-        "void",
-        "void",
-        "void",
-        "ground"
+        "void"
     ]
 ]

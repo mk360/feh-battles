@@ -82,8 +82,8 @@ class MovementSystem extends System {
 
     getMovementTiles(hero: Entity, checkedX: number, checkedY: number, collectedTiles: Set<Uint16Array>, range?: number) {
         let finalRange = range ?? this.getFinalMovementRange(hero);
-        console.log({ finalRange });
         const surroundings = getSurroundings(this.state.map, checkedY, checkedX, collectedTiles);
+
         const validTiles = Array.from(surroundings).filter((tile) => {
             return canReachTile(hero, tile);
         });
@@ -92,12 +92,11 @@ class MovementSystem extends System {
             collectedTiles.add(tile);
         }
 
-        if (finalRange > 1 && validTiles.length) {
-            for (let tile of validTiles) {
-                const y = (tile[0] >> TileBitshifts.y) & 0b111;
-                const x = (tile[0] >> TileBitshifts.x) & 0b111;
-                this.getMovementTiles(hero, x, y, collectedTiles, finalRange - 1);
-            }
+        for (let tile of validTiles) {
+            const y = (tile[0] >> TileBitshifts.y) & 0b111;
+            const x = (tile[0] >> TileBitshifts.x) & 0b111;
+            // console.log({ x, y, finalRange });
+            // this.getMovementTiles(hero, x, y, collectedTiles, finalRange - 1);
         }
     }
 

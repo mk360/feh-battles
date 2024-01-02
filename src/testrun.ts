@@ -49,7 +49,11 @@ world.runSystems("movement");
 
 const debug = new Debugger(world);
 
+const s = new Set<Uint16Array>();
+
+s.add(world.state.map[1][1]);
+
 debug.drawMap({
     includeUnits: true,
-    highlightTiles: new Set()
+    highlightTiles: s
 })

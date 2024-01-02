@@ -3,6 +3,7 @@ import { table } from "table";
 import tileBitmasks from "./data/tile-bitmasks";
 import Map1 from "./data/maps/map1.json";
 import TileBitshifts from "./data/tile-bitshifts";
+import chalk from "chalk";
 
 class Debugger {
     private world: GameWorld;
@@ -62,7 +63,8 @@ class Debugger {
             for (let x = 0; x < 6; x++) {
                 const tile = this.world.state.map[y + 1][x + 1] as Uint16Array;
                 const decoded = this.decodeTile(tile);
-                rows[y].push(decoded.type);
+                const formattedDecodedType = options.highlightTiles.has(tile) ? chalk.bgBlue("  " + decoded.type + "  ") : "  " + decoded.type + "  ";
+                rows[y].push(formattedDecodedType);
             }
         }
 

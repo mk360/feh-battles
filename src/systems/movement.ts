@@ -46,7 +46,7 @@ class MovementSystem extends System {
             for (let obstructor of obstructors) {
                 if (this.state.skillMap.get(obstructor)?.onTurnAllyCheckRange) {
                     for (let skill of this.state.skillMap.get(obstructor).onTurnEnemyCheckRange) {
-
+                        
                     }
                 }
             }
@@ -57,7 +57,7 @@ class MovementSystem extends System {
         const deb = new Debugger(this.world as GameWorld);
         deb.drawMap({
             includeUnits: false,
-            highlightTiles: new Set(tiles),
+            highlightTiles: tiles,
         });
     }
 
@@ -82,11 +82,10 @@ class MovementSystem extends System {
 
     getMovementTiles(hero: Entity, checkedTile?: Uint16Array, remainingRange?: number) {
         const finalRange = remainingRange ?? this.getFinalMovementRange(hero);
-        console.log({ checkedTile });
         const checkedY = (checkedTile[0] >> TileBitshifts.y) & 7;
         const checkedX = (checkedTile[0] >> TileBitshifts.x) & 7;
 
-        let tiles: Uint16Array[] = [checkedTile];
+        const tiles = new Set<Uint16Array>().add(checkedTile);
 
         const surroundings = getSurroundings(this.state.map, checkedY + 1, checkedX + 1, new Set(tiles));
 
@@ -97,12 +96,17 @@ class MovementSystem extends System {
             return canCross && canReach;
         });
 
-        tiles = tiles.concat(validSurroundings);
+        for (const nextTile of validSurroundings) {
+            tiles.add(nextTile);
+        }
 
-        if (finalRange && finalRange > 0) {
+        if (finalRange > 0) {
             for (const nextTile of validSurroundings) {
                 const nextRemainingRange = finalRange - this.getTileCost(hero, nextTile, []);
-                tiles = tiles.concat(this.getMovementTiles(hero, nextTile, nextRemainingRange));
+                const nextMovementTiles = this.getMovementTiles(hero, nextTile, nextRemainingRange);
+                nextMovementTiles.forEach((tile) => {
+                    tiles.add(tile);
+                });
             }
         }
 

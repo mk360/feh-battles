@@ -49,6 +49,7 @@ import MovementSystem from "./systems/movement";
 import tileBitmasks from "./data/tile-bitmasks";
 import ApplyAffinity from "./components/apply-affinity";
 import TileBitshifts from "./data/tile-bitshifts";
+import Obstruct from "./components/obstruct";
 
 interface HeroData {
     name: string;
@@ -130,6 +131,7 @@ class GameWorld extends World {
         this.registerComponent(NeutralizeMapBuffs);
         this.registerComponent(CombatBuff);
         this.registerComponent(Battling);
+        this.registerComponent(Obstruct);
         this.registerComponent(DamageReduction);
         this.registerComponent(PreventCounterattack);
         this.registerComponent(Boon);

@@ -112,7 +112,7 @@ const ASSISTS: AssistsDict = {
         description: "Unit and target ally swap spaces.",
         canApply(state, ally) {
             const firstPosition = this.entity.getOne("TemporaryPosition");
-            const secondPosition = ally.getOne("TemporaryPosition");
+            const secondPosition = ally.getOne("Position");
             const firstMapSlot = state.map[firstPosition.y][firstPosition.x];
             const secondMapSlot = state.map[secondPosition.y][secondPosition.x];
 
@@ -120,7 +120,7 @@ const ASSISTS: AssistsDict = {
         },
         onApply(state, ally) {
             const firstPosition = this.entity.getOne("TemporaryPosition");
-            const secondPosition = ally.getOne("TemporaryPosition");
+            const secondPosition = ally.getOne("Position");
             this.entity.addComponent({
                 type: "Move",
                 x: secondPosition.x,

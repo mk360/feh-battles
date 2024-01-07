@@ -4,6 +4,7 @@ import tileBitmasks from "./data/tile-bitmasks";
 import Map1 from "./data/maps/map1.json";
 import TileBitshifts from "./data/tile-bitshifts";
 import chalk from "chalk";
+import getTileCoordinates from "./systems/get-tile-coordinates";
 
 class Debugger {
     private world: GameWorld;
@@ -21,8 +22,7 @@ class Debugger {
         const tileValue = tile[0];
         const tileType = tileValue & 0b1111;
         let stringTileType = "";
-        const x = (tileValue >> TileBitshifts.x) & 0b111;
-        const y = (tileValue >> TileBitshifts.y) & 0b111;
+        const { x, y } = getTileCoordinates(tile);
 
         for (let i in tileBitmasks.type) {
             if (tileBitmasks.type[i] === tileType) {

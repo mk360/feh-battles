@@ -11,6 +11,8 @@ import { mapBuffByMovementType, honeStat, combatBuffByRange, defiant, breaker, e
 import Characters from "./characters.json";
 import getCombatStats from "../systems/get-combat-stats";
 import CombatTurnOutcome from "../interfaces/combat-turn-outcome";
+import getSurroundings from "../systems/get-surroundings";
+import getTileCoordinates from "../systems/get-tile-coordinates";
 
 interface PassivesDict {
     [k: string]: {
@@ -29,6 +31,7 @@ interface PassivesDict {
         onCombatDefense?(this: Skill, state: GameState, attacker: Entity): void;
         onCombatAfter?(this: Skill, state: GameState, target: Entity): void;
         onTurnStart?(this: Skill, state: GameState): void;
+        onCombatRoundAttack?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): void;
         onCombatRoundDefense?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): void;
         onTurnCheckRange?(this: Skill, state: GameState): void;
         onTurnAllyCheckRange?(this: Skill, state: GameState, ally: Entity): void;
@@ -239,6 +242,23 @@ const PASSIVES: PassivesDict = {
             });
         }
     },
+    "Fury 3": {
+        description: "Grants Atk/Spd/Def/Res+3. After combat, deals 6 damage to unit.",
+        slot: "A",
+        onEquip() {
+            const stats = this.entity.getOne("Stats");
+            stats.atk += 3;
+            stats.def += 3;
+            stats.spd += 3;
+            stats.res += 3;
+        },
+        onCombatAfter() {
+            this.entity.addComponent({
+                type: "AfterCombatDamage",
+                value: 6
+            });
+        }
+    },
     "HP +3": {
         description: "Grants HP +3.",
         slot: "A",
@@ -427,23 +447,6 @@ const PASSIVES: PassivesDict = {
             this.entity.getOne("Stats").res += 2;
         }
     },
-    "Fury 3": {
-        description: "Grants Atk/Spd/Def/Res+3. After combat, deals 6 damage to unit.",
-        slot: "A",
-        onEquip() {
-            const stats = this.entity.getOne("Stats");
-            stats.atk += 3;
-            stats.def += 3;
-            stats.spd += 3;
-            stats.res += 3;
-        },
-        onCombatAfter() {
-            this.entity.addComponent({
-                type: "AfterCombatDamage",
-                value: 6
-            });
-        }
-    },
     "Close Def 1": {
         description: "If foe initiates combat and uses sword, lance, axe, dragonstone, or beast damage, grants Def/Res+2 during combat.",
         slot: "A",
@@ -528,13 +531,103 @@ const PASSIVES: PassivesDict = {
             }
         },
     },
+    "Guard 1": {
+        slot: "B",
+        description: "At start of combat, if unit's HP = 100%, inflicts Special cooldown charge -1 on foe per attack. (Only highest value applied. Does not stack.)",
+        onCombatStart() {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp === maxHP) {
+                this.entity.addComponent({
+                    type: "SlowSpecial"
+                });
+            }
+        }
+    },
+    "Guard 2": {
+        slot: "B",
+        description: "At start of combat, if unit's HP ≥ 90%, inflicts Special cooldown charge -1 on foe per attack. (Only highest value applied. Does not stack.)",
+        onCombatStart() {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP >= 0.9) {
+                this.entity.addComponent({
+                    type: "SlowSpecial"
+                });
+            }
+        }
+    },
+    "Guard 3": {
+        slot: "B",
+        description: "At start of combat, if unit's HP ≥ 80%, inflicts Special cooldown charge -1 on foe per attack. (Only highest value applied. Does not stack.)",
+        onCombatStart() {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP >= 0.8) {
+                this.entity.addComponent({
+                    type: "SlowSpecial"
+                });
+            }
+        }
+    },
+    "Wrath 1": {
+        slot: "B",
+        description: "At start of turn, if unit's HP ≤ 25% and unit's attack can trigger their Special, grants Special cooldown count-1, and deals +10 damage when Special triggers.",
+        onCombatRoundAttack() {
+            
+        }
+    },
     "Obstruct 1": {
         description: "If unit's HP ≥ 90%, foes cannot move through spaces adjacent to unit. (Does not affect foes with Pass skills.)",
         slot: "B",
-        onTurnEnemyCheckRange(state, ally) {
+        onTurnEnemyCheckRange(state) {
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp / maxHP >= 0.9) {
-                
+                const { x, y } = this.entity.getOne("Position");
+                const surroundings = getSurroundings(state.map, y, x);
+                for (let tile of surroundings) {
+                    const { x: tileX, y: tileY } = getTileCoordinates(tile);
+                    this.entity.addComponent({
+                        type: "Obstruct",
+                        x: tileX,
+                        y: tileY
+                    });
+                }
+            }
+        },
+    },
+    "Obstruct 2": {
+        description: "If unit's HP ≥ 70%, foes cannot move through spaces adjacent to unit. (Does not affect foes with Pass skills.)",
+        slot: "B",
+        onTurnEnemyCheckRange(state) {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP >= 0.7) {
+                const { x, y } = this.entity.getOne("Position");
+                const surroundings = getSurroundings(state.map, y, x);
+                for (let tile of surroundings) {
+                    const { x: tileX, y: tileY } = getTileCoordinates(tile);
+                    this.entity.addComponent({
+                        type: "Obstruct",
+                        x: tileX,
+                        y: tileY
+                    });
+                }
+            }
+        },
+    },
+    "Obstruct 3": {
+        description: "If unit's HP ≥ 50%, foes cannot move through spaces adjacent to unit. (Does not affect foes with Pass skills.)",
+        slot: "B",
+        onTurnEnemyCheckRange(state) {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP >= 0.5) {
+                const { x, y } = this.entity.getOne("Position");
+                const surroundings = getSurroundings(state.map, y, x);
+                for (let tile of surroundings) {
+                    const { x: tileX, y: tileY } = getTileCoordinates(tile);
+                    this.entity.addComponent({
+                        type: "Obstruct",
+                        x: tileX,
+                        y: tileY
+                    });
+                }
             }
         },
     },
@@ -572,6 +665,81 @@ const PASSIVES: PassivesDict = {
             this.entity.addComponent({
                 type: "PreventCounterattack"
             });
+        }
+    },
+    "Wrathful Staff 1": {
+        allowedWeaponTypes: ["staff"],
+        description: "At start of combat, if unit's HP = 100%, calculates damage from staff like other weapons.",
+        onCombatStart() {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp === maxHP) {
+                this.entity.addComponent({
+                    type: "NormalizeStaffDamage"
+                });
+            }
+        },
+        slot: "B",
+    },
+    "Wrathful Staff 2": {
+        allowedWeaponTypes: ["staff"],
+        description: "At start of combat, if unit's HP = 100%, calculates damage from staff like other weapons.",
+        onCombatStart() {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP >= 0.5) {
+                this.entity.addComponent({
+                    type: "NormalizeStaffDamage"
+                });
+            }
+        },
+        slot: "B",
+    },
+    "Wrathful Staff 3": {
+        allowedWeaponTypes: ["staff"],
+        description: "At start of combat, if unit's HP = 100%, calculates damage from staff like other weapons.",
+        onCombatStart() {
+            this.entity.addComponent({
+                type: "NormalizeStaffDamage"
+            });
+        },
+        slot: "B",
+    },
+    "Vantage 1": {
+        slot: "B",
+        description: "If unit's HP ≤ 25% and foe initiates combat, unit can counterattack before foe's first attack.",
+        onCombatDefense() {
+            const { maxHP, hp } = this.entity.getOne("Stats");
+
+            if (hp / maxHP <= 0.25) {
+                this.entity.addComponent({
+                    type: "Vantage"
+                });
+            }
+        }
+    },
+    "Vantage 2": {
+        slot: "B",
+        description: "If unit's HP ≤ 50% and foe initiates combat, unit can counterattack before foe's first attack.",
+        onCombatDefense() {
+            const { maxHP, hp } = this.entity.getOne("Stats");
+
+            if (hp / maxHP <= 0.5) {
+                this.entity.addComponent({
+                    type: "Vantage"
+                });
+            }
+        }
+    },
+    "Vantage 3": {
+        slot: "B",
+        description: "If unit's HP ≤ 75% and foe initiates combat, unit can counterattack before foe's first attack.",
+        onCombatDefense() {
+            const { maxHP, hp } = this.entity.getOne("Stats");
+
+            if (hp / maxHP <= 0.75) {
+                this.entity.addComponent({
+                    type: "Vantage"
+                });
+            }
         }
     },
     "Atk/Def Bond 1": {

@@ -3,23 +3,25 @@ import tileBitmasks from "../data/tile-bitmasks";
 import getAllies from "../utils/get-allies";
 import getEnemies from "../utils/get-enemies";
 import GameState from "./state";
-import Map1 from "../data/maps/map1.json";
 import canReachTile from "./can-reach-tile";
 import getSurroundings from "./get-surroundings";
 import PASSIVES from "../data/passives";
 import TileBitshifts from "../data/tile-bitshifts";
 import Debugger from "../debugger";
 import GameWorld from "../world";
+import getTileCoordinates from "./get-tile-coordinates";
 
 class MovementSystem extends System {
-    private obstructQuery: Query;
-    private checkRangeQuery: Query;
     private state: GameState;
+    private pathfinderQuery: Query;
+    private movableQuery: Query;
+    private obstructQuery: Query;
 
     init(state: GameState): void {
         this.state = state;
+        this.pathfinderQuery = this.createQuery().fromAll("Pathfinder");
+        this.movableQuery = this.createQuery().fromAll("Movable");
         this.obstructQuery = this.createQuery().fromAll("Obstruct");
-        this.checkRangeQuery = this.createQuery().from("CheckRange");
     }
 
     update() {
@@ -27,7 +29,7 @@ class MovementSystem extends System {
         this.state.tiles.getComponents("WarpTile").forEach((c) => this.state.tiles.removeComponent(c));
         this.state.tiles.getComponents("AttackTile").forEach((c) => this.state.tiles.removeComponent(c));
         this.state.tiles.getComponents("AssistTile").forEach((c) => this.state.tiles.removeComponent(c));
-        const [unit] = this.createQuery().fromAll("Movable").execute();
+        const [unit] = this.movableQuery.execute();
         const { x, y } = unit.getOne("Position");
         const allies = getAllies(this.state, unit);
         const obstructors = getEnemies(this.state, unit);
@@ -42,6 +44,11 @@ class MovementSystem extends System {
             }
         }
 
+        const pathfinders = allies.filter((ally) => ally.getOne("Pathfinder")).map((pathfinder) => {
+            const { x, y } = pathfinder.getOne("Position");
+            return this.state.map[y][x];
+        }) as Uint16Array[];
+
         if (!unit.getOne("Pass")) {
             for (let obstructor of obstructors) {
                 if (this.state.skillMap.get(obstructor)?.onTurnAllyCheckRange) {
@@ -52,7 +59,9 @@ class MovementSystem extends System {
             }
         }
 
-        const tiles = this.getMovementTiles(unit, this.state.map[y][x]);
+        console.time("perf movement tiles");
+        const tiles = this.getMovementTiles(unit, this.state.map[y][x], pathfinders);
+        console.timeEnd("perf movement tiles");
 
         const deb = new Debugger(this.world as GameWorld);
         deb.drawMap({
@@ -69,7 +78,7 @@ class MovementSystem extends System {
         }
 
         const movementType = hero.getOne("MovementType");
-        if ((tileBitfield & tileBitmasks.type.forest) && movementType.value === "infantry") {
+        if ((tileBitfield & 0b1111) === tileBitmasks.type.forest && movementType.value === "infantry") {
             return 2;
         }
 
@@ -80,18 +89,19 @@ class MovementSystem extends System {
         return 1;
     }
 
-    getMovementTiles(hero: Entity, checkedTile?: Uint16Array, remainingRange?: number) {
+    // thank you chatgpt
+    getMovementTiles(hero: Entity, checkedTile: Uint16Array, pathfinderTiles: Uint16Array[], remainingRange?: number) {
         const finalRange = remainingRange ?? this.getFinalMovementRange(hero);
-        const checkedY = (checkedTile[0] >> TileBitshifts.y) & 7;
-        const checkedX = (checkedTile[0] >> TileBitshifts.x) & 7;
+        if (!finalRange) return new Set<Uint16Array>();
+        const { x: checkedX, y: checkedY } = getTileCoordinates(checkedTile);
 
         const tiles = new Set<Uint16Array>().add(checkedTile);
 
-        const surroundings = getSurroundings(this.state.map, checkedY + 1, checkedX + 1, new Set(tiles));
+        const surroundings = getSurroundings(this.state.map, checkedY + 1, checkedX + 1, tiles);
 
         const validSurroundings = surroundings.filter((tile) => {
             const canReach = canReachTile(hero, tile);
-            const cost = this.getTileCost(hero, tile, []);
+            const cost = this.getTileCost(hero, tile, pathfinderTiles);
             const canCross = cost <= finalRange;
             return canCross && canReach;
         });
@@ -102,8 +112,8 @@ class MovementSystem extends System {
 
         if (finalRange > 0) {
             for (const nextTile of validSurroundings) {
-                const nextRemainingRange = finalRange - this.getTileCost(hero, nextTile, []);
-                const nextMovementTiles = this.getMovementTiles(hero, nextTile, nextRemainingRange);
+                const nextRemainingRange = finalRange - this.getTileCost(hero, nextTile, pathfinderTiles);
+                const nextMovementTiles = this.getMovementTiles(hero, nextTile, pathfinderTiles, nextRemainingRange);
                 nextMovementTiles.forEach((tile) => {
                     tiles.add(tile);
                 });

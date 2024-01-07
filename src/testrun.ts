@@ -10,7 +10,7 @@ world.generateMap(Map1);
 
 world.initiate({
     team1: [{
-        name: "Berkut: Prideful Prince",
+        name: "Subaki: Perfect Expert",
         weapon: "Silver Lance",
         skills: {
             assist: null,

@@ -2,13 +2,20 @@
   "compileOnSave": true,
   "compilerOptions": {
     "module": "CommonJS",
-    "lib": ["ES2016", "ES7"],
-    "target": "ES5",
+    "lib": [
+      "ES2016",
+      "ES7"
+    ],
+    "resolveJsonModule": true,
+    "target": "ES6",
+    "downlevelIteration": true,
     "esModuleInterop": true,
     "declaration": true,
     "declarationMap": true,
-    "declarationDir": "dec",
+    "declarationDir": "./dec",
     "rootDir": "./src",
     "outDir": "./lib"
-  }
+  },
+  "include": ["./src"],
+  "exclude": ["./src/__tests__"]
 }

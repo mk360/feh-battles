@@ -1,0 +1,1482 @@
+[
+    {
+        "WeaponName": "Sol Katti",
+        "CanUseWeapon": [
+            "Red Sword"
+        ],
+        "Exclusive": 1,
+        "Hero": "Lyn: Lady of the Plains",
+        "Description": "If unit's HP ≤ 50% and unit initiates combat, unit can make a follow-up attack before foe can counterattack.",
+        "Might": 16
+    },
+    {
+        "WeaponName": "Nóatún",
+        "CanUseWeapon": [
+            "Green Axe"
+        ],
+        "Exclusive": 1,
+        "Hero": "Anna: Commander",
+        "Description": "If unit's HP ≤ 40%, unit can move to a space adjacent to any ally.",
+        "Might": 16
+    },
+    {
+        "WeaponName": "Gronnraven",
+        "CanUseWeapon": [
+            "Green Tome"
+        ],
+        "Exclusive": 0,
+        "Hero": "Cecilia: Etrurian General",
+        "Description": "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
+        "Might": 7
+    },
+    {
+        "WeaponName": "Gronnraven+",
+        "CanUseWeapon": [
+            "Green Tome"
+        ],
+        "Exclusive": 0,
+        "Hero": "Cecilia: Etrurian General",
+        "Description": "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
+        "Might": 11
+    },
+    {
+        "WeaponName": "Assault",
+        "CanUseWeapon": [
+            "Colorless Staff"
+        ],
+        "Exclusive": 0,
+        "Hero": "Elise: Budding Flower",
+        "Description": null,
+        "Might": 10
+    },
+    {
+        "WeaponName": "Gravity",
+        "CanUseWeapon": [
+            "Colorless Staff"
+        ],
+        "Exclusive": 0,
+        "Hero": "Elise: Budding Flower",
+        "Description": "After combat, if unit attacked, inflicts status on foe restricting movement to 1 space through its next action.",
+        "Might": 6
+    },
+    {
+        "WeaponName": "Gravity+",
+        "CanUseWeapon": [
+            "Colorless Staff"
+        ],
+        "Exclusive": 0,
+        "Hero": "Elise: Budding Flower",
+        "Description": "After combat, if unit attacked, inflicts status on target and foes within 1 space of target restricting movement to 1 space through their next actions.",
+        "Might": 10
+    },
+    {
+        "WeaponName": "Elise's Staff",
+        "CanUseWeapon": [
+            "Colorless Staff"
+        ],
+        "Exclusive": 1,
+        "Hero": "Elise: Budding Flower",
+        "Description": "Grants Spd+3. Calculates damage from staff like other weapons. After combat, if unit attacked, inflicts \u3010Gravity\u3011on target and foes within 1 space of target. &lt;br>&lt;br>\u3010Gravity\u3011&lt;br>Restricts target's movement to 1 space through its next action.",
+        "Might": 14
+    },
+    {
+        "WeaponName": "Dark Breath",
+        "CanUseWeapon": [
+            "Red Breath",
+            "  Blue Breath",
+            "  Green Breath",
+            "  Colorless Breath"
+        ],
+        "Exclusive": 0,
+        "Hero": "Corrin: Fateful Princess",
+        "Description": "If unit initiates combat, inflicts Atk/Spd-5 on foes within 2 spaces of target through their next actions after combat.",
+        "Might": 9
+    },
+    {
+        "WeaponName": "Dark Breath+",
+        "CanUseWeapon": [
+            "Red Breath",
+            "  Blue Breath",
+            "  Green Breath",
+            "  Colorless Breath"
+        ],
+        "Exclusive": 0,
+        "Hero": "Corrin: Fateful Princess",
+        "Description": "If unit initiates combat, inflicts Atk/Spd-5 on foes within 2 spaces of target through their next actions after combat.",
+        "Might": 13
+    },
+    {
+        "WeaponName": "Gloom Breath",
+        "CanUseWeapon": [
+            "Red Breath",
+            "  Blue Breath",
+            "  Green Breath",
+            "  Colorless Breath"
+        ],
+        "Exclusive": 1,
+        "Hero": "Corrin: Fateful Princess",
+        "Description": "At start of turn, inflicts Atk/Spd-7 on foes within 2 spaces through their next actions. After combat, if unit attacked, inflicts Atk/Spd-7 on target and foes within 2 spaces of target through their next actions. If foe's Range = 2, calculates damage using the lower of foe's Def or Res.",
+        "Might": 16
+    },
+    {
+        "WeaponName": "Jakob's Tray",
+        "CanUseWeapon": [
+            "Red Dagger",
+            "  Blue Dagger",
+            "  Green Dagger",
+            "  Colorless Dagger"
+        ],
+        "Exclusive": 1,
+        "Hero": "Jakob: Devoted Servant",
+        "Description": "If unit initiates combat, inflicts Atk/Spd/Def/Res-4 on foe during combat.&lt;br>Effect:\u3010Dagger \uff17\u3011&lt;br>&lt;br>\u3010Dagger \uff17\u3011&lt;br>After combat, if unit attacked, inflicts Def/Res-\uff17 on target and foes within 2 spaces of target through their next actions.",
+        "Might": 14
+    },
+    {
+        "WeaponName": "Laslow's Blade",
+        "CanUseWeapon": [
+            "Red Sword"
+        ],
+        "Exclusive": 1,
+        "Hero": "Laslow: Dancing Duelist",
+        "Description": "If a movement Assist skill (like Reposition, Shove, Pivot, etc.) is used by unit or targets unit, grants Atk/Spd/Def/Res+4 to target or targeting ally and allies within 2 spaces of unit and target or targeting ally for 1 turn after movement. (Excludes unit.)",
+        "Might": 16
+    },
+    {
+        "WeaponName": "Poison Dagger",
+        "CanUseWeapon": [
+            "Red Dagger",
+            "  Blue Dagger",
+            "  Green Dagger",
+            "  Colorless Dagger"
+        ],
+        "Exclusive": 0,
+        "Hero": "Kagero: Honorable Ninja",
+        "Description": "Effective against infantry foes.&lt;br>After combat, if unit attacked, inflicts Def/Res-4 on infantry foe through its next action.",
+        "Might": 2
+    },
+    {
+        "WeaponName": "Poison Dagger+",
+        "CanUseWeapon": [
+            "Red Dagger",
+            "  Blue Dagger",
+            "  Green Dagger",
+            "  Colorless Dagger"
+        ],
+        "Exclusive": 0,
+        "Hero": "Kagero: Honorable Ninja",
+        "Description": "Effective against infantry foes.&lt;br />After combat, if unit attacked, inflicts Def/Res-6 on infantry foe through its next action.",
+        "Might": 5
+    },
+    {
+        "WeaponName": "Kagero's Dart",
+        "CanUseWeapon": [
+            "Red Dagger",
+            "  Blue Dagger",
+            "  Green Dagger",
+            "  Colorless Dagger"
+        ],
+        "Exclusive": 1,
+        "Hero": "Kagero: Honorable Ninja",
+        "Description": "At start of combat, if unit's Atk > foe's Atk, grants Atk/Spd+4 during combat.&lt;br>Effect:\u3010Dagger \uff17\u3011&lt;br>&lt;br>\u3010Dagger \uff17\u3011&lt;br>After combat, if unit attacked, inflicts Def/Res-\uff17 on target and foes within 2 spaces of target through their next actions.",
+        "Might": 14
+    },
+    {
+        "WeaponName": "Inveterate Axe",
+        "CanUseWeapon": [
+            "Green Axe"
+        ],
+        "Exclusive": 1,
+        "Hero": "Gunter: Inveterate Soldier",
+        "Description": "At start of turn, if unit's HP ≥ 50%, inflicts Atk/Def-5 on foe on the enemy team with the lowest Spd through its next action.",
+        "Might": 16
+    },
+    {
+        "WeaponName": "Brynhildr",
+        "CanUseWeapon": [
+            "Red Tome"
+        ],
+        "Exclusive": 1,
+        "Hero": "Leo: Sorcerous Prince",
+        "Description": "If unit initiates combat, inflicts status on foe restricting movement to 1 space through its next action.",
+        "Might": 14
+    },
+    {
+        "WeaponName": "Fear",
+        "CanUseWeapon": [
+            "Colorless Staff"
+        ],
+        "Exclusive": 0,
+        "Hero": "Sakura: Loving Priestess",
+        "Description": "After combat, if unit attacked, inflicts Atk-6 on foe through its next action.",
+        "Might": 5
+    },
+    {
+        "WeaponName": "Fear+",
+        "CanUseWeapon": [
+            "Colorless Staff"
+        ],
+        "Exclusive": 0,
+        "Hero": "Sakura: Loving Priestess",
+        "Description": "After combat, if unit attacked, inflicts Atk-7 on target and foes within 2 spaces of target through their next actions.",
+        "Might": 12
+    },
+    {
+        "WeaponName": "Golden Naginata",
+        "CanUseWeapon": [
+            "Blue Lance"
+        ],
+        "Exclusive": 1,
+        "Hero": "Subaki: Perfect Expert",
+        "Description": "Accelerates Special trigger (cooldown count-1). At start of combat, if foe's Atk ≥ unit's Atk+3, grants Atk/Spd/Def/Res+3 during combat.",
+        "Might": 16
+    },
+    {
+        "WeaponName": "Rogue Dagger",
+        "CanUseWeapon": [
+            "Red Dagger",
+            "  Blue Dagger",
+            "  Green Dagger",
+            "  Colorless Dagger"
+        ],
+        "Exclusive": 0,
+        "Hero": "Gaius: Candy Stealer",
+        "Description": "After combat, if unit attacked, inflicts Def/Res-3 on foe through its next action. Grants unit Def/Res+3 for 1 turn.",
+        "Might": 4
+    },
+    {
+        "WeaponName": "Rogue Dagger+",
+        "CanUseWeapon": [
+            "Red Dagger",
+            "  Blue Dagger",
+            "  Green Dagger",
+            "  Colorless Dagger"
+        ],
+        "Exclusive": 0,
+        "Hero": "Gaius: Candy Stealer",
+        "Description": "After combat, if unit attacked, inflicts Def/Res-5 on foe through its next action. Grants unit Def/Res+5 for 1 turn.",
+        "Might": 7
+    },
+    {
+        "WeaponName": "Candied Dagger",
+        "CanUseWeapon": [
+            "Red Dagger",
+            "  Blue Dagger",
+            "  Green Dagger",
+            "  Colorless Dagger"
+        ],
+        "Exclusive": 1,
+        "Hero": "Gaius: Candy Stealer",
+        "Description": "If unit initiates combat, grants Spd+4 and deals damage = 10% of unit's Spd during combat.&lt;br>Effect:\u3010Dagger \uff17\u3011&lt;br>&lt;br>\u3010Dagger \uff17\u3011&lt;br>After combat, if unit attacked, inflicts Def/Res-\uff17 on target and foes within 2 spaces of target through their next actions.",
+        "Might": 14
+    },
+    {
+        "WeaponName": "Lightning Breath",
+        "CanUseWeapon": [
+            "Red Breath",
+            "  Blue Breath",
+            "  Green Breath",
+            "  Colorless Breath"
+        ],
+        "Exclusive": 0,
+        "Hero": "Nowi: Eternal Youth",
+        "Description": "Slows Special trigger (cooldown count+1).&lt;br>Unit can counterattack regardless of foe's range.",
+        "Might": 7
+    },
+    {
+        "WeaponName": "Lightning Breath+",
+        "CanUseWeapon": [
+            "Red Breath",
+            "  Blue Breath",
+            "  Green Breath",
+            "  Colorless Breath"
+        ],
+        "Exclusive": 0,
+        "Hero": "Nowi: Eternal Youth",
+        "Description": "Slows Special trigger (cooldown count+1).&lt;br>Unit can counterattack regardless of foe's range.",
+        "Might": 11
+    },
+    {
+        "WeaponName": "Purifying Breath",
+        "CanUseWeapon": [
+            "Red Breath",
+            "  Blue Breath",
+            "  Green Breath",
+            "  Colorless Breath"
+        ],
+        "Exclusive": 1,
+        "Hero": "Nowi: Eternal Youth",
+        "Description": "Slows Special trigger (cooldown count+1). Unit can counterattack regardless of foe's range. If foe's Range = 2, calculates damage using the lower of foe's Def or Res.",
+        "Might": 14
+    },
+    {
+        "WeaponName": "Killing Edge",
+        "CanUseWeapon": [
+            "Red Sword"
+        ],
+        "Exclusive": 0,
+        "Hero": "Lon'qu: Solitary Blade",
+        "Description": "Accelerates Special trigger (cooldown count-1).",
+        "Might": 7
+    },
+    {
+        "WeaponName": "Killing Edge+",
+        "CanUseWeapon": [
+            "Red Sword"
+        ],
+        "Exclusive": 0,
+        "Hero": "Lon'qu: Solitary Blade",
+        "Description": "Accelerates Special trigger (cooldown count-1).",
+        "Might": 11
+    },
+    {
+        "WeaponName": "Solitary Blade",
+        "CanUseWeapon": [
+            "Red Sword"
+        ],
+        "Exclusive": 1,
+        "Hero": "Lon'qu: Solitary Blade",
+        "Description": "Accelerates Special trigger (cooldown count-1).",
+        "Might": 16
+    },
+    {
+        "WeaponName": "Dignified Bow",
+        "CanUseWeapon": [
+            "Red Bow",
+            "  Blue Bow",
+            "  Green Bow",
+            "  Colorless Bow"
+        ],
+        "Exclusive": 1,
+        "Hero": "Virion: Elite Archer",
+        "Description": "Effective against flying foes. At start of turn, if any foe's HP ≤ unit's HP-1 and that foe is adjacent to another foe, inflicts\u3010Panic\u3011on that foe.&lt;br>&lt;br>\u3010Panic\u3011&lt;br>Converts bonuses on target into penalties through its next action.",
+        "Might": 14
+    },
+    {
+        "WeaponName": "Absorb",
+        "CanUseWeapon": [
+            "Colorless Staff"
+        ],
+        "Exclusive": 0,
+        "Hero": "Serra: Outspoken Cleric",
+        "Description": "Restores HP = 50% of damage dealt.",
+        "Might": 4
+    },
+    {
+        "WeaponName": "Absorb+",
+        "CanUseWeapon": [
+            "Colorless Staff"
+        ],
+        "Exclusive": 0,
+        "Hero": "Serra: Outspoken Cleric",
+        "Description": "Restores HP = 50% of damage dealt.&lt;br>After combat, if unit attacked, restores 7 HP to allies within 2 spaces of unit.",
+        "Might": 7
+    },
+    {
+        "WeaponName": "Spy's Dagger",
+        "CanUseWeapon": [
+            "Red Dagger",
+            "  Blue Dagger",
+            "  Green Dagger",
+            "  Colorless Dagger"
+        ],
+        "Exclusive": 1,
+        "Hero": "Matthew: Faithful Spy",
+        "Description": "After combat, if unit attacked, grants Def/Res+6 to unit and allies within 2 spaces of unit for 1 turn.&lt;br>Effect:\u3010Dagger \uff16\u3011&lt;br>&lt;br>\u3010Dagger \uff16\u3011&lt;br />After combat, if unit attacked, inflicts Def/Res-\uff16 on target and foes within 2 spaces of target through their next actions.",
+        "Might": 14
+    },
+    {
+        "WeaponName": "Light Breath",
+        "CanUseWeapon": [
+            "Red Breath",
+            "  Blue Breath",
+            "  Green Breath",
+            "  Colorless Breath"
+        ],
+        "Exclusive": 0,
+        "Hero": "Fae: Divine Dragon",
+        "Description": "If unit initiates combat, grants Def/Res+4 to adjacent allies for 1 turn after combat.",
+        "Might": 9
+    },
+    {
+        "WeaponName": "Light Breath+",
+        "CanUseWeapon": [
+            "Red Breath",
+            "  Blue Breath",
+            "  Green Breath",
+            "  Colorless Breath"
+        ],
+        "Exclusive": 0,
+        "Hero": "Fae: Divine Dragon",
+        "Description": "If unit initiates combat, grants Def/Res+4 to adjacent allies for 1 turn after combat.",
+        "Might": 13
+    },
+    {
+        "WeaponName": "Devil Axe",
+        "CanUseWeapon": [
+            "Green Axe"
+        ],
+        "Exclusive": 1,
+        "Hero": "Barst: The Hatchet",
+        "Description": "Grants Atk/Spd/Def/Res+4 during combat, but if unit attacked, deals 4 damage to unit after combat.",
+        "Might": 16
+    },
+    {
+        "WeaponName": "Aura",
+        "CanUseWeapon": [
+            "Blue Tome"
+        ],
+        "Exclusive": 1,
+        "Hero": "Linde: Light Mage",
+        "Description": "If unit initiates combat, restores 5 HP to adjacent allies after combat.",
+        "Might": 14
+    },
+    {
+        "WeaponName": "Gladiator's Blade",
+        "CanUseWeapon": [
+            "Red Sword"
+        ],
+        "Exclusive": 1,
+        "Hero": "Ogma: Loyal Blade",
+        "Description": "If unit's Atk > foe's Atk, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)",
+        "Might": 16
+    },
+    {
+        "WeaponName": "Slow",
+        "CanUseWeapon": [
+            "Colorless Staff"
+        ],
+        "Exclusive": 0,
+        "Hero": "Wrys: Kindly Priest",
+        "Description": "After combat, if unit attacked, inflicts Spd-6 on foe through its next action.",
+        "Might": 5
+    },
+    {
+        "WeaponName": "Slow+",
+        "CanUseWeapon": [
+            "Colorless Staff"
+        ],
+        "Exclusive": 0,
+        "Hero": "Wrys: Kindly Priest",
+        "Description": "After combat, if unit attacked, inflicts Spd-7 on target and foes within 2 spaces of target through their next actions.",
+        "Might": 12
+    },
+    {
+        "WeaponName": "Smoke Dagger",
+        "CanUseWeapon": [
+            "Red Dagger",
+            "  Blue Dagger",
+            "  Green Dagger",
+            "  Colorless Dagger"
+        ],
+        "Exclusive": 0,
+        "Hero": "Saizo: Angry Ninja",
+        "Description": "After combat, if unit attacked, inflicts Def/Res-4 on foes within 2 spaces of target through their next actions.",
+        "Might": 6
+    },
+    {
+        "WeaponName": "Smoke Dagger+",
+        "CanUseWeapon": [
+            "Red Dagger",
+            "  Blue Dagger",
+            "  Green Dagger",
+            "  Colorless Dagger"
+        ],
+        "Exclusive": 0,
+        "Hero": "Saizo: Angry Ninja",
+        "Description": "After combat, if unit attacked, inflicts Def/Res-6 on foes within 2 spaces of target through their next actions.",
+        "Might": 9
+    },
+    {
+        "WeaponName": "Saizo's Star",
+        "CanUseWeapon": [
+            "Red Dagger",
+            "  Blue Dagger",
+            "  Green Dagger",
+            "  Colorless Dagger"
+        ],
+        "Exclusive": 1,
+        "Hero": "Saizo: Angry Ninja",
+        "Description": "After combat, if unit attacked, inflicts Atk/Spd/Def/Res-6 on target and foes within 2 spaces of target through their next actions.",
+        "Might": 14
+    },
+    {
+        "WeaponName": "Runeaxe",
+        "CanUseWeapon": [
+            "Green Axe"
+        ],
+        "Exclusive": 1,
+        "Hero": "Narcian: Wyvern General",
+        "Description": "When unit deals damage to foe during combat, restores 7 HP to unit. (Triggers even if 0 damage is dealt.)",
+        "Might": 16
+    },
+    {
+        "WeaponName": "Cymbeline",
+        "CanUseWeapon": [
+            "Red Tome"
+        ],
+        "Exclusive": 1,
+        "Hero": "Sanaki: Begnion's Apostle",
+        "Description": "If unit initiates combat, grants Atk+4 to adjacent allies for 1 turn after combat.",
+        "Might": 14
+    },
+    {
+        "WeaponName": "Mystletainn",
+        "CanUseWeapon": [
+            "Red Sword"
+        ],
+        "Exclusive": 1,
+        "Hero": "Eldigan: Lionheart",
+        "Description": "Accelerates Special trigger (cooldown count-1).",
+        "Might": 16
+    },
+    {
+        "WeaponName": "Wo Dao",
+        "CanUseWeapon": [
+            "Red Sword"
+        ],
+        "Exclusive": 0,
+        "Hero": "Karel: Sword Demon",
+        "Description": "Deals +10 damage when Special triggers.",
+        "Might": 9
+    },
+    {
+        "WeaponName": "Wo Dao+",
+        "CanUseWeapon": [
+            "Red Sword"
+        ],
+        "Exclusive": 0,
+        "Hero": "Karel: Sword Demon",
+        "Description": "Deals +10 damage when Special triggers.",
+        "Might": 13
+    },
+    {
+        "WeaponName": "Rebecca's Bow",
+        "CanUseWeapon": [
+            "Red Bow",
+            "  Blue Bow",
+            "  Green Bow",
+            "  Colorless Bow"
+        ],
+        "Exclusive": 1,
+        "Hero": "Rebecca: Wildflower",
+        "Description": "Accelerates Special trigger (cooldown count-1). Effective against flying foes.",
+        "Might": 14
+    },
+    {
+        "WeaponName": "Panic",
+        "CanUseWeapon": [
+            "Colorless Staff"
+        ],
+        "Exclusive": 0,
+        "Hero": "Priscilla: Delicate Princess",
+        "Description": "After combat, if unit attacked, converts bonuses on foe into penalties through its next action.",
+        "Might": 7
+    },
+    {
+        "WeaponName": "Panic+",
+        "CanUseWeapon": [
+            "Colorless Staff"
+        ],
+        "Exclusive": 0,
+        "Hero": "Priscilla: Delicate Princess",
+        "Description": "After combat, if unit attacked, converts bonuses on target and foes within 2 spaces of target into penalties through their next actions.",
+        "Might": 11
+    },
+    {
+        "WeaponName": "Deathly Dagger",
+        "CanUseWeapon": [
+            "Red Dagger",
+            "  Blue Dagger",
+            "  Green Dagger",
+            "  Colorless Dagger"
+        ],
+        "Exclusive": 1,
+        "Hero": "Jaffar: Angel of Death",
+        "Description": "After combat, if unit attacked, inflicts Def/Res-7 on foe through its next action.&lt;br>If unit initiates combat, deals 7 damage to foe after combat.",
+        "Might": 11
+    },
+    {
+        "WeaponName": "Pain",
+        "CanUseWeapon": [
+            "Colorless Staff"
+        ],
+        "Exclusive": 0,
+        "Hero": "Lucius: The Light",
+        "Description": "After combat, if unit attacked, deals 10 damage to foe.",
+        "Might": 3
+    },
+    {
+        "WeaponName": "Pain+",
+        "CanUseWeapon": [
+            "Colorless Staff"
+        ],
+        "Exclusive": 0,
+        "Hero": "Lucius: The Light",
+        "Description": "Deals 10 damage to target and foes within 2 spaces of target after combat.",
+        "Might": 10
+    },
+    {
+        "WeaponName": "Carrot Axe",
+        "CanUseWeapon": [
+            "Green Axe"
+        ],
+        "Exclusive": 0,
+        "Hero": "Chrom: Spring Exalt",
+        "Description": "If unit initiates combat, restores 4 HP after combat.",
+        "Might": 9
+    },
+    {
+        "WeaponName": "Carrot Axe+",
+        "CanUseWeapon": [
+            "Green Axe"
+        ],
+        "Exclusive": 0,
+        "Hero": "Chrom: Spring Exalt",
+        "Description": "If unit initiates combat, restores 4 HP after combat.",
+        "Might": 13
+    },
+    {
+        "WeaponName": "Green Egg",
+        "CanUseWeapon": [
+            "Green Tome"
+        ],
+        "Exclusive": 0,
+        "Hero": "Camilla: Spring Princess",
+        "Description": "If unit initiates combat, restores 4 HP after combat.",
+        "Might": 7
+    },
+    {
+        "WeaponName": "Green Egg+",
+        "CanUseWeapon": [
+            "Green Tome"
+        ],
+        "Exclusive": 0,
+        "Hero": "Camilla: Spring Princess",
+        "Description": "If unit initiates combat, restores 4 HP after combat.",
+        "Might": 11
+    },
+    {
+        "WeaponName": "Carrot Lance",
+        "CanUseWeapon": [
+            "Blue Lance"
+        ],
+        "Exclusive": 0,
+        "Hero": "Xander: Spring Prince",
+        "Description": "If unit initiates combat, restores 4 HP after combat.",
+        "Might": 9
+    },
+    {
+        "WeaponName": "Carrot Lance+",
+        "CanUseWeapon": [
+            "Blue Lance"
+        ],
+        "Exclusive": 0,
+        "Hero": "Xander: Spring Prince",
+        "Description": "If unit initiates combat, restores 4 HP after combat.",
+        "Might": 13
+    },
+    {
+        "WeaponName": "Blue Egg",
+        "CanUseWeapon": [
+            "Blue Tome"
+        ],
+        "Exclusive": 0,
+        "Hero": "Lucina: Spring Exalt",
+        "Description": "If unit initiates combat, restores 4 HP after combat.",
+        "Might": 7
+    },
+    {
+        "WeaponName": "Blue Egg+",
+        "CanUseWeapon": [
+            "Blue Tome"
+        ],
+        "Exclusive": 0,
+        "Hero": "Lucina: Spring Exalt",
+        "Description": "If unit initiates combat, restores 4 HP after combat.",
+        "Might": 11
+    },
+    {
+        "WeaponName": "Scarlet Sword",
+        "CanUseWeapon": [
+            "Red Sword"
+        ],
+        "Exclusive": 1,
+        "Hero": "Navarre: Scarlet Sword",
+        "Description": "Accelerates Special trigger (cooldown count-1).",
+        "Might": 16
+    },
+    {
+        "WeaponName": "Draconic Poleax",
+        "CanUseWeapon": [
+            "Green Axe"
+        ],
+        "Exclusive": 1,
+        "Hero": "Titania: Mighty Mercenary",
+        "Description": "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
+        "Might": 16
+    },
+    {
+        "WeaponName": "Elena's Staff",
+        "CanUseWeapon": [
+            "Colorless Staff"
+        ],
+        "Exclusive": 1,
+        "Hero": "Mist: Helpful Sister",
+        "Description": "Grants Res+3. Foe cannot counterattack. At start of turn, inflicts Atk/Spd-7 on nearest foes within 4 spaces through their next actions. After combat, if unit attacked, inflicts Atk/Spd-7 on target and foes within 2 spaces of target through their next actions.",
+        "Might": 14
+    },
+    {
+        "WeaponName": "Inscribed Tome",
+        "CanUseWeapon": [
+            "Green Tome"
+        ],
+        "Exclusive": 1,
+        "Hero": "Boey: Skillful Survivor",
+        "Description": "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
+        "Might": 14
+    },
+    {
+        "WeaponName": "Springtime Staff",
+        "CanUseWeapon": [
+            "Colorless Staff"
+        ],
+        "Exclusive": 1,
+        "Hero": "Genny: Endearing Ally",
+        "Description": "Grants Atk+3. Foe cannot counterattack. After combat, if unit attacked, inflicts \u3010Gravity\u3011on target and foes within 1 space of target. &lt;br>&lt;br>\u3010Gravity\u3011&lt;br>Restricts target's movement to 1 space through its next action.",
+        "Might": 14
+    },
+    {
+        "WeaponName": "First Bite",
+        "CanUseWeapon": [
+            "Blue Lance"
+        ],
+        "Exclusive": 0,
+        "Hero": "Charlotte: Money Maiden",
+        "Description": "If unit initiates combat, grants Def/Res+2 to allies within 2 spaces for 1 turn after combat.",
+        "Might": 10
+    },
+    {
+        "WeaponName": "First Bite+",
+        "CanUseWeapon": [
+            "Blue Lance"
+        ],
+        "Exclusive": 0,
+        "Hero": "Charlotte: Money Maiden",
+        "Description": "If unit initiates combat, grants Def/Res+2 to allies within 2 spaces for 1 turn after combat.",
+        "Might": 14
+    },
+    {
+        "WeaponName": "Candlelight",
+        "CanUseWeapon": [
+            "Colorless Staff"
+        ],
+        "Exclusive": 0,
+        "Hero": "Lyn: Bride of the Plains",
+        "Description": "After combat, if unit attacked, inflicts status on foe preventing counterattacks through its next action.",
+        "Might": 7
+    },
+    {
+        "WeaponName": "Candlelight+",
+        "CanUseWeapon": [
+            "Colorless Staff"
+        ],
+        "Exclusive": 0,
+        "Hero": "Lyn: Bride of the Plains",
+        "Description": "After combat, if unit attacked, inflicts status on target and foes within 2 spaces of target preventing counterattacks through their next actions.",
+        "Might": 11
+    },
+    {
+        "WeaponName": "Cupid Arrow",
+        "CanUseWeapon": [
+            "Red Bow",
+            "  Blue Bow",
+            "  Green Bow",
+            "  Colorless Bow"
+        ],
+        "Exclusive": 0,
+        "Hero": "Cordelia: Perfect Bride",
+        "Description": "Effective against flying foes.&lt;br>If unit initiates combat, grants Def/Res+2 to allies within 2 spaces for 1 turn after combat.",
+        "Might": 8
+    },
+    {
+        "WeaponName": "Cupid Arrow+",
+        "CanUseWeapon": [
+            "Red Bow",
+            "  Blue Bow",
+            "  Green Bow",
+            "  Colorless Bow"
+        ],
+        "Exclusive": 0,
+        "Hero": "Cordelia: Perfect Bride",
+        "Description": "Effective against flying foes. If unit initiates combat, grants Def/Res+2 to allies within 2 spaces for 1 turn after combat.",
+        "Might": 12
+    },
+    {
+        "WeaponName": "Blessed Bouquet",
+        "CanUseWeapon": [
+            "Blue Tome"
+        ],
+        "Exclusive": 0,
+        "Hero": "Caeda: Talys's Bride",
+        "Description": "If unit initiates combat, grants Def/Res+2 to allies within 2 spaces for 1 turn after combat.",
+        "Might": 8
+    },
+    {
+        "WeaponName": "Blessed Bouquet+",
+        "CanUseWeapon": [
+            "Blue Tome"
+        ],
+        "Exclusive": 0,
+        "Hero": "Caeda: Talys's Bride",
+        "Description": "If unit initiates combat, grants Def/Res+2 to allies within 2 spaces for 1 turn after combat.",
+        "Might": 12
+    },
+    {
+        "WeaponName": "Concealed Blade",
+        "CanUseWeapon": [
+            "Red Sword"
+        ],
+        "Exclusive": 1,
+        "Hero": "Athena: Borderland Sword",
+        "Description": "Deals +10 damage when Special triggers.",
+        "Might": 16
+    },
+    {
+        "WeaponName": "Legion's Axe",
+        "CanUseWeapon": [
+            "Green Axe"
+        ],
+        "Exclusive": 0,
+        "Hero": "Legion: Masked Maniac",
+        "Description": "After combat, if unit attacked, converts bonuses on foe into penalties through its next action.",
+        "Might": 10
+    },
+    {
+        "WeaponName": "Legion's Axe+",
+        "CanUseWeapon": [
+            "Green Axe"
+        ],
+        "Exclusive": 0,
+        "Hero": "Legion: Masked Maniac",
+        "Description": "After combat, if unit attacked, converts bonuses on foe into penalties through its next action.",
+        "Might": 14
+    },
+    {
+        "WeaponName": "Clarisse's Bow",
+        "CanUseWeapon": [
+            "Red Bow",
+            "  Blue Bow",
+            "  Green Bow",
+            "  Colorless Bow"
+        ],
+        "Exclusive": 0,
+        "Hero": "Clarisse: Sniper in the Dark",
+        "Description": "Effective against flying foes. &lt;br/>If unit initiates combat, inflicts Atk/Spd-5 on foes within 2 spaces of target through their next actions after combat.",
+        "Might": 7
+    },
+    {
+        "WeaponName": "Clarisse's Bow+",
+        "CanUseWeapon": [
+            "Red Bow",
+            "  Blue Bow",
+            "  Green Bow",
+            "  Colorless Bow"
+        ],
+        "Exclusive": 0,
+        "Hero": "Clarisse: Sniper in the Dark",
+        "Description": "Effective against flying foes.&lt;br/>If unit initiates combat, inflicts Atk/Spd-5 on foes within 2 spaces of target through their next actions after combat.",
+        "Might": 11
+    },
+    {
+        "WeaponName": "Sniper's Bow",
+        "CanUseWeapon": [
+            "Red Bow",
+            "  Blue Bow",
+            "  Green Bow",
+            "  Colorless Bow"
+        ],
+        "Exclusive": 1,
+        "Hero": "Clarisse: Sniper in the Dark",
+        "Description": "Effective against flying foes. After combat, if unit attacked, deals 7 damage to target and foes within 2 spaces of target, and inflicts Atk/Spd-7 on them through their next actions.",
+        "Might": 14
+    },
+    {
+        "WeaponName": "Melon Crusher",
+        "CanUseWeapon": [
+            "Green Axe"
+        ],
+        "Exclusive": 0,
+        "Hero": "Tiki: Summering Scion",
+        "Description": "At start of combat, if unit's HP = 100%, grants Atk/Spd/Def/Res+2, but after combat, if unit attacked, deals 2 damage to unit.",
+        "Might": 10
+    },
+    {
+        "WeaponName": "Melon Crusher+",
+        "CanUseWeapon": [
+            "Green Axe"
+        ],
+        "Exclusive": 0,
+        "Hero": "Tiki: Summering Scion",
+        "Description": "At start of combat, if unit's HP = 100%, grants Atk/Spd/Def/Res+2, but after combat, if unit attacked, deals 2 damage to unit.",
+        "Might": 14
+    },
+    {
+        "WeaponName": "Deft Harpoon",
+        "CanUseWeapon": [
+            "Blue Lance"
+        ],
+        "Exclusive": 0,
+        "Hero": "Robin: Seaside Tactician",
+        "Description": "At start of combat, if unit's HP = 100%, grants Atk/Spd/Def/Res+2, but after combat, if unit attacked, deals 2 damage to unit.",
+        "Might": 10
+    },
+    {
+        "WeaponName": "Deft Harpoon+",
+        "CanUseWeapon": [
+            "Blue Lance"
+        ],
+        "Exclusive": 0,
+        "Hero": "Robin: Seaside Tactician",
+        "Description": "At start of combat, if unit's HP = 100%, grants Atk/Spd/Def/Res+2, but after combat, if unit attacked, deals 2 damage to unit.",
+        "Might": 14
+    },
+    {
+        "WeaponName": "Refreshing Bolt",
+        "CanUseWeapon": [
+            "Red Bow",
+            "  Blue Bow",
+            "  Green Bow",
+            "  Colorless Bow"
+        ],
+        "Exclusive": 0,
+        "Hero": "Gaius: Thief Exposed",
+        "Description": "Effective against flying foes.&lt;br>At start of combat, if unit's HP = 100%, grants Atk/Spd/Def/Res+2, but after combat, if unit attacked, deals 2 damage to unit.",
+        "Might": 8
+    },
+    {
+        "WeaponName": "Refreshing Bolt+",
+        "CanUseWeapon": [
+            "Red Bow",
+            "  Blue Bow",
+            "  Green Bow",
+            "  Colorless Bow"
+        ],
+        "Exclusive": 0,
+        "Hero": "Gaius: Thief Exposed",
+        "Description": "Effective against flying foes. At start of combat, if unit's HP = 100%, grants Atk/Spd/Def/Res+2, but after combat, if unit attacked, deals 2 damage to unit.",
+        "Might": 12
+    },
+    {
+        "WeaponName": "Seashell",
+        "CanUseWeapon": [
+            "Red Dagger",
+            "  Blue Dagger",
+            "  Green Dagger",
+            "  Colorless Dagger"
+        ],
+        "Exclusive": 0,
+        "Hero": "Frederick: Horizon Watcher",
+        "Description": "At start of combat, if unit's HP = 100%, grants Atk/Spd/Def/Res+2, but after combat, if unit attacked, deals 2 damage to unit.&lt;br>After combat, if unit attacked, inflicts Def/Res-5 on foe through its next action.",
+        "Might": 7
+    },
+    {
+        "WeaponName": "Seashell+",
+        "CanUseWeapon": [
+            "Red Dagger",
+            "  Blue Dagger",
+            "  Green Dagger",
+            "  Colorless Dagger"
+        ],
+        "Exclusive": 0,
+        "Hero": "Frederick: Horizon Watcher",
+        "Description": "At start of combat, if unit's HP = 100%, grants Atk/Spd/Def/Res+2, but after combat, if unit attacked, deals 2 damage to unit. After combat, if unit attacked, inflicts Def/Res-7 on foe through its next action.",
+        "Might": 10
+    },
+    {
+        "WeaponName": "Knightly Lance",
+        "CanUseWeapon": [
+            "Blue Lance"
+        ],
+        "Exclusive": 1,
+        "Hero": "Mathilda: Legendary Knight",
+        "Description": "Accelerates Special trigger (cooldown count-1).",
+        "Might": 16
+    },
+    {
+        "WeaponName": "Slaying Edge",
+        "CanUseWeapon": [
+            "Red Sword"
+        ],
+        "Exclusive": 0,
+        "Hero": "Saber: Driven Mercenary",
+        "Description": "Accelerates Special trigger (cooldown count-1).",
+        "Might": 10
+    },
+    {
+        "WeaponName": "Slaying Edge+",
+        "CanUseWeapon": [
+            "Red Sword"
+        ],
+        "Exclusive": 0,
+        "Hero": "Saber: Driven Mercenary",
+        "Description": "Accelerates Special trigger (cooldown count-1).",
+        "Might": 14
+    },
+    {
+        "WeaponName": "Golden Dagger",
+        "CanUseWeapon": [
+            "Red Sword"
+        ],
+        "Exclusive": 1,
+        "Hero": "Saber: Driven Mercenary",
+        "Description": "Accelerates Special trigger (cooldown count-1).",
+        "Might": 16
+    },
+    {
+        "WeaponName": "Dark Excalibur",
+        "CanUseWeapon": [
+            "Green Tome"
+        ],
+        "Exclusive": 1,
+        "Hero": "Sonya: Vengeful Mage",
+        "Description": "Deals +10 damage when Special triggers.",
+        "Might": 14
+    },
+    {
+        "WeaponName": "Slaying Bow",
+        "CanUseWeapon": [
+            "Red Bow",
+            "  Blue Bow",
+            "  Green Bow",
+            "  Colorless Bow"
+        ],
+        "Exclusive": 0,
+        "Hero": "Leon: True of Heart",
+        "Description": "Accelerates Special trigger (cooldown count-1). Effective against flying foes.",
+        "Might": 8
+    },
+    {
+        "WeaponName": "Slaying Bow+",
+        "CanUseWeapon": [
+            "Red Bow",
+            "  Blue Bow",
+            "  Green Bow",
+            "  Colorless Bow"
+        ],
+        "Exclusive": 0,
+        "Hero": "Leon: True of Heart",
+        "Description": "Accelerates Special trigger (cooldown count-1). Effective against flying foes.",
+        "Might": 12
+    },
+    {
+        "WeaponName": "Bow of Beauty",
+        "CanUseWeapon": [
+            "Red Bow",
+            "  Blue Bow",
+            "  Green Bow",
+            "  Colorless Bow"
+        ],
+        "Exclusive": 1,
+        "Hero": "Leon: True of Heart",
+        "Description": "Accelerates Special trigger (cooldown count-1). Effective against flying foes.",
+        "Might": 14
+    },
+    {
+        "WeaponName": "Lilith Floatie",
+        "CanUseWeapon": [
+            "Green Axe"
+        ],
+        "Exclusive": 0,
+        "Hero": "Xander: Student Swimmer",
+        "Description": "Grants Atk/Spd+1 to allies within 2 spaces during combat.",
+        "Might": 10
+    },
+    {
+        "WeaponName": "Lilith Floatie+",
+        "CanUseWeapon": [
+            "Green Axe"
+        ],
+        "Exclusive": 0,
+        "Hero": "Xander: Student Swimmer",
+        "Description": "Grants Atk/Spd+1 to allies within 2 spaces during combat.",
+        "Might": 14
+    },
+    {
+        "WeaponName": "Tomato Tome",
+        "CanUseWeapon": [
+            "Red Tome"
+        ],
+        "Exclusive": 0,
+        "Hero": "Leo: Seashore's Prince",
+        "Description": "Grants Atk/Spd+1 to allies within 2 spaces during combat.",
+        "Might": 8
+    },
+    {
+        "WeaponName": "Tomato Tome+",
+        "CanUseWeapon": [
+            "Red Tome"
+        ],
+        "Exclusive": 0,
+        "Hero": "Leo: Seashore's Prince",
+        "Description": "Grants Atk/Spd+1 to allies within 2 spaces during combat.",
+        "Might": 12
+    },
+    {
+        "WeaponName": "Hibiscus Tome",
+        "CanUseWeapon": [
+            "Green Tome"
+        ],
+        "Exclusive": 0,
+        "Hero": "Elise: Tropical Flower",
+        "Description": "Grants Atk/Spd+1 to allies within 2 spaces during combat.",
+        "Might": 8
+    },
+    {
+        "WeaponName": "Hibiscus Tome+",
+        "CanUseWeapon": [
+            "Green Tome"
+        ],
+        "Exclusive": 0,
+        "Hero": "Elise: Tropical Flower",
+        "Description": "Grants Atk/Spd+1 to allies within 2 spaces during combat.",
+        "Might": 12
+    },
+    {
+        "WeaponName": "Sealife Tome",
+        "CanUseWeapon": [
+            "Blue Tome"
+        ],
+        "Exclusive": 0,
+        "Hero": "Corrin: Novice Vacationer",
+        "Description": "Grants Atk/Spd+1 to allies within 2 spaces during combat.",
+        "Might": 8
+    },
+    {
+        "WeaponName": "Sealife Tome+",
+        "CanUseWeapon": [
+            "Blue Tome"
+        ],
+        "Exclusive": 0,
+        "Hero": "Corrin: Novice Vacationer",
+        "Description": "Grants Atk/Spd+1 to allies within 2 spaces during combat.",
+        "Might": 12
+    },
+    {
+        "WeaponName": "Slaying Axe",
+        "CanUseWeapon": [
+            "Green Axe"
+        ],
+        "Exclusive": 0,
+        "Hero": "Amelia: Rose of the War",
+        "Description": "Accelerates Special trigger (cooldown count-1).",
+        "Might": 10
+    },
+    {
+        "WeaponName": "Slaying Axe+",
+        "CanUseWeapon": [
+            "Green Axe"
+        ],
+        "Exclusive": 0,
+        "Hero": "Amelia: Rose of the War",
+        "Description": "Accelerates Special trigger (cooldown count-1).",
+        "Might": 14
+    },
+    {
+        "WeaponName": "Grado Poleax",
+        "CanUseWeapon": [
+            "Green Axe"
+        ],
+        "Exclusive": 1,
+        "Hero": "Amelia: Rose of the War",
+        "Description": "Accelerates Special trigger (cooldown count-1).",
+        "Might": 16
+    },
+    {
+        "WeaponName": "Silverbrand",
+        "CanUseWeapon": [
+            "Red Sword"
+        ],
+        "Exclusive": 1,
+        "Hero": "Seth: Silver Knight",
+        "Description": "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
+        "Might": 16
+    },
+    {
+        "WeaponName": "Cursed Lance",
+        "CanUseWeapon": [
+            "Blue Lance"
+        ],
+        "Exclusive": 1,
+        "Hero": "Valter: Dark Moonstone",
+        "Description": "Accelerates Special trigger (cooldown count-1). Grants Atk/Spd+2. Deals 4 damage to unit after combat.",
+        "Might": 16
+    },
+    {
+        "WeaponName": "Blazing Durandal",
+        "CanUseWeapon": [
+            "Red Sword"
+        ],
+        "Exclusive": 1,
+        "Hero": "Roy: Brave Lion",
+        "Description": "Grants Atk+3. If unit's Atk > foe's Atk, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)",
+        "Might": 16
+    },
+    {
+        "WeaponName": "Urvan",
+        "CanUseWeapon": [
+            "Green Axe"
+        ],
+        "Exclusive": 1,
+        "Hero": "Ike: Brave Mercenary",
+        "Description": "Accelerates Special trigger (cooldown count-1). If unit receives consecutive attacks, reduces damage from foe's second attack onward by 80%.",
+        "Might": 16
+    },
+    {
+        "WeaponName": "Loyal Greatlance",
+        "CanUseWeapon": [
+            "Blue Lance"
+        ],
+        "Exclusive": 1,
+        "Hero": "Oscar: Agile Horseman",
+        "Description": "Accelerates Special trigger (cooldown count-1).",
+        "Might": 16
+    },
+    {
+        "WeaponName": "Slaying Lance",
+        "CanUseWeapon": [
+            "Blue Lance"
+        ],
+        "Exclusive": 0,
+        "Hero": "Nephenee: Fierce Halberdier",
+        "Description": "Accelerates Special trigger (cooldown count-1).",
+        "Might": 10
+    },
+    {
+        "WeaponName": "Slaying Lance+",
+        "CanUseWeapon": [
+            "Blue Lance"
+        ],
+        "Exclusive": 0,
+        "Hero": "Nephenee: Fierce Halberdier",
+        "Description": "Accelerates Special trigger (cooldown count-1).",
+        "Might": 14
+    },
+    {
+        "WeaponName": "Dauntless Lance",
+        "CanUseWeapon": [
+            "Blue Lance"
+        ],
+        "Exclusive": 1,
+        "Hero": "Nephenee: Fierce Halberdier",
+        "Description": "Accelerates Special trigger (cooldown count-1). Effective against armored foes.",
+        "Might": 16
+    },
+    {
+        "WeaponName": "Dancer's Fan",
+        "CanUseWeapon": [
+            "Red Dagger",
+            "  Blue Dagger",
+            "  Green Dagger",
+            "  Colorless Dagger"
+        ],
+        "Exclusive": 0,
+        "Hero": "Olivia: Festival Dancer",
+        "Description": "If unit initiates combat, restores 7 HP to adjacent allies after combat. After combat, if unit attacked, inflicts Def/Res-5 on foe through its next action.",
+        "Might": 7
+    },
+    {
+        "WeaponName": "Dancer's Fan+",
+        "CanUseWeapon": [
+            "Red Dagger",
+            "  Blue Dagger",
+            "  Green Dagger",
+            "  Colorless Dagger"
+        ],
+        "Exclusive": 0,
+        "Hero": "Olivia: Festival Dancer",
+        "Description": "If unit initiates combat, restores 7 HP to adjacent allies after combat. After combat, if unit attacked, inflicts Def/Res-7 on foe through its next action.",
+        "Might": 10
+    },
+    {
+        "WeaponName": "Dancer's Ring",
+        "CanUseWeapon": [
+            "Green Tome"
+        ],
+        "Exclusive": 0,
+        "Hero": "Inigo: Indigo Dancer",
+        "Description": "If unit initiates combat, restores 7 HP to adjacent allies after combat.",
+        "Might": 8
+    },
+    {
+        "WeaponName": "Dancer's Ring+",
+        "CanUseWeapon": [
+            "Green Tome"
+        ],
+        "Exclusive": 0,
+        "Hero": "Inigo: Indigo Dancer",
+        "Description": "If unit initiates combat, restores 7 HP to adjacent allies after combat.",
+        "Might": 12
+    },
+    {
+        "WeaponName": "Dancer's Score",
+        "CanUseWeapon": [
+            "Blue Tome"
+        ],
+        "Exclusive": 0,
+        "Hero": "Shigure: Dark Sky Singer",
+        "Description": "If unit initiates combat, restores 7 HP to adjacent allies after combat.",
+        "Might": 8
+    },
+    {
+        "WeaponName": "Dancer's Score+",
+        "CanUseWeapon": [
+            "Blue Tome"
+        ],
+        "Exclusive": 0,
+        "Hero": "Shigure: Dark Sky Singer",
+        "Description": "If unit initiates combat, restores 7 HP to adjacent allies after combat.",
+        "Might": 12
+    },
+    {
+        "WeaponName": "Urðr",
+        "CanUseWeapon": [
+            "Green Axe"
+        ],
+        "Exclusive": 1,
+        "Hero": "Azura: Lady of Ballads",
+        "Description": "If Sing or Dance is used, grants Atk/Spd/Def/Res+3 to target.",
+        "Might": 16
+    },
+    {
+        "WeaponName": "Tome of Thoron",
+        "CanUseWeapon": [
+            "Blue Tome"
+        ],
+        "Exclusive": 1,
+        "Hero": "Tailtiu: Thunder Noble",
+        "Description": "At start of turn, if unit's HP ≤ 75% and unit's attack can trigger their Special, grants Special cooldown count-1, and deals +10 damage when Special triggers.",
+        "Might": 14
+    },
+    {
+        "WeaponName": "Ayra's Blade",
+        "CanUseWeapon": [
+            "Red Sword"
+        ],
+        "Exclusive": 1,
+        "Hero": "Ayra: Astra's Wielder",
+        "Description": "Grants Spd+3. If unit's Spd > foe's Spd, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)",
+        "Might": 16
+    },
+    {
+        "WeaponName": "Monstrous Bow",
+        "CanUseWeapon": [
+            "Red Bow",
+            "  Blue Bow",
+            "  Green Bow",
+            "  Colorless Bow"
+        ],
+        "Exclusive": 0,
+        "Hero": "Jakob: Devoted Monster",
+        "Description": "Effective against flying foes.&lt;br>After combat, if unit attacked, converts bonuses on foes within 2 spaces of target into penalties through their next actions.",
+        "Might": 8
+    },
+    {
+        "WeaponName": "Monstrous Bow+",
+        "CanUseWeapon": [
+            "Red Bow",
+            "  Blue Bow",
+            "  Green Bow",
+            "  Colorless Bow"
+        ],
+        "Exclusive": 0,
+        "Hero": "Jakob: Devoted Monster",
+        "Description": "Effective against flying foes.&lt;br>After combat, if unit attacked, converts bonuses on foes within 2 spaces of target into penalties through their next actions.",
+        "Might": 12
+    },
+    {
+        "WeaponName": "Spectral Tome",
+        "CanUseWeapon": [
+            "Green Tome"
+        ],
+        "Exclusive": 0,
+        "Hero": "Henry: Happy Vampire",
+        "Description": "After combat, if unit attacked, converts bonuses on foes within 2 spaces of target into penalties through their next actions.",
+        "Might": 8
+    },
+    {
+        "WeaponName": "Spectral Tome+",
+        "CanUseWeapon": [
+            "Green Tome"
+        ],
+        "Exclusive": 0,
+        "Hero": "Henry: Happy Vampire",
+        "Description": "After combat, if unit attacked, converts bonuses on foes within 2 spaces of target into penalties through their next actions.",
+        "Might": 12
+    },
+    {
+        "WeaponName": "Kitty Paddle",
+        "CanUseWeapon": [
+            "Red Dagger",
+            "  Blue Dagger",
+            "  Green Dagger",
+            "  Colorless Dagger"
+        ],
+        "Exclusive": 0,
+        "Hero": "Sakura: Gentle Nekomata",
+        "Description": "Effective against magic foes.&lt;br />After combat, if unit attacked and if foe uses magic, inflicts Def/Res-5 on foe through its next action.",
+        "Might": 5
+    },
+    {
+        "WeaponName": "Kitty Paddle+",
+        "CanUseWeapon": [
+            "Red Dagger",
+            "  Blue Dagger",
+            "  Green Dagger",
+            "  Colorless Dagger"
+        ],
+        "Exclusive": 0,
+        "Hero": "Sakura: Gentle Nekomata",
+        "Description": "Effective against magic foes. After combat, if unit attacked and if foe uses magic, inflicts Def/Res-7 on foe through its next action.",
+        "Might": 8
+    },
+    {
+        "WeaponName": "Grimoire",
+        "CanUseWeapon": [
+            "Red Tome"
+        ],
+        "Exclusive": 1,
+        "Hero": "Nowi: Eternal Witch",
+        "Description": "If unit's HP ≥ 50%, unit can move to a space adjacent to an ally within 2 spaces.",
+        "Might": 14
+    },
+    {
+        "WeaponName": "Weirding Tome",
+        "CanUseWeapon": [
+            "Blue Tome"
+        ],
+        "Exclusive": 1,
+        "Hero": "Lute: Prodigy",
+        "Description": "Grants Spd+3. At start of turn, inflicts Spd-5 on foes in cardinal directions with Res < unit's Res through their next actions.",
+        "Might": 14
+    },
+    {
+        "WeaponName": "Resolute Blade",
+        "CanUseWeapon": [
+            "Red Sword"
+        ],
+        "Exclusive": 1,
+        "Hero": "Mia: Lady of Blades",
+        "Description": "Grants Atk+3. Deals +10 damage when Special triggers.",
+        "Might": 16
+    },
+    {
+        "WeaponName": "Audhulma",
+        "CanUseWeapon": [
+            "Red Sword"
+        ],
+        "Exclusive": 1,
+        "Hero": "Joshua: Tempest King",
+        "Description": "Accelerates Special trigger (cooldown count-1).&lt;br>Grants Res+5.",
+        "Might": 16
+    }
+]

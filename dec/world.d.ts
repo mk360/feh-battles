@@ -1,9 +1,12 @@
-import { World } from "ape-ecs";
+import { Entity, IWorldConfig, World } from "ape-ecs";
+import GameState from "./systems/state";
+import { Stat } from "./interfaces/types";
+import Map1 from "./data/maps/map1.json";
 interface HeroData {
     name: string;
     rarity: number;
+    weapon: string;
     skills: {
-        weapon: string;
         assist: string;
         special: string;
         A: string;
@@ -11,6 +14,8 @@ interface HeroData {
         C: string;
         S: string;
     };
+    boon?: Stat;
+    bane?: Stat;
     initialPosition: {
         x: number;
         y: number;
@@ -21,11 +26,12 @@ interface InitialLineup {
     team2: HeroData[];
 }
 declare class GameWorld extends World {
-    private state;
-    id: string;
-    constructor(id: string);
+    state: GameState;
+    constructor(config?: IWorldConfig);
+    generateMap(config: typeof Map1): void;
+    createHero(member: HeroData, team: "team1" | "team2"): Entity;
     initiate(lineup: InitialLineup): void;
-    createCharacterComponents(character: string, rarity: number, team: string): {
+    createCharacterComponents(hero: Entity, team: "team1" | "team2", rarity: number): {
         type: string;
         [k: string]: any;
     }[];

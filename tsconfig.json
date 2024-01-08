@@ -17,5 +17,5 @@
     "outDir": "./lib"
   },
   "include": ["./src"],
-  "exclude": ["./src/__tests"]
+  "exclude": ["./src/__tests__"]
 }

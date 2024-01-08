@@ -1,5 +1,5 @@
 import { Entity } from "ape-ecs";
-import { Stats } from "../types";
+import { Stats } from "../interfaces/types";
 
 function generateTurns(attacker: Entity, defender: Entity, attackerCombatStats: Stats, defenderCombatStats: Stats) {
     const turns: Entity[] = [];

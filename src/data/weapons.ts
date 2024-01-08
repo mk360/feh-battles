@@ -1,16 +1,15 @@
 import Hero from "../entities/hero";
 import GameState from "../systems/state";
-import { WeaponColor, WeaponType } from "../weapon";
-import { MovementType } from "../types";
+import { MovementType, WeaponColor, WeaponType } from "../interfaces/types";
 import * as Effects from "./effects";
 import Skill from "../components/skill";
 import Characters from "./characters.json";
 import { Entity } from "ape-ecs";
-import { CombatOutcome } from "../combat";
 import getEnemies from "../utils/get-enemies";
 import HeroSystem from "../systems/hero";
 import getAllies from "../utils/get-allies";
 import CombatTurnOutcome from "../interfaces/combat-turn-outcome";
+import CombatOutcome from "../interfaces/combat-outcome";
 
 interface WeaponDict {
     [k: string]: {

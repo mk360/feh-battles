@@ -1,7 +1,7 @@
 import { Entity, Query, System } from "ape-ecs";
 import GameState from "./state";
 import getAllies from "../utils/get-allies";
-import { Stats } from "../types";
+import { Stats } from "../interfaces/types";
 import checkBattleEffectiveness from "./effectiveness";
 import getTargetedDefenseStat from "./get-targeted-defense-stat";
 import generateTurns from "./generate-turns";

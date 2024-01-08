@@ -1,10 +1,8 @@
 import { Component, Entity } from "ape-ecs";
 import Skill from "../components/skill";
-import PassiveSkill from "../passive_skill";
 import HeroSystem from "../systems/hero";
 import GameState from "../systems/state";
-import { MovementType, Stat, Stats } from "../types";
-import { WeaponColor, WeaponType } from "../weapon";
+import { MovementType, Stat, Stats, PassiveSlot, WeaponType, WeaponColor } from "../interfaces/types";
 import getAllies from "../utils/get-allies";
 import getEnemies from "../utils/get-enemies";
 import { mapBuffByMovementType, honeStat, combatBuffByRange, defiant, breaker, elementalBoost, renewal, threaten, bond, counterattack } from "./effects";
@@ -17,7 +15,7 @@ import getTileCoordinates from "../systems/get-tile-coordinates";
 interface PassivesDict {
     [k: string]: {
         description: string;
-        slot: PassiveSkill["slot"];
+        slot: PassiveSlot;
         allowedMovementTypes?: MovementType[];
         allowedWeaponTypes?: WeaponType[];
         allowedColors?: WeaponColor[];

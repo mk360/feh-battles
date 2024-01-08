@@ -1,7 +1,7 @@
 import { Entity } from "ape-ecs";
 import MovementType from "../components/movement-type";
 import Skill from "../components/skill";
-import { WeaponType } from "../weapon";
+import { WeaponType } from "../interfaces/types";
 import Characters from "./characters.json";
 import getCombatStats from "../systems/get-combat-stats";
 import getTargetedDefenseStat from "../systems/get-targeted-defense-stat";

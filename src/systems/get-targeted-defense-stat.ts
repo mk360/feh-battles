@@ -1,5 +1,5 @@
 import { Entity } from "ape-ecs";
-import { Stats } from "../types";
+import { Stats } from "../interfaces/types";
 
 function getTargetedDefenseStat(attacker: Entity, defender: Entity, defenderStats: Stats) {
     if (attacker.getOne("TargetLowestDefense") && !defender.getOne("PreventTargetLowestDefense")) {

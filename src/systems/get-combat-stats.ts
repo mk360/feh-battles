@@ -1,5 +1,5 @@
 import { Entity } from "ape-ecs";
-import { Stats } from "../types";
+import { Stats } from "../interfaces/types";
 
 function getCombatStats(entity: Entity) {
     const combatBuffs = entity.getComponents("CombatBuff");

@@ -1,6 +1,5 @@
 import { Entity } from "ape-ecs";
-import { WeaponType } from "../weapon";
-import { MovementType } from "../types";
+import { MovementType, WeaponType } from "../interfaces/types";
 import Skill from "../components/skill";
 import SkillHook from "../interfaces/skill-hook";
 

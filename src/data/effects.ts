@@ -2,9 +2,8 @@ import { Entity } from "ape-ecs";
 import Skill from "../components/skill";
 import HeroSystem from "../systems/hero";
 import GameState from "../systems/state";
-import { MovementType, Stat, Stats } from "../types";
+import { MovementType, Stat, Stats, WeaponType } from "../interfaces/types";
 import getAllies from "../utils/get-allies";
-import { WeaponType } from "../weapon";
 import getEnemies from "../utils/get-enemies";
 import getCombatStats from "../systems/get-combat-stats";
 

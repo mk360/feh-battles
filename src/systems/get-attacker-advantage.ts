@@ -1,5 +1,5 @@
 import { Entity } from "ape-ecs";
-import { WeaponColor } from "../weapon";
+import { WeaponColor } from "../interfaces/types";
 
 const ADVANTAGE = 0.2;
 const NEUTRAL = 0;

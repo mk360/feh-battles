@@ -1,12 +1,13 @@
-import { MandatoryStats } from "../types";
+import { MandatoryStats, MovementType, WeaponColor, WeaponType } from "../interfaces/types";
 interface CharacterData {
     [k: string]: {
-        color: string;
-        weaponType: string;
+        color: WeaponColor;
+        weaponType: WeaponType;
+        movementType: MovementType;
         stats: MandatoryStats;
         growthRates: MandatoryStats;
     };
 }
-declare const CHARACTERS: CharacterData;
-export default CHARACTERS;
+declare const _default: CharacterData;
+export default _default;
 //# sourceMappingURL=characters.d.ts.map

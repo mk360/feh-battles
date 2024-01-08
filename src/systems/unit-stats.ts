@@ -1,4 +1,4 @@
-import { MandatoryStats, Stat } from "../types";
+import { MandatoryStats, Stat } from "../interfaces/types";
 
 function getLv40Stats(lv1Stats: MandatoryStats, growthRates: MandatoryStats, rarity: number, boon?: Stat, bane?: Stat) {
     const copy = { ...lv1Stats };

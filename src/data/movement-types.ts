@@ -1,4 +1,4 @@
-import { MovementType as MoveType } from "../types";
+import { MovementType as MoveType } from "../interfaces/types";
 
 interface MovementType {
     range: number;

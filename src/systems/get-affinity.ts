@@ -1,5 +1,5 @@
 import { Entity } from "ape-ecs";
-import { WeaponColor } from "../weapon";
+import { WeaponColor } from "../interfaces/types";
 
 // todo: improve when building Cancel Affinity skills
 function getAffinity(unit1: Entity, unit2: Entity) {

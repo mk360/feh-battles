@@ -1,5 +1,5 @@
 import getLv40Stats from "../systems/unit-stats";
-import { MandatoryStats } from "../types";
+import { MandatoryStats } from "../interfaces/types";
 
 describe("getLv40Stats", () => {
     it("should accurately calculate vanilla level 40 stats", () => {

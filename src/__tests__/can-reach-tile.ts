@@ -25,7 +25,7 @@ describe("canReachTile", () => {
     it("can cross a valid tile", () => {
         const plains = new Uint16Array(1);
         const lava = new Uint16Array(1);
-        plains[0] |= tileBitmasks.type.floor;
+        plains[0] |= tileBitmasks.type.ground;
         lava[0] |= tileBitmasks.type.void;
         expect(canReachTile(unit, plains)).toEqual(true);
         expect(canReachTile(unit, lava)).toEqual(false);
@@ -33,9 +33,9 @@ describe("canReachTile", () => {
 
     it("can theoretically reach a tile if an ally is there", () => {
         const plains = new Uint16Array(1);
-        plains[0] |= (tileBitmasks.occupation & Teams.team1) | tileBitmasks.type.floor;
+        plains[0] |= (tileBitmasks.occupation & Teams.team1) | tileBitmasks.type.ground;
         const otherPlains = new Uint16Array(1);
-        otherPlains[0] |= (tileBitmasks.occupation & Teams.team2) | tileBitmasks.type.floor;
+        otherPlains[0] |= (tileBitmasks.occupation & Teams.team2) | tileBitmasks.type.ground;
 
         expect(canReachTile(unit, plains)).toEqual(true);
         expect(canReachTile(unit, otherPlains)).toEqual(false);

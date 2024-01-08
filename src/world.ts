@@ -13,7 +13,7 @@ import MovementType from "./components/movement-type";
 import Immunity from "./components/immunity";
 import Bane from "./components/bane";
 import Boon from "./components/boon";
-import { Stat } from "./types";
+import { Stat } from "./interfaces/types";
 import getLv40Stats from "./systems/unit-stats";
 import WarpableTile from "./components/warpable-tile";
 import WalkableTile from "./components/walkable-tile";

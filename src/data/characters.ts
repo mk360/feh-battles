@@ -1,5 +1,4 @@
-import { MandatoryStats, MovementType } from "../types";
-import { WeaponColor, WeaponType } from "../weapon";
+import { MandatoryStats, MovementType, WeaponColor, WeaponType } from "../interfaces/types";
 import Characters from "./characters.json";
 
 interface CharacterData {

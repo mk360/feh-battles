@@ -1,1 +1,0 @@
-{"version":3,"file":"specials-manager.d.ts","sourceRoot":"","sources":["../src/specials-manager.ts"],"names":[],"mappings":"AAAA,OAAO,IAAI,MAAM,QAAQ,CAAC;AAE1B,cAAM,cAAc;IAChB,mBAAmB,CAAC,IAAI,EAAE,IAAI,EAAE,gBAAgB,EAAE,OAAO;CAY5D;AAED,eAAe,cAAc,CAAC"}

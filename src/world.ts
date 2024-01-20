@@ -65,7 +65,6 @@ interface HeroData {
     };
     boon?: Stat;
     bane?: Stat;
-    initialPosition: { x: number; y: number };
 }
 
 interface InitialLineup {
@@ -154,7 +153,7 @@ class GameWorld extends World {
     }
 
     generateMap(config: typeof Map1) {
-        for (let y = 1; y <= config.length; y++) {
+        for (let y = 1; y <= config.tileData.length; y++) {
             const line = config[y - 1];
             for (let x = 0; x < line.length; x++) {
                 const tile = line[x];
@@ -181,7 +180,7 @@ class GameWorld extends World {
         }
     };
 
-    createHero(member: HeroData, team: "team1" | "team2") {
+    createHero(member: HeroData, team: "team1" | "team2", teamIndex: number) {
         const entity = this.createEntity({
             components: [{
                 type: "Name",
@@ -212,12 +211,13 @@ class GameWorld extends World {
             });
         }
 
-        const { x, y } = member.initialPosition;
+        const tilePlacement = Map1.spawnLocations[team][teamIndex];
+
+        const { x, y } = tilePlacement;
 
         entity.addComponent({
             type: "Position",
-            x: member.initialPosition.x,
-            y: member.initialPosition.y,
+            ...tilePlacement
         });
 
         const mapCell = this.state.map[y][x - 1];
@@ -312,18 +312,21 @@ class GameWorld extends World {
     initiate(lineup: InitialLineup) {
         const { team1, team2 } = lineup;
 
-        for (let member of team1) {
-            this.createHero(member, "team1");
+        for (let i = 0; i < team1.length; i++) {
+            const member = team1[i];
+            this.createHero(member, "team1", i);
         }
 
-        for (let member of team2) {
-            this.createHero(member, "team2");
+        for (let i = 0; i < team2.length; i++) {
+            const member = team2[i];
+            this.createHero(member, "team2", i);
         }
     }
 
     createCharacterComponents(hero: Entity, team: "team1" | "team2", rarity: number): { type: string;[k: string]: any }[] {
         const { value: name } = hero.getOne("Name");
         const dexData = CHARACTERS[name];
+        console.log({ name, dexData });
         const { stats, growthRates } = dexData;
         if (!this.state.teamsByMovementTypes[team][dexData.movementType]) {
             this.state.teamsByMovementTypes[team][dexData.movementType] = 0;

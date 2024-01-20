@@ -16,10 +16,6 @@ interface HeroData {
     };
     boon?: Stat;
     bane?: Stat;
-    initialPosition: {
-        x: number;
-        y: number;
-    };
 }
 interface InitialLineup {
     team1: HeroData[];
@@ -29,7 +25,7 @@ declare class GameWorld extends World {
     state: GameState;
     constructor(config?: IWorldConfig);
     generateMap(config: typeof Map1): void;
-    createHero(member: HeroData, team: "team1" | "team2"): Entity;
+    createHero(member: HeroData, team: "team1" | "team2", teamIndex: number): Entity;
     initiate(lineup: InitialLineup): void;
     createCharacterComponents(hero: Entity, team: "team1" | "team2", rarity: number): {
         type: string;

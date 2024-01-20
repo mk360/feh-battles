@@ -7,8 +7,6 @@ import canReachTile from "./can-reach-tile";
 import getSurroundings from "./get-surroundings";
 import PASSIVES from "../data/passives";
 import TileBitshifts from "../data/tile-bitshifts";
-import Debugger from "../debugger";
-import GameWorld from "../world";
 import getTileCoordinates from "./get-tile-coordinates";
 
 class MovementSystem extends System {
@@ -53,21 +51,21 @@ class MovementSystem extends System {
             for (let obstructor of obstructors) {
                 if (this.state.skillMap.get(obstructor)?.onTurnAllyCheckRange) {
                     for (let skill of this.state.skillMap.get(obstructor).onTurnEnemyCheckRange) {
-                        
+
                     }
                 }
             }
         }
 
-        console.time("perf movement tiles");
-        const tiles = this.getMovementTiles(unit, this.state.map[y][x], pathfinders);
-        console.timeEnd("perf movement tiles");
+        // console.time("perf movement tiles");
+        // const tiles = this.getMovementTiles(unit, this.state.map[y][x], pathfinders);
+        // console.timeEnd("perf movement tiles");
 
-        const deb = new Debugger(this.world as GameWorld);
-        deb.drawMap({
-            includeUnits: false,
-            highlightTiles: tiles,
-        });
+        // const deb = new Debugger(this.world as GameWorld);
+        // deb.drawMap({
+        //     includeUnits: false,
+        //     highlightTiles: tiles,
+        // });
     }
 
     getTileCost(hero: Entity, tile: Uint16Array, pathfinder: Uint16Array[]) {

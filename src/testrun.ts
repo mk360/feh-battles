@@ -21,10 +21,6 @@ world.initiate({
             S: null,
         },
         rarity: 5,
-        initialPosition: {
-            x: 1,
-            y: 1
-        }
     }],
     team2: [{
         name: "Subaki: Perfect Expert",
@@ -38,10 +34,6 @@ world.initiate({
             S: null,
         },
         rarity: 5,
-        initialPosition: {
-            x: 6,
-            y: 8
-        }
     }]
 });
 

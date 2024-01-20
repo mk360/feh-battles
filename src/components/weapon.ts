@@ -7,4 +7,6 @@ export default class Weapon extends Component {
         color: "",
         useMagic: false,
     };
+
+    static serializeFields = ["weaponType", "color"]
 };

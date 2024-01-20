@@ -6,5 +6,6 @@ export default class Weapon extends Component {
         color: string;
         useMagic: boolean;
     };
+    static serializeFields: string[];
 }
 //# sourceMappingURL=weapon.d.ts.map

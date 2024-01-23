@@ -103,8 +103,6 @@ class GameWorld extends World {
         },
         currentSide: "team1",
         turn: 1,
-        tiles: this.createEntity({}),
-        combat: this.createEntity({}),
         skillMap: new Map()
     };
 
@@ -154,7 +152,7 @@ class GameWorld extends World {
 
     generateMap(config: typeof Map1) {
         for (let y = 1; y <= config.tileData.length; y++) {
-            const line = config[y - 1];
+            const line = config.tileData[y - 1];
             for (let x = 0; x < line.length; x++) {
                 const tile = line[x];
                 let bitField = 0;

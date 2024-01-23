@@ -61,6 +61,11 @@ class CombatSystem extends System {
         this.battlingQuery = this.createQuery().fromAll("Battling");
     }
 
+    // Ike vs. Corrin
+    // Round 1: Ike attaque, Corrin défend
+    // Round 2: Corrin attaque, Ike défend
+    // Round 3 ou 4 ou 5, bis repetita en alternant
+
     update() {
         const [unit1, unit2] = this.battlingQuery.execute();
         if (unit1 && unit2) {
@@ -109,6 +114,7 @@ class CombatSystem extends System {
                 consecutiveTurns: 1
             });
             const turns = generateTurns(unit1, unit2, combatMap.get(unit1).stats, combatMap.get(unit2).stats);
+
             let lastAttacker: Entity;
             for (let i = 0; i < turns.length; i++) {
                 const turn = turns[i];
@@ -155,6 +161,13 @@ class CombatSystem extends System {
                 }
 
                 const damage = Math.floor((Math.floor(atkStat * effectivenessMultiplier) + Math.trunc(Math.floor(atkStat * effectivenessMultiplier) * (advantage * (affinity + 20) / 20)) - defenseStat - flatReduction) * damagePercentage);
+
+                turn.addComponent({
+                    type: "DealDamage",
+                    target: defender,
+                    damage: damage,
+                    turnIndex: i,
+                });
                 lastAttacker = turn;
             }
         }

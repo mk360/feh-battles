@@ -37,7 +37,6 @@ world.initiate({
     }]
 });
 
-world.runSystems("movement");
 
 // const debug = new Debugger(world);
 

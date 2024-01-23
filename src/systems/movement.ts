@@ -8,6 +8,8 @@ import getSurroundings from "./get-surroundings";
 import PASSIVES from "../data/passives";
 import TileBitshifts from "../data/tile-bitshifts";
 import getTileCoordinates from "./get-tile-coordinates";
+import Debugger from "../debugger";
+import GameWorld from "../world";
 
 class MovementSystem extends System {
     private state: GameState;
@@ -23,11 +25,12 @@ class MovementSystem extends System {
     }
 
     update() {
-        this.state.tiles.getComponents("WalkTile").forEach((c) => this.state.tiles.removeComponent(c));
-        this.state.tiles.getComponents("WarpTile").forEach((c) => this.state.tiles.removeComponent(c));
-        this.state.tiles.getComponents("AttackTile").forEach((c) => this.state.tiles.removeComponent(c));
-        this.state.tiles.getComponents("AssistTile").forEach((c) => this.state.tiles.removeComponent(c));
+        // this.state.tiles.getComponents("WalkTile").forEach((c) => this.state.tiles.removeComponent(c));
+        // this.state.tiles.getComponents("WarpTile").forEach((c) => this.state.tiles.removeComponent(c));
+        // this.state.tiles.getComponents("AttackTile").forEach((c) => this.state.tiles.removeComponent(c));
+        // this.state.tiles.getComponents("AssistTile").forEach((c) => this.state.tiles.removeComponent(c));
         const [unit] = this.movableQuery.execute();
+        // refactor: attacher les cases à l'unité plutôt qu'à une state
         const { x, y } = unit.getOne("Position");
         const allies = getAllies(this.state, unit);
         const obstructors = getEnemies(this.state, unit);
@@ -58,14 +61,18 @@ class MovementSystem extends System {
         }
 
         // console.time("perf movement tiles");
-        // const tiles = this.getMovementTiles(unit, this.state.map[y][x], pathfinders);
+        const generatedTiles = this.getMovementTiles(unit, this.state.map[y][x], pathfinders);
         // console.timeEnd("perf movement tiles");
 
-        // const deb = new Debugger(this.world as GameWorld);
-        // deb.drawMap({
-        //     includeUnits: false,
-        //     highlightTiles: tiles,
-        // });
+        generatedTiles.forEach((tile) => {
+            unit.addComponent(tile);
+        });
+
+        const deb = new Debugger(this.world as GameWorld);
+        deb.drawMap({
+            includeUnits: false,
+            highlightTiles: generatedTiles,
+        });
     }
 
     getTileCost(hero: Entity, tile: Uint16Array, pathfinder: Uint16Array[]) {

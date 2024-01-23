@@ -15,7 +15,7 @@ So a Cursor is simply a stateful class that stores a number. That number would b
 - Activate or deactivate an effect.
 - Run arithmetic operations specified by the Cursor.
 
-The issue is, I had to figure out how to make battle previews, which should be stateless and be computed separately. Simply clone the whole Hero, so that the Cursors attached to them would not point to the main class. Problem solved.
+The issue is, I had to figure out how to make battle previews, which should be stateless and be computed separately. Simply clone the whole Hero, so that the Cursors attached to them would not point to the main instance. Problem solved.
 
 That turned out to be a naive approach for a few reasons:
 
@@ -23,13 +23,13 @@ That turned out to be a naive approach for a few reasons:
 - High Garbage Collector activity. I'm duplicating two objects, each filled with a lot of properties and references, since a preview needs two Heroes to work. Then these objects need to be destroyed, and I could slow the game down by repeatedly allocating memory and making GC sweeps.
 - In the long term, operations involving multiplicative and flat damage reduction will not work, because they share the same Cursor (which would be easy to fix, create a new Cursor and increase the memory footprint). If I need to multiply a certain cursor by 0.5 and then add 1 or 5, I better make sure the addition and multiplication come in the correct order - which I have no guarantee of - or else the whole combat breaks.
 - Since FEH is very complex and each skill can modify any mechanic behavior at any time, trying to work out how to pass the references for these mechanics, influencing them, making sure their interactions were stable, all this grew to be a nightmare.
-- At a certain point, even basic checks became difficult: when I click on a Hero, I can see who are they weak against, and who are they effective against. How would I check if a certain Hero is effective on another? I would have to actually _run_ the skill effects, in a context where I just need a preview. That was a big deal-breaker, and a complete redesign was in order.
+- At a certain point, even basic checks became difficult: when I click on a Hero, I can see who they are weak and effective against. How would I check if a certain Hero is effective on another? I would have to actually _run_ the skill effects, in a context where I just need a preview. That was a big deal-breaker, and a complete redesign was in order.
 
 ## Current Framework and methodology
 
-The Game now uses the Entity-Component-System Architecture: Heroes are divided into stateless Entities. They receive Components which describe a specific feature of these Heroes: their Name, their Weapon Type, their Movement Type, all are separate "blocks" that combine into making a Hero. Systems then query Entities by their relevant Components and run the logic within. Multiple Systems can query the same Component type, so make sure your systems don't step on each other's toes.
+The Game now uses the Entity-Component-System (ECS) Architecture: Heroes are divided into stateless Entities. They receive Components which describe a specific feature of these Heroes: their Name, their Weapon Type, their Movement Type, all are separate "blocks" that combine into making a Hero. Systems then query Entities by their relevant Components and run the logic within. Multiple Systems can query the same Component type, so make sure your systems don't step on each other's toes.
 
-For example, Ike: Brave Mercenary is an Entity who receives his Name as a Component, his WeaponType as its own Component, and his Stats and his MovementType in the same manner. If he initiates a combat with Death Blow 3, he receives a "CombatBuff" component which describes the buffs he gets (+6 Atk).
+For example, [Ike: Brave Mercenary](https://feheroes.fandom.com/wiki/Ike:_Brave_Mercenary) is an Entity who receives his Name as a Component, his WeaponType as its own Component, and his Stats and his MovementType in the same manner. If he initiates a combat with [Death Blow 3](https://feheroes.fandom.com/wiki/Death_Blow), he receives a "CombatBuff" component which describes the buffs he gets (+6 Atk).
 
 A Combat System would then compute his stats using the Stats component, and the CombatBuff component that was already set beforehand. The System would then proceed using the same methodology for the rest of the logic (weapon triangle, affinity, effectiveness, etc.).
 
@@ -49,7 +49,7 @@ Let's start with the Pros:
 ### Cons
 
 - A clear direction needs to be provided when assigning components. Since a lot of behaviors affect the unit in relation to their enemy (for example, guaranteed or prevented follow-up), it's really important to make sure component assignments stay consistent in their receiving entity.
-Components need to be assigned to their actors, not to their targets: if Unit 1 prevents Unit 2 from counterattacking, the "PreventCounterattack" component should go to Unit1. If Unit 2 prevents Unit 1 from making follow-ups, Unit 2 receives the "PreventFollowup" component. And so on.
+  Components need to be assigned to their actors, not to their targets: if Unit 1 prevents Unit 2 from counterattacking, the "PreventCounterattack" component should go to Unit1. If Unit 2 prevents Unit 1 from making follow-ups, Unit 2 receives the "PreventFollowup" component. And so on.
 - ECS is more suited to real-time games who need to evaluate their state frame by frame. The nature of a turn-based game makes it so that any logic or behavior can be created in custom functions, which can be hard to reconcile with the framework's ecosystem.
 - Given that this package contains the Game World that will directly interact with external integrations, extra care should be taken to design a proper interactive API.
 
@@ -68,7 +68,7 @@ Let's take [Axebreaker 3](https://feheroes.fandom.com/wiki/Axebreaker). The skil
 
 This pattern is seen and used across three levels of the same skill, where the only difference is the health threshold, which is why it can be isolated into its own generic function. This pattern is also used across different weapon types (Swordbreaker, Lancebreaker, Bowbreaker), so the function can also take into account a variation in weapons.
 
-And now what happens is whenever a Skill has this "breaker" effect baked into it, we can just throw this function and guarantee the behavior we need. A single function, with enough flexibility, covered for 18 "simple" skills, and countless others more, with the obvious benefits of the DRY principle. Build [enough functions for each effect](./data/effects.ts), and what you end up with is an immense variety of Skills that can be composed with these simple blocks.
+And now what happens is whenever a Skill has this "breaker" effect baked into it, we can just throw this function and guarantee the behavior we need. A single function, with enough flexibility, covered for 18 "simple" skills, and countless others more, with the obvious benefits of the DRY (Don't-Repeat-Yourself) principle. Build [enough functions for each effect](./data/effects.ts), and what you end up with is an immense variety of Skills that can be composed with these simple blocks.
 
 ## Game Data
 
@@ -119,7 +119,7 @@ A single spare bit is still left, but I doubt it will be of use.
 
 ### Skill Maps
 
-So I met an interesting problem. Let's say I want to run any `onCombatInitiate` Skill Hook on two units who are battling. Since a unit has up to 7 Skill Slots, that makes 14 checks that are guaranteed to run less than 5 Hooks total. So that's a 64% of potential skills that was not executed. And that's just for one hook. So I had to come up with a more time-efficient way of running these skill hooks.
+So I met an interesting problem. Let's say I want to run any `onCombatInitiate` Skill Hook on two units who are battling. Since a unit has up to 7 Skill Slots, that makes 7 checks, with at most, as many functions being ran (though this is highly unlikely in practice, given that skills don't stick to a single effect). And that's just for one hook. So I had to come up with a more time-efficient way of running these skill hooks.
 
 Enter, Skill Maps. Each Entity (Hero) is mapped to their Skill Hooks, with each Hook containing all the Components whose matching Skills contain this hook.
 
@@ -132,6 +132,11 @@ Back to the Death Blow example, Ike's Skill Map would be:
 -> Look up skill, find out that it has an onCombatInitiate hook.
 -> Create Skill Map with Ike: Brave Mercenary as a key, and as a value, create an object with the key onCombatInitiate.
 -> Add the created component to the object.
+{
+    [<Entity: Ike: Brave Mercenary>]: {
+        "onCombatInitiate": Set<DeathBlow3Skill>
+    }
+}
 ```
 
 ```

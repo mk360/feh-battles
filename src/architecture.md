@@ -117,7 +117,7 @@ A 8x6 1-indexed Object of `Uint16Array`s represents the global map topology: coo
 
 A single spare bit is still left, but I doubt it will be of use.
 
-### Skill Maps
+### Skill Maps
 
 So I met an interesting problem. Let's say I want to run any `onCombatInitiate` Skill Hook on two units who are battling. Since a unit has up to 7 Skill Slots, that makes 7 checks, with at most, as many functions being ran (though this is highly unlikely in practice, given that skills don't stick to a single effect). And that's just for one hook. So I had to come up with a more time-efficient way of running these skill hooks.
 

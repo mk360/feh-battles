@@ -37,6 +37,10 @@ world.initiate({
     }]
 });
 
+world.getEntities("Name").forEach((v) => {
+    console.log(v.getOne("Stats").getObject(false));
+})
+
 
 // const debug = new Debugger(world);
 

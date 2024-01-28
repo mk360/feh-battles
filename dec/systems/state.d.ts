@@ -7,8 +7,6 @@ interface GameState {
         team1: Set<Entity>;
         team2: Set<Entity>;
     };
-    tiles: Entity;
-    combat: Entity;
     map: {
         1: [null, Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array];
         2: [null, Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array];
@@ -38,7 +36,7 @@ interface GameState {
     currentSide: "team1" | "team2";
     turn: number;
     skillMap: Map<Entity, Partial<{
-        [k in SkillHook]: Set<Skill>;
+        [hook in SkillHook]: Set<Skill>;
     }>>;
 }
 export default GameState;

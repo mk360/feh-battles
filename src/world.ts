@@ -210,7 +210,6 @@ class GameWorld extends World {
         }
 
         const tilePlacement = Map1.spawnLocations[team][teamIndex];
-
         const { x, y } = tilePlacement;
 
         entity.addComponent({
@@ -324,7 +323,6 @@ class GameWorld extends World {
     createCharacterComponents(hero: Entity, team: "team1" | "team2", rarity: number): { type: string;[k: string]: any }[] {
         const { value: name } = hero.getOne("Name");
         const dexData = CHARACTERS[name];
-        console.log({ name, dexData });
         const { stats, growthRates } = dexData;
         if (!this.state.teamsByMovementTypes[team][dexData.movementType]) {
             this.state.teamsByMovementTypes[team][dexData.movementType] = 0;

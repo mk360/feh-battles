@@ -89,6 +89,7 @@ class GameWorld extends World {
             7: [null, new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
             8: [null, new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
         },
+        mapId: "",
         teams: {
             team1: new Set(),
             team2: new Set(),
@@ -150,9 +151,13 @@ class GameWorld extends World {
         this.registerSystem("movement", MovementSystem, [this.state]);
     }
 
-    generateMap(config: typeof Map1) {
-        for (let y = 1; y <= config.tileData.length; y++) {
-            const line = config.tileData[y - 1];
+    generateMap() {
+        const randomMapIndex = (1 + Math.floor(Math.random() * 90)).toString().padStart(3, "0");
+        const mapId = `Z${randomMapIndex}`;
+        this.state.mapId = mapId;
+        const mapData = require(`./data/maps/${mapId}.json`) as typeof Map1;
+        for (let y = 1; y <= mapData.tileData.length; y++) {
+            const line = mapData.tileData[y - 1];
             for (let x = 0; x < line.length; x++) {
                 const tile = line[x];
                 let bitField = 0;

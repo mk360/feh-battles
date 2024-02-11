@@ -8,6 +8,7 @@ interface GameState {
         team1: Set<Entity>;
         team2: Set<Entity>;
     };
+    mapId: string;
     map: {
         1: [null, Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array];
         2: [null, Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array];

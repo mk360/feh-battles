@@ -102,6 +102,7 @@ class GameWorld extends World {
             team1: {},
             team2: {}
         },
+        
         currentSide: "team1",
         turn: 1,
         skillMap: new Map()

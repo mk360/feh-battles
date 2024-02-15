@@ -248,7 +248,10 @@ class GameWorld extends World {
                 description: skillData.description,
                 slot: "weapon",
                 name: member.weapon,
+                might: skillData.might,
             };
+
+            console.log({weaponComponentData});
             const weaponComponent = entity.addComponent(weaponComponentData)
 
             for (let hook in skillData) {
@@ -349,7 +352,7 @@ class GameWorld extends World {
                 weaponType: dexData.weaponType,
                 color: dexData.color,
                 range: ["sword", "lance", "axe", "beast", "breath"].includes(dexData.weaponType) ? 1 : 2,
-                useMagic: ["tome", "breath", "staff"].includes(dexData.weaponType)
+                useMagic: ["tome", "breath", "staff"].includes(dexData.weaponType),
             },
             {
                 type: "Stats",

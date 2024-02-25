@@ -167,7 +167,9 @@ class GameWorld extends World {
 
     previewUnitMovement(id: string, candidateTile: { x: number, y: number }) {
         const entity = this.getEntity(id);
-        return canReachTile(entity, this.state.map[candidateTile.y][candidateTile.x]);
+        const movementTiles = entity.getComponents("MovementTile");
+        const foundTile = Array.from(movementTiles).find((t) => t.x + 1  === candidateTile.x && t.y + 1 === candidateTile.y);
+        return !!foundTile;
     }
 
     moveUnit(id: string, newTile: { x: number, y: number }) {

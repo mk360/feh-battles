@@ -153,3 +153,13 @@ This approach guarantees that we only:
 - Guarantee that we only run the few effects that directly relate to the current engine event.
 
 This will probably cause extra memory consumption, and perhaps some aspects of it could be refined. But for now, I think this is a very good starting point.
+
+## Game Map
+
+### Coordinates
+
+The top-left cell in the map matrix has the (0,0) coordinates, thus the last cell at the bottom-right is (8, 6). The first coordinate is the y-axis, and the second is the x-axis.
+
+A map's topology is stored in plaintext, in json files with numerical IDs that make their identification easier. This ID will be used by the frontend to decide which map image to load. The topology itself is a 8x6 array of arrays, with the tile types first, then the "additions" made to them (defensive tiles, trenches). A defensive tile might also contain a trench, thus the traits might coexist. A Map Editor GUI is under development in order to allow for a quicker map data generation.
+
+Maps also contain coordinate arrays, which are used to set both teams' starting locations.

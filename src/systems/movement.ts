@@ -29,6 +29,7 @@ class MovementSystem extends System {
         // this.state.tiles.getComponents("WarpTile").forEach((c) => this.state.tiles.removeComponent(c));
         // this.state.tiles.getComponents("AttackTile").forEach((c) => this.state.tiles.removeComponent(c));
         // this.state.tiles.getComponents("AssistTile").forEach((c) => this.state.tiles.removeComponent(c));
+        this.movableQuery.refresh();
         const [unit] = this.movableQuery.execute();
         // refactor: attacher les cases à l'unité plutôt qu'à une state
         const { x, y } = unit.getOne("Position");
@@ -60,19 +61,22 @@ class MovementSystem extends System {
             }
         }
 
-        // console.time("perf movement tiles");
         const generatedTiles = this.getMovementTiles(unit, this.state.map[y][x], pathfinders);
-        // console.timeEnd("perf movement tiles");
 
         generatedTiles.forEach((tile) => {
-            unit.addComponent(tile);
+            const { x, y } = getTileCoordinates(tile);
+            unit.addComponent({
+                type: "MovementTile",
+                x,
+                y
+            });
         });
 
-        const deb = new Debugger(this.world as GameWorld);
-        deb.drawMap({
-            includeUnits: false,
-            highlightTiles: generatedTiles,
-        });
+        // const deb = new Debugger(this.world as GameWorld);
+        // deb.drawMap({
+        //     includeUnits: false,
+        //     highlightTiles: generatedTiles,
+        // });
     }
 
     getTileCost(hero: Entity, tile: Uint16Array, pathfinder: Uint16Array[]) {
@@ -102,7 +106,7 @@ class MovementSystem extends System {
 
         const tiles = new Set<Uint16Array>().add(checkedTile);
 
-        const surroundings = getSurroundings(this.state.map, checkedY + 1, checkedX + 1, tiles);
+        const surroundings = getSurroundings(this.state.map, checkedY + 1, checkedX + 1, tiles);        
 
         const validSurroundings = surroundings.filter((tile) => {
             const canReach = canReachTile(hero, tile);

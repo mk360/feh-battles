@@ -1,4 +1,4 @@
-import { Entity, IWorldConfig, World } from "ape-ecs";
+import { Component, IWorldConfig, World } from "ape-ecs";
 import GameState from "./systems/state";
 import { Stat } from "./interfaces/types";
 interface HeroData {
@@ -23,13 +23,19 @@ interface InitialLineup {
 declare class GameWorld extends World {
     state: GameState;
     constructor(config?: IWorldConfig);
+    getUnitMovement(id: string): Set<Component>;
+    previewUnitMovement(id: string, candidateTile: {
+        x: number;
+        y: number;
+    }): boolean;
+    moveUnit(id: string, newTile: {
+        x: number;
+        y: number;
+    }): Component;
     generateMap(): void;
-    createHero(member: HeroData, team: "team1" | "team2", teamIndex: number): Entity;
+    private createHero;
     initiate(lineup: InitialLineup): void;
-    createCharacterComponents(hero: Entity, team: "team1" | "team2", rarity: number): {
-        type: string;
-        [k: string]: any;
-    }[];
+    private createCharacterComponents;
 }
 export default GameWorld;
 //# sourceMappingURL=world.d.ts.map

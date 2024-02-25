@@ -1,10 +1,10 @@
 import { Component } from "ape-ecs";
 
-class WarpableTile extends Component {
+class WarpTile extends Component {
     static properties = {
         x: 0,
         y: 0
     }
 };
 
-export default WarpableTile;
+export default WarpTile;

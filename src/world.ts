@@ -15,8 +15,8 @@ import Bane from "./components/bane";
 import Boon from "./components/boon";
 import { Stat } from "./interfaces/types";
 import getLv40Stats from "./systems/unit-stats";
-import WarpableTile from "./components/warpable-tile";
-import WalkableTile from "./components/walkable-tile";
+import WarpTile from "./components/warp-tile";
+import MovementTile from "./components/movement-tile";
 import PASSIVES from "./data/passives";
 import MapDebuff from "./components/map-debuff";
 import MovementTypes from "./data/movement-types";
@@ -50,6 +50,7 @@ import tileBitmasks from "./data/tile-bitmasks";
 import ApplyAffinity from "./components/apply-affinity";
 import TileBitshifts from "./data/tile-bitshifts";
 import Obstruct from "./components/obstruct";
+import canReachTile from "./systems/can-reach-tile";
 
 interface HeroData {
     name: string;
@@ -80,14 +81,14 @@ class GameWorld extends World {
          * (trench, defensive tile) added. It acts as the source of truth in case any state or data conflict arises.
          */
         map: {
-            1: [null, new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
-            2: [null, new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
-            3: [null, new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
-            4: [null, new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
-            5: [null, new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
-            6: [null, new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
-            7: [null, new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
-            8: [null, new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array(), new Uint16Array()],
+            1: [null, new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1)],
+            2: [null, new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1)],
+            3: [null, new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1)],
+            4: [null, new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1)],
+            5: [null, new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1)],
+            6: [null, new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1)],
+            7: [null, new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1)],
+            8: [null, new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1)],
         },
         mapId: "",
         teams: {
@@ -102,7 +103,6 @@ class GameWorld extends World {
             team1: {},
             team2: {}
         },
-        
         currentSide: "team1",
         turn: 1,
         skillMap: new Map()
@@ -116,10 +116,10 @@ class GameWorld extends World {
         this.registerComponent(MapDebuff);
         this.registerComponent(Position);
         this.registerComponent(Movable);
-        this.registerComponent(WarpableTile);
+        this.registerComponent(WarpTile);
         this.registerComponent(NeutralizeNormalizeStaffDamage);
         this.registerComponent(NormalizeStaffDamage);
-        this.registerComponent(WalkableTile);
+        this.registerComponent(MovementTile);
         this.registerComponent(Effectiveness);
         this.registerComponent(MovementType);
         this.registerComponent(Skill);
@@ -152,11 +152,44 @@ class GameWorld extends World {
         this.registerSystem("movement", MovementSystem, [this.state]);
     }
 
+    getUnitMovement(id: string) {
+        const entity = this.getEntity(id);
+        const comp = entity.addComponent({
+            type: "Movable"
+        });
+        entity.getComponents(MovementTile).forEach((t) => { if (t) entity.removeComponent(t) })
+        this.runSystems("movement");
+        const movementTiles = entity.getComponents("MovementTile");
+        entity.removeComponent(comp);
+
+        return movementTiles;
+    }
+
+    previewUnitMovement(id: string, candidateTile: { x: number, y: number }) {
+        const entity = this.getEntity(id);
+        return canReachTile(entity, this.state.map[candidateTile.y][candidateTile.x]);
+    }
+
+    moveUnit(id: string, newTile: { x: number, y: number }) {
+        const newMapTile = this.state.map[newTile.y][newTile.x];
+        const unit = this.getEntity(id);
+        const positionComponent = unit.getOne("Position");
+        const { x, y } = positionComponent;
+        const { bitfield } = unit.getOne("Side");
+        const mapTile = this.state.map[y][x];
+        mapTile[0] &= (0 << tileBitmasks.occupation);
+        mapTile[0] &= (0 << (tileBitmasks.occupation - 1));
+        newMapTile[0] |= bitfield;
+        positionComponent.x = newTile.x,
+        positionComponent.y = newTile.y;
+        return positionComponent;
+    }
+
     generateMap() {
-        const randomMapIndex = (1 + Math.floor(Math.random() * 90)).toString().padStart(3, "0");
+        const randomMapIndex = (1 + Math.floor(Math.random() * 90)).toString().padStart(4, "0");
         const mapId = `Z${randomMapIndex}`;
         this.state.mapId = mapId;
-        const mapData = require(`./data/maps/${mapId}.json`) as typeof Map1;
+        const mapData = require(`./data/maps/map1.json`) as typeof Map1;
         for (let y = 1; y <= mapData.tileData.length; y++) {
             const line = mapData.tileData[y - 1];
             for (let x = 0; x < line.length; x++) {
@@ -184,19 +217,13 @@ class GameWorld extends World {
         }
     };
 
-    createHero(member: HeroData, team: "team1" | "team2", teamIndex: number) {
+    private createHero(member: HeroData, team: "team1" | "team2", teamIndex: number) {
         const entity = this.createEntity({
             components: [{
                 type: "Name",
                 value: member.name
             }]
         });
-
-        if (team === "team1") {
-            entity.addComponent({
-                type: "Movable"
-            });
-        }
 
         const components = this.createCharacterComponents(entity, team, member.rarity);
 
@@ -231,12 +258,6 @@ class GameWorld extends World {
 
         this.state.map[y][x][0] |= Teams[team];
 
-        if (team === "team1") {
-            entity.addComponent({
-                type: "Movable"
-            });
-        }
-
         const entitySkillDict: { [k: string]: Set<Component> } = {};
 
         if (member.weapon) {
@@ -251,7 +272,6 @@ class GameWorld extends World {
                 might: skillData.might,
             };
 
-            console.log({weaponComponentData});
             const weaponComponent = entity.addComponent(weaponComponentData)
 
             for (let hook in skillData) {
@@ -329,7 +349,7 @@ class GameWorld extends World {
         }
     }
 
-    createCharacterComponents(hero: Entity, team: "team1" | "team2", rarity: number): { type: string;[k: string]: any }[] {
+    private createCharacterComponents(hero: Entity, team: "team1" | "team2", rarity: number): { type: string;[k: string]: any }[] {
         const { value: name } = hero.getOne("Name");
         const dexData = CHARACTERS[name];
         const { stats, growthRates } = dexData;

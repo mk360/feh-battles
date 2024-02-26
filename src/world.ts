@@ -179,8 +179,7 @@ class GameWorld extends World {
         const { x, y } = positionComponent;
         const { bitfield } = unit.getOne("Side");
         const mapTile = this.state.map[y][x];
-        mapTile[0] &= (0 << tileBitmasks.occupation);
-        mapTile[0] &= (0 << (tileBitmasks.occupation - 1));
+        mapTile[0] ^= tileBitmasks.occupation;
         newMapTile[0] |= bitfield;
         positionComponent.x = newTile.x,
         positionComponent.y = newTile.y;

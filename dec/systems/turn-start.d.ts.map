@@ -1,0 +1,1 @@
+{"version":3,"file":"turn-start.d.ts","sourceRoot":"","sources":["../../src/systems/turn-start.ts"],"names":[],"mappings":"AAAA,OAAO,EAAS,MAAM,EAAE,MAAM,SAAS,CAAC;AACxC,OAAO,SAAS,MAAM,SAAS,CAAC;AAIhC,cAAM,eAAgB,SAAQ,MAAM;IAChC,OAAO,CAAC,KAAK,CAAY;IACzB,OAAO,CAAC,WAAW,CAAQ;IAE3B,IAAI,CAAC,KAAK,EAAE,SAAS;IAOrB,MAAM;IAaN,cAAc;CAIjB;AAED,eAAe,eAAe,CAAC"}

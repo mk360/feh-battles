@@ -8,4 +8,4 @@ declare class TurnStartSystem extends System {
     getCurrentTeam(): import("ape-ecs").Entity[];
 }
 export default TurnStartSystem;
-//# sourceMappingURL=map-effects.d.ts.map
+//# sourceMappingURL=turn-start.d.ts.map

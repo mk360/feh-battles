@@ -3,13 +3,15 @@ import GameState from "./state";
 import WEAPONS from "../data/weapons";
 import PASSIVES from "../data/passives";
 
-class MapEffectsSystem extends System {
+class TurnStartSystem extends System {
     private state: GameState;
     private heroesQuery: Query;
 
     init(state: GameState) {
         this.state = state;
         this.heroesQuery = this.createQuery().fromAll("Side");
+        this.subscribe("MapBuff");
+        this.subscribe("MapDebuff");
     };
 
     update() {
@@ -31,4 +33,4 @@ class MapEffectsSystem extends System {
     }
 };
 
-export default MapEffectsSystem;
+export default TurnStartSystem;

@@ -10,6 +10,7 @@ import TileBitshifts from "../data/tile-bitshifts";
 import getTileCoordinates from "./get-tile-coordinates";
 import Debugger from "../debugger";
 import GameWorld from "../world";
+import Movable from "../components/movable";
 
 class MovementSystem extends System {
     private state: GameState;
@@ -22,6 +23,7 @@ class MovementSystem extends System {
         this.pathfinderQuery = this.createQuery().fromAll("Pathfinder");
         this.movableQuery = this.createQuery().fromAll("Movable");
         this.obstructQuery = this.createQuery().fromAll("Obstruct");
+        this.subscribe("MovementTile");
     }
 
     update() {

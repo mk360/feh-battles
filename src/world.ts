@@ -1,6 +1,6 @@
 import { Component, Entity, IWorldConfig, World } from "ape-ecs";
 import Weapon from "./components/weapon";
-import MapEffects from "./systems/map-effects";
+import MapEffects from "./systems/turn-start";
 import Stats from "./components/stats";
 import CHARACTERS from "./data/characters";
 import Side from "./components/side";
@@ -178,9 +178,11 @@ class GameWorld extends World {
         const positionComponent = unit.getOne("Position");
         const { x, y } = positionComponent;
         const { bitfield } = unit.getOne("Side");
+        const s = unit.getOne("Side");
         const mapTile = this.state.map[y][x];
         mapTile[0] ^= tileBitmasks.occupation;
         newMapTile[0] |= bitfield;
+        positionComponent.update(newTile);
         positionComponent.x = newTile.x,
         positionComponent.y = newTile.y;
         return positionComponent;

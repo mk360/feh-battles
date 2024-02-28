@@ -134,6 +134,11 @@ class MovementSystem extends System {
         return tiles;
     }
 
+    getWeaponRange(unit: Entity, movementRange: Set<Uint16Array>) {
+        const weaponRange = unit.getOne("Weapon").range;
+
+    }
+
     getFinalMovementRange(unit: Entity): number {
         if (unit.getOne("Gravity")) return 1;
 

@@ -63,9 +63,9 @@ class MovementSystem extends System {
             }
         }
 
-        const generatedTiles = this.getMovementTiles(unit, this.state.map[y][x], pathfinders);
+        const movementTiles = this.getMovementTiles(unit, this.state.map[y][x], pathfinders);
 
-        generatedTiles.forEach((tile) => {
+        movementTiles.forEach((tile) => {
             const { x, y } = getTileCoordinates(tile);
             unit.addComponent({
                 type: "MovementTile",
@@ -74,11 +74,16 @@ class MovementSystem extends System {
             });
         });
 
-        // const deb = new Debugger(this.world as GameWorld);
-        // deb.drawMap({
-        //     includeUnits: false,
-        //     highlightTiles: generatedTiles,
-        // });
+        const attack = this.computeAttackRange(movementTiles, 1);
+
+        attack.forEach((t) => {
+            const { x, y } = getTileCoordinates(t);
+            unit.addComponent({
+                type: "AttackTile",
+                x,
+                y
+            });
+        });
     }
 
     getTileCost(hero: Entity, tile: Uint16Array, pathfinder: Uint16Array[]) {
@@ -108,7 +113,7 @@ class MovementSystem extends System {
 
         const tiles = new Set<Uint16Array>().add(checkedTile);
 
-        const surroundings = getSurroundings(this.state.map, checkedY + 1, checkedX + 1, tiles);        
+        const surroundings = getSurroundings(this.state.map, checkedY, checkedX, tiles);
 
         const validSurroundings = surroundings.filter((tile) => {
             const canReach = canReachTile(hero, tile);
@@ -134,9 +139,29 @@ class MovementSystem extends System {
         return tiles;
     }
 
-    getWeaponRange(unit: Entity, movementRange: Set<Uint16Array>) {
-        const weaponRange = unit.getOne("Weapon").range;
+    computeAttackRange(movementTiles: Set<Uint16Array>, attackRange: number) {
+        let tiles = new Set<Uint16Array>();
+        movementTiles.forEach((t) => {
+            let { x, y } = getTileCoordinates(t);
+            const leftTile = this.state.map[y]?.[x - attackRange];
+            if (leftTile && !movementTiles.has(leftTile)) {
+                tiles.add(leftTile);
+            }
+            const rightTile = this.state.map[y]?.[x + attackRange];
+            if (rightTile && !movementTiles.has(rightTile)) {
+                tiles.add(rightTile);
+            }
+            const upTile = this.state.map[y - attackRange]?.[x];
+            if (upTile && !movementTiles.has(upTile)) {
+                tiles.add(upTile);
+            }
+            const downTile = this.state.map[y + attackRange]?.[x];
+            if (downTile && !movementTiles.has(downTile)) {
+                tiles.add(downTile);
+            }
+        });
 
+        return tiles;
     }
 
     getFinalMovementRange(unit: Entity): number {

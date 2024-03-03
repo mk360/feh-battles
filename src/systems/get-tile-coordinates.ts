@@ -6,8 +6,8 @@ function getTileCoordinates(tile: Uint16Array) {
     const y = (tileValue >> TileBitshifts.y) & 0b111;
 
     return {
-        x,
-        y
+        x: x + 1,
+        y: y + 1
     };
 };
 

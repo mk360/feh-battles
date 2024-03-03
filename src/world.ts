@@ -51,6 +51,7 @@ import ApplyAffinity from "./components/apply-affinity";
 import TileBitshifts from "./data/tile-bitshifts";
 import Obstruct from "./components/obstruct";
 import canReachTile from "./systems/can-reach-tile";
+import AttackTile from "./components/attack-tile";
 
 interface HeroData {
     name: string;
@@ -120,6 +121,7 @@ class GameWorld extends World {
         this.registerComponent(NeutralizeNormalizeStaffDamage);
         this.registerComponent(NormalizeStaffDamage);
         this.registerComponent(MovementTile);
+        this.registerComponent(AttackTile);
         this.registerComponent(Effectiveness);
         this.registerComponent(MovementType);
         this.registerComponent(Skill);
@@ -160,9 +162,10 @@ class GameWorld extends World {
         entity.getComponents(MovementTile).forEach((t) => { if (t) entity.removeComponent(t) })
         this.runSystems("movement");
         const movementTiles = entity.getComponents("MovementTile");
+        const attackTiles = entity.getComponents("AttackTile");
         entity.removeComponent(comp);
 
-        return movementTiles;
+        return { movementTiles, attackTiles };
     }
 
     previewUnitMovement(id: string, candidateTile: { x: number, y: number }) {

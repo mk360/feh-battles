@@ -196,9 +196,9 @@ class GameWorld extends World {
 
     generateMap() {
         const randomMapIndex = (1 + Math.floor(Math.random() * 90)).toString().padStart(4, "0");
-        const mapId = `Z${randomMapIndex}`;
+        const mapId = `Z0025`;
         this.state.mapId = mapId;
-        const mapData = require(`./data/maps/map1.json`) as typeof Map1;
+        const mapData = require(`./data/maps/${mapId}.json`) as typeof Map1;
         for (let y = 1; y <= mapData.tileData.length; y++) {
             const line = mapData.tileData[y - 1];
             for (let x = 0; x < line.length; x++) {
@@ -253,6 +253,8 @@ class GameWorld extends World {
 
         const tilePlacement = Map1.spawnLocations[team][teamIndex];
         const { x, y } = tilePlacement;
+
+        console.log({ tilePlacement });
 
         entity.addComponent({
             type: "Position",

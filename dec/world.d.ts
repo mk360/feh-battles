@@ -23,6 +23,7 @@ interface InitialLineup {
 declare class GameWorld extends World {
     state: GameState;
     constructor(config?: IWorldConfig);
+    startTurn(): void;
     getUnitMovement(id: string): {
         movementTiles: Set<Component>;
         attackTiles: Set<Component>;

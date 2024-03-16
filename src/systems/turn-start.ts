@@ -3,6 +3,8 @@ import GameState from "./state";
 import WEAPONS from "../data/weapons";
 import PASSIVES from "../data/passives";
 
+const MAP_STATUSES = ["MapBuff", "MapDebuff", "FinishedAction"];
+
 class TurnStartSystem extends System {
     private state: GameState;
     private heroesQuery: Query;
@@ -10,21 +12,24 @@ class TurnStartSystem extends System {
     init(state: GameState) {
         this.state = state;
         this.heroesQuery = this.createQuery().fromAll("Side");
-        this.subscribe("MapBuff");
-        this.subscribe("MapDebuff");
+        for (let status of MAP_STATUSES) {
+            this.subscribe(status);
+        }
     };
 
     update() {
         const teamMembers = this.getCurrentTeam();
         for (let member of teamMembers) {
-            const skills = member.getComponents("Skill");
-            skills.forEach((skill) => {
-                const dict = skill.slot === "weapon" ? WEAPONS : PASSIVES;
-                if (dict[skill.name].onTurnStart) {
+            const skillMap = this.state.skillMap.get(member);
+            if (skillMap.onTurnStart) {
+                for (let skill of skillMap.onTurnStart) {
+                    const dict = skill.slot === "weapon" ? WEAPONS : PASSIVES;
                     dict[skill.name].onTurnStart.call(skill, this.state);
                 }
-            });
+            }
         }
+        // @ts-ignore
+        console.log("changes", this._stagedChanges);
     }
 
     getCurrentTeam() {

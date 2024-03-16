@@ -23,24 +23,20 @@ class MovementSystem extends System {
         this.pathfinderQuery = this.createQuery().fromAll("Pathfinder");
         this.movableQuery = this.createQuery().fromAll("Movable");
         this.obstructQuery = this.createQuery().fromAll("Obstruct");
-        this.subscribe("MovementTile");
     }
 
     update() {
-        // this.state.tiles.getComponents("WalkTile").forEach((c) => this.state.tiles.removeComponent(c));
-        // this.state.tiles.getComponents("WarpTile").forEach((c) => this.state.tiles.removeComponent(c));
-        // this.state.tiles.getComponents("AttackTile").forEach((c) => this.state.tiles.removeComponent(c));
-        // this.state.tiles.getComponents("AssistTile").forEach((c) => this.state.tiles.removeComponent(c));
         this.movableQuery.refresh();
         const [unit] = this.movableQuery.execute();
-        // refactor: attacher les cases à l'unité plutôt qu'à une state
         const { x, y } = unit.getOne("Position");
         const allies = getAllies(this.state, unit);
         const obstructors = getEnemies(this.state, unit);
         const obstructedTiles = new Set<Uint16Array>();
 
+        const { skillMap } = this.state;
+
         for (let ally of allies) {
-            if (this.state.skillMap.get(ally).onTurnAllyCheckRange) {
+            if (skillMap.get(ally).onTurnAllyCheckRange) {
                 for (let skill of this.state.skillMap.get(ally).onTurnAllyCheckRange) {
                     const skillData = PASSIVES[skill.name];
                     skillData.onTurnAllyCheckRange.call(skill, this.state, unit);
@@ -56,7 +52,7 @@ class MovementSystem extends System {
         if (!unit.getOne("Pass")) {
             for (let obstructor of obstructors) {
                 if (this.state.skillMap.get(obstructor)?.onTurnAllyCheckRange) {
-                    for (let skill of this.state.skillMap.get(obstructor).onTurnEnemyCheckRange) {
+                    for (let skill of skillMap.get(obstructor).onTurnEnemyCheckRange) {
 
                     }
                 }
@@ -172,15 +168,5 @@ class MovementSystem extends System {
         return unit.getOne("MovementType").range;
     }
 };
-
-// get initial coordinates
-// check surrounding tiles
-// filter out tiles we've already checked
-// for each tile, check if it's crossable
-// if yes, store the tile
-// if no, store the tile in a separate reference
-// also check if the unit on it is of the same team and has Pathfinder
-// if yes, lower the cost of that tile to 0
-// repeat until unit range reaches 0
 
 export default MovementSystem;

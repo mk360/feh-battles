@@ -40,9 +40,11 @@ interface PassivesDict {
 function ploy(thisArg: Skill, state: GameState, affectedStat: Stat, debuff: number) {
     const { x, y } = thisArg.entity.getOne("Position");
     const enemies = getEnemies(state, thisArg.entity);
+
     for (let enemy of enemies) {
         const enemyPos = enemy.getOne("Position");
         const isCardinal = x === enemyPos.x || y === enemyPos.y;
+        console.log(isCardinal)
         const resIsHigher = thisArg.entity.getOne("Stats").res > enemy.getOne("Stats").res;
         if (isCardinal && resIsHigher) {
             enemy.addComponent({

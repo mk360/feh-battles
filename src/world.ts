@@ -1,6 +1,6 @@
 import { Component, Entity, IWorldConfig, World } from "ape-ecs";
 import Weapon from "./components/weapon";
-import MapEffects from "./systems/turn-start";
+import TurnStart from "./systems/turn-start";
 import Stats from "./components/stats";
 import CHARACTERS from "./data/characters";
 import Side from "./components/side";
@@ -52,6 +52,7 @@ import TileBitshifts from "./data/tile-bitshifts";
 import Obstruct from "./components/obstruct";
 import canReachTile from "./systems/can-reach-tile";
 import AttackTile from "./components/attack-tile";
+import FinishedAction from "./components/finished-action";
 
 interface HeroData {
     name: string;
@@ -117,6 +118,7 @@ class GameWorld extends World {
         this.registerComponent(MapDebuff);
         this.registerComponent(Position);
         this.registerComponent(Movable);
+        this.registerComponent(FinishedAction);
         this.registerComponent(WarpTile);
         this.registerComponent(NeutralizeNormalizeStaffDamage);
         this.registerComponent(NormalizeStaffDamage);
@@ -148,10 +150,14 @@ class GameWorld extends World {
         this.registerComponent(GuaranteedFollowup);
         this.registerComponent(PreventFollowUp);
         this.registerComponent(ApplyAffinity);
-        this.registerSystem("every-turn", MapEffects, [this.state]);
+        this.registerSystem("every-turn", TurnStart, [this.state]);
         this.registerSystem("combats", SkillInteractionSystem, [this.state]);
         this.registerSystem("combat", CombatSystem, [this.state]);
         this.registerSystem("movement", MovementSystem, [this.state]);
+    }
+
+    startTurn() {
+        this.runSystems("every-turn");
     }
 
     getUnitMovement(id: string) {
@@ -171,7 +177,7 @@ class GameWorld extends World {
     previewUnitMovement(id: string, candidateTile: { x: number, y: number }) {
         const entity = this.getEntity(id);
         const movementTiles = entity.getComponents("MovementTile");
-        const foundTile = Array.from(movementTiles).find((t) => t.x + 1  === candidateTile.x && t.y + 1 === candidateTile.y);
+        const foundTile = Array.from(movementTiles).find((t) => t.x  === candidateTile.x && t.y === candidateTile.y);
         return !!foundTile;
     }
 
@@ -181,13 +187,10 @@ class GameWorld extends World {
         const positionComponent = unit.getOne("Position");
         const { x, y } = positionComponent;
         const { bitfield } = unit.getOne("Side");
-        const s = unit.getOne("Side");
         const mapTile = this.state.map[y][x];
         mapTile[0] ^= tileBitmasks.occupation;
         newMapTile[0] |= bitfield;
         positionComponent.update(newTile);
-        positionComponent.x = newTile.x,
-        positionComponent.y = newTile.y;
         return positionComponent;
     }
 
@@ -256,7 +259,7 @@ class GameWorld extends World {
             ...tilePlacement
         });
 
-        const mapCell = this.state.map[y][x - 1];
+        const mapCell = this.state.map[y][x];
 
         if (mapCell & tileBitmasks.occupation) {
             throw new Error("Tile is already occupied");

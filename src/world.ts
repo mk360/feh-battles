@@ -53,6 +53,7 @@ import Obstruct from "./components/obstruct";
 import canReachTile from "./systems/can-reach-tile";
 import AttackTile from "./components/attack-tile";
 import FinishedAction from "./components/finished-action";
+import Status from "./components/status";
 
 interface HeroData {
     name: string;
@@ -93,6 +94,7 @@ class GameWorld extends World {
             8: [null, new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1)],
         },
         mapId: "",
+        topology: null,
         teams: {
             team1: new Set(),
             team2: new Set(),
@@ -127,6 +129,7 @@ class GameWorld extends World {
         this.registerComponent(Effectiveness);
         this.registerComponent(MovementType);
         this.registerComponent(Skill);
+        this.registerComponent(Status);
         this.registerComponent(Counterattack);
         this.registerComponent(MapBuff);
         this.registerComponent(Immunity);
@@ -198,9 +201,9 @@ class GameWorld extends World {
         const randomMapIndex = (1 + Math.floor(Math.random() * 90)).toString().padStart(4, "0");
         const mapId = `Z0025`;
         this.state.mapId = mapId;
-        const mapData = require(`./data/maps/${mapId}.json`) as typeof Map1;
-        for (let y = 1; y <= mapData.tileData.length; y++) {
-            const line = mapData.tileData[y - 1];
+        this.state.topology = require(`./data/maps/${mapId}.json`) as typeof Map1;
+        for (let y = 1; y <= this.state.topology.tileData.length; y++) {
+            const line = this.state.topology.tileData[y - 1];
             for (let x = 0; x < line.length; x++) {
                 const tile = line[x];
                 let bitField = 0;
@@ -251,10 +254,8 @@ class GameWorld extends World {
             });
         }
 
-        const tilePlacement = Map1.spawnLocations[team][teamIndex];
+        const tilePlacement = this.state.topology.spawnLocations[team][teamIndex];
         const { x, y } = tilePlacement;
-
-        console.log({ tilePlacement });
 
         entity.addComponent({
             type: "Position",

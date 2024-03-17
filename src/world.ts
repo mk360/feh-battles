@@ -1,4 +1,4 @@
-import { Component, Entity, IWorldConfig, World } from "ape-ecs";
+import { Component, Entity, IComponentChange, IComponentObject, IWorldConfig, World } from "ape-ecs";
 import Weapon from "./components/weapon";
 import TurnStart from "./systems/turn-start";
 import Stats from "./components/stats";
@@ -160,7 +160,25 @@ class GameWorld extends World {
     }
 
     startTurn() {
+        let changes: (IComponentChange & Partial<{ detailedComponent: IComponentObject }>)[] = [];
         this.runSystems("every-turn");
+        this.systems.get("every-turn").forEach((system) => {
+            // @ts-ignore
+            changes = changes.concat(system._stagedChanges.map((op) => this.processOperation(op)));
+        });
+        
+        return changes;
+    }
+
+    private processOperation(op: IComponentChange) {
+        const detailedOperation: (IComponentChange & Partial<{ detailedComponent: IComponentObject }>) = {...op};
+
+        if (["update", "add"].includes(op.type)) {
+            const component = this.getComponent(op.component).getObject(false);
+            detailedOperation.detailedComponent = component;
+        }
+
+        return detailedOperation;
     }
 
     getUnitMovement(id: string) {

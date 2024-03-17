@@ -8,9 +8,6 @@ import getSurroundings from "./get-surroundings";
 import PASSIVES from "../data/passives";
 import TileBitshifts from "../data/tile-bitshifts";
 import getTileCoordinates from "./get-tile-coordinates";
-import Debugger from "../debugger";
-import GameWorld from "../world";
-import Movable from "../components/movable";
 
 class MovementSystem extends System {
     private state: GameState;

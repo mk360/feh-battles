@@ -3,7 +3,7 @@ import GameState from "./state";
 import WEAPONS from "../data/weapons";
 import PASSIVES from "../data/passives";
 
-const MAP_STATUSES = ["MapBuff", "MapDebuff", "FinishedAction"];
+const MAP_STATUSES = ["MapBuff", "MapDebuff", "FinishedAction", "Status"];
 
 class TurnStartSystem extends System {
     private state: GameState;
@@ -28,8 +28,6 @@ class TurnStartSystem extends System {
                 }
             }
         }
-        // @ts-ignore
-        console.log("changes", this._stagedChanges);
     }
 
     getCurrentTeam() {

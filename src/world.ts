@@ -33,7 +33,6 @@ import AccelerateSpecial from "./components/accelerate-special";
 import SlowSpecial from "./components/slow-special";
 import BraveWeapon from "./components/brave-weapon";
 import PreventCounterattack from "./components/prevent-counterattack";
-import Map1 from "./data/maps/map1.json";
 import SkillInteractionSystem from "./systems/skill-interaction";
 import PreventTargetLowestDefense from "./components/prevent-target-lowest-defense";
 import GuaranteedFollowup from "./components/guaranteed-followup";
@@ -219,7 +218,7 @@ class GameWorld extends World {
         const randomMapIndex = (1 + Math.floor(Math.random() * 90)).toString().padStart(4, "0");
         const mapId = `Z0025`;
         this.state.mapId = mapId;
-        this.state.topology = require(`./data/maps/${mapId}.json`) as typeof Map1;
+        this.state.topology = require(`./data/maps/${mapId}.json`);
         for (let y = 1; y <= this.state.topology.tileData.length; y++) {
             const line = this.state.topology.tileData[y - 1];
             for (let x = 0; x < line.length; x++) {

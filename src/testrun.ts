@@ -1,5 +1,4 @@
 import GameWorld from "./world";
-import Map1 from "./data/maps/map1.json";
 import Debugger from "./debugger";
 
 const world = new GameWorld({

@@ -1,4 +1,4 @@
-import { Component, IWorldConfig, World } from "ape-ecs";
+import { Component, IComponentChange, IComponentObject, IWorldConfig, World } from "ape-ecs";
 import GameState from "./systems/state";
 import { Stat } from "./interfaces/types";
 interface HeroData {
@@ -23,7 +23,10 @@ interface InitialLineup {
 declare class GameWorld extends World {
     state: GameState;
     constructor(config?: IWorldConfig);
-    startTurn(): any[];
+    startTurn(): (IComponentChange & Partial<{
+        detailedComponent: IComponentObject;
+    }>)[];
+    private processOperation;
     getUnitMovement(id: string): {
         movementTiles: Set<Component>;
         attackTiles: Set<Component>;

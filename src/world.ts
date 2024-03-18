@@ -163,6 +163,8 @@ class GameWorld extends World {
         this.runSystems("every-turn");
         this.systems.get("every-turn").forEach((system) => {
             // @ts-ignore
+            console.log("changes", system._stagedChanges);
+            // @ts-ignore
             changes = changes.concat(system._stagedChanges.map((op) => this.processOperation(op)));
         });
         
@@ -171,9 +173,8 @@ class GameWorld extends World {
 
     private processOperation(op: IComponentChange) {
         const detailedOperation: (IComponentChange & Partial<{ detailedComponent: IComponentObject }>) = {...op};
-
-        if (["update", "add"].includes(op.type)) {
-            const component = this.getComponent(op.component).getObject(false);
+        if (["update", "add"].includes(op.op)) {
+            const { type, ...component } = this.getComponent(op.component).getObject(false);
             detailedOperation.detailedComponent = component;
         }
 
@@ -218,7 +219,7 @@ class GameWorld extends World {
         const randomMapIndex = (1 + Math.floor(Math.random() * 90)).toString().padStart(4, "0");
         const mapId = `Z0025`;
         this.state.mapId = mapId;
-        this.state.topology = require(`./data/maps/${mapId}.json`);
+        this.state.topology = require(`../maps/${mapId}.json`);
         for (let y = 1; y <= this.state.topology.tileData.length; y++) {
             const line = this.state.topology.tileData[y - 1];
             for (let x = 0; x < line.length; x++) {

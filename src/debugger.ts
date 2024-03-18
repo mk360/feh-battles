@@ -1,7 +1,6 @@
 import GameWorld from "./world";
 import { table } from "table";
 import tileBitmasks from "./data/tile-bitmasks";
-import Map1 from "./data/maps/map1.json";
 import TileBitshifts from "./data/tile-bitshifts";
 import chalk from "chalk";
 import getTileCoordinates from "./systems/get-tile-coordinates";

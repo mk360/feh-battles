@@ -1,7 +1,7 @@
 import { Component } from "ape-ecs";
 declare class Status extends Component {
     static properties: {
-        name: string;
+        value: string;
     };
 }
 export default Status;

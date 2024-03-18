@@ -2,14 +2,13 @@ import { Entity } from "ape-ecs";
 import { MovementType, WeaponType } from "../interfaces/types";
 import Skill from "../components/skill";
 import SkillHook from "../interfaces/skill-hook";
-import Map1 from "../data/maps/map1.json";
 interface GameState {
     teams: {
         team1: Set<Entity>;
         team2: Set<Entity>;
     };
     mapId: string;
-    topology: typeof Map1;
+    topology: JSONMapData;
     map: {
         1: [null, Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array];
         2: [null, Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array];

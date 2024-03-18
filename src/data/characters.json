@@ -1,3555 +1,3742 @@
 {
-   "Abel: The Panther": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 60,
-         "spd": 55,
-         "def": 40,
-         "res": 45
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 7,
-         "spd": 8,
-         "def": 8,
-         "res": 6
-      },
-      "movementType": "cavalry",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Alfonse: Prince of Askr": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 60,
-         "spd": 45,
-         "def": 55,
-         "res": 40
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 9,
-         "spd": 6,
-         "def": 8,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Alm: Hero of Prophecy": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 55,
-         "spd": 55,
-         "def": 50,
-         "res": 40
-      },
-      "stats": {
-         "hp": 21,
-         "atk": 9,
-         "spd": 6,
-         "def": 6,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Amelia: Rose of the War": {
-      "growthRates": {
-         "hp": 65,
-         "atk": 65,
-         "spd": 60,
-         "def": 60,
-         "res": 45
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 6,
-         "spd": 8,
-         "def": 9,
-         "res": 4
-      },
-      "movementType": "armored",
-      "color": "green",
-      "weaponType": "axe"
-   },
-   "Anna: Commander": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 50,
-         "spd": 65,
-         "def": 40,
-         "res": 50
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 7,
-         "spd": 10,
-         "def": 5,
-         "res": 6
-      },
-      "movementType": "infantry",
-      "color": "green",
-      "weaponType": "axe"
-   },
-   "Arden: Strong and Tough": {
-      "growthRates": {
-         "hp": 80,
-         "atk": 60,
-         "spd": 30,
-         "def": 65,
-         "res": 30
-      },
-      "stats": {
-         "hp": 25,
-         "atk": 10,
-         "spd": 3,
-         "def": 13,
-         "res": 3
-      },
-      "movementType": "armored",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Arthur: Hapless Hero": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 55,
-         "spd": 50,
-         "def": 50,
-         "res": 45
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 8,
-         "spd": 7,
-         "def": 8,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "green",
-      "weaponType": "axe"
-   },
-   "Arvis: Emperor of Flame": {
-      "growthRates": {
-         "hp": 35,
-         "atk": 60,
-         "spd": 55,
-         "def": 30,
-         "res": 60
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 8,
-         "spd": 7,
-         "def": 4,
-         "res": 7
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "tome"
-   },
-   "Athena: Borderland Sword": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 55,
-         "spd": 65,
-         "def": 45,
-         "res": 45
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 7,
-         "spd": 10,
-         "def": 8,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Ayra: Astra's Wielder": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 60,
-         "spd": 60,
-         "def": 55,
-         "res": 40
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 7,
-         "spd": 11,
-         "def": 7,
-         "res": 4
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Azama: Carefree Monk": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 40,
-         "spd": 45,
-         "def": 55,
-         "res": 45
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 4,
-         "spd": 7,
-         "def": 8,
-         "res": 6
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "staff"
-   },
-   "Azura: Lady of Ballads": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 60,
-         "spd": 60,
-         "def": 40,
-         "res": 50
-      },
-      "stats": {
-         "hp": 16,
-         "atk": 6,
-         "spd": 8,
-         "def": 3,
-         "res": 6
-      },
-      "movementType": "infantry",
-      "color": "green",
-      "weaponType": "axe"
-   },
-   "Azura: Lady of the Lake": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 60,
-         "spd": 60,
-         "def": 40,
-         "res": 50
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 5,
-         "spd": 7,
-         "def": 4,
-         "res": 6
-      },
-      "movementType": "infantry",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Barst: The Hatchet": {
-      "growthRates": {
-         "hp": 60,
-         "atk": 55,
-         "spd": 55,
-         "def": 55,
-         "res": 30
-      },
-      "stats": {
-         "hp": 20,
-         "atk": 9,
-         "spd": 8,
-         "def": 6,
-         "res": 4
-      },
-      "movementType": "infantry",
-      "color": "green",
-      "weaponType": "axe"
-   },
-   "Bartre: Fearless Warrior": {
-      "growthRates": {
-         "hp": 65,
-         "atk": 60,
-         "spd": 45,
-         "def": 60,
-         "res": 25
-      },
-      "stats": {
-         "hp": 21,
-         "atk": 10,
-         "spd": 6,
-         "def": 7,
-         "res": 3
-      },
-      "movementType": "infantry",
-      "color": "green",
-      "weaponType": "axe"
-   },
-   "Berkut: Prideful Prince": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 60,
-         "spd": 40,
-         "def": 55,
-         "res": 40
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 8,
-         "spd": 5,
-         "def": 7,
-         "res": 7
-      },
-      "movementType": "cavalry",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Beruka: Quiet Assassin": {
-      "growthRates": {
-         "hp": 60,
-         "atk": 50,
-         "spd": 40,
-         "def": 65,
-         "res": 40
-      },
-      "stats": {
-         "hp": 20,
-         "atk": 7,
-         "spd": 6,
-         "def": 9,
-         "res": 5
-      },
-      "movementType": "flier",
-      "color": "green",
-      "weaponType": "axe"
-   },
-   "Black Knight: Sinister General": {
-      "growthRates": {
-         "hp": 60,
-         "atk": 55,
-         "spd": 60,
-         "def": 60,
-         "res": 30
-      },
-      "stats": {
-         "hp": 22,
-         "atk": 10,
-         "spd": 8,
-         "def": 9,
-         "res": 5
-      },
-      "movementType": "armored",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Boey: Skillful Survivor": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 50,
-         "spd": 50,
-         "def": 55,
-         "res": 30
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 7,
-         "spd": 5,
-         "def": 8,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "green",
-      "weaponType": "tome"
-   },
-   "Caeda: Talys's Bride": {
-      "growthRates": {
-         "hp": 40,
-         "atk": 50,
-         "spd": 65,
-         "def": 35,
-         "res": 50
-      },
-      "stats": {
-         "hp": 16,
-         "atk": 7,
-         "spd": 9,
-         "def": 4,
-         "res": 8
-      },
-      "movementType": "infantry",
-      "color": "blue",
-      "weaponType": "tome"
-   },
-   "Caeda: Talys's Heart": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 45,
-         "spd": 65,
-         "def": 45,
-         "res": 55
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 6,
-         "spd": 9,
-         "def": 5,
-         "res": 10
-      },
-      "movementType": "flier",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Cain: The Bull": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 55,
-         "spd": 60,
-         "def": 45,
-         "res": 35
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 8,
-         "spd": 6,
-         "def": 8,
-         "res": 6
-      },
-      "movementType": "cavalry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Camilla: Bewitching Beauty": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 50,
-         "spd": 55,
-         "def": 50,
-         "res": 55
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 8,
-         "spd": 8,
-         "def": 6,
-         "res": 7
-      },
-      "movementType": "flier",
-      "color": "green",
-      "weaponType": "axe"
-   },
-   "Camilla: Spring Princess": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 60,
-         "spd": 45,
-         "def": 50,
-         "res": 35
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 9,
-         "spd": 6,
-         "def": 8,
-         "res": 4
-      },
-      "movementType": "flier",
-      "color": "green",
-      "weaponType": "tome"
-   },
-   "Camus: Sable Knight": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 55,
-         "spd": 55,
-         "def": 55,
-         "res": 30
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 8,
-         "spd": 9,
-         "def": 7,
-         "res": 4
-      },
-      "movementType": "cavalry",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Catria: Middle Whitewing": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 55,
-         "spd": 55,
-         "def": 50,
-         "res": 45
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 7,
-         "spd": 10,
-         "def": 7,
-         "res": 6
-      },
-      "movementType": "flier",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Cecilia: Etrurian General": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 55,
-         "spd": 45,
-         "def": 40,
-         "res": 50
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 8,
-         "spd": 6,
-         "def": 5,
-         "res": 7
-      },
-      "movementType": "cavalry",
-      "color": "green",
-      "weaponType": "tome"
-   },
-   "Celica: Caring Princess": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 55,
-         "spd": 60,
-         "def": 40,
-         "res": 35
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 8,
-         "spd": 7,
-         "def": 5,
-         "res": 7
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "tome"
-   },
-   "Charlotte: Money Maiden": {
-      "growthRates": {
-         "hp": 60,
-         "atk": 60,
-         "spd": 55,
-         "def": 45,
-         "res": 35
-      },
-      "stats": {
-         "hp": 20,
-         "atk": 10,
-         "spd": 8,
-         "def": 5,
-         "res": 4
-      },
-      "movementType": "infantry",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Cherche: Wyvern Friend": {
-      "growthRates": {
-         "hp": 60,
-         "atk": 65,
-         "spd": 45,
-         "def": 55,
-         "res": 30
-      },
-      "stats": {
-         "hp": 20,
-         "atk": 10,
-         "spd": 6,
-         "def": 8,
-         "res": 3
-      },
-      "movementType": "flier",
-      "color": "green",
-      "weaponType": "axe"
-   },
-   "Chrom: Exalted Prince": {
-      "growthRates": {
-         "hp": 60,
-         "atk": 65,
-         "spd": 45,
-         "def": 55,
-         "res": 30
-      },
-      "stats": {
-         "hp": 21,
-         "atk": 9,
-         "spd": 6,
-         "def": 7,
-         "res": 4
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Chrom: Spring Exalt": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 60,
-         "spd": 55,
-         "def": 50,
-         "res": 35
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 9,
-         "spd": 8,
-         "def": 6,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "green",
-      "weaponType": "axe"
-   },
-   "Clair: Highborn Flier": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 45,
-         "spd": 65,
-         "def": 45,
-         "res": 55
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 7,
-         "spd": 8,
-         "def": 5,
-         "res": 9
-      },
-      "movementType": "flier",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Clarine: Refined Noble": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 45,
-         "spd": 55,
-         "def": 40,
-         "res": 50
-      },
-      "stats": {
-         "hp": 16,
-         "atk": 6,
-         "spd": 9,
-         "def": 5,
-         "res": 7
-      },
-      "movementType": "cavalry",
-      "color": "colorless",
-      "weaponType": "staff"
-   },
-   "Clarisse: Sniper in the Dark": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 55,
-         "spd": 60,
-         "def": 45,
-         "res": 35
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 7,
-         "spd": 8,
-         "def": 6,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "bow"
-   },
-   "Clive: Idealistic Knight": {
-      "growthRates": {
-         "hp": 60,
-         "atk": 55,
-         "spd": 45,
-         "def": 55,
-         "res": 35
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 9,
-         "spd": 6,
-         "def": 8,
-         "res": 4
-      },
-      "movementType": "cavalry",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Cordelia: Knight Paragon": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 60,
-         "spd": 60,
-         "def": 40,
-         "res": 45
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 9,
-         "spd": 9,
-         "def": 5,
-         "res": 6
-      },
-      "movementType": "flier",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Cordelia: Perfect Bride": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 60,
-         "spd": 60,
-         "def": 35,
-         "res": 40
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 9,
-         "spd": 9,
-         "def": 4,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "bow"
-   },
-   "Corrin: Fateful Prince": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 55,
-         "spd": 55,
-         "def": 50,
-         "res": 45
-      },
-      "stats": {
-         "hp": 20,
-         "atk": 8,
-         "spd": 8,
-         "def": 6,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Corrin: Fateful Princess": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 45,
-         "spd": 65,
-         "def": 60,
-         "res": 35
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 8,
-         "spd": 6,
-         "def": 8,
-         "res": 6
-      },
-      "movementType": "infantry",
-      "color": "blue",
-      "weaponType": "breath"
-   },
-   "Corrin: Novice Vacationer": {
-      "growthRates": {
-         "hp": 40,
-         "atk": 55,
-         "spd": 60,
-         "def": 40,
-         "res": 45
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 7,
-         "spd": 8,
-         "def": 5,
-         "res": 7
-      },
-      "movementType": "flier",
-      "color": "blue",
-      "weaponType": "tome"
-   },
-   "Deirdre: Lady of the Forest": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 55,
-         "spd": 50,
-         "def": 30,
-         "res": 60
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 9,
-         "spd": 6,
-         "def": 3,
-         "res": 9
-      },
-      "movementType": "infantry",
-      "color": "green",
-      "weaponType": "tome"
-   },
-   "Delthea: Free Spirit": {
-      "growthRates": {
-         "hp": 40,
-         "atk": 60,
-         "spd": 60,
-         "def": 25,
-         "res": 55
-      },
-      "stats": {
-         "hp": 16,
-         "atk": 10,
-         "spd": 8,
-         "def": 3,
-         "res": 7
-      },
-      "movementType": "infantry",
-      "color": "blue",
-      "weaponType": "tome"
-   },
-   "Donnel: Village Hero": {
-      "growthRates": {
-         "hp": 60,
-         "atk": 65,
-         "spd": 55,
-         "def": 60,
-         "res": 45
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 7,
-         "spd": 5,
-         "def": 6,
-         "res": 4
-      },
-      "movementType": "infantry",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Dorcas: Serene Warrior": {
-      "growthRates": {
-         "hp": 60,
-         "atk": 60,
-         "spd": 40,
-         "def": 60,
-         "res": 45
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 9,
-         "spd": 6,
-         "def": 9,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "green",
-      "weaponType": "axe"
-   },
-   "Draug: Gentle Giant": {
-      "growthRates": {
-         "hp": 60,
-         "atk": 50,
-         "spd": 60,
-         "def": 60,
-         "res": 35
-      },
-      "stats": {
-         "hp": 24,
-         "atk": 8,
-         "spd": 6,
-         "def": 13,
-         "res": 3
-      },
-      "movementType": "armored",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Effie: Army of One": {
-      "growthRates": {
-         "hp": 65,
-         "atk": 65,
-         "spd": 40,
-         "def": 50,
-         "res": 45
-      },
-      "stats": {
-         "hp": 22,
-         "atk": 12,
-         "spd": 5,
-         "def": 11,
-         "res": 4
-      },
-      "movementType": "armored",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Eirika: Restoration Lady": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 45,
-         "spd": 60,
-         "def": 45,
-         "res": 50
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 7,
-         "spd": 9,
-         "def": 7,
-         "res": 6
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Eldigan: Lionheart": {
-      "growthRates": {
-         "hp": 60,
-         "atk": 55,
-         "spd": 45,
-         "def": 60,
-         "res": 30
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 8,
-         "spd": 5,
-         "def": 8,
-         "res": 6
-      },
-      "movementType": "cavalry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Elincia: Lost Princess": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 60,
-         "spd": 60,
-         "def": 45,
-         "res": 45
-      },
-      "stats": {
-         "hp": 16,
-         "atk": 8,
-         "spd": 10,
-         "def": 5,
-         "res": 8
-      },
-      "movementType": "flier",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Elise: Budding Flower": {
-      "growthRates": {
-         "hp": 35,
-         "atk": 55,
-         "spd": 55,
-         "def": 35,
-         "res": 55
-      },
-      "stats": {
-         "hp": 15,
-         "atk": 8,
-         "spd": 8,
-         "def": 4,
-         "res": 8
-      },
-      "movementType": "cavalry",
-      "color": "colorless",
-      "weaponType": "staff"
-   },
-   "Elise: Tropical Flower": {
-      "growthRates": {
-         "hp": 40,
-         "atk": 60,
-         "spd": 60,
-         "def": 35,
-         "res": 45
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 10,
-         "spd": 8,
-         "def": 3,
-         "res": 6
-      },
-      "movementType": "infantry",
-      "color": "green",
-      "weaponType": "tome"
-   },
-   "Eliwood: Knight of Lycia": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 55,
-         "spd": 50,
-         "def": 40,
-         "res": 55
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 7,
-         "spd": 8,
-         "def": 6,
-         "res": 8
-      },
-      "movementType": "cavalry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Ephraim: Restoration Lord": {
-      "growthRates": {
-         "hp": 60,
-         "atk": 60,
-         "spd": 45,
-         "def": 55,
-         "res": 35
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 9,
-         "spd": 6,
-         "def": 8,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Est: Junior Whitewing": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 60,
-         "spd": 50,
-         "def": 45,
-         "res": 55
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 9,
-         "spd": 8,
-         "def": 5,
-         "res": 8
-      },
-      "movementType": "flier",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Fae: Divine Dragon": {
-      "growthRates": {
-         "hp": 70,
-         "atk": 65,
-         "spd": 55,
-         "def": 45,
-         "res": 50
-      },
-      "stats": {
-         "hp": 16,
-         "atk": 5,
-         "spd": 4,
-         "def": 6,
-         "res": 8
-      },
-      "movementType": "infantry",
-      "color": "green",
-      "weaponType": "breath"
-   },
-   "Faye: Devoted Heart": {
-      "growthRates": {
-         "hp": 60,
-         "atk": 55,
-         "spd": 50,
-         "def": 50,
-         "res": 55
-      },
-      "stats": {
-         "hp": 16,
-         "atk": 6,
-         "spd": 3,
-         "def": 4,
-         "res": 7
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "bow"
-   },
-   "Felicia: Maid Mayhem": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 40,
-         "spd": 60,
-         "def": 35,
-         "res": 60
-      },
-      "stats": {
-         "hp": 15,
-         "atk": 6,
-         "spd": 11,
-         "def": 3,
-         "res": 9
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "dagger"
-   },
-   "Fir: Sword Student": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 45,
-         "spd": 60,
-         "def": 45,
-         "res": 55
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 6,
-         "spd": 10,
-         "def": 5,
-         "res": 7
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Florina: Lovely Flier": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 50,
-         "spd": 45,
-         "def": 45,
-         "res": 60
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 7,
-         "spd": 8,
-         "def": 6,
-         "res": 8
-      },
-      "movementType": "flier",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Frederick: Horizon Watcher": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 55,
-         "spd": 55,
-         "def": 50,
-         "res": 30
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 8,
-         "spd": 7,
-         "def": 6,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "dagger"
-   },
-   "Frederick: Polite Knight": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 60,
-         "spd": 45,
-         "def": 65,
-         "res": 25
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 9,
-         "spd": 6,
-         "def": 8,
-         "res": 4
-      },
-      "movementType": "cavalry",
-      "color": "green",
-      "weaponType": "axe"
-   },
-   "Gaius: Candy Stealer": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 50,
-         "spd": 60,
-         "def": 40,
-         "res": 35
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 7,
-         "spd": 10,
-         "def": 5,
-         "res": 4
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "dagger"
-   },
-   "Gaius: Thief Exposed": {
-      "growthRates": {
-         "hp": 40,
-         "atk": 50,
-         "spd": 65,
-         "def": 35,
-         "res": 50
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 8,
-         "spd": 9,
-         "def": 4,
-         "res": 6
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "bow"
-   },
-   "Genny: Endearing Ally": {
-      "growthRates": {
-         "hp": 35,
-         "atk": 60,
-         "spd": 45,
-         "def": 40,
-         "res": 60
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 9,
-         "spd": 6,
-         "def": 4,
-         "res": 8
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "staff"
-   },
-   "Gordin: Altean Archer": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 55,
-         "spd": 45,
-         "def": 55,
-         "res": 30
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 7,
-         "spd": 6,
-         "def": 8,
-         "res": 4
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "bow"
-   },
-   "Gray: Wry Comrade": {
-      "growthRates": {
-         "hp": 60,
-         "atk": 65,
-         "spd": 60,
-         "def": 55,
-         "res": 45
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 7,
-         "spd": 6,
-         "def": 6,
-         "res": 3
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Gunter: Inveterate Soldier": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 50,
-         "spd": 40,
-         "def": 50,
-         "res": 30
-      },
-      "stats": {
-         "hp": 21,
-         "atk": 10,
-         "spd": 7,
-         "def": 11,
-         "res": 5
-      },
-      "movementType": "cavalry",
-      "color": "green",
-      "weaponType": "axe"
-   },
-   "Gwendolyn: Adorable Knight": {
-      "growthRates": {
-         "hp": 60,
-         "atk": 50,
-         "spd": 45,
-         "def": 60,
-         "res": 50
-      },
-      "stats": {
-         "hp": 23,
-         "atk": 8,
-         "spd": 5,
-         "def": 12,
-         "res": 6
-      },
-      "movementType": "armored",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Hana: Focused Samurai": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 60,
-         "spd": 60,
-         "def": 40,
-         "res": 50
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 9,
-         "spd": 10,
-         "def": 6,
-         "res": 4
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Hawkeye: Desert Guardian": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 55,
-         "spd": 40,
-         "def": 50,
-         "res": 55
-      },
-      "stats": {
-         "hp": 21,
-         "atk": 9,
-         "spd": 5,
-         "def": 6,
-         "res": 6
-      },
-      "movementType": "infantry",
-      "color": "green",
-      "weaponType": "axe"
-   },
-   "Hector: General of Ostia": {
-      "growthRates": {
-         "hp": 65,
-         "atk": 60,
-         "spd": 45,
-         "def": 60,
-         "res": 35
-      },
-      "stats": {
-         "hp": 24,
-         "atk": 10,
-         "spd": 5,
-         "def": 11,
-         "res": 4
-      },
-      "movementType": "armored",
-      "color": "green",
-      "weaponType": "axe"
-   },
-   "Henry: Happy Vampire": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 55,
-         "spd": 55,
-         "def": 50,
-         "res": 55
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 9,
-         "spd": 10,
-         "def": 4,
-         "res": 12
-      },
-      "movementType": "armored",
-      "color": "green",
-      "weaponType": "tome"
-   },
-   "Henry: Twisted Mind": {
-      "growthRates": {
-         "hp": 60,
-         "atk": 40,
-         "spd": 40,
-         "def": 55,
-         "res": 45
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 6,
-         "spd": 5,
-         "def": 8,
-         "res": 6
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "tome"
-   },
-   "Hinata: Wild Samurai": {
-      "growthRates": {
-         "hp": 60,
-         "atk": 55,
-         "spd": 45,
-         "def": 60,
-         "res": 35
-      },
-      "stats": {
-         "hp": 21,
-         "atk": 8,
-         "spd": 5,
-         "def": 10,
-         "res": 3
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Hinoka: Warrior Princess": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 65,
-         "spd": 55,
-         "def": 45,
-         "res": 40
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 7,
-         "spd": 8,
-         "def": 6,
-         "res": 7
-      },
-      "movementType": "flier",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Ike: Brave Mercenary": {
-      "growthRates": {
-         "hp": 60,
-         "atk": 60,
-         "spd": 50,
-         "def": 60,
-         "res": 35
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 10,
-         "spd": 6,
-         "def": 9,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "green",
-      "weaponType": "axe"
-   },
-   "Ike: Young Mercenary": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 60,
-         "spd": 55,
-         "def": 55,
-         "res": 30
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 9,
-         "spd": 7,
-         "def": 8,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Inigo: Indigo Dancer": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 50,
-         "spd": 60,
-         "def": 40,
-         "res": 40
-      },
-      "stats": {
-         "hp": 15,
-         "atk": 6,
-         "spd": 7,
-         "def": 5,
-         "res": 3
-      },
-      "movementType": "infantry",
-      "color": "green",
-      "weaponType": "tome"
-   },
-   "Innes: Regal Strategician": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 55,
-         "spd": 60,
-         "def": 25,
-         "res": 55
-      },
-      "stats": {
-         "hp": 16,
-         "atk": 9,
-         "spd": 8,
-         "def": 4,
-         "res": 7
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "bow"
-   },
-   "Jaffar: Angel of Death": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 45,
-         "spd": 55,
-         "def": 45,
-         "res": 40
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 7,
-         "spd": 9,
-         "def": 6,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "dagger"
-   },
-   "Jagen: Veteran Knight": {
-      "growthRates": {
-         "hp": 40,
-         "atk": 45,
-         "spd": 40,
-         "def": 40,
-         "res": 55
-      },
-      "stats": {
-         "hp": 20,
-         "atk": 8,
-         "spd": 7,
-         "def": 8,
-         "res": 11
-      },
-      "movementType": "cavalry",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Jakob: Devoted Monster": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 60,
-         "spd": 40,
-         "def": 55,
-         "res": 55
-      },
-      "stats": {
-         "hp": 20,
-         "atk": 9,
-         "spd": 6,
-         "def": 9,
-         "res": 8
-      },
-      "movementType": "armored",
-      "color": "colorless",
-      "weaponType": "bow"
-   },
-   "Jakob: Devoted Servant": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 50,
-         "spd": 50,
-         "def": 45,
-         "res": 45
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 7,
-         "spd": 9,
-         "def": 6,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "dagger"
-   },
-   "Jeorge: Perfect Shot": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 55,
-         "spd": 55,
-         "def": 45,
-         "res": 40
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 8,
-         "spd": 8,
-         "def": 5,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "bow"
-   },
-   "Joshua: Tempest King": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 55,
-         "spd": 60,
-         "def": 50,
-         "res": 50
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 7,
-         "spd": 9,
-         "def": 8,
-         "res": 6
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Julia: Naga's Blood": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 60,
-         "spd": 45,
-         "def": 30,
-         "res": 55
-      },
-      "stats": {
-         "hp": 16,
-         "atk": 9,
-         "spd": 7,
-         "def": 4,
-         "res": 8
-      },
-      "movementType": "infantry",
-      "color": "green",
-      "weaponType": "tome"
-   },
-   "Kagero: Honorable Ninja": {
-      "growthRates": {
-         "hp": 35,
-         "atk": 60,
-         "spd": 55,
-         "def": 40,
-         "res": 50
-      },
-      "stats": {
-         "hp": 16,
-         "atk": 9,
-         "spd": 8,
-         "def": 5,
-         "res": 6
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "dagger"
-   },
-   "Karel: Sword Demon": {
-      "growthRates": {
-         "hp": 65,
-         "atk": 50,
-         "spd": 60,
-         "def": 45,
-         "res": 35
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 8,
-         "spd": 9,
-         "def": 6,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Katarina: Wayward One": {
-      "growthRates": {
-         "hp": 40,
-         "atk": 60,
-         "spd": 60,
-         "def": 25,
-         "res": 55
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 6,
-         "spd": 8,
-         "def": 5,
-         "res": 8
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "tome"
-   },
-   "Klein: Silver Nobleman": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 50,
-         "spd": 60,
-         "def": 35,
-         "res": 45
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 9,
-         "spd": 7,
-         "def": 5,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "bow"
-   },
-   "Lachesis: Lionheart's Sister": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 60,
-         "spd": 40,
-         "def": 40,
-         "res": 50
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 6,
-         "spd": 8,
-         "def": 5,
-         "res": 8
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "staff"
-   },
-   "Laslow: Dancing Duelist": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 60,
-         "spd": 45,
-         "def": 55,
-         "res": 40
-      },
-      "stats": {
-         "hp": 20,
-         "atk": 9,
-         "spd": 7,
-         "def": 6,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Legion: Masked Maniac": {
-      "growthRates": {
-         "hp": 60,
-         "atk": 60,
-         "spd": 60,
-         "def": 40,
-         "res": 35
-      },
-      "stats": {
-         "hp": 20,
-         "atk": 10,
-         "spd": 9,
-         "def": 5,
-         "res": 3
-      },
-      "movementType": "infantry",
-      "color": "green",
-      "weaponType": "axe"
-   },
-   "Leo: Seashore's Prince": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 55,
-         "spd": 50,
-         "def": 25,
-         "res": 65
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 8,
-         "spd": 5,
-         "def": 6,
-         "res": 7
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "tome"
-   },
-   "Leo: Sorcerous Prince": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 50,
-         "spd": 40,
-         "def": 45,
-         "res": 50
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 7,
-         "spd": 5,
-         "def": 6,
-         "res": 8
-      },
-      "movementType": "cavalry",
-      "color": "red",
-      "weaponType": "tome"
-   },
-   "Leon: True of Heart": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 60,
-         "spd": 55,
-         "def": 50,
-         "res": 25
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 8,
-         "spd": 6,
-         "def": 8,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "bow"
-   },
-   "Lilina: Delightful Noble": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 65,
-         "spd": 45,
-         "def": 35,
-         "res": 50
-      },
-      "stats": {
-         "hp": 16,
-         "atk": 9,
-         "spd": 6,
-         "def": 4,
-         "res": 9
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "tome"
-   },
-   "Linde: Light Mage": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 60,
-         "spd": 60,
-         "def": 25,
-         "res": 50
-      },
-      "stats": {
-         "hp": 16,
-         "atk": 9,
-         "spd": 10,
-         "def": 4,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "blue",
-      "weaponType": "tome"
-   },
-   "Lissa: Sprightly Cleric": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 45,
-         "spd": 45,
-         "def": 50,
-         "res": 50
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 7,
-         "spd": 6,
-         "def": 6,
-         "res": 8
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "staff"
-   },
-   "Lloyd: White Wolf": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 55,
-         "spd": 60,
-         "def": 35,
-         "res": 50
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 8,
-         "spd": 9,
-         "def": 5,
-         "res": 8
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Lon'qu: Solitary Blade": {
-      "growthRates": {
-         "hp": 60,
-         "atk": 50,
-         "spd": 65,
-         "def": 40,
-         "res": 40
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 7,
-         "spd": 11,
-         "def": 5,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Lucina: Brave Princess": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 60,
-         "spd": 60,
-         "def": 45,
-         "res": 35
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 8,
-         "spd": 10,
-         "def": 8,
-         "res": 4
-      },
-      "movementType": "infantry",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Lucina: Future Witness": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 60,
-         "spd": 60,
-         "def": 45,
-         "res": 35
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 8,
-         "spd": 10,
-         "def": 6,
-         "res": 4
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Lucina: Spring Exalt": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 50,
-         "spd": 60,
-         "def": 40,
-         "res": 45
-      },
-      "stats": {
-         "hp": 16,
-         "atk": 7,
-         "spd": 10,
-         "def": 5,
-         "res": 6
-      },
-      "movementType": "infantry",
-      "color": "blue",
-      "weaponType": "tome"
-   },
-   "Lucius: The Light": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 60,
-         "spd": 50,
-         "def": 25,
-         "res": 60
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 6,
-         "spd": 8,
-         "def": 3,
-         "res": 9
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "staff"
-   },
-   "Lukas: Sharp Soldier": {
-      "growthRates": {
-         "hp": 60,
-         "atk": 60,
-         "spd": 40,
-         "def": 65,
-         "res": 30
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 9,
-         "spd": 5,
-         "def": 10,
-         "res": 4
-      },
-      "movementType": "infantry",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Luke: Rowdy Squire": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 60,
-         "spd": 50,
-         "def": 50,
-         "res": 35
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 8,
-         "spd": 6,
-         "def": 8,
-         "res": 5
-      },
-      "movementType": "cavalry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Lute: Prodigy": {
-      "growthRates": {
-         "hp": 40,
-         "atk": 60,
-         "spd": 55,
-         "def": 30,
-         "res": 60
-      },
-      "stats": {
-         "hp": 16,
-         "atk": 10,
-         "spd": 8,
-         "def": 3,
-         "res": 8
-      },
-      "movementType": "infantry",
-      "color": "blue",
-      "weaponType": "tome"
-   },
-   "Lyn: Brave Lady": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 60,
-         "spd": 60,
-         "def": 30,
-         "res": 50
-      },
-      "stats": {
-         "hp": 16,
-         "atk": 7,
-         "spd": 9,
-         "def": 5,
-         "res": 6
-      },
-      "movementType": "cavalry",
-      "color": "colorless",
-      "weaponType": "bow"
-   },
-   "Lyn: Bride of the Plains": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 50,
-         "spd": 55,
-         "def": 40,
-         "res": 45
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 6,
-         "spd": 10,
-         "def": 6,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "staff"
-   },
-   "Lyn: Lady of the Plains": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 50,
-         "spd": 60,
-         "def": 45,
-         "res": 55
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 6,
-         "spd": 11,
-         "def": 7,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Mae: Bundle of Energy": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 60,
-         "spd": 55,
-         "def": 30,
-         "res": 50
-      },
-      "stats": {
-         "hp": 16,
-         "atk": 10,
-         "spd": 7,
-         "def": 3,
-         "res": 8
-      },
-      "movementType": "infantry",
-      "color": "blue",
-      "weaponType": "tome"
-   },
-   "Marth: Altean Prince": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 55,
-         "spd": 60,
-         "def": 50,
-         "res": 40
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 7,
-         "spd": 8,
-         "def": 7,
-         "res": 6
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Marth: Enigmatic Blade": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 60,
-         "spd": 60,
-         "def": 45,
-         "res": 35
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 8,
-         "spd": 10,
-         "def": 6,
-         "res": 4
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Mathilda: Legendary Knight": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 50,
-         "spd": 55,
-         "def": 40,
-         "res": 60
-      },
-      "stats": {
-         "hp": 16,
-         "atk": 7,
-         "spd": 8,
-         "def": 7,
-         "res": 8
-      },
-      "movementType": "cavalry",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Matthew: Faithful Spy": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 45,
-         "spd": 55,
-         "def": 55,
-         "res": 30
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 6,
-         "spd": 10,
-         "def": 6,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "dagger"
-   },
-   "Merric: Wind Mage": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 45,
-         "spd": 55,
-         "def": 50,
-         "res": 35
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 7,
-         "spd": 8,
-         "def": 6,
-         "res": 4
-      },
-      "movementType": "infantry",
-      "color": "green",
-      "weaponType": "tome"
-   },
-   "Mia: Lady of Blades": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 55,
-         "spd": 65,
-         "def": 50,
-         "res": 45
-      },
-      "stats": {
-         "hp": 16,
-         "atk": 8,
-         "spd": 12,
-         "def": 6,
-         "res": 6
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Michalis: Ambitious King": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 60,
-         "spd": 45,
-         "def": 60,
-         "res": 35
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 8,
-         "spd": 7,
-         "def": 9,
-         "res": 4
-      },
-      "movementType": "flier",
-      "color": "green",
-      "weaponType": "axe"
-   },
-   "Minerva: Red Dragoon": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 55,
-         "spd": 55,
-         "def": 55,
-         "res": 40
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 7,
-         "spd": 9,
-         "def": 8,
-         "res": 5
-      },
-      "movementType": "flier",
-      "color": "green",
-      "weaponType": "axe"
-   },
-   "Mist: Helpful Sister": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 45,
-         "spd": 50,
-         "def": 35,
-         "res": 60
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 8,
-         "spd": 6,
-         "def": 5,
-         "res": 8
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "staff"
-   },
-   "Narcian: Wyvern General": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 50,
-         "spd": 50,
-         "def": 55,
-         "res": 45
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 7,
-         "spd": 7,
-         "def": 8,
-         "res": 7
-      },
-      "movementType": "flier",
-      "color": "green",
-      "weaponType": "axe"
-   },
-   "Navarre: Scarlet Sword": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 55,
-         "spd": 60,
-         "def": 40,
-         "res": 45
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 7,
-         "spd": 11,
-         "def": 6,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Nephenee: Fierce Halberdier": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 55,
-         "spd": 60,
-         "def": 60,
-         "res": 35
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 7,
-         "spd": 9,
-         "def": 8,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Niles: Cruel to Be Kind": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 45,
-         "spd": 60,
-         "def": 30,
-         "res": 60
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 6,
-         "spd": 8,
-         "def": 4,
-         "res": 8
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "bow"
-   },
-   "Ninian: Oracle of Destiny": {
-      "growthRates": {
-         "hp": 60,
-         "atk": 45,
-         "spd": 60,
-         "def": 40,
-         "res": 50
-      },
-      "stats": {
-         "hp": 16,
-         "atk": 5,
-         "spd": 7,
-         "def": 6,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "blue",
-      "weaponType": "breath"
-   },
-   "Nino: Pious Mage": {
-      "growthRates": {
-         "hp": 40,
-         "atk": 60,
-         "spd": 60,
-         "def": 35,
-         "res": 45
-      },
-      "stats": {
-         "hp": 16,
-         "atk": 7,
-         "spd": 10,
-         "def": 4,
-         "res": 7
-      },
-      "movementType": "infantry",
-      "color": "green",
-      "weaponType": "tome"
-   },
-   "Nowi: Eternal Witch": {
-      "growthRates": {
-         "hp": 40,
-         "atk": 60,
-         "spd": 60,
-         "def": 35,
-         "res": 45
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 8,
-         "spd": 6,
-         "def": 5,
-         "res": 8
-      },
-      "movementType": "flier",
-      "color": "red",
-      "weaponType": "tome"
-   },
-   "Nowi: Eternal Youth": {
-      "growthRates": {
-         "hp": 65,
-         "atk": 65,
-         "spd": 50,
-         "def": 55,
-         "res": 50
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 6,
-         "spd": 5,
-         "def": 6,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "blue",
-      "weaponType": "breath"
-   },
-   "Oboro: Fierce Fighter": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 55,
-         "spd": 45,
-         "def": 60,
-         "res": 45
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 8,
-         "spd": 7,
-         "def": 9,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Odin: Potent Force": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 40,
-         "spd": 55,
-         "def": 45,
-         "res": 45
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 5,
-         "spd": 8,
-         "def": 6,
-         "res": 6
-      },
-      "movementType": "infantry",
-      "color": "blue",
-      "weaponType": "tome"
-   },
-   "Ogma: Loyal Blade": {
-      "growthRates": {
-         "hp": 60,
-         "atk": 65,
-         "spd": 55,
-         "def": 50,
-         "res": 25
-      },
-      "stats": {
-         "hp": 21,
-         "atk": 7,
-         "spd": 10,
-         "def": 6,
-         "res": 3
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Olivia: Blushing Beauty": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 50,
-         "spd": 60,
-         "def": 50,
-         "res": 50
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 6,
-         "spd": 7,
-         "def": 5,
-         "res": 4
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Olivia: Festival Dancer": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 50,
-         "spd": 60,
-         "def": 30,
-         "res": 55
-      },
-      "stats": {
-         "hp": 15,
-         "atk": 6,
-         "spd": 8,
-         "def": 3,
-         "res": 4
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "dagger"
-   },
-   "Olwen: Blue Mage Knight": {
-      "growthRates": {
-         "hp": 40,
-         "atk": 45,
-         "spd": 60,
-         "def": 35,
-         "res": 55
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 7,
-         "spd": 8,
-         "def": 5,
-         "res": 6
-      },
-      "movementType": "cavalry",
-      "color": "blue",
-      "weaponType": "tome"
-   },
-   "Oscar: Agile Horseman": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 60,
-         "spd": 60,
-         "def": 45,
-         "res": 35
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 7,
-         "spd": 8,
-         "def": 7,
-         "res": 6
-      },
-      "movementType": "cavalry",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Palla: Eldest Whitewing": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 55,
-         "spd": 50,
-         "def": 50,
-         "res": 45
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 7,
-         "spd": 9,
-         "def": 6,
-         "res": 7
-      },
-      "movementType": "flier",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Priscilla: Delicate Princess": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 50,
-         "spd": 50,
-         "def": 35,
-         "res": 55
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 7,
-         "spd": 7,
-         "def": 4,
-         "res": 8
-      },
-      "movementType": "cavalry",
-      "color": "colorless",
-      "weaponType": "staff"
-   },
-   "Raigh: Dark Child": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 55,
-         "spd": 50,
-         "def": 40,
-         "res": 50
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 8,
-         "spd": 7,
-         "def": 5,
-         "res": 7
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "tome"
-   },
-   "Raven: Peerless Fighter": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 60,
-         "spd": 60,
-         "def": 45,
-         "res": 40
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 8,
-         "spd": 9,
-         "def": 6,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "green",
-      "weaponType": "axe"
-   },
-   "Rebecca: Wildflower": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 50,
-         "spd": 60,
-         "def": 35,
-         "res": 50
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 7,
-         "spd": 8,
-         "def": 6,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "bow"
-   },
-   "Reinhardt: Thunder's Fist": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 55,
-         "spd": 40,
-         "def": 50,
-         "res": 40
-      },
-      "stats": {
-         "hp": 16,
-         "atk": 8,
-         "spd": 6,
-         "def": 5,
-         "res": 8
-      },
-      "movementType": "cavalry",
-      "color": "blue",
-      "weaponType": "tome"
-   },
-   "Robin: High Deliverer": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 50,
-         "spd": 50,
-         "def": 50,
-         "res": 40
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 7,
-         "spd": 7,
-         "def": 7,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "blue",
-      "weaponType": "tome"
-   },
-   "Robin: Mystery Tactician": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 50,
-         "spd": 50,
-         "def": 50,
-         "res": 40
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 7,
-         "spd": 7,
-         "def": 7,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "green",
-      "weaponType": "tome"
-   },
-   "Robin: Seaside Tactician": {
-      "growthRates": {
-         "hp": 40,
-         "atk": 55,
-         "spd": 60,
-         "def": 50,
-         "res": 50
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 8,
-         "spd": 8,
-         "def": 6,
-         "res": 7
-      },
-      "movementType": "infantry",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Roderick: Steady Squire": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 55,
-         "spd": 60,
-         "def": 45,
-         "res": 40
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 7,
-         "spd": 8,
-         "def": 6,
-         "res": 7
-      },
-      "movementType": "cavalry",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Roy: Brave Lion": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 55,
-         "spd": 60,
-         "def": 45,
-         "res": 40
-      },
-      "stats": {
-         "hp": 16,
-         "atk": 8,
-         "spd": 8,
-         "def": 7,
-         "res": 7
-      },
-      "movementType": "cavalry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Ryoma: Peerless Samurai": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 60,
-         "spd": 55,
-         "def": 50,
-         "res": 40
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 8,
-         "spd": 11,
-         "def": 5,
-         "res": 4
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Saber: Driven Mercenary": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 55,
-         "spd": 55,
-         "def": 55,
-         "res": 40
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 7,
-         "spd": 9,
-         "def": 8,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Saizo: Angry Ninja": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 50,
-         "spd": 60,
-         "def": 55,
-         "res": 30
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 7,
-         "spd": 8,
-         "def": 9,
-         "res": 3
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "dagger"
-   },
-   "Sakura: Gentle Nekomata": {
-      "growthRates": {
-         "hp": 40,
-         "atk": 55,
-         "spd": 60,
-         "def": 25,
-         "res": 60
-      },
-      "stats": {
-         "hp": 16,
-         "atk": 8,
-         "spd": 8,
-         "def": 4,
-         "res": 8
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "dagger"
-   },
-   "Sakura: Loving Priestess": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 50,
-         "spd": 50,
-         "def": 45,
-         "res": 50
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 6,
-         "spd": 8,
-         "def": 5,
-         "res": 8
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "staff"
-   },
-   "Sanaki: Begnion's Apostle": {
-      "growthRates": {
-         "hp": 40,
-         "atk": 65,
-         "spd": 45,
-         "def": 30,
-         "res": 60
-      },
-      "stats": {
-         "hp": 16,
-         "atk": 9,
-         "spd": 7,
-         "def": 4,
-         "res": 8
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "tome"
-   },
-   "Selena: Cutting Wit": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 45,
-         "spd": 60,
-         "def": 55,
-         "res": 50
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 6,
-         "spd": 9,
-         "def": 8,
-         "res": 6
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Seliph: Heir of Light": {
-      "growthRates": {
-         "hp": 65,
-         "atk": 60,
-         "spd": 40,
-         "def": 50,
-         "res": 40
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 8,
-         "spd": 7,
-         "def": 8,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Serra: Outspoken Cleric": {
-      "growthRates": {
-         "hp": 40,
-         "atk": 55,
-         "spd": 50,
-         "def": 40,
-         "res": 55
-      },
-      "stats": {
-         "hp": 16,
-         "atk": 6,
-         "spd": 9,
-         "def": 4,
-         "res": 9
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "staff"
-   },
-   "Seth: Silver Knight": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 55,
-         "spd": 55,
-         "def": 55,
-         "res": 40
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 8,
-         "spd": 7,
-         "def": 8,
-         "res": 5
-      },
-      "movementType": "cavalry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Setsuna: Absent Archer": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 50,
-         "spd": 65,
-         "def": 40,
-         "res": 40
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 6,
-         "spd": 9,
-         "def": 5,
-         "res": 6
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "bow"
-   },
-   "Shanna: Sprightly Flier": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 50,
-         "spd": 60,
-         "def": 45,
-         "res": 50
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 8,
-         "spd": 9,
-         "def": 6,
-         "res": 7
-      },
-      "movementType": "flier",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Sharena: Princess of Askr": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 55,
-         "spd": 55,
-         "def": 50,
-         "res": 40
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 8,
-         "spd": 8,
-         "def": 7,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Sheena: Princess of Gra": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 50,
-         "spd": 45,
-         "def": 55,
-         "res": 60
-      },
-      "stats": {
-         "hp": 21,
-         "atk": 8,
-         "spd": 6,
-         "def": 12,
-         "res": 7
-      },
-      "movementType": "armored",
-      "color": "green",
-      "weaponType": "axe"
-   },
-   "Shigure: Dark Sky Singer": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 55,
-         "spd": 55,
-         "def": 40,
-         "res": 45
-      },
-      "stats": {
-         "hp": 15,
-         "atk": 7,
-         "spd": 5,
-         "def": 4,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "blue",
-      "weaponType": "tome"
-   },
-   "Sigurd: Holy Knight": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 60,
-         "spd": 55,
-         "def": 65,
-         "res": 30
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 9,
-         "spd": 8,
-         "def": 6,
-         "res": 4
-      },
-      "movementType": "cavalry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Sonya: Vengeful Mage": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 60,
-         "spd": 55,
-         "def": 25,
-         "res": 55
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 7,
-         "spd": 7,
-         "def": 5,
-         "res": 8
-      },
-      "movementType": "infantry",
-      "color": "green",
-      "weaponType": "tome"
-   },
-   "Sophia: Nabata Prophet": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 55,
-         "spd": 35,
-         "def": 50,
-         "res": 50
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 9,
-         "spd": 4,
-         "def": 6,
-         "res": 7
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "tome"
-   },
-   "Soren: Shrewd Strategist": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 60,
-         "spd": 55,
-         "def": 30,
-         "res": 50
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 7,
-         "spd": 9,
-         "def": 4,
-         "res": 7
-      },
-      "movementType": "infantry",
-      "color": "green",
-      "weaponType": "tome"
-   },
-   "Stahl: Viridian Knight": {
-      "growthRates": {
-         "hp": 60,
-         "atk": 55,
-         "spd": 45,
-         "def": 50,
-         "res": 40
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 7,
-         "spd": 7,
-         "def": 8,
-         "res": 5
-      },
-      "movementType": "cavalry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Subaki: Perfect Expert": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 45,
-         "spd": 60,
-         "def": 60,
-         "res": 40
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 6,
-         "spd": 9,
-         "def": 9,
-         "res": 5
-      },
-      "movementType": "flier",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Sully: Crimson Knight": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 45,
-         "spd": 60,
-         "def": 40,
-         "res": 50
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 7,
-         "spd": 8,
-         "def": 7,
-         "res": 6
-      },
-      "movementType": "cavalry",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Tailtiu: Thunder Noble": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 55,
-         "spd": 60,
-         "def": 30,
-         "res": 45
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 8,
-         "spd": 9,
-         "def": 4,
-         "res": 6
-      },
-      "movementType": "infantry",
-      "color": "blue",
-      "weaponType": "tome"
-   },
-   "Takumi: Wild Card": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 55,
-         "spd": 60,
-         "def": 45,
-         "res": 30
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 8,
-         "spd": 7,
-         "def": 6,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "bow"
-   },
-   "Tana: Winged Princess": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 60,
-         "spd": 60,
-         "def": 45,
-         "res": 45
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 8,
-         "spd": 10,
-         "def": 6,
-         "res": 6
-      },
-      "movementType": "flier",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Tharja: Dark Shadow": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 55,
-         "spd": 60,
-         "def": 40,
-         "res": 35
-      },
-      "stats": {
-         "hp": 17,
-         "atk": 8,
-         "spd": 8,
-         "def": 6,
-         "res": 5
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "tome"
-   },
-   "Tiki: Dragon Scion": {
-      "growthRates": {
-         "hp": 60,
-         "atk": 60,
-         "spd": 60,
-         "def": 55,
-         "res": 50
-      },
-      "stats": {
-         "hp": 15,
-         "atk": 5,
-         "spd": 4,
-         "def": 8,
-         "res": 7
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "breath"
-   },
-   "Tiki: Naga's Voice": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 65,
-         "spd": 40,
-         "def": 60,
-         "res": 40
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 7,
-         "spd": 6,
-         "def": 9,
-         "res": 7
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "breath"
-   },
-   "Tiki: Summering Scion": {
-      "growthRates": {
-         "hp": 40,
-         "atk": 65,
-         "spd": 55,
-         "def": 55,
-         "res": 40
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 8,
-         "spd": 6,
-         "def": 8,
-         "res": 7
-      },
-      "movementType": "infantry",
-      "color": "green",
-      "weaponType": "axe"
-   },
-   "Titania: Mighty Mercenary": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 50,
-         "spd": 60,
-         "def": 45,
-         "res": 50
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 6,
-         "spd": 8,
-         "def": 6,
-         "res": 8
-      },
-      "movementType": "cavalry",
-      "color": "green",
-      "weaponType": "axe"
-   },
-   "Tobin: The Clueless One": {
-      "growthRates": {
-         "hp": 65,
-         "atk": 55,
-         "spd": 50,
-         "def": 65,
-         "res": 50
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 7,
-         "spd": 5,
-         "def": 5,
-         "res": 4
-      },
-      "movementType": "infantry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Ursula: Blue Crow": {
-      "growthRates": {
-         "hp": 45,
-         "atk": 50,
-         "spd": 55,
-         "def": 35,
-         "res": 50
-      },
-      "stats": {
-         "hp": 16,
-         "atk": 7,
-         "spd": 8,
-         "def": 4,
-         "res": 8
-      },
-      "movementType": "cavalry",
-      "color": "blue",
-      "weaponType": "tome"
-   },
-   "Valter: Dark Moonstone": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 55,
-         "spd": 50,
-         "def": 60,
-         "res": 35
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 8,
-         "spd": 9,
-         "def": 8,
-         "res": 4
-      },
-      "movementType": "flier",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Virion: Elite Archer": {
-      "growthRates": {
-         "hp": 60,
-         "atk": 55,
-         "spd": 55,
-         "def": 45,
-         "res": 25
-      },
-      "stats": {
-         "hp": 20,
-         "atk": 7,
-         "spd": 7,
-         "def": 7,
-         "res": 3
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "bow"
-   },
-   "Wrys: Kindly Priest": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 45,
-         "spd": 40,
-         "def": 40,
-         "res": 60
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 5,
-         "spd": 6,
-         "def": 5,
-         "res": 10
-      },
-      "movementType": "infantry",
-      "color": "colorless",
-      "weaponType": "staff"
-   },
-   "Xander: Paragon Knight": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 55,
-         "spd": 45,
-         "def": 65,
-         "res": 30
-      },
-      "stats": {
-         "hp": 20,
-         "atk": 8,
-         "spd": 5,
-         "def": 9,
-         "res": 4
-      },
-      "movementType": "cavalry",
-      "color": "red",
-      "weaponType": "sword"
-   },
-   "Xander: Spring Prince": {
-      "growthRates": {
-         "hp": 50,
-         "atk": 45,
-         "spd": 50,
-         "def": 60,
-         "res": 45
-      },
-      "stats": {
-         "hp": 18,
-         "atk": 6,
-         "spd": 6,
-         "def": 9,
-         "res": 7
-      },
-      "movementType": "cavalry",
-      "color": "blue",
-      "weaponType": "lance"
-   },
-   "Xander: Student Swimmer": {
-      "growthRates": {
-         "hp": 55,
-         "atk": 55,
-         "spd": 55,
-         "def": 65,
-         "res": 25
-      },
-      "stats": {
-         "hp": 19,
-         "atk": 8,
-         "spd": 6,
-         "def": 8,
-         "res": 6
-      },
-      "movementType": "infantry",
-      "color": "green",
-      "weaponType": "axe"
-   },
-   "Zephiel: The Liberator": {
-      "growthRates": {
-         "hp": 70,
-         "atk": 60,
-         "spd": 30,
-         "def": 60,
-         "res": 45
-      },
-      "stats": {
-         "hp": 25,
-         "atk": 9,
-         "spd": 3,
-         "def": 12,
-         "res": 5
-      },
-      "movementType": "armored",
-      "color": "red",
-      "weaponType": "sword"
-   }
+  "Abel: The Panther": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 60,
+      "spd": 55,
+      "def": 40,
+      "res": 45
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 7,
+      "spd": 8,
+      "def": 8,
+      "res": 6
+    },
+    "movementType": "cavalry",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "Altean cavalier known for his sensibility. Rode with Cain in service of Marth. Appears in Fire Emblem: Mystery of the Emblem."
+  },
+  "Alfonse: Prince of Askr": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 60,
+      "spd": 45,
+      "def": 55,
+      "res": 40
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 9,
+      "spd": 6,
+      "def": 8,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "A prince of Askr and member of the Order of Heroes. Kind and serious, and eager to maintain peace."
+  },
+  "Alm: Hero of Prophecy": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 55,
+      "spd": 55,
+      "def": 50,
+      "res": 40
+    },
+    "stats": {
+      "hp": 21,
+      "atk": 9,
+      "spd": 6,
+      "def": 6,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "A brave but kind young warrior, raised by the hero Mycen in Ram Village. His left hand is marked with the Brand. Appears in Fire Emblem Echoes: Shadows of Valentia."
+  },
+  "Amelia: Rose of the War": {
+    "growthRates": {
+      "hp": 65,
+      "atk": 65,
+      "spd": 60,
+      "def": 60,
+      "res": 45
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 6,
+      "spd": 8,
+      "def": 9,
+      "res": 4
+    },
+    "movementType": "armored",
+    "color": "green",
+    "weaponType": "axe",
+    "description": "A young soldier from a small village in Grado. She is honest and sincere. Appears in Fire Emblem: The Sacred Stones."
+  },
+  "Anna: Commander": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 50,
+      "spd": 65,
+      "def": 40,
+      "res": 50
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 7,
+      "spd": 10,
+      "def": 5,
+      "res": 6
+    },
+    "movementType": "infantry",
+    "color": "green",
+    "weaponType": "axe",
+    "description": "A veteran fighter who leads the Order of Heroes. Alfonse and Sharena's commander."
+  },
+  "Arden: Strong and Tough": {
+    "growthRates": {
+      "hp": 80,
+      "atk": 60,
+      "spd": 30,
+      "def": 65,
+      "res": 30
+    },
+    "stats": {
+      "hp": 25,
+      "atk": 10,
+      "spd": 3,
+      "def": 13,
+      "res": 3
+    },
+    "movementType": "armored",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "An armored knight from Chalphy. Dreams of fighting on the front lines, but is often assigned to castle defense. Appears in Fire Emblem: Genealogy of the Holy War."
+  },
+  "Arthur: Hapless Hero": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 55,
+      "spd": 50,
+      "def": 50,
+      "res": 45
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 8,
+      "spd": 7,
+      "def": 8,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "green",
+    "weaponType": "axe",
+    "description": "A sworn ally of justice with uncannily bad luck. One of Elise's retainers. Appears in Fire Emblem Fates."
+  },
+  "Arvis: Emperor of Flame": {
+    "growthRates": {
+      "hp": 35,
+      "atk": 60,
+      "spd": 55,
+      "def": 30,
+      "res": 60
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 8,
+      "spd": 7,
+      "def": 4,
+      "res": 7
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "tome",
+    "description": "Duke of Velthomer, and descendant of the crusader Fjalar and Maera of the imperial family. Appears in Fire Emblem: Genealogy of the Holy War."
+  },
+  "Athena: Borderland Sword": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 55,
+      "spd": 65,
+      "def": 45,
+      "res": 45
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 7,
+      "spd": 10,
+      "def": 8,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "A foreign warrior with a straightforward personality. Speaks with an accent. Appears in Fire Emblem: New Mystery of the Emblem."
+  },
+  "Ayra: Astra's Wielder": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 60,
+      "spd": 60,
+      "def": 55,
+      "res": 40
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 7,
+      "spd": 11,
+      "def": 7,
+      "res": 4
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "Princess of Isaach, master of the sword, and descendant of the crusader Od. She fights for her homeland. Appears in Fire Emblem: Genealogy of the Holy War."
+  },
+  "Azama: Carefree Monk": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 40,
+      "spd": 45,
+      "def": 55,
+      "res": 45
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 4,
+      "spd": 7,
+      "def": 8,
+      "res": 6
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "staff",
+    "description": "A monk of Hoshido with a curious sense of humor. One of Hinoka's retainers. Appears in Fire Emblem Fates."
+  },
+  "Azura: Lady of Ballads": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 60,
+      "spd": 60,
+      "def": 40,
+      "res": 50
+    },
+    "stats": {
+      "hp": 16,
+      "atk": 6,
+      "spd": 8,
+      "def": 3,
+      "res": 6
+    },
+    "movementType": "infantry",
+    "color": "green",
+    "weaponType": "axe",
+    "description": "A mysterious songstress who appeared at the theater in Cyrkensia. Has overwhelming singing abilities. Appears in Fire Emblem Fates."
+  },
+  "Azura: Lady of the Lake": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 60,
+      "spd": 60,
+      "def": 40,
+      "res": 50
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 5,
+      "spd": 7,
+      "def": 4,
+      "res": 6
+    },
+    "movementType": "infantry",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "An enchanting princess raised in Hoshido who sings in battle to help her allies. Appears in Fire Emblem Fates."
+  },
+  "Barst: The Hatchet": {
+    "growthRates": {
+      "hp": 60,
+      "atk": 55,
+      "spd": 55,
+      "def": 55,
+      "res": 30
+    },
+    "stats": {
+      "hp": 20,
+      "atk": 9,
+      "spd": 8,
+      "def": 6,
+      "res": 4
+    },
+    "movementType": "infantry",
+    "color": "green",
+    "weaponType": "axe",
+    "description": "Warrior of Talys who works for Ogma and has been a pirate and woodcutter. Appears in Fire Emblem: Mystery of the Emblem."
+  },
+  "Bartre: Fearless Warrior": {
+    "growthRates": {
+      "hp": 65,
+      "atk": 60,
+      "spd": 45,
+      "def": 60,
+      "res": 25
+    },
+    "stats": {
+      "hp": 21,
+      "atk": 10,
+      "spd": 6,
+      "def": 7,
+      "res": 3
+    },
+    "movementType": "infantry",
+    "color": "green",
+    "weaponType": "axe",
+    "description": "An outpost warrior who went on a journey to find his beloved daughter, Fir. Appears in Fire Emblem: The Binding Blade."
+  },
+  "Berkut: Prideful Prince": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 60,
+      "spd": 40,
+      "def": 55,
+      "res": 40
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 8,
+      "spd": 5,
+      "def": 7,
+      "res": 7
+    },
+    "movementType": "cavalry",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "First in line to the Rigelian throne. Prideful, but loves Rinea with all his heart. Appears in Fire Emblem Echoes: Shadows of Valentia."
+  },
+  "Beruka: Quiet Assassin": {
+    "growthRates": {
+      "hp": 60,
+      "atk": 50,
+      "spd": 40,
+      "def": 65,
+      "res": 40
+    },
+    "stats": {
+      "hp": 20,
+      "atk": 7,
+      "spd": 6,
+      "def": 9,
+      "res": 5
+    },
+    "movementType": "flier",
+    "color": "green",
+    "weaponType": "axe",
+    "description": "Wyvern-riding assassin who seems devoid of emotion. One of Camilla's retainers. Appears in Fire Emblem Fates."
+  },
+  "Black Knight: Sinister General": {
+    "growthRates": {
+      "hp": 60,
+      "atk": 55,
+      "spd": 60,
+      "def": 60,
+      "res": 30
+    },
+    "stats": {
+      "hp": 22,
+      "atk": 10,
+      "spd": 8,
+      "def": 9,
+      "res": 5
+    },
+    "movementType": "armored",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "One of Daein's Four Riders. An enigmatic knight encased in pitch-black armor. Appears in Fire Emblem: Path of Radiance."
+  },
+  "Boey: Skillful Survivor": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 50,
+      "spd": 50,
+      "def": 55,
+      "res": 30
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 7,
+      "spd": 5,
+      "def": 8,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "green",
+    "weaponType": "tome",
+    "description": "A mage from Novis who grew up dirt-poor. Of calm demeanor, but not great at magic. Appears in Fire Emblem Echoes: Shadows of Valentia."
+  },
+  "Caeda: Talys's Bride": {
+    "growthRates": {
+      "hp": 40,
+      "atk": 50,
+      "spd": 65,
+      "def": 35,
+      "res": 50
+    },
+    "stats": {
+      "hp": 16,
+      "atk": 7,
+      "spd": 9,
+      "def": 4,
+      "res": 8
+    },
+    "movementType": "infantry",
+    "color": "blue",
+    "weaponType": "tome",
+    "description": "The charming princess of Talys. Has grand dreams of being a bride. Appears in Fire Emblem: Mystery of the Emblem."
+  },
+  "Caeda: Talys's Heart": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 45,
+      "spd": 65,
+      "def": 45,
+      "res": 55
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 6,
+      "spd": 9,
+      "def": 5,
+      "res": 10
+    },
+    "movementType": "flier",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "Princess of Talys who's as talented as she is charming. Marth's betrothed. Appears in Fire Emblem: Mystery of the Emblem."
+  },
+  "Cain: The Bull": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 55,
+      "spd": 60,
+      "def": 45,
+      "res": 35
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 8,
+      "spd": 6,
+      "def": 8,
+      "res": 6
+    },
+    "movementType": "cavalry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "Altean cavalier known for recklessness. Rode with Abel in service of Marth. Appears in Fire Emblem: Mystery of the Emblem."
+  },
+  "Camilla: Bewitching Beauty": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 50,
+      "spd": 55,
+      "def": 50,
+      "res": 55
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 8,
+      "spd": 8,
+      "def": 6,
+      "res": 7
+    },
+    "movementType": "flier",
+    "color": "green",
+    "weaponType": "axe",
+    "description": "Princess of Nohr who dotes on her sibling Corrin and is merciless to foes. Appears in Fire Emblem Fates."
+  },
+  "Camilla: Spring Princess": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 60,
+      "spd": 45,
+      "def": 50,
+      "res": 35
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 9,
+      "spd": 6,
+      "def": 8,
+      "res": 4
+    },
+    "movementType": "flier",
+    "color": "green",
+    "weaponType": "tome",
+    "description": "Princess of Nohr who dotes on her sibling Corrin. Loves her new outfit ever since Corrin said it was cute. Appears in Fire Emblem Fates."
+  },
+  "Camus: Sable Knight": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 55,
+      "spd": 55,
+      "def": 55,
+      "res": 30
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 8,
+      "spd": 9,
+      "def": 7,
+      "res": 4
+    },
+    "movementType": "cavalry",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "A knight who's devoted to his motherland, Grust. Wields the lance Gradivus. Appears in Fire Emblem: Mystery of the Emblem."
+  },
+  "Catria: Middle Whitewing": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 55,
+      "spd": 55,
+      "def": 50,
+      "res": 45
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 7,
+      "spd": 10,
+      "def": 7,
+      "res": 6
+    },
+    "movementType": "flier",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "Middle of three sisters who are pegasus knights for Macedon. Appears in Fire Emblem: Mystery of the Emblem."
+  },
+  "Cecilia: Etrurian General": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 55,
+      "spd": 45,
+      "def": 40,
+      "res": 50
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 8,
+      "spd": 6,
+      "def": 5,
+      "res": 7
+    },
+    "movementType": "cavalry",
+    "color": "green",
+    "weaponType": "tome",
+    "description": "Mage General of Etruria. Taught Roy and Lilina when they were young. Appears in Fire Emblem: The Binding Blade."
+  },
+  "Celica: Caring Princess": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 55,
+      "spd": 60,
+      "def": 40,
+      "res": 35
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 8,
+      "spd": 7,
+      "def": 5,
+      "res": 7
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "tome",
+    "description": "The princess of Zofia; trained as a priestess. Caring toward others, and dislikes fighting. Bears the Brand on her right hand. Appears in Fire Emblem Echoes: Shadows of Valentia."
+  },
+  "Charlotte: Money Maiden": {
+    "growthRates": {
+      "hp": 60,
+      "atk": 60,
+      "spd": 55,
+      "def": 45,
+      "res": 35
+    },
+    "stats": {
+      "hp": 20,
+      "atk": 10,
+      "spd": 8,
+      "def": 5,
+      "res": 4
+    },
+    "movementType": "infantry",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "Nohrian border guard always on patrol, whether to find enemies to fight or a rich fellow to marry. Appears in Fire Emblem Fates."
+  },
+  "Cherche: Wyvern Friend": {
+    "growthRates": {
+      "hp": 60,
+      "atk": 65,
+      "spd": 45,
+      "def": 55,
+      "res": 30
+    },
+    "stats": {
+      "hp": 20,
+      "atk": 10,
+      "spd": 6,
+      "def": 8,
+      "res": 3
+    },
+    "movementType": "flier",
+    "color": "green",
+    "weaponType": "axe",
+    "description": "Wyvern-riding fighter in Virion's noble house. Thinks her wyvern Minerva is adorable. Appears in Fire Emblem Awakening."
+  },
+  "Chrom: Exalted Prince": {
+    "growthRates": {
+      "hp": 60,
+      "atk": 65,
+      "spd": 45,
+      "def": 55,
+      "res": 30
+    },
+    "stats": {
+      "hp": 21,
+      "atk": 9,
+      "spd": 6,
+      "def": 7,
+      "res": 4
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "A prince of Ylisse and descendant of the Hero-King. Leads the Shepherds. Appears in Fire Emblem Awakening."
+  },
+  "Chrom: Spring Exalt": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 60,
+      "spd": 55,
+      "def": 50,
+      "res": 35
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 9,
+      "spd": 8,
+      "def": 6,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "green",
+    "weaponType": "axe",
+    "description": "A prince of Ylisse and descendant of the Hero-King. Dressed to celebrate the spring festival. Appears in Fire Emblem Awakening."
+  },
+  "Clair: Highborn Flier": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 45,
+      "spd": 65,
+      "def": 45,
+      "res": 55
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 7,
+      "spd": 8,
+      "def": 5,
+      "res": 9
+    },
+    "movementType": "flier",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "A pegasus knight with the Deliverance. Clive's younger sister. Secretly loves Alm. Appears in Fire Emblem Echoes: Shadows of Valentia."
+  },
+  "Clarine: Refined Noble": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 45,
+      "spd": 55,
+      "def": 40,
+      "res": 50
+    },
+    "stats": {
+      "hp": 16,
+      "atk": 6,
+      "spd": 9,
+      "def": 5,
+      "res": 7
+    },
+    "movementType": "cavalry",
+    "color": "colorless",
+    "weaponType": "staff",
+    "description": "Noble daughter of Count Reglay of Etruria. Fond of her brother, Klein. Has lived a privileged life. Appears in Fire Emblem: The Binding Blade."
+  },
+  "Clarisse: Sniper in the Dark": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 55,
+      "spd": 60,
+      "def": 45,
+      "res": 35
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 7,
+      "spd": 8,
+      "def": 6,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "bow",
+    "description": "One of a group of assassins plotting to kill Marth. Katarina's friend. Cruel and lacks manners, but yearns for a family. Appears in Fire Emblem: New Mystery of the Emblem."
+  },
+  "Clive: Idealistic Knight": {
+    "growthRates": {
+      "hp": 60,
+      "atk": 55,
+      "spd": 45,
+      "def": 55,
+      "res": 35
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 9,
+      "spd": 6,
+      "def": 8,
+      "res": 4
+    },
+    "movementType": "cavalry",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "Former leader of the Deliverance and Clair's brother. Idealistic and focused on the good of the kingdom. Appears in Fire Emblem Echoes: Shadows of Valentia."
+  },
+  "Cordelia: Knight Paragon": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 60,
+      "spd": 60,
+      "def": 40,
+      "res": 45
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 9,
+      "spd": 9,
+      "def": 5,
+      "res": 6
+    },
+    "movementType": "flier",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "The sole survivor of Ylisse's pegasus knights. Humble and supremely talented. Appears in Fire Emblem Awakening."
+  },
+  "Cordelia: Perfect Bride": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 60,
+      "spd": 60,
+      "def": 35,
+      "res": 40
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 9,
+      "spd": 9,
+      "def": 4,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "bow",
+    "description": "Pegasus knight of Ylisse who excels in all things, including being delightful. Hopes to marry her perfect match. Appears in Fire Emblem Awakening."
+  },
+  "Corrin: Fateful Prince": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 55,
+      "spd": 55,
+      "def": 50,
+      "res": 45
+    },
+    "stats": {
+      "hp": 20,
+      "atk": 8,
+      "spd": 8,
+      "def": 6,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "A Hoshidan prince raised in Nohr. Fights on his chosen path with the divine blade Yato. Appears in Fire Emblem Fates."
+  },
+  "Corrin: Fateful Princess": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 45,
+      "spd": 65,
+      "def": 60,
+      "res": 35
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 8,
+      "spd": 6,
+      "def": 8,
+      "res": 6
+    },
+    "movementType": "infantry",
+    "color": "blue",
+    "weaponType": "breath",
+    "description": "A Hoshidan princess raised in Nohr. Fights on her chosen path with the divine blade Yato. Appears in Fire Emblem Fates."
+  },
+  "Corrin: Novice Vacationer": {
+    "growthRates": {
+      "hp": 40,
+      "atk": 55,
+      "spd": 60,
+      "def": 40,
+      "res": 45
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 7,
+      "spd": 8,
+      "def": 5,
+      "res": 7
+    },
+    "movementType": "flier",
+    "color": "blue",
+    "weaponType": "tome",
+    "description": "A Hoshidan princess raised in Nohr. She won a ticket to a tropical island in a lottery. Appears in Fire Emblem Fates."
+  },
+  "Deirdre: Lady of the Forest": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 55,
+      "spd": 50,
+      "def": 30,
+      "res": 60
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 9,
+      "spd": 6,
+      "def": 3,
+      "res": 9
+    },
+    "movementType": "infantry",
+    "color": "green",
+    "weaponType": "tome",
+    "description": "She lives hidden away in the Spirit Forest. She lost the memories of her past. Appears in Fire Emblem: Genealogy of the Holy War."
+  },
+  "Delthea: Free Spirit": {
+    "growthRates": {
+      "hp": 40,
+      "atk": 60,
+      "spd": 60,
+      "def": 25,
+      "res": 55
+    },
+    "stats": {
+      "hp": 16,
+      "atk": 10,
+      "spd": 8,
+      "def": 3,
+      "res": 7
+    },
+    "movementType": "infantry",
+    "color": "blue",
+    "weaponType": "tome",
+    "description": "A naturally talented mage who hates training and hard work. Has a brother, Luthier. Appears in Fire Emblem Echoes: Shadows of Valentia."
+  },
+  "Donnel: Village Hero": {
+    "growthRates": {
+      "hp": 60,
+      "atk": 65,
+      "spd": 55,
+      "def": 60,
+      "res": 45
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 7,
+      "spd": 5,
+      "def": 6,
+      "res": 4
+    },
+    "movementType": "infantry",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "A farm boy from a country village in the Halidom of Ylisse. Handy and hardy. Appears in Fire Emblem Awakening."
+  },
+  "Dorcas: Serene Warrior": {
+    "growthRates": {
+      "hp": 60,
+      "atk": 60,
+      "spd": 40,
+      "def": 60,
+      "res": 45
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 9,
+      "spd": 6,
+      "def": 9,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "green",
+    "weaponType": "axe",
+    "description": "A mercenary trying to earn money for his ill wife's treatment. Doesn't talk much and isn't expressive, but loves his family dearly. Appears in Fire Emblem: The Blazing Blade."
+  },
+  "Draug: Gentle Giant": {
+    "growthRates": {
+      "hp": 60,
+      "atk": 50,
+      "spd": 60,
+      "def": 60,
+      "res": 35
+    },
+    "stats": {
+      "hp": 24,
+      "atk": 8,
+      "spd": 6,
+      "def": 13,
+      "res": 3
+    },
+    "movementType": "armored",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "An armored knight of Altea who served as Marth's shield. Very sincere. Appears in Fire Emblem: Mystery of the Emblem."
+  },
+  "Effie: Army of One": {
+    "growthRates": {
+      "hp": 65,
+      "atk": 65,
+      "spd": 40,
+      "def": 50,
+      "res": 45
+    },
+    "stats": {
+      "hp": 22,
+      "atk": 12,
+      "spd": 5,
+      "def": 11,
+      "res": 4
+    },
+    "movementType": "armored",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "A gentle knight with great strength and devotion. One of Elise's retainers. Appears in Fire Emblem Fates."
+  },
+  "Eirika: Restoration Lady": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 45,
+      "spd": 60,
+      "def": 45,
+      "res": 50
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 7,
+      "spd": 9,
+      "def": 7,
+      "res": 6
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "Princess of Renais. Ephraim's twin. Cares dearly for her brother. Her kindness has sometimes put her in danger. Appears in Fire Emblem: The Sacred Stones."
+  },
+  "Eldigan: Lionheart": {
+    "growthRates": {
+      "hp": 60,
+      "atk": 55,
+      "spd": 45,
+      "def": 60,
+      "res": 30
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 8,
+      "spd": 5,
+      "def": 8,
+      "res": 6
+    },
+    "movementType": "cavalry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "Ruler of Nordion. Wields the Demon Sword in knightly devotion to any master. Older brother of Lachesis. Appears in Fire Emblem: Genealogy of the Holy War."
+  },
+  "Elincia: Lost Princess": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 60,
+      "spd": 60,
+      "def": 45,
+      "res": 45
+    },
+    "stats": {
+      "hp": 16,
+      "atk": 8,
+      "spd": 10,
+      "def": 5,
+      "res": 8
+    },
+    "movementType": "flier",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "The princess of Crimea, whose existence was concealed. Cares for her kingdom and people. Appears in Fire Emblem: Path of Radiance."
+  },
+  "Elise: Budding Flower": {
+    "growthRates": {
+      "hp": 35,
+      "atk": 55,
+      "spd": 55,
+      "def": 35,
+      "res": 55
+    },
+    "stats": {
+      "hp": 15,
+      "atk": 8,
+      "spd": 8,
+      "def": 4,
+      "res": 8
+    },
+    "movementType": "cavalry",
+    "color": "colorless",
+    "weaponType": "staff",
+    "description": "Princess of Nohr who adores her siblings. A bit childish, but has a pure heart and keen eyes. Appears in Fire Emblem Fates."
+  },
+  "Elise: Tropical Flower": {
+    "growthRates": {
+      "hp": 40,
+      "atk": 60,
+      "spd": 60,
+      "def": 35,
+      "res": 45
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 10,
+      "spd": 8,
+      "def": 3,
+      "res": 6
+    },
+    "movementType": "infantry",
+    "color": "green",
+    "weaponType": "tome",
+    "description": "A Nohrian princess who loves her siblings and has matured a little by taking a solo trip to a tropical island. Appears in Fire Emblem Fates."
+  },
+  "Eliwood: Knight of Lycia": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 55,
+      "spd": 50,
+      "def": 40,
+      "res": 55
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 7,
+      "spd": 8,
+      "def": 6,
+      "res": 8
+    },
+    "movementType": "cavalry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "A sincere noble of Pherae. His friends Lyn and Hector serve him loyally. Appears in Fire Emblem: The Blazing Blade."
+  },
+  "Ephraim: Restoration Lord": {
+    "growthRates": {
+      "hp": 60,
+      "atk": 60,
+      "spd": 45,
+      "def": 55,
+      "res": 35
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 9,
+      "spd": 6,
+      "def": 8,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "Prince of Renais. Eirika's twin. Cares deeply for his sister. His confidence has sometimes put him in danger. Appears in Fire Emblem: The Sacred Stones."
+  },
+  "Est: Junior Whitewing": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 60,
+      "spd": 50,
+      "def": 45,
+      "res": 55
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 9,
+      "spd": 8,
+      "def": 5,
+      "res": 8
+    },
+    "movementType": "flier",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "Youngest of three sisters who are pegasus knights for Macedon. Appears in Fire Emblem: Mystery of the Emblem."
+  },
+  "Fae: Divine Dragon": {
+    "growthRates": {
+      "hp": 70,
+      "atk": 65,
+      "spd": 55,
+      "def": 45,
+      "res": 50
+    },
+    "stats": {
+      "hp": 16,
+      "atk": 5,
+      "spd": 4,
+      "def": 6,
+      "res": 8
+    },
+    "movementType": "infantry",
+    "color": "green",
+    "weaponType": "breath",
+    "description": "A surviving Divine Dragon with the nature of a child and very little life experience. Appears in Fire Emblem: The Binding Blade."
+  },
+  "Faye: Devoted Heart": {
+    "growthRates": {
+      "hp": 60,
+      "atk": 55,
+      "spd": 50,
+      "def": 50,
+      "res": 55
+    },
+    "stats": {
+      "hp": 16,
+      "atk": 6,
+      "spd": 3,
+      "def": 4,
+      "res": 7
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "bow",
+    "description": "A young woman from Ram Village, and Alm's childhood friend. Her devotion to him stretches back to those days. Appears in Fire Emblem Echoes: Shadows of Valentia."
+  },
+  "Felicia: Maid Mayhem": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 40,
+      "spd": 60,
+      "def": 35,
+      "res": 60
+    },
+    "stats": {
+      "hp": 15,
+      "atk": 6,
+      "spd": 11,
+      "def": 3,
+      "res": 9
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "dagger",
+    "description": "A maid of Nohr who's eager to do good work yet often bungles. One of Corrin's retainers. Appears in Fire Emblem Fates."
+  },
+  "Fir: Sword Student": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 45,
+      "spd": 60,
+      "def": 45,
+      "res": 55
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 6,
+      "spd": 10,
+      "def": 5,
+      "res": 7
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "A woman who travels in search of the best swordplay opponents anywhere. Appears in Fire Emblem: The Binding Blade."
+  },
+  "Florina: Lovely Flier": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 50,
+      "spd": 45,
+      "def": 45,
+      "res": 60
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 7,
+      "spd": 8,
+      "def": 6,
+      "res": 8
+    },
+    "movementType": "flier",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "Youngest of three sisters who are Pegasus Knights of Ilia. Shy, gentle girl who loves animals. Appears in Fire Emblem: The Blazing Blade."
+  },
+  "Frederick: Horizon Watcher": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 55,
+      "spd": 55,
+      "def": 50,
+      "res": 30
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 8,
+      "spd": 7,
+      "def": 6,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "dagger",
+    "description": "A knight who serves the royal house of Ylisse. Collector of pebbles and shells on the beach. Appears in Fire Emblem Awakening."
+  },
+  "Frederick: Polite Knight": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 60,
+      "spd": 45,
+      "def": 65,
+      "res": 25
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 9,
+      "spd": 6,
+      "def": 8,
+      "res": 4
+    },
+    "movementType": "cavalry",
+    "color": "green",
+    "weaponType": "axe",
+    "description": "A knight who serves the royal house of Ylisse and helps lead Chrom's Shepherds. Appears in Fire Emblem Awakening."
+  },
+  "Gaius: Candy Stealer": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 50,
+      "spd": 60,
+      "def": 40,
+      "res": 35
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 7,
+      "spd": 10,
+      "def": 5,
+      "res": 4
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "dagger",
+    "description": "Thief of Ylisse known for his nimble hands and sweet tooth. Hides sweets in his pockets. Appears in Fire Emblem Awakening."
+  },
+  "Gaius: Thief Exposed": {
+    "growthRates": {
+      "hp": 40,
+      "atk": 50,
+      "spd": 65,
+      "def": 35,
+      "res": 50
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 8,
+      "spd": 9,
+      "def": 4,
+      "res": 6
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "bow",
+    "description": "A thief from Ylisse known for his sweet tooth. Usually secrets candy in his clothes, but can't when he's dressed like this. Appears in Fire Emblem Awakening."
+  },
+  "Genny: Endearing Ally": {
+    "growthRates": {
+      "hp": 35,
+      "atk": 60,
+      "spd": 45,
+      "def": 40,
+      "res": 60
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 9,
+      "spd": 6,
+      "def": 4,
+      "res": 8
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "staff",
+    "description": "A meek young cleric from Novis. Likes to write her own stories. Appears in Fire Emblem Echoes: Shadows of Valentia."
+  },
+  "Gordin: Altean Archer": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 55,
+      "spd": 45,
+      "def": 55,
+      "res": 30
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 7,
+      "spd": 6,
+      "def": 8,
+      "res": 4
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "bow",
+    "description": "Altean archer who is masterful with his bow. Looks younger than he actually is. Appears in Fire Emblem: Mystery of the Emblem."
+  },
+  "Gray: Wry Comrade": {
+    "growthRates": {
+      "hp": 60,
+      "atk": 65,
+      "spd": 60,
+      "def": 55,
+      "res": 45
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 7,
+      "spd": 6,
+      "def": 6,
+      "res": 3
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "Alm's childhood friend from Ram Village. Worldly and competent. Appears in Fire Emblem Echoes: Shadows of Valentia."
+  },
+  "Gunter: Inveterate Soldier": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 50,
+      "spd": 40,
+      "def": 50,
+      "res": 30
+    },
+    "stats": {
+      "hp": 21,
+      "atk": 10,
+      "spd": 7,
+      "def": 11,
+      "res": 5
+    },
+    "movementType": "cavalry",
+    "color": "green",
+    "weaponType": "axe",
+    "description": "Veteran knight of Nohr. One of Corrin's retainers. Extremely strict. Appears in Fire Emblem Fates."
+  },
+  "Gwendolyn: Adorable Knight": {
+    "growthRates": {
+      "hp": 60,
+      "atk": 50,
+      "spd": 45,
+      "def": 60,
+      "res": 50
+    },
+    "stats": {
+      "hp": 23,
+      "atk": 8,
+      "spd": 5,
+      "def": 12,
+      "res": 6
+    },
+    "movementType": "armored",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "Armored knight of Ostia. Intent on mastering defense, despite feeling awkward in armor. Appears in Fire Emblem: The Binding Blade."
+  },
+  "Hana: Focused Samurai": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 60,
+      "spd": 60,
+      "def": 40,
+      "res": 50
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 9,
+      "spd": 10,
+      "def": 6,
+      "res": 4
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "A noble who is skilled with the katana. One of Sakura's retainers. Appears in Fire Emblem Fates."
+  },
+  "Hawkeye: Desert Guardian": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 55,
+      "spd": 40,
+      "def": 50,
+      "res": 55
+    },
+    "stats": {
+      "hp": 21,
+      "atk": 9,
+      "spd": 5,
+      "def": 6,
+      "res": 6
+    },
+    "movementType": "infantry",
+    "color": "green",
+    "weaponType": "axe",
+    "description": "Guardian of the Nabata Desert and Arcadia, where dragons and humans live in harmony. Appears in Fire Emblem: The Blazing Blade."
+  },
+  "Hector: General of Ostia": {
+    "growthRates": {
+      "hp": 65,
+      "atk": 60,
+      "spd": 45,
+      "def": 60,
+      "res": 35
+    },
+    "stats": {
+      "hp": 24,
+      "atk": 10,
+      "spd": 5,
+      "def": 11,
+      "res": 4
+    },
+    "movementType": "armored",
+    "color": "green",
+    "weaponType": "axe",
+    "description": "Eliwood's friend and brother of the Marquess of Ostia. Prefers action to court formality. Appears in Fire Emblem: The Blazing Blade."
+  },
+  "Henry: Happy Vampire": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 55,
+      "spd": 55,
+      "def": 50,
+      "res": 55
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 9,
+      "spd": 10,
+      "def": 4,
+      "res": 12
+    },
+    "movementType": "armored",
+    "color": "green",
+    "weaponType": "tome",
+    "description": "This dark mage of Plegia will curse you without a second thought if you withhold candy. Appears in Fire Emblem Awakening."
+  },
+  "Henry: Twisted Mind": {
+    "growthRates": {
+      "hp": 60,
+      "atk": 40,
+      "spd": 40,
+      "def": 55,
+      "res": 45
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 6,
+      "spd": 5,
+      "def": 8,
+      "res": 6
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "tome",
+    "description": "A dark mage of Plegia with a bright grin and a taste for the gruesome in battle. Appears in Fire Emblem Awakening."
+  },
+  "Hinata: Wild Samurai": {
+    "growthRates": {
+      "hp": 60,
+      "atk": 55,
+      "spd": 45,
+      "def": 60,
+      "res": 35
+    },
+    "stats": {
+      "hp": 21,
+      "atk": 8,
+      "spd": 5,
+      "def": 10,
+      "res": 3
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "A coarse, yet caring, samurai of Hoshido. One of Takumi's retainers. Appears in Fire Emblem Fates."
+  },
+  "Hinoka: Warrior Princess": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 65,
+      "spd": 55,
+      "def": 45,
+      "res": 40
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 7,
+      "spd": 8,
+      "def": 6,
+      "res": 7
+    },
+    "movementType": "flier",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "Hoshidan princess who prefers battles over court life. Excels at watching over others. Appears in Fire Emblem Fates."
+  },
+  "Ike: Brave Mercenary": {
+    "growthRates": {
+      "hp": 60,
+      "atk": 60,
+      "spd": 50,
+      "def": 60,
+      "res": 35
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 10,
+      "spd": 6,
+      "def": 9,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "green",
+    "weaponType": "axe",
+    "description": "A kindhearted but stoic young man who has taken command of his father's mercenary band. Wields the axe of his father, Greil. Appears in Fire Emblem: Path of Radiance."
+  },
+  "Ike: Young Mercenary": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 60,
+      "spd": 55,
+      "def": 55,
+      "res": 30
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 9,
+      "spd": 7,
+      "def": 8,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "A kindhearted but stoic young man who has taken command of his father's mercenary band. Appears in Fire Emblem: Path of Radiance."
+  },
+  "Inigo: Indigo Dancer": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 50,
+      "spd": 60,
+      "def": 40,
+      "res": 40
+    },
+    "stats": {
+      "hp": 15,
+      "atk": 6,
+      "spd": 7,
+      "def": 5,
+      "res": 3
+    },
+    "movementType": "infantry",
+    "color": "green",
+    "weaponType": "tome",
+    "description": "A descendant of the dancer Olivia. He carries on his departed mother's dancing and her power. Appears in Fire Emblem Awakening."
+  },
+  "Innes: Regal Strategician": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 55,
+      "spd": 60,
+      "def": 25,
+      "res": 55
+    },
+    "stats": {
+      "hp": 16,
+      "atk": 9,
+      "spd": 8,
+      "def": 4,
+      "res": 7
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "bow",
+    "description": "The prince of Frelia. Tana's brother. He's brash and arrogant, but good at heart. Appears in Fire Emblem: The Sacred Stones."
+  },
+  "Jaffar: Angel of Death": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 45,
+      "spd": 55,
+      "def": 45,
+      "res": 40
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 7,
+      "spd": 9,
+      "def": 6,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "dagger",
+    "description": "An emotionless member of the Black Fang assassins. Known as the Angel of Death. Appears in Fire Emblem: The Blazing Blade."
+  },
+  "Jagen: Veteran Knight": {
+    "growthRates": {
+      "hp": 40,
+      "atk": 45,
+      "spd": 40,
+      "def": 40,
+      "res": 55
+    },
+    "stats": {
+      "hp": 20,
+      "atk": 8,
+      "spd": 7,
+      "def": 8,
+      "res": 11
+    },
+    "movementType": "cavalry",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "Veteran knight of Altea who protected Marth since he was young. Appears in Fire Emblem: Mystery of the Emblem."
+  },
+  "Jakob: Devoted Monster": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 60,
+      "spd": 40,
+      "def": 55,
+      "res": 55
+    },
+    "stats": {
+      "hp": 20,
+      "atk": 9,
+      "spd": 6,
+      "def": 9,
+      "res": 8
+    },
+    "movementType": "armored",
+    "color": "colorless",
+    "weaponType": "bow",
+    "description": "A butler of Nohr who serves Corrin. He would rather receive tea than candy. Appears in Fire Emblem Fates."
+  },
+  "Jakob: Devoted Servant": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 50,
+      "spd": 50,
+      "def": 45,
+      "res": 45
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 7,
+      "spd": 9,
+      "def": 6,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "dagger",
+    "description": "A butler of Nohr who's superb at his work yet dislikes serving anyone but his liege, Corrin. Appears in Fire Emblem Fates."
+  },
+  "Jeorge: Perfect Shot": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 55,
+      "spd": 55,
+      "def": 45,
+      "res": 40
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 8,
+      "spd": 8,
+      "def": 5,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "bow",
+    "description": "Archanean archer thought to be the best on his continent. A skilled strategist. Appears in Fire Emblem: Mystery of the Emblem."
+  },
+  "Joshua: Tempest King": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 55,
+      "spd": 60,
+      "def": 50,
+      "res": 50
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 7,
+      "spd": 9,
+      "def": 8,
+      "res": 6
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "A mercenary who loves to gamble. He has an evasive, almost aggravating personality. Appears in Fire Emblem: The Sacred Stones."
+  },
+  "Julia: Naga's Blood": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 60,
+      "spd": 45,
+      "def": 30,
+      "res": 55
+    },
+    "stats": {
+      "hp": 16,
+      "atk": 9,
+      "spd": 7,
+      "def": 4,
+      "res": 8
+    },
+    "movementType": "infantry",
+    "color": "green",
+    "weaponType": "tome",
+    "description": "Inheritor of the Book of Naga. Seliph's half sister by a different father. Gentle, yet faces her destiny with strength. Appears in Fire Emblem: Genealogy of the Holy War."
+  },
+  "Kagero: Honorable Ninja": {
+    "growthRates": {
+      "hp": 35,
+      "atk": 60,
+      "spd": 55,
+      "def": 40,
+      "res": 50
+    },
+    "stats": {
+      "hp": 16,
+      "atk": 9,
+      "spd": 8,
+      "def": 5,
+      "res": 6
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "dagger",
+    "description": "A ninja of Hoshido who is ready to lay down her life for her liege. One of Ryoma's retainers. Appears in Fire Emblem Fates."
+  },
+  "Karel: Sword Demon": {
+    "growthRates": {
+      "hp": 65,
+      "atk": 50,
+      "spd": 60,
+      "def": 45,
+      "res": 35
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 8,
+      "spd": 9,
+      "def": 6,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "A vicious swordsman from a family devoted to mastering the blade. Known as the Sword Demon. Appears in Fire Emblem: The Blazing Blade."
+  },
+  "Katarina: Wayward One": {
+    "growthRates": {
+      "hp": 40,
+      "atk": 60,
+      "spd": 60,
+      "def": 25,
+      "res": 55
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 6,
+      "spd": 8,
+      "def": 5,
+      "res": 8
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "tome",
+    "description": "Reserved and harboring a dark secret, this trainee tactician depends on others. Appears in Fire Emblem: New Mystery of the Emblem."
+  },
+  "Klein: Silver Nobleman": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 50,
+      "spd": 60,
+      "def": 35,
+      "res": 45
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 9,
+      "spd": 7,
+      "def": 5,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "bow",
+    "description": "A young general of Etruria. Clarine's brother. Treats all as equals. Appears in Fire Emblem: The Binding Blade."
+  },
+  "Lachesis: Lionheart's Sister": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 60,
+      "spd": 40,
+      "def": 40,
+      "res": 50
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 6,
+      "spd": 8,
+      "def": 5,
+      "res": 8
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "staff",
+    "description": "Lady of House Nordion. Adores her older brother, Eldigan, to the point that other men pale in comparison. Appears in Fire Emblem: Genealogy of the Holy War."
+  },
+  "Laslow: Dancing Duelist": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 60,
+      "spd": 45,
+      "def": 55,
+      "res": 40
+    },
+    "stats": {
+      "hp": 20,
+      "atk": 9,
+      "spd": 7,
+      "def": 6,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "A mysterious man with a flair for dancing and flirting. One of Xander's retainers. Appears in Fire Emblem Fates."
+  },
+  "Legion: Masked Maniac": {
+    "growthRates": {
+      "hp": 60,
+      "atk": 60,
+      "spd": 60,
+      "def": 40,
+      "res": 35
+    },
+    "stats": {
+      "hp": 20,
+      "atk": 10,
+      "spd": 9,
+      "def": 5,
+      "res": 3
+    },
+    "movementType": "infantry",
+    "color": "green",
+    "weaponType": "axe",
+    "description": "One of a group of assassins. Wears an odd mask, as do his many &quot;brothers.&quot; Appears in Fire Emblem: New Mystery of the Emblem."
+  },
+  "Leo: Seashore's Prince": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 55,
+      "spd": 50,
+      "def": 25,
+      "res": 65
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 8,
+      "spd": 5,
+      "def": 6,
+      "res": 7
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "tome",
+    "description": "A suntan-despising Nohrian prince who wields the divine tome Brynhildr. Loves red summer produce. Appears in Fire Emblem Fates."
+  },
+  "Leo: Sorcerous Prince": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 50,
+      "spd": 40,
+      "def": 45,
+      "res": 50
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 7,
+      "spd": 5,
+      "def": 6,
+      "res": 8
+    },
+    "movementType": "cavalry",
+    "color": "red",
+    "weaponType": "tome",
+    "description": "A talented Nohrian prince who wields the divine tome Brynhildr. Appears in Fire Emblem Fates."
+  },
+  "Leon: True of Heart": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 60,
+      "spd": 55,
+      "def": 50,
+      "res": 25
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 8,
+      "spd": 6,
+      "def": 8,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "bow",
+    "description": "A handsome but narcissistic Zofian archer. Adores his friend Valbar. Appears in Fire Emblem Echoes: Shadows of Valentia."
+  },
+  "Lilina: Delightful Noble": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 65,
+      "spd": 45,
+      "def": 35,
+      "res": 50
+    },
+    "stats": {
+      "hp": 16,
+      "atk": 9,
+      "spd": 6,
+      "def": 4,
+      "res": 9
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "tome",
+    "description": "A noble of Ostia with a natural gift for magic. Roy's friend since childhood. Appears in Fire Emblem: The Binding Blade."
+  },
+  "Linde: Light Mage": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 60,
+      "spd": 60,
+      "def": 25,
+      "res": 50
+    },
+    "stats": {
+      "hp": 16,
+      "atk": 9,
+      "spd": 10,
+      "def": 4,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "blue",
+    "weaponType": "tome",
+    "description": "Daughter of Pontifex Miloah from Archanea. Inherited the light tome Aura. Wants to avenge her father's death. Appears in Fire Emblem: Mystery of the Emblem."
+  },
+  "Lissa: Sprightly Cleric": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 45,
+      "spd": 45,
+      "def": 50,
+      "res": 50
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 7,
+      "spd": 6,
+      "def": 6,
+      "res": 8
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "staff",
+    "description": "Princess of Ylisse's royal house and Chrom's younger sister. Determined to prove herself. Appears in Fire Emblem Awakening."
+  },
+  "Lloyd: White Wolf": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 55,
+      "spd": 60,
+      "def": 35,
+      "res": 50
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 8,
+      "spd": 9,
+      "def": 5,
+      "res": 8
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "A member of the Black Fang assassins. Delivers justice to those they deem criminals. Known as the White Wolf. Son of the group's leader. Appears in Fire Emblem: The Blazing Blade."
+  },
+  "Lon'qu: Solitary Blade": {
+    "growthRates": {
+      "hp": 60,
+      "atk": 50,
+      "spd": 65,
+      "def": 40,
+      "res": 40
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 7,
+      "spd": 11,
+      "def": 5,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "A skilled swordsman of Regna Ferox who is oddly skittish around women. Appears in Fire Emblem Awakening."
+  },
+  "Lucina: Brave Princess": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 60,
+      "spd": 60,
+      "def": 45,
+      "res": 35
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 8,
+      "spd": 10,
+      "def": 8,
+      "res": 4
+    },
+    "movementType": "infantry",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "A princess and the daughter of Chrom with a strong sense of justice. Fights in similar garb to her beloved father. Appears in Fire Emblem Awakening."
+  },
+  "Lucina: Future Witness": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 60,
+      "spd": 60,
+      "def": 45,
+      "res": 35
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 8,
+      "spd": 10,
+      "def": 6,
+      "res": 4
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "A princess and daughter of Chrom who traveled to her past to prevent apocalypse. Appears in Fire Emblem Awakening."
+  },
+  "Lucina: Spring Exalt": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 50,
+      "spd": 60,
+      "def": 40,
+      "res": 45
+    },
+    "stats": {
+      "hp": 16,
+      "atk": 7,
+      "spd": 10,
+      "def": 5,
+      "res": 6
+    },
+    "movementType": "infantry",
+    "color": "blue",
+    "weaponType": "tome",
+    "description": "Daughter of Chrom. Future exalt of Ylisse. Curious about the old festival traditions of Ylisse. Appears in Fire Emblem Awakening."
+  },
+  "Lucius: The Light": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 60,
+      "spd": 50,
+      "def": 25,
+      "res": 60
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 6,
+      "spd": 8,
+      "def": 3,
+      "res": 9
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "staff",
+    "description": "A gentle monk who serves Raven. Carries a heavy burden from a dark childhood. Appears in Fire Emblem: The Blazing Blade."
+  },
+  "Lukas: Sharp Soldier": {
+    "growthRates": {
+      "hp": 60,
+      "atk": 60,
+      "spd": 40,
+      "def": 65,
+      "res": 30
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 9,
+      "spd": 5,
+      "def": 10,
+      "res": 4
+    },
+    "movementType": "infantry",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "A young noble fighting for the Deliverance. Strict, calm, and considerate. Appears in Fire Emblem Echoes: Shadows of Valentia."
+  },
+  "Luke: Rowdy Squire": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 60,
+      "spd": 50,
+      "def": 50,
+      "res": 35
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 8,
+      "spd": 6,
+      "def": 8,
+      "res": 5
+    },
+    "movementType": "cavalry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "An aspiring knight of Altea. Flirtatious. Roderick's longtime friend and rival. Appears in Fire Emblem: New Mystery of the Emblem."
+  },
+  "Lute: Prodigy": {
+    "growthRates": {
+      "hp": 40,
+      "atk": 60,
+      "spd": 55,
+      "def": 30,
+      "res": 60
+    },
+    "stats": {
+      "hp": 16,
+      "atk": 10,
+      "spd": 8,
+      "def": 3,
+      "res": 8
+    },
+    "movementType": "infantry",
+    "color": "blue",
+    "weaponType": "tome",
+    "description": "A young mage of Renais with an unusual temperament. Confident in her abilities. Appears in Fire Emblem: The Sacred Stones."
+  },
+  "Lyn: Brave Lady": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 60,
+      "spd": 60,
+      "def": 30,
+      "res": 50
+    },
+    "stats": {
+      "hp": 16,
+      "atk": 7,
+      "spd": 9,
+      "def": 5,
+      "res": 6
+    },
+    "movementType": "cavalry",
+    "color": "colorless",
+    "weaponType": "bow",
+    "description": "A woman who grew up on the plains. Uses the bow, like her father, Hassar. Appears in Fire Emblem: The Blazing Blade."
+  },
+  "Lyn: Bride of the Plains": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 50,
+      "spd": 55,
+      "def": 40,
+      "res": 45
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 6,
+      "spd": 10,
+      "def": 6,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "staff",
+    "description": "Noblewoman of Caelin. Eager to win the bridal tournament and nab the prize bouquet. Appears in Fire Emblem: The Blazing Blade."
+  },
+  "Lyn: Lady of the Plains": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 50,
+      "spd": 60,
+      "def": 45,
+      "res": 55
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 6,
+      "spd": 11,
+      "def": 7,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "A woman who grew up on the plains before learning she is nobility of Caelin. Appears in Fire Emblem: The Blazing Blade."
+  },
+  "Mae: Bundle of Energy": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 60,
+      "spd": 55,
+      "def": 30,
+      "res": 50
+    },
+    "stats": {
+      "hp": 16,
+      "atk": 10,
+      "spd": 7,
+      "def": 3,
+      "res": 8
+    },
+    "movementType": "infantry",
+    "color": "blue",
+    "weaponType": "tome",
+    "description": "A mage from Novis and a dear friend of Celica. Always cheerful and energetic, but she has a tendency to get carried away. Appears in Fire Emblem Echoes: Shadows of Valentia."
+  },
+  "Marth: Altean Prince": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 55,
+      "spd": 60,
+      "def": 50,
+      "res": 40
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 7,
+      "spd": 8,
+      "def": 7,
+      "res": 6
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "Prince of Altea who fights for his homeland and deeply values his friends. Appears in Fire Emblem: Mystery of the Emblem."
+  },
+  "Marth: Enigmatic Blade": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 60,
+      "spd": 60,
+      "def": 45,
+      "res": 35
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 8,
+      "spd": 10,
+      "def": 6,
+      "res": 4
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "A mysterious swordsman who hides his face behind a mask. Calls himself Marth. Appears in Fire Emblem Awakening."
+  },
+  "Mathilda: Legendary Knight": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 50,
+      "spd": 55,
+      "def": 40,
+      "res": 60
+    },
+    "stats": {
+      "hp": 16,
+      "atk": 7,
+      "spd": 8,
+      "def": 7,
+      "res": 8
+    },
+    "movementType": "cavalry",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "A paladin of the Deliverance and Clive's betrothed. Strong as a demon, yet gentle to her love. Appears in Fire Emblem Echoes: Shadows of Valentia."
+  },
+  "Matthew: Faithful Spy": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 45,
+      "spd": 55,
+      "def": 55,
+      "res": 30
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 6,
+      "spd": 10,
+      "def": 6,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "dagger",
+    "description": "Happy-go-lucky spy who's actually quite sly. Serves Hector, brother of the Marquess of Ostia. Appears in Fire Emblem: The Blazing Blade."
+  },
+  "Merric: Wind Mage": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 45,
+      "spd": 55,
+      "def": 50,
+      "res": 35
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 7,
+      "spd": 8,
+      "def": 6,
+      "res": 4
+    },
+    "movementType": "infantry",
+    "color": "green",
+    "weaponType": "tome",
+    "description": "Wind mage who studied in Khadein, known for its magical school. Marth's childhood friend. Appears in Fire Emblem: Mystery of the Emblem."
+  },
+  "Mia: Lady of Blades": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 55,
+      "spd": 65,
+      "def": 50,
+      "res": 45
+    },
+    "stats": {
+      "hp": 16,
+      "atk": 8,
+      "spd": 12,
+      "def": 6,
+      "res": 6
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "A mercenary fighting to improve her sword skills. In life, she doesn't sweat the details. Appears in Fire Emblem: Path of Radiance."
+  },
+  "Michalis: Ambitious King": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 60,
+      "spd": 45,
+      "def": 60,
+      "res": 35
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 8,
+      "spd": 7,
+      "def": 9,
+      "res": 4
+    },
+    "movementType": "flier",
+    "color": "green",
+    "weaponType": "axe",
+    "description": "King of Macedon who had great ambitions for his country. Murdered his father. Brother to Minerva and Maria. Appears in Fire Emblem: Mystery of the Emblem."
+  },
+  "Minerva: Red Dragoon": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 55,
+      "spd": 55,
+      "def": 55,
+      "res": 40
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 7,
+      "spd": 9,
+      "def": 8,
+      "res": 5
+    },
+    "movementType": "flier",
+    "color": "green",
+    "weaponType": "axe",
+    "description": "Princess of Macedon who took up arms against her brother, Michalis. Appears in Fire Emblem: Mystery of the Emblem."
+  },
+  "Mist: Helpful Sister": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 45,
+      "spd": 50,
+      "def": 35,
+      "res": 60
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 8,
+      "spd": 6,
+      "def": 5,
+      "res": 8
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "staff",
+    "description": "Ike's younger sister. Active and cheerful, and takes care of the Greil Mercenaries. Appears in Fire Emblem: Path of Radiance."
+  },
+  "Narcian: Wyvern General": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 50,
+      "spd": 50,
+      "def": 55,
+      "res": 45
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 7,
+      "spd": 7,
+      "def": 8,
+      "res": 7
+    },
+    "movementType": "flier",
+    "color": "green",
+    "weaponType": "axe",
+    "description": "One of three Wyvern Generals of Bern. Conceited and vainglorious. Appears in Fire Emblem: The Binding Blade."
+  },
+  "Navarre: Scarlet Sword": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 55,
+      "spd": 60,
+      "def": 40,
+      "res": 45
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 7,
+      "spd": 11,
+      "def": 6,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "Skilled fighter known as the Scarlet Sword. Prefers his blade to do the talking. Appears in Fire Emblem: Mystery of the Emblem."
+  },
+  "Nephenee: Fierce Halberdier": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 55,
+      "spd": 60,
+      "def": 60,
+      "res": 35
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 7,
+      "spd": 9,
+      "def": 8,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "A militia member from the Crimean countryside. Since she's quiet, people think she's shy, but... Appears in Fire Emblem: Path of Radiance."
+  },
+  "Niles: Cruel to Be Kind": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 45,
+      "spd": 60,
+      "def": 30,
+      "res": 60
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 6,
+      "spd": 8,
+      "def": 4,
+      "res": 8
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "bow",
+    "description": "Nohrian scoundrel who wags his saucy tongue at everyone. One of Leo's retainers. Appears in Fire Emblem Fates."
+  },
+  "Ninian: Oracle of Destiny": {
+    "growthRates": {
+      "hp": 60,
+      "atk": 45,
+      "spd": 60,
+      "def": 40,
+      "res": 50
+    },
+    "stats": {
+      "hp": 16,
+      "atk": 5,
+      "spd": 7,
+      "def": 6,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "blue",
+    "weaponType": "breath",
+    "description": "A young dancer who has a serene and mystical presence. Her dances are divine tributes. Appears in Fire Emblem: The Blazing Blade."
+  },
+  "Nino: Pious Mage": {
+    "growthRates": {
+      "hp": 40,
+      "atk": 60,
+      "spd": 60,
+      "def": 35,
+      "res": 45
+    },
+    "stats": {
+      "hp": 16,
+      "atk": 7,
+      "spd": 10,
+      "def": 4,
+      "res": 7
+    },
+    "movementType": "infantry",
+    "color": "green",
+    "weaponType": "tome",
+    "description": "A kindhearted member of the Black Fang assassins. Longed to help her mother. Appears in Fire Emblem: The Blazing Blade."
+  },
+  "Nowi: Eternal Witch": {
+    "growthRates": {
+      "hp": 40,
+      "atk": 60,
+      "spd": 60,
+      "def": 35,
+      "res": 45
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 8,
+      "spd": 6,
+      "def": 5,
+      "res": 8
+    },
+    "movementType": "flier",
+    "color": "red",
+    "weaponType": "tome",
+    "description": "Manakete who travels with Chrom's group. She may be over a thousand years old, but she still gets candy. Appears in Fire Emblem Awakening."
+  },
+  "Nowi: Eternal Youth": {
+    "growthRates": {
+      "hp": 65,
+      "atk": 65,
+      "spd": 50,
+      "def": 55,
+      "res": 50
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 6,
+      "spd": 5,
+      "def": 6,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "blue",
+    "weaponType": "breath",
+    "description": "Manakete who travels with Chrom's group. Looks young but truly is over a thousand years old. Appears in Fire Emblem Awakening."
+  },
+  "Oboro: Fierce Fighter": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 55,
+      "spd": 45,
+      "def": 60,
+      "res": 45
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 8,
+      "spd": 7,
+      "def": 9,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "Lance wielder who loves fashion and hates Nohr. One of Takumi's retainers. Appears in Fire Emblem Fates."
+  },
+  "Odin: Potent Force": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 40,
+      "spd": 55,
+      "def": 45,
+      "res": 45
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 5,
+      "spd": 8,
+      "def": 6,
+      "res": 6
+    },
+    "movementType": "infantry",
+    "color": "blue",
+    "weaponType": "tome",
+    "description": "A mysterious man who tends to be overly theatrical. One of Leo's retainers. Appears in Fire Emblem Fates."
+  },
+  "Ogma: Loyal Blade": {
+    "growthRates": {
+      "hp": 60,
+      "atk": 65,
+      "spd": 55,
+      "def": 50,
+      "res": 25
+    },
+    "stats": {
+      "hp": 21,
+      "atk": 7,
+      "spd": 10,
+      "def": 6,
+      "res": 3
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "A mercenary who was once a slave gladiator. Serves Princess Caeda of Talys. Appears in Fire Emblem: Mystery of the Emblem."
+  },
+  "Olivia: Blushing Beauty": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 50,
+      "spd": 60,
+      "def": 50,
+      "res": 50
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 6,
+      "spd": 7,
+      "def": 5,
+      "res": 4
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "A dancer who travels widely and is quite gifted, despite extreme shyness. Appears in Fire Emblem Awakening."
+  },
+  "Olivia: Festival Dancer": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 50,
+      "spd": 60,
+      "def": 30,
+      "res": 55
+    },
+    "stats": {
+      "hp": 15,
+      "atk": 6,
+      "spd": 8,
+      "def": 3,
+      "res": 4
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "dagger",
+    "description": "A dancer who brings a smile to people's faces. She had appeared at a performing arts festival in Ylisse. Appears in Fire Emblem Awakening."
+  },
+  "Olwen: Blue Mage Knight": {
+    "growthRates": {
+      "hp": 40,
+      "atk": 45,
+      "spd": 60,
+      "def": 35,
+      "res": 55
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 7,
+      "spd": 8,
+      "def": 5,
+      "res": 6
+    },
+    "movementType": "cavalry",
+    "color": "blue",
+    "weaponType": "tome",
+    "description": "A mage knight in Friege's army. Her ideals sometimes put her in opposition with her beloved brother, Reinhardt. Appears in Fire Emblem: Thracia 776."
+  },
+  "Oscar: Agile Horseman": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 60,
+      "spd": 60,
+      "def": 45,
+      "res": 35
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 7,
+      "spd": 8,
+      "def": 7,
+      "res": 6
+    },
+    "movementType": "cavalry",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "A straightforward but accommodating member of the Greil Mercenaries. Has good instincts. Appears in Fire Emblem: Path of Radiance."
+  },
+  "Palla: Eldest Whitewing": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 55,
+      "spd": 50,
+      "def": 50,
+      "res": 45
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 7,
+      "spd": 9,
+      "def": 6,
+      "res": 7
+    },
+    "movementType": "flier",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "Eldest of three sisters who are pegasus knights for Macedon. Appears in Fire Emblem: Mystery of the Emblem."
+  },
+  "Priscilla: Delicate Princess": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 50,
+      "spd": 50,
+      "def": 35,
+      "res": 55
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 7,
+      "spd": 7,
+      "def": 4,
+      "res": 8
+    },
+    "movementType": "cavalry",
+    "color": "colorless",
+    "weaponType": "staff",
+    "description": "The daughter of Count Caerleon. Also Raven's sister. Poised and gentle, with a jealous streak. Appears in Fire Emblem: The Blazing Blade."
+  },
+  "Raigh: Dark Child": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 55,
+      "spd": 50,
+      "def": 40,
+      "res": 50
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 8,
+      "spd": 7,
+      "def": 5,
+      "res": 7
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "tome",
+    "description": "Wielder of dark magic. A scornful loner with a troubled past as an orphan. Appears in Fire Emblem: The Binding Blade."
+  },
+  "Raven: Peerless Fighter": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 60,
+      "spd": 60,
+      "def": 45,
+      "res": 40
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 8,
+      "spd": 9,
+      "def": 6,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "green",
+    "weaponType": "axe",
+    "description": "A noble heir whose true name is Raymond. Works as a mercenary to enact revenge. Appears in Fire Emblem: The Blazing Blade."
+  },
+  "Rebecca: Wildflower": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 50,
+      "spd": 60,
+      "def": 35,
+      "res": 50
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 7,
+      "spd": 8,
+      "def": 6,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "bow",
+    "description": "A girl who lives in a remote village and spends her time hunting. Kind and sociable. Appears in Fire Emblem: The Blazing Blade."
+  },
+  "Reinhardt: Thunder's Fist": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 55,
+      "spd": 40,
+      "def": 50,
+      "res": 40
+    },
+    "stats": {
+      "hp": 16,
+      "atk": 8,
+      "spd": 6,
+      "def": 5,
+      "res": 8
+    },
+    "movementType": "cavalry",
+    "color": "blue",
+    "weaponType": "tome",
+    "description": "Formidable and admired mage knight in Friege's army. Ever ready to lend an ear to his younger sister, Olwen. Appears in Fire Emblem: Thracia 776."
+  },
+  "Robin: High Deliverer": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 50,
+      "spd": 50,
+      "def": 50,
+      "res": 40
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 7,
+      "spd": 7,
+      "def": 7,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "blue",
+    "weaponType": "tome",
+    "description": "A tactician of Ylisse and Chrom's close ally. Lost memory of his life before meeting Chrom. Appears in Fire Emblem Awakening."
+  },
+  "Robin: Mystery Tactician": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 50,
+      "spd": 50,
+      "def": 50,
+      "res": 40
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 7,
+      "spd": 7,
+      "def": 7,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "green",
+    "weaponType": "tome",
+    "description": "A tactician of Ylisse and Chrom's close ally. Lost memory of her life before meeting Chrom. Appears in Fire Emblem Awakening."
+  },
+  "Robin: Seaside Tactician": {
+    "growthRates": {
+      "hp": 40,
+      "atk": 55,
+      "spd": 60,
+      "def": 50,
+      "res": 50
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 8,
+      "spd": 8,
+      "def": 6,
+      "res": 7
+    },
+    "movementType": "infantry",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "A tactician of Ylisse and Chrom's close ally. Loves the strange creatures she finds on the beach. Appears in Fire Emblem Awakening."
+  },
+  "Roderick: Steady Squire": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 55,
+      "spd": 60,
+      "def": 45,
+      "res": 40
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 7,
+      "spd": 8,
+      "def": 6,
+      "res": 7
+    },
+    "movementType": "cavalry",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "An aspiring knight of Altea. Of calm demeanor. Luke's longtime friend and rival. Appears in Fire Emblem: New Mystery of the Emblem."
+  },
+  "Roy: Brave Lion": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 55,
+      "spd": 60,
+      "def": 45,
+      "res": 40
+    },
+    "stats": {
+      "hp": 16,
+      "atk": 8,
+      "spd": 8,
+      "def": 7,
+      "res": 7
+    },
+    "movementType": "cavalry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "The son of Eliwood, Marquess of Pherae. Has immense respect for his father and wields his weapon, Durandal. Appears in Fire Emblem: The Binding Blade."
+  },
+  "Ryoma: Peerless Samurai": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 60,
+      "spd": 55,
+      "def": 50,
+      "res": 40
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 8,
+      "spd": 11,
+      "def": 5,
+      "res": 4
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "The eldest prince of Hoshido, who wields the legendary blade Raijinto. Appears in Fire Emblem Fates."
+  },
+  "Saber: Driven Mercenary": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 55,
+      "spd": 55,
+      "def": 55,
+      "res": 40
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 7,
+      "spd": 9,
+      "def": 8,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "A mercenary who will take on any job...if he's paid enough. His identity is a mystery but his skills are unquestionable. Appears in Fire Emblem Echoes: Shadows of Valentia."
+  },
+  "Saizo: Angry Ninja": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 50,
+      "spd": 60,
+      "def": 55,
+      "res": 30
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 7,
+      "spd": 8,
+      "def": 9,
+      "res": 3
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "dagger",
+    "description": "A severe ninja of Hoshido. Has a twin brother named Kaze. One of Ryoma's retainers. Appears in Fire Emblem Fates."
+  },
+  "Sakura: Gentle Nekomata": {
+    "growthRates": {
+      "hp": 40,
+      "atk": 55,
+      "spd": 60,
+      "def": 25,
+      "res": 60
+    },
+    "stats": {
+      "hp": 16,
+      "atk": 8,
+      "spd": 8,
+      "def": 4,
+      "res": 8
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "dagger",
+    "description": "This Hoshidan princess is so kind that she wouldn't play a trick on anyone, even if they didn't give her candy. Appears in Fire Emblem Fates."
+  },
+  "Sakura: Loving Priestess": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 50,
+      "spd": 50,
+      "def": 45,
+      "res": 50
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 6,
+      "spd": 8,
+      "def": 5,
+      "res": 8
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "staff",
+    "description": "Princess of Hoshido who is a gentle healer. Struggles with her shyness. Appears in Fire Emblem Fates."
+  },
+  "Sanaki: Begnion's Apostle": {
+    "growthRates": {
+      "hp": 40,
+      "atk": 65,
+      "spd": 45,
+      "def": 30,
+      "res": 60
+    },
+    "stats": {
+      "hp": 16,
+      "atk": 9,
+      "spd": 7,
+      "def": 4,
+      "res": 8
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "tome",
+    "description": "Empress of Begnion. Known as the Apostle, voice of the goddess. Young but dutiful ruler. Appears in Fire Emblem: Radiant Dawn."
+  },
+  "Selena: Cutting Wit": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 45,
+      "spd": 60,
+      "def": 55,
+      "res": 50
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 6,
+      "spd": 9,
+      "def": 8,
+      "res": 6
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "A mysterious woman devoted to service. One of Camilla's retainers. Snarky. Appears in Fire Emblem Fates."
+  },
+  "Seliph: Heir of Light": {
+    "growthRates": {
+      "hp": 65,
+      "atk": 60,
+      "spd": 40,
+      "def": 50,
+      "res": 40
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 8,
+      "spd": 7,
+      "def": 8,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "Inheritor of the sacred sword Tyrfing. A savior in his time, but dislikes battle. Julia's half brother. Appears in Fire Emblem: Genealogy of the Holy War."
+  },
+  "Serra: Outspoken Cleric": {
+    "growthRates": {
+      "hp": 40,
+      "atk": 55,
+      "spd": 50,
+      "def": 40,
+      "res": 55
+    },
+    "stats": {
+      "hp": 16,
+      "atk": 6,
+      "spd": 9,
+      "def": 4,
+      "res": 9
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "staff",
+    "description": "Cleric who thinks less of others, more of herself. Serves Hector, brother of the Marquess of Ostia. Appears in Fire Emblem: The Blazing Blade."
+  },
+  "Seth: Silver Knight": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 55,
+      "spd": 55,
+      "def": 55,
+      "res": 40
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 8,
+      "spd": 7,
+      "def": 8,
+      "res": 5
+    },
+    "movementType": "cavalry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "A young commander of Renais. He's calm, composed, and skilled. Appears in Fire Emblem: The Sacred Stones."
+  },
+  "Setsuna: Absent Archer": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 50,
+      "spd": 65,
+      "def": 40,
+      "res": 40
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 6,
+      "spd": 9,
+      "def": 5,
+      "res": 6
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "bow",
+    "description": "Hoshidan archer who is either fearless or daydreaming. One of Hinoka's retainers. Appears in Fire Emblem Fates."
+  },
+  "Shanna: Sprightly Flier": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 50,
+      "spd": 60,
+      "def": 45,
+      "res": 50
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 8,
+      "spd": 9,
+      "def": 6,
+      "res": 7
+    },
+    "movementType": "flier",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "A trainee of the Pegasus Knights of Ilia. Cheerful and optimistic. Appears in Fire Emblem: The Binding Blade."
+  },
+  "Sharena: Princess of Askr": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 55,
+      "spd": 55,
+      "def": 50,
+      "res": 40
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 8,
+      "spd": 8,
+      "def": 7,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "A princess of Askr and Alfonse's sister. Cheerful and loves making friends—especially with Heroes."
+  },
+  "Sheena: Princess of Gra": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 50,
+      "spd": 45,
+      "def": 55,
+      "res": 60
+    },
+    "stats": {
+      "hp": 21,
+      "atk": 8,
+      "spd": 6,
+      "def": 12,
+      "res": 7
+    },
+    "movementType": "armored",
+    "color": "green",
+    "weaponType": "axe",
+    "description": "Princess of Gra, a failing realm. Feels the heavy weight of her responsibility. Appears in Fire Emblem: Mystery of the Emblem."
+  },
+  "Shigure: Dark Sky Singer": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 55,
+      "spd": 55,
+      "def": 40,
+      "res": 45
+    },
+    "stats": {
+      "hp": 15,
+      "atk": 7,
+      "spd": 5,
+      "def": 4,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "blue",
+    "weaponType": "tome",
+    "description": "A descendant of the songstress Azura. Sings in Cyrkensia while hiding his identity. Appears in Fire Emblem Fates."
+  },
+  "Sigurd: Holy Knight": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 60,
+      "spd": 55,
+      "def": 65,
+      "res": 30
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 9,
+      "spd": 8,
+      "def": 6,
+      "res": 4
+    },
+    "movementType": "cavalry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "Heir to Chalphy, descendant of the crusader Baldr, and Seliph's father. He's courageous and has a strong sense of justice. Appears in Fire Emblem: Genealogy of the Holy War."
+  },
+  "Sonya: Vengeful Mage": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 60,
+      "spd": 55,
+      "def": 25,
+      "res": 55
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 7,
+      "spd": 7,
+      "def": 5,
+      "res": 8
+    },
+    "movementType": "infantry",
+    "color": "green",
+    "weaponType": "tome",
+    "description": "A mage hired by Grieth. Cool but flamboyant. Vowed vengeance upon her father, Jedah. Appears in Fire Emblem Echoes: Shadows of Valentia."
+  },
+  "Sophia: Nabata Prophet": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 55,
+      "spd": 35,
+      "def": 50,
+      "res": 50
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 9,
+      "spd": 4,
+      "def": 6,
+      "res": 7
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "tome",
+    "description": "A shaman of Nabata who has lived a sheltered life away from other people. Sees the future. Appears in Fire Emblem: The Binding Blade."
+  },
+  "Soren: Shrewd Strategist": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 60,
+      "spd": 55,
+      "def": 30,
+      "res": 50
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 7,
+      "spd": 9,
+      "def": 4,
+      "res": 7
+    },
+    "movementType": "infantry",
+    "color": "green",
+    "weaponType": "tome",
+    "description": "An officer in the Greil Mercenaries. A coolheaded realist who has opened up to Ike. Appears in Fire Emblem: Path of Radiance."
+  },
+  "Stahl: Viridian Knight": {
+    "growthRates": {
+      "hp": 60,
+      "atk": 55,
+      "spd": 45,
+      "def": 50,
+      "res": 40
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 7,
+      "spd": 7,
+      "def": 8,
+      "res": 5
+    },
+    "movementType": "cavalry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "A kind but slightly scatterbrained knight who serves with the Shepherds. Appears in Fire Emblem Awakening."
+  },
+  "Subaki: Perfect Expert": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 45,
+      "spd": 60,
+      "def": 60,
+      "res": 40
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 6,
+      "spd": 9,
+      "def": 9,
+      "res": 5
+    },
+    "movementType": "flier",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "Sky Knight of Hoshido who aims for perfection. One of Sakura's retainers. Appears in Fire Emblem Fates."
+  },
+  "Sully: Crimson Knight": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 45,
+      "spd": 60,
+      "def": 40,
+      "res": 50
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 7,
+      "spd": 8,
+      "def": 7,
+      "res": 6
+    },
+    "movementType": "cavalry",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "A member of the Shepherds who is serious about becoming a great knight. Appears in Fire Emblem Awakening."
+  },
+  "Tailtiu: Thunder Noble": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 55,
+      "spd": 60,
+      "def": 30,
+      "res": 45
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 8,
+      "spd": 9,
+      "def": 4,
+      "res": 6
+    },
+    "movementType": "infantry",
+    "color": "blue",
+    "weaponType": "tome",
+    "description": "A noblewoman from Friege and descendant of the crusader Thrud. She appears cheerful but is hiding her troubles. Appears in Fire Emblem: Genealogy of the Holy War."
+  },
+  "Takumi: Wild Card": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 55,
+      "spd": 60,
+      "def": 45,
+      "res": 30
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 8,
+      "spd": 7,
+      "def": 6,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "bow",
+    "description": "Prince of Hoshido who wields the divine bow Fujin Yumi. Prickly at times. Appears in Fire Emblem Fates."
+  },
+  "Tana: Winged Princess": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 60,
+      "spd": 60,
+      "def": 45,
+      "res": 45
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 8,
+      "spd": 10,
+      "def": 6,
+      "res": 6
+    },
+    "movementType": "flier",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "The princess of Frelia. Innes's sister. Somewhat naive, but cheery and very sociable. Appears in Fire Emblem: The Sacred Stones."
+  },
+  "Tharja: Dark Shadow": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 55,
+      "spd": 60,
+      "def": 40,
+      "res": 35
+    },
+    "stats": {
+      "hp": 17,
+      "atk": 8,
+      "spd": 8,
+      "def": 6,
+      "res": 5
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "tome",
+    "description": "A mage from Plegia with a dark side and a possessive streak, especially with Robin. Appears in Fire Emblem Awakening."
+  },
+  "Tiki: Dragon Scion": {
+    "growthRates": {
+      "hp": 60,
+      "atk": 60,
+      "spd": 60,
+      "def": 55,
+      "res": 50
+    },
+    "stats": {
+      "hp": 15,
+      "atk": 5,
+      "spd": 4,
+      "def": 8,
+      "res": 7
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "breath",
+    "description": "A young Divine Dragon once put into a timeless sleep to keep her dragon impulses in check. Now longs for human company. Appears in Fire Emblem: Mystery of the Emblem."
+  },
+  "Tiki: Naga's Voice": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 65,
+      "spd": 40,
+      "def": 60,
+      "res": 40
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 7,
+      "spd": 6,
+      "def": 9,
+      "res": 7
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "breath",
+    "description": "Known as the Voice of the Divine Dragon. Has lived for ages. Once friends with Marth. Appears in Fire Emblem Awakening."
+  },
+  "Tiki: Summering Scion": {
+    "growthRates": {
+      "hp": 40,
+      "atk": 65,
+      "spd": 55,
+      "def": 55,
+      "res": 40
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 8,
+      "spd": 6,
+      "def": 8,
+      "res": 7
+    },
+    "movementType": "infantry",
+    "color": "green",
+    "weaponType": "axe",
+    "description": "Known as the Voice of the Divine Dragon. Has lived through thousands of summers, but usually doesn't need to worry about swimming gear. Appears in Fire Emblem Awakening."
+  },
+  "Titania: Mighty Mercenary": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 50,
+      "spd": 60,
+      "def": 45,
+      "res": 50
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 6,
+      "spd": 8,
+      "def": 6,
+      "res": 8
+    },
+    "movementType": "cavalry",
+    "color": "green",
+    "weaponType": "axe",
+    "description": "Deputy commander of the Greil Mercenaries. An idealistic former knight who values honor. Appears in Fire Emblem: Path of Radiance."
+  },
+  "Tobin: The Clueless One": {
+    "growthRates": {
+      "hp": 65,
+      "atk": 55,
+      "spd": 50,
+      "def": 65,
+      "res": 50
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 7,
+      "spd": 5,
+      "def": 5,
+      "res": 4
+    },
+    "movementType": "infantry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "Alm's childhood friend from Ram Village. Honest to a fault, and suffers for it. Appears in Fire Emblem Echoes: Shadows of Valentia."
+  },
+  "Ursula: Blue Crow": {
+    "growthRates": {
+      "hp": 45,
+      "atk": 50,
+      "spd": 55,
+      "def": 35,
+      "res": 50
+    },
+    "stats": {
+      "hp": 16,
+      "atk": 7,
+      "spd": 8,
+      "def": 4,
+      "res": 8
+    },
+    "movementType": "cavalry",
+    "color": "blue",
+    "weaponType": "tome",
+    "description": "A cruel member of the Black Fang assassins. Lends her service only to someone truly perfect. Appears in Fire Emblem: The Blazing Blade."
+  },
+  "Valter: Dark Moonstone": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 55,
+      "spd": 50,
+      "def": 60,
+      "res": 35
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 8,
+      "spd": 9,
+      "def": 8,
+      "res": 4
+    },
+    "movementType": "flier",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "One of Grado's six generals. Cruelty intoxicates him. Known as Moonstone. Appears in Fire Emblem: The Sacred Stones."
+  },
+  "Virion: Elite Archer": {
+    "growthRates": {
+      "hp": 60,
+      "atk": 55,
+      "spd": 55,
+      "def": 45,
+      "res": 25
+    },
+    "stats": {
+      "hp": 20,
+      "atk": 7,
+      "spd": 7,
+      "def": 7,
+      "res": 3
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "bow",
+    "description": "Rightful ruler of Rosanne in Valm who has a tendency for wit and puffery. Appears in Fire Emblem Awakening."
+  },
+  "Wrys: Kindly Priest": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 45,
+      "spd": 40,
+      "def": 40,
+      "res": 60
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 5,
+      "spd": 6,
+      "def": 5,
+      "res": 10
+    },
+    "movementType": "infantry",
+    "color": "colorless",
+    "weaponType": "staff",
+    "description": "Humble priest of Talys who likes a quiet life. Despises battle, preferring to heal allies. Appears in Fire Emblem: Shadow Dragon &amp; the Blade of Light."
+  },
+  "Xander: Paragon Knight": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 55,
+      "spd": 45,
+      "def": 65,
+      "res": 30
+    },
+    "stats": {
+      "hp": 20,
+      "atk": 8,
+      "spd": 5,
+      "def": 9,
+      "res": 4
+    },
+    "movementType": "cavalry",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "Nohrian prince respected for his military prowess. Wields the divine blade Siegfried. Appears in Fire Emblem Fates."
+  },
+  "Xander: Spring Prince": {
+    "growthRates": {
+      "hp": 50,
+      "atk": 45,
+      "spd": 50,
+      "def": 60,
+      "res": 45
+    },
+    "stats": {
+      "hp": 18,
+      "atk": 6,
+      "spd": 6,
+      "def": 9,
+      "res": 7
+    },
+    "movementType": "cavalry",
+    "color": "blue",
+    "weaponType": "lance",
+    "description": "Nohrian prince who normally wields the divine blade Siegfried but left it behind for the festival. Appears in Fire Emblem Fates."
+  },
+  "Xander: Student Swimmer": {
+    "growthRates": {
+      "hp": 55,
+      "atk": 55,
+      "spd": 55,
+      "def": 65,
+      "res": 25
+    },
+    "stats": {
+      "hp": 19,
+      "atk": 8,
+      "spd": 6,
+      "def": 8,
+      "res": 6
+    },
+    "movementType": "infantry",
+    "color": "green",
+    "weaponType": "axe",
+    "description": "A Nohrian prince who wields the divine sword Siegfried but can't swim. Clings to his Lilith water toy. Appears in Fire Emblem Fates."
+  },
+  "Zephiel: The Liberator": {
+    "growthRates": {
+      "hp": 70,
+      "atk": 60,
+      "spd": 30,
+      "def": 60,
+      "res": 45
+    },
+    "stats": {
+      "hp": 25,
+      "atk": 9,
+      "spd": 3,
+      "def": 12,
+      "res": 5
+    },
+    "movementType": "armored",
+    "color": "red",
+    "weaponType": "sword",
+    "description": "King of Bern. Once a kindhearted boy who became disillusioned with humanity. Wants his world to be ruled by dragons. Appears in Fire Emblem: The Binding Blade."
+  }
 }

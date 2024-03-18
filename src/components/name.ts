@@ -2,10 +2,9 @@ import { Component } from "ape-ecs";
 
 class Name extends Component {
     static properties = {
-        value: ""
+        value: "",
+        description: ""
     };
-
-    static serializeFields = ["value"]
 };
 
 export default Name;

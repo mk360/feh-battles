@@ -8,6 +8,7 @@ interface CharacterData {
         movementType: MovementType;
         stats: MandatoryStats;
         growthRates: MandatoryStats;
+        description: string;
     }
 }
 

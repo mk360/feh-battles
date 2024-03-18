@@ -163,8 +163,6 @@ class GameWorld extends World {
         this.runSystems("every-turn");
         this.systems.get("every-turn").forEach((system) => {
             // @ts-ignore
-            console.log("changes", system._stagedChanges);
-            // @ts-ignore
             changes = changes.concat(system._stagedChanges.map((op) => this.processOperation(op)));
         });
         
@@ -172,13 +170,15 @@ class GameWorld extends World {
     }
 
     private processOperation(op: IComponentChange) {
-        const detailedOperation: (IComponentChange & Partial<{ detailedComponent: IComponentObject }>) = {...op};
         if (["update", "add"].includes(op.op)) {
             const { type, ...component } = this.getComponent(op.component).getObject(false);
-            detailedOperation.detailedComponent = component;
+            return {
+                ...op,
+                ...component
+            };
         }
 
-        return detailedOperation;
+        return op;
     }
 
     getUnitMovement(id: string) {
@@ -248,10 +248,12 @@ class GameWorld extends World {
     };
 
     private createHero(member: HeroData, team: "team1" | "team2", teamIndex: number) {
+        const dexData = CHARACTERS[member.name];
         const entity = this.createEntity({
             components: [{
                 type: "Name",
-                value: member.name
+                value: member.name,
+                description: dexData.description
             }]
         });
 

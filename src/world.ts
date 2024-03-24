@@ -53,6 +53,7 @@ import canReachTile from "./systems/can-reach-tile";
 import AttackTile from "./components/attack-tile";
 import FinishedAction from "./components/finished-action";
 import Status from "./components/status";
+import getTileCoordinates from "./systems/get-tile-coordinates";
 
 interface HeroData {
     name: string;
@@ -186,7 +187,8 @@ class GameWorld extends World {
         const comp = entity.addComponent({
             type: "Movable"
         });
-        entity.getComponents(MovementTile).forEach((t) => { if (t) entity.removeComponent(t) })
+        entity.getComponents("MovementTile").forEach((t) => { if (t) entity.removeComponent(t) });
+        entity.getComponents("AttackTile").forEach((t) => { if (t) entity.removeComponent(t) });
         this.runSystems("movement");
         const movementTiles = entity.getComponents("MovementTile");
         const attackTiles = entity.getComponents("AttackTile");
@@ -209,7 +211,13 @@ class GameWorld extends World {
         const { x, y } = positionComponent;
         const { bitfield } = unit.getOne("Side");
         const mapTile = this.state.map[y][x];
-        mapTile[0] ^= tileBitmasks.occupation;
+        const ui = new Uint16Array(1);
+        ui[0] = -1;
+        const bitArray = ui[0].toString(2).split("");
+        bitArray[bitArray.length - TileBitshifts.occupation1 - 1] = "0";
+        bitArray[bitArray.length - TileBitshifts.occupation2 - 1] = "0";
+        const newBinaryMap = + `0b${bitArray.join("")}`;
+        mapTile[0] &= newBinaryMap;
         newMapTile[0] |= bitfield;
         positionComponent.update(newTile);
         return positionComponent;

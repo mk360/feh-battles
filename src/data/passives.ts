@@ -11,6 +11,7 @@ import getCombatStats from "../systems/get-combat-stats";
 import CombatTurnOutcome from "../interfaces/combat-turn-outcome";
 import getSurroundings from "../systems/get-surroundings";
 import getTileCoordinates from "../systems/get-tile-coordinates";
+import canReachTile from "../systems/can-reach-tile";
 
 interface PassivesDict {
     [k: string]: {
@@ -1659,7 +1660,15 @@ const PASSIVES: PassivesDict = {
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp === maxHP) {
                 if (["armored", "infantry"].includes(ally.getOne("MovementType").value) && HeroSystem.getDistance(ally, this.entity) <= 2) {
-
+                    const { x, y } = this.entity.getOne("Position");
+                    const surroundings = getSurroundings(state.map, y, x);
+                    const validAllyTiles = surroundings.filter((tile) => canReachTile(ally, tile));
+                    for (let tile of validAllyTiles) {
+                        ally.addComponent({
+                            type: "WarpTile",
+                            ...tile
+                        });
+                    }
                 }
             }
         }
@@ -1680,6 +1689,22 @@ const PASSIVES: PassivesDict = {
                     }
                 }
             }
+        },
+        onTurnAllyCheckRange(state, ally) {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP >= 0.5) {
+                if (["armored", "infantry"].includes(ally.getOne("MovementType").value) && HeroSystem.getDistance(ally, this.entity) <= 2) {
+                    const { x, y } = this.entity.getOne("Position");
+                    const surroundings = getSurroundings(state.map, y, x);
+                    const validAllyTiles = surroundings.filter((tile) => canReachTile(ally, tile));
+                    for (let tile of validAllyTiles) {
+                        ally.addComponent({
+                            type: "WarpTile",
+                            ...tile
+                        });
+                    }
+                }
+            }
         }
     },
     "Guidance 3": {
@@ -1693,6 +1718,19 @@ const PASSIVES: PassivesDict = {
                     ally.addComponent({
                         type: "Status",
                         value: "Guidance"
+                    });
+                }
+            }
+        },
+        onTurnAllyCheckRange(state, ally) {
+            if (["armored", "infantry"].includes(ally.getOne("MovementType").value) && HeroSystem.getDistance(ally, this.entity) <= 2) {
+                const { x, y } = this.entity.getOne("Position");
+                const surroundings = getSurroundings(state.map, y, x);
+                const validAllyTiles = surroundings.filter((tile) => canReachTile(ally, tile));
+                for (let tile of validAllyTiles) {
+                    ally.addComponent({
+                        type: "WarpTile",
+                        ...tile
                     });
                 }
             }

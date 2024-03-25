@@ -32,15 +32,6 @@ class MovementSystem extends System {
 
         const { skillMap } = this.state;
 
-        for (let ally of allies) {
-            if (skillMap.get(ally).onTurnAllyCheckRange) {
-                for (let skill of this.state.skillMap.get(ally).onTurnAllyCheckRange) {
-                    const skillData = PASSIVES[skill.name];
-                    skillData.onTurnAllyCheckRange.call(skill, this.state, unit);
-                }
-            }
-        }
-
         const pathfinders = allies.filter((ally) => ally.getOne("Pathfinder")).map((pathfinder) => {
             const { x, y } = pathfinder.getOne("Position");
             return this.state.map[y][x];
@@ -67,10 +58,50 @@ class MovementSystem extends System {
             });
         });
 
-        const attack = this.computeAttackRange(movementTiles, 1);
+        for (let ally of allies) {
+            if (skillMap.get(ally).onTurnAllyCheckRange) {
+                for (let skill of this.state.skillMap.get(ally).onTurnAllyCheckRange) {
+                    const skillData = PASSIVES[skill.name];
+                    skillData.onTurnAllyCheckRange.call(skill, this.state, unit);
+                }
+            }
+        }
 
-        attack.forEach((t) => {
+        const warpTiles = unit.getComponents("WarpTile");
+        warpTiles.forEach((tile) => {
+            if (tile) {
+                const mapTile = this.state.map[tile.y][tile.x];
+                if (movementTiles.has(mapTile)) {
+                    unit.removeComponent(tile);
+                }
+            }
+        });
+
+        const attackTilesFromMovement = this.computeAttackRange(movementTiles, unit.getOne("Weapon").range);
+
+        attackTilesFromMovement.forEach((t) => {
             const { x, y } = getTileCoordinates(t);
+            unit.addComponent({
+                type: "AttackTile",
+                x,
+                y
+            });
+        });
+
+        const warpTileData = new Set<Uint16Array>();
+
+        warpTiles.forEach((t) => {
+            warpTileData.add(this.state.map[t.y][t.x]);
+        });
+
+        const attackTilesFromWarping = this.computeAttackRange(warpTileData, unit.getOne("Weapon").range);
+
+        attackTilesFromWarping.forEach((t) => {
+            const { x, y } = getTileCoordinates(t);
+            const tileData = this.state.map[y][x];
+            if ((tileData[0] & tileBitmasks.occupation) === unit.getOne("Side").bitfield) {
+                return;
+            }
             unit.addComponent({
                 type: "AttackTile",
                 x,

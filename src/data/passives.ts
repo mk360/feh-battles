@@ -1661,12 +1661,16 @@ const PASSIVES: PassivesDict = {
             if (hp === maxHP) {
                 if (["armored", "infantry"].includes(ally.getOne("MovementType").value) && HeroSystem.getDistance(ally, this.entity) <= 2) {
                     const { x, y } = this.entity.getOne("Position");
+                    const tile = state.map[y][x];
                     const surroundings = getSurroundings(state.map, y, x);
+                    surroundings.splice(surroundings.indexOf(tile), 1);
                     const validAllyTiles = surroundings.filter((tile) => canReachTile(ally, tile));
                     for (let tile of validAllyTiles) {
+                        const { x: tileX, y: tileY } = getTileCoordinates(tile);
                         ally.addComponent({
                             type: "WarpTile",
-                            ...tile
+                            x: tileX,
+                            y: tileY
                         });
                     }
                 }
@@ -1695,12 +1699,16 @@ const PASSIVES: PassivesDict = {
             if (hp / maxHP >= 0.5) {
                 if (["armored", "infantry"].includes(ally.getOne("MovementType").value) && HeroSystem.getDistance(ally, this.entity) <= 2) {
                     const { x, y } = this.entity.getOne("Position");
+                    const tile = state.map[y][x];
                     const surroundings = getSurroundings(state.map, y, x);
+                    surroundings.splice(surroundings.indexOf(tile), 1);
                     const validAllyTiles = surroundings.filter((tile) => canReachTile(ally, tile));
                     for (let tile of validAllyTiles) {
+                        const { x: tileX, y: tileY } = getTileCoordinates(tile);
                         ally.addComponent({
                             type: "WarpTile",
-                            ...tile
+                            x: tileX,
+                            y: tileY
                         });
                     }
                 }
@@ -1725,12 +1733,16 @@ const PASSIVES: PassivesDict = {
         onTurnAllyCheckRange(state, ally) {
             if (["armored", "infantry"].includes(ally.getOne("MovementType").value) && HeroSystem.getDistance(ally, this.entity) <= 2) {
                 const { x, y } = this.entity.getOne("Position");
+                const tile = state.map[y][x];
                 const surroundings = getSurroundings(state.map, y, x);
+                surroundings.splice(surroundings.indexOf(tile), 1);
                 const validAllyTiles = surroundings.filter((tile) => canReachTile(ally, tile));
                 for (let tile of validAllyTiles) {
+                    const { x: tileX, y: tileY } = getTileCoordinates(tile);
                     ally.addComponent({
                         type: "WarpTile",
-                        ...tile
+                        x: tileX,
+                        y: tileY
                     });
                 }
             }

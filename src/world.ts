@@ -1,59 +1,30 @@
 import { Component, Entity, IComponentChange, IComponentObject, IWorldConfig, World } from "ape-ecs";
-import Weapon from "./components/weapon";
 import TurnStart from "./systems/turn-start";
-import Stats from "./components/stats";
 import CHARACTERS from "./data/characters";
-import Side from "./components/side";
-import Skill from "./components/skill";
 import WEAPONS from "./data/weapons";
 import GameState from "./systems/state";
-import Position from "./components/position";
-import Effectiveness from "./components/effectiveness";
-import MovementType from "./components/movement-type";
-import Immunity from "./components/immunity";
-import Bane from "./components/bane";
-import Boon from "./components/boon";
-import { Stat } from "./interfaces/types";
+import * as fs from "fs";
+import * as path from "path";
 import getLv40Stats from "./systems/unit-stats";
-import WarpTile from "./components/warp-tile";
-import MovementTile from "./components/movement-tile";
 import PASSIVES from "./data/passives";
-import MapDebuff from "./components/map-debuff";
 import MovementTypes from "./data/movement-types";
-import Name from "./components/name";
 import CombatSystem from "./systems/combat";
-import Battling from "./components/battling";
-import PreventEnemyAlliesInteraction from "./components/prevent-enemy-allies-interaction";
-import CombatBuff from "./components/combat-buff";
-import Counterattack from "./components/counterattack";
-import MapBuff from "./components/map-buff";
-import NeutralizeMapBuffs from "./components/neutralize-map-buffs";
-import TargetLowestDefense from "./components/target-lowest-defense";
-import AccelerateSpecial from "./components/accelerate-special";
-import SlowSpecial from "./components/slow-special";
-import BraveWeapon from "./components/brave-weapon";
-import PreventCounterattack from "./components/prevent-counterattack";
 import SkillInteractionSystem from "./systems/skill-interaction";
-import PreventTargetLowestDefense from "./components/prevent-target-lowest-defense";
-import GuaranteedFollowup from "./components/guaranteed-followup";
-import PreventFollowUp from "./components/prevent-followup";
-import GuaranteedAffinity from "./components/guaranteed-affinity";
-import NeutralizeAffinity from "./components/neutralize-affinity";
-import DamageReduction from "./components/damage-reduction";
-import NeutralizeNormalizeStaffDamage from "./components/neutralize-normalize-staff-damage";
-import NormalizeStaffDamage from "./components/normalize-staff-damage";
 import Teams from "./data/teams";
-import Movable from "./components/movable";
 import MovementSystem from "./systems/movement";
 import tileBitmasks from "./data/tile-bitmasks";
-import ApplyAffinity from "./components/apply-affinity";
 import TileBitshifts from "./data/tile-bitshifts";
-import Obstruct from "./components/obstruct";
-import canReachTile from "./systems/can-reach-tile";
-import AttackTile from "./components/attack-tile";
-import FinishedAction from "./components/finished-action";
-import Status from "./components/status";
-import getTileCoordinates from "./systems/get-tile-coordinates";
+import { Stat } from "./interfaces/types";
+import getAllies from "./utils/get-allies";
+
+const COMPONENTS_DIRECTORY = fs.readdirSync(path.join(__dirname, "./components"));
+
+function normalizeComponentName(name: string) {
+    const pascalCase = name.replace(/(^[a-z]|-[a-z])/g, (match) => {
+        return match.toUpperCase().replace("-", "");
+    });
+    return pascalCase;
+}
 
 interface HeroData {
     name: string;
@@ -114,45 +85,12 @@ class GameWorld extends World {
 
     constructor(config?: IWorldConfig) {
         super(config);
-        this.registerComponent(Weapon);
-        this.registerComponent(Stats);
-        this.registerComponent(Side);
-        this.registerComponent(MapDebuff);
-        this.registerComponent(Position);
-        this.registerComponent(Movable);
-        this.registerComponent(FinishedAction);
-        this.registerComponent(WarpTile);
-        this.registerComponent(NeutralizeNormalizeStaffDamage);
-        this.registerComponent(NormalizeStaffDamage);
-        this.registerComponent(MovementTile);
-        this.registerComponent(AttackTile);
-        this.registerComponent(Effectiveness);
-        this.registerComponent(MovementType);
-        this.registerComponent(Skill);
-        this.registerComponent(Status);
-        this.registerComponent(Counterattack);
-        this.registerComponent(MapBuff);
-        this.registerComponent(Immunity);
-        this.registerComponent(Bane);
-        this.registerComponent(NeutralizeMapBuffs);
-        this.registerComponent(CombatBuff);
-        this.registerComponent(Battling);
-        this.registerComponent(Obstruct);
-        this.registerComponent(DamageReduction);
-        this.registerComponent(PreventCounterattack);
-        this.registerComponent(Boon);
-        this.registerComponent(PreventEnemyAlliesInteraction);
-        this.registerComponent(Name);
-        this.registerComponent(AccelerateSpecial);
-        this.registerComponent(SlowSpecial);
-        this.registerComponent(BraveWeapon);
-        this.registerComponent(GuaranteedAffinity);
-        this.registerComponent(NeutralizeAffinity);
-        this.registerComponent(TargetLowestDefense);
-        this.registerComponent(PreventTargetLowestDefense);
-        this.registerComponent(GuaranteedFollowup);
-        this.registerComponent(PreventFollowUp);
-        this.registerComponent(ApplyAffinity);
+        const COMPONENTS = COMPONENTS_DIRECTORY.map((componentFile) => {
+            return require(path.join(__dirname, "./components", componentFile)).default;
+        });
+        for (let component of COMPONENTS) {
+            this.registerComponent(component);
+        }
         this.registerSystem("every-turn", TurnStart, [this.state]);
         this.registerSystem("combats", SkillInteractionSystem, [this.state]);
         this.registerSystem("combat", CombatSystem, [this.state]);
@@ -189,18 +127,33 @@ class GameWorld extends World {
         });
         entity.getComponents("MovementTile").forEach((t) => { if (t) entity.removeComponent(t) });
         entity.getComponents("AttackTile").forEach((t) => { if (t) entity.removeComponent(t) });
+        entity.getComponents("WarpTile").forEach((t) => { if (t) entity.removeComponent(t) });
         this.runSystems("movement");
         const movementTiles = entity.getComponents("MovementTile");
         const attackTiles = entity.getComponents("AttackTile");
+        const warpTiles = entity.getComponents("WarpTile");
         entity.removeComponent(comp);
 
-        return { movementTiles, attackTiles };
+        return { movementTiles, attackTiles, warpTiles };
     }
 
     previewUnitMovement(id: string, candidateTile: { x: number, y: number }) {
         const entity = this.getEntity(id);
-        const movementTiles = entity.getComponents("MovementTile");
-        const foundTile = Array.from(movementTiles).find((t) => t.x  === candidateTile.x && t.y === candidateTile.y);
+        const currentPosition = entity.getOne("Position");
+        if (currentPosition.x === candidateTile.x && currentPosition.y === candidateTile.y) {
+            return false;
+        }
+        const allyPositions = getAllies(this.state, entity).map((ally) => {
+            const position = ally.getOne("Position");
+            const { x, y } = position;
+            return this.state.map[y][x];
+        });
+        const movementTiles = new Set([...entity.getComponents("MovementTile"), ...entity.getComponents("WarpTile")]);
+        const foundTile = Array.from(movementTiles).find((t) => {
+            const tilemap = this.state.map[t.y][t.x];
+            if (allyPositions.includes(tilemap)) return false;
+            return t.x  === candidateTile.x && t.y === candidateTile.y
+        });
         return !!foundTile;
     }
 
@@ -211,12 +164,12 @@ class GameWorld extends World {
         const { x, y } = positionComponent;
         const { bitfield } = unit.getOne("Side");
         const mapTile = this.state.map[y][x];
-        const ui = new Uint16Array(1);
-        ui[0] = -1;
-        const bitArray = ui[0].toString(2).split("");
+        const blankBitmap = new Uint16Array(1);
+        blankBitmap[0] = -1;
+        const bitArray = blankBitmap[0].toString(2).split("");
         bitArray[bitArray.length - TileBitshifts.occupation1 - 1] = "0";
         bitArray[bitArray.length - TileBitshifts.occupation2 - 1] = "0";
-        const newBinaryMap = + `0b${bitArray.join("")}`;
+        const newBinaryMap = +`0b${bitArray.join("")}`;
         mapTile[0] &= newBinaryMap;
         newMapTile[0] |= bitfield;
         positionComponent.update(newTile);

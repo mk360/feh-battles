@@ -30,6 +30,7 @@ declare class GameWorld extends World {
     getUnitMovement(id: string): {
         movementTiles: Set<Component>;
         attackTiles: Set<Component>;
+        warpTiles: Set<Component>;
     };
     previewUnitMovement(id: string, candidateTile: {
         x: number;

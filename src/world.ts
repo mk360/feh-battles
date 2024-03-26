@@ -16,15 +16,16 @@ import tileBitmasks from "./data/tile-bitmasks";
 import TileBitshifts from "./data/tile-bitshifts";
 import { Stat } from "./interfaces/types";
 import getAllies from "./utils/get-allies";
+import AfterCombatSystem from "./systems/after-combat";
+
+/**
+ * TODO:
+ * implement basic combat preview
+ * find a way to drop the js files
+ * maybe batch all the components into a single file to lower fs syscall count? need to benchmark it to see if it's worth it
+ */
 
 const COMPONENTS_DIRECTORY = fs.readdirSync(path.join(__dirname, "./components"));
-
-function normalizeComponentName(name: string) {
-    const pascalCase = name.replace(/(^[a-z]|-[a-z])/g, (match) => {
-        return match.toUpperCase().replace("-", "");
-    });
-    return pascalCase;
-}
 
 interface HeroData {
     name: string;
@@ -95,6 +96,7 @@ class GameWorld extends World {
         this.registerSystem("combats", SkillInteractionSystem, [this.state]);
         this.registerSystem("combat", CombatSystem, [this.state]);
         this.registerSystem("movement", MovementSystem, [this.state]);
+        this.registerSystem("after-combat", AfterCombatSystem, [this.state]);
     }
 
     startTurn() {

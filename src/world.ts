@@ -106,7 +106,7 @@ class GameWorld extends World {
             // @ts-ignore
             changes = changes.concat(system._stagedChanges.map((op) => this.processOperation(op)));
         });
-        
+
         return changes;
     }
 
@@ -130,13 +130,15 @@ class GameWorld extends World {
         entity.getComponents("MovementTile").forEach((t) => { if (t) entity.removeComponent(t) });
         entity.getComponents("AttackTile").forEach((t) => { if (t) entity.removeComponent(t) });
         entity.getComponents("WarpTile").forEach((t) => { if (t) entity.removeComponent(t) });
+        entity.getComponents("TargetableTile").forEach((t) => { if (t) entity.removeComponent(t) });
         this.runSystems("movement");
         const movementTiles = entity.getComponents("MovementTile");
         const attackTiles = entity.getComponents("AttackTile");
         const warpTiles = entity.getComponents("WarpTile");
+        const targetableTiles = entity.getComponents("TargetableTile");
         entity.removeComponent(comp);
 
-        return { movementTiles, attackTiles, warpTiles };
+        return { movementTiles, attackTiles, warpTiles, targetableTiles };
     }
 
     previewUnitMovement(id: string, candidateTile: { x: number, y: number }) {
@@ -154,7 +156,7 @@ class GameWorld extends World {
         const foundTile = Array.from(movementTiles).find((t) => {
             const tilemap = this.state.map[t.y][t.x];
             if (allyPositions.includes(tilemap)) return false;
-            return t.x  === candidateTile.x && t.y === candidateTile.y
+            return t.x === candidateTile.x && t.y === candidateTile.y
         });
         return !!foundTile;
     }

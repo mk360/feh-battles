@@ -84,11 +84,19 @@ class MovementSystem extends System {
 
         attackTilesFromMovement.forEach((t) => {
             const { x, y } = getTileCoordinates(t);
-            unit.addComponent({
-                type: "AttackTile",
-                x,
-                y
-            });
+            if (this.state.map[y][x][0] & tileBitmasks.occupation) { // there's an enemy
+                unit.addComponent({
+                    type: "TargetableTile",
+                    x,
+                    y
+                })
+            } else {
+                unit.addComponent({
+                    type: "AttackTile",
+                    x,
+                    y
+                });
+            }
         });
     }
 

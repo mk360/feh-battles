@@ -571,7 +571,7 @@ const PASSIVES: PassivesDict = {
         slot: "B",
         description: "At start of turn, if unit's HP ≤ 25% and unit's attack can trigger their Special, grants Special cooldown count-1, and deals +10 damage when Special triggers.",
         onCombatRoundAttack() {
-            
+
         }
     },
     "Obstruct 1": {
@@ -1720,15 +1720,15 @@ const PASSIVES: PassivesDict = {
         allowedMovementTypes: ["flier"],
         description: "Infantry and armored allies within 2 spaces can move to a space adjacent to unit. ",
         onTurnStart(state) {
-            const allies = getAllies(state, this.entity);
-            for (let ally of allies) {
-                if (["armored", "infantry"].includes(ally.getOne("MovementType").value) && HeroSystem.getDistance(ally, this.entity) <= 2) {
-                    ally.addComponent({
-                        type: "Status",
-                        value: "Guidance"
-                    });
-                }
-            }
+            // const allies = getAllies(state, this.entity);
+            // for (let ally of allies) {
+            //     if (["armored", "infantry"].includes(ally.getOne("MovementType").value) && HeroSystem.getDistance(ally, this.entity) <= 2) {
+            //         ally.addComponent({
+            //             type: "Status",
+            //             value: "Guidance"
+            //         });
+            //     }
+            // }
         },
         onTurnAllyCheckRange(state, ally) {
             if (["armored", "infantry"].includes(ally.getOne("MovementType").value) && HeroSystem.getDistance(ally, this.entity) <= 2) {

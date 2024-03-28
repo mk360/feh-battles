@@ -31,6 +31,7 @@ declare class GameWorld extends World {
         movementTiles: Set<Component>;
         attackTiles: Set<Component>;
         warpTiles: Set<Component>;
+        targetableTiles: Set<Component>;
     };
     previewUnitMovement(id: string, candidateTile: {
         x: number;

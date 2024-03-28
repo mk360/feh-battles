@@ -25,7 +25,7 @@ function getAttackerAdvantage(attacker: Entity, defender: Entity) {
     if (defender.getOne("GuaranteedAdvantage")) return DISADVANTAGE;
     const color1 = attacker.getOne("Weapon").color as WeaponColor;
     const color2 = defender.getOne("Weapon").color as WeaponColor;
-    if ([color1, color2].includes("colorless") || color1 === color2) return NEUTRAL;
+    if (color1 === color2 || [color1, color2].includes("colorless")) return NEUTRAL;
 
     return ADVANTAGE_MAP[color1][color2];
 };

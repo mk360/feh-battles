@@ -68,40 +68,22 @@ class MovementSystem extends System {
         }
 
         const warpTiles = unit.getComponents("WarpTile");
+        const warpTileData = new Set<Uint16Array>();
         warpTiles.forEach((tile) => {
             if (tile) {
                 const mapTile = this.state.map[tile.y][tile.x];
                 if (movementTiles.has(mapTile)) {
                     unit.removeComponent(tile);
+                } else {
+                    warpTileData.add(mapTile);
                 }
             }
         });
 
-        const attackTilesFromMovement = this.computeAttackRange(movementTiles, unit.getOne("Weapon").range);
+        const attackTilesFromMovement = this.computeAttackRange(new Set([...movementTiles, ...warpTileData]), unit.getOne("Weapon").range);
 
         attackTilesFromMovement.forEach((t) => {
             const { x, y } = getTileCoordinates(t);
-            unit.addComponent({
-                type: "AttackTile",
-                x,
-                y
-            });
-        });
-
-        const warpTileData = new Set<Uint16Array>();
-
-        warpTiles.forEach((t) => {
-            warpTileData.add(this.state.map[t.y][t.x]);
-        });
-
-        const attackTilesFromWarping = this.computeAttackRange(warpTileData, unit.getOne("Weapon").range);
-
-        attackTilesFromWarping.forEach((t) => {
-            const { x, y } = getTileCoordinates(t);
-            const tileData = this.state.map[y][x];
-            if ((tileData[0] & tileBitmasks.occupation) === unit.getOne("Side").bitfield) {
-                return;
-            }
             unit.addComponent({
                 type: "AttackTile",
                 x,

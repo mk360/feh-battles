@@ -4,6 +4,7 @@ declare class Skill extends Component {
         name: string;
         description: string;
         slot: string;
+        might: number;
     };
 }
 export default Skill;

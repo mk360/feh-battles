@@ -84,7 +84,8 @@ class MovementSystem extends System {
 
         attackTilesFromMovement.forEach((t) => {
             const { x, y } = getTileCoordinates(t);
-            if (this.state.map[y][x][0] & tileBitmasks.occupation) { // there's an enemy
+            const occupation = this.state.map[y][x][0] & tileBitmasks.occupation;
+            if (occupation && occupation !== unit.getOne("Side").bitfield) { // there's an enemy
                 unit.addComponent({
                     type: "TargetableTile",
                     x,

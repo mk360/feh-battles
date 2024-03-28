@@ -269,7 +269,7 @@ class GameWorld extends World {
                 might: skillData.might,
             };
 
-            const weaponComponent = entity.addComponent(weaponComponentData)
+            const weaponComponent = entity.addComponent(weaponComponentData);
 
             for (let hook in skillData) {
                 const castHook = hook as keyof typeof skillData;

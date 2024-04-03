@@ -5,7 +5,6 @@ declare class TurnStartSystem extends System {
     private heroesQuery;
     init(state: GameState): void;
     update(): void;
-    getCurrentTeam(): import("ape-ecs").Entity[];
 }
 export default TurnStartSystem;
 //# sourceMappingURL=turn-start.d.ts.map

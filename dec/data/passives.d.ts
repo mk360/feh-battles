@@ -25,7 +25,7 @@ interface PassivesDict {
         onCombatRoundDefense?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): void;
         onTurnCheckRange?(this: Skill, state: GameState): void;
         onTurnAllyCheckRange?(this: Skill, state: GameState, ally: Entity): void;
-        onTurnEnemyCheckRange?(this: Skill, state: GameState, ally: Entity): void;
+        onTurnEnemyCheckRange?(this: Skill, state: GameState, enemy: Entity): void;
     };
 }
 declare const PASSIVES: PassivesDict;

@@ -1,7 +1,6 @@
 import { Query, System } from "ape-ecs";
 import GameState from "./state";
-import WEAPONS from "../data/weapons";
-import PASSIVES from "../data/passives";
+import SKILLS from "../data/skill-dex";
 
 const MAP_STATUSES = ["MapBuff", "MapDebuff", "FinishedAction", "Status"];
 
@@ -18,21 +17,16 @@ class TurnStartSystem extends System {
     };
 
     update() {
-        const teamMembers = this.getCurrentTeam();
+        const entities = Array.from(this.heroesQuery.execute());
+        const teamMembers = entities.filter(entity => entity.getOne("Side").value === this.state.currentSide);
         for (let member of teamMembers) {
             const skillMap = this.state.skillMap.get(member);
             if (skillMap.onTurnStart) {
                 for (let skill of skillMap.onTurnStart) {
-                    const dict = skill.slot === "weapon" ? WEAPONS : PASSIVES;
-                    dict[skill.name].onTurnStart.call(skill, this.state);
+                    SKILLS[skill.name].onTurnStart.call(skill, this.state);
                 }
             }
         }
-    }
-
-    getCurrentTeam() {
-        const entities = Array.from(this.heroesQuery.execute());
-        return entities.filter(entity => entity.getOne("Side").value === this.state.currentSide);
     }
 };
 

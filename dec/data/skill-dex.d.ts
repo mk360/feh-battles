@@ -19,7 +19,7 @@ declare const SKILLS: {
         onCombatRoundDefense?(this: import("../components/skill").default, enemy: import("ape-ecs").Entity, combatRound: Partial<import("../interfaces/combat-turn-outcome").default>): void;
         onTurnCheckRange?(this: import("../components/skill").default, state: import("../systems/state").default): void;
         onTurnAllyCheckRange?(this: import("../components/skill").default, state: import("../systems/state").default, ally: import("ape-ecs").Entity): void;
-        onTurnEnemyCheckRange?(this: import("../components/skill").default, state: import("../systems/state").default, ally: import("ape-ecs").Entity): void;
+        onTurnEnemyCheckRange?(this: import("../components/skill").default, state: import("../systems/state").default, enemy: import("ape-ecs").Entity): void;
     } | {
         description: string;
         might: number;

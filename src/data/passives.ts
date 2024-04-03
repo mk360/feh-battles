@@ -34,7 +34,7 @@ interface PassivesDict {
         onCombatRoundDefense?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): void;
         onTurnCheckRange?(this: Skill, state: GameState): void;
         onTurnAllyCheckRange?(this: Skill, state: GameState, ally: Entity): void;
-        onTurnEnemyCheckRange?(this: Skill, state: GameState, ally: Entity): void;
+        onTurnEnemyCheckRange?(this: Skill, state: GameState, enemy: Entity): void;
     }
 }
 
@@ -69,9 +69,11 @@ function wave(affectedStat: Stat, parity: (turnCount: number) => boolean, buff: 
                 type: "MapBuff",
                 [affectedStat]: buff
             });
+            this.entity.addTag("MapBuff");
             const allies = getAllies(state, this.entity);
             for (let ally of allies) {
                 if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                    ally.addTag("MapBuff");
                     ally.addComponent({
                         type: "MapBuff",
                         [affectedStat]: buff
@@ -577,14 +579,14 @@ const PASSIVES: PassivesDict = {
     "Obstruct 1": {
         description: "If unit's HP ≥ 90%, foes cannot move through spaces adjacent to unit. (Does not affect foes with Pass skills.)",
         slot: "B",
-        onTurnEnemyCheckRange(state) {
+        onTurnEnemyCheckRange(state, enemy) {
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp / maxHP >= 0.9) {
                 const { x, y } = this.entity.getOne("Position");
                 const surroundings = getSurroundings(state.map, y, x);
                 for (let tile of surroundings) {
                     const { x: tileX, y: tileY } = getTileCoordinates(tile);
-                    this.entity.addComponent({
+                    enemy.addComponent({
                         type: "Obstruct",
                         x: tileX,
                         y: tileY
@@ -596,14 +598,14 @@ const PASSIVES: PassivesDict = {
     "Obstruct 2": {
         description: "If unit's HP ≥ 70%, foes cannot move through spaces adjacent to unit. (Does not affect foes with Pass skills.)",
         slot: "B",
-        onTurnEnemyCheckRange(state) {
+        onTurnEnemyCheckRange(state, enemy) {
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp / maxHP >= 0.7) {
                 const { x, y } = this.entity.getOne("Position");
                 const surroundings = getSurroundings(state.map, y, x);
                 for (let tile of surroundings) {
                     const { x: tileX, y: tileY } = getTileCoordinates(tile);
-                    this.entity.addComponent({
+                    enemy.addComponent({
                         type: "Obstruct",
                         x: tileX,
                         y: tileY
@@ -615,14 +617,14 @@ const PASSIVES: PassivesDict = {
     "Obstruct 3": {
         description: "If unit's HP ≥ 50%, foes cannot move through spaces adjacent to unit. (Does not affect foes with Pass skills.)",
         slot: "B",
-        onTurnEnemyCheckRange(state) {
+        onTurnEnemyCheckRange(state, enemy) {
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp / maxHP >= 0.5) {
                 const { x, y } = this.entity.getOne("Position");
                 const surroundings = getSurroundings(state.map, y, x);
                 for (let tile of surroundings) {
                     const { x: tileX, y: tileY } = getTileCoordinates(tile);
-                    this.entity.addComponent({
+                    enemy.addComponent({
                         type: "Obstruct",
                         x: tileX,
                         y: tileY
@@ -1675,7 +1677,7 @@ const PASSIVES: PassivesDict = {
                     }
                 }
             }
-        }
+        },
     },
     "Guidance 2": {
         slot: "C",
@@ -1719,16 +1721,19 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         allowedMovementTypes: ["flier"],
         description: "Infantry and armored allies within 2 spaces can move to a space adjacent to unit. ",
-        onTurnStart(state) {
-            // const allies = getAllies(state, this.entity);
-            // for (let ally of allies) {
-            //     if (["armored", "infantry"].includes(ally.getOne("MovementType").value) && HeroSystem.getDistance(ally, this.entity) <= 2) {
-            //         ally.addComponent({
-            //             type: "Status",
-            //             value: "Guidance"
-            //         });
-            //     }
-            // }
+        // onTurnStart(state) {
+        //     // const allies = getAllies(state, this.entity);
+        //     // for (let ally of allies) {
+        //     //     if (["armored", "infantry"].includes(ally.getOne("MovementType").value) && HeroSystem.getDistance(ally, this.entity) <= 2) {
+        //     //         ally.addComponent({
+        //     //             type: "Status",
+        //     //             value: "Guidance"
+        //     //         });
+        //     //     }
+        //     // }
+        // },
+        onTurnStart() {
+            this.entity.addTag("Guidance");
         },
         onTurnAllyCheckRange(state, ally) {
             if (["armored", "infantry"].includes(ally.getOne("MovementType").value) && HeroSystem.getDistance(ally, this.entity) <= 2) {

@@ -17,6 +17,7 @@ import TileBitshifts from "./data/tile-bitshifts";
 import { Stat } from "./interfaces/types";
 import getAllies from "./utils/get-allies";
 import AfterCombatSystem from "./systems/after-combat";
+import STATUSES from "./statuses";
 
 /**
  * TODO:
@@ -92,6 +93,7 @@ class GameWorld extends World {
         for (let component of COMPONENTS) {
             this.registerComponent(component);
         }
+        this.registerTags(...STATUSES);
         this.registerSystem("every-turn", TurnStart, [this.state]);
         this.registerSystem("combats", SkillInteractionSystem, [this.state]);
         this.registerSystem("combat", CombatSystem, [this.state]);

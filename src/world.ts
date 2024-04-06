@@ -17,7 +17,9 @@ import TileBitshifts from "./data/tile-bitshifts";
 import { Stat } from "./interfaces/types";
 import getAllies from "./utils/get-allies";
 import AfterCombatSystem from "./systems/after-combat";
-import STATUSES from "./statuses";
+import { STATUSES } from "./statuses";
+import checkBattleEffectiveness from "./systems/effectiveness";
+import getEnemies from "./utils/get-enemies";
 
 /**
  * TODO:
@@ -133,14 +135,26 @@ class GameWorld extends World {
         entity.getComponents("AttackTile").forEach((t) => { if (t) entity.removeComponent(t) });
         entity.getComponents("WarpTile").forEach((t) => { if (t) entity.removeComponent(t) });
         entity.getComponents("TargetableTile").forEach((t) => { if (t) entity.removeComponent(t) });
+        entity.getComponents("Obstruct").forEach((t) => { if (t) entity.removeComponent(t) });
         this.runSystems("movement");
         const movementTiles = entity.getComponents("MovementTile");
         const attackTiles = entity.getComponents("AttackTile");
         const warpTiles = entity.getComponents("WarpTile");
         const targetableTiles = entity.getComponents("TargetableTile");
         entity.removeComponent(comp);
+        const enemies = getEnemies(this.state, entity);
+        const effectivenessMap: {
+            [k: string]: [boolean, boolean];
+        } = {};
+        for (let enemy of enemies) {
+            const heroIsEffective = checkBattleEffectiveness(entity, enemy);
+            const enemyIsEffective = checkBattleEffectiveness(enemy, entity);
+            if (heroIsEffective || enemyIsEffective) {
+                effectivenessMap[enemy.id] = [heroIsEffective, enemyIsEffective];
+            }
+        }
 
-        return { movementTiles, attackTiles, warpTiles, targetableTiles };
+        return { movementTiles, attackTiles, warpTiles, targetableTiles, effectiveness: effectivenessMap };
     }
 
     previewUnitMovement(id: string, candidateTile: { x: number, y: number }) {
@@ -280,6 +294,24 @@ class GameWorld extends World {
                 } else if (typeof skillData[castHook] === "function") {
                     entitySkillDict[castHook] = entitySkillDict[castHook] || new Set();
                     entitySkillDict[castHook].add(weaponComponent);
+                }
+            }
+
+            if (skillData.effectiveAgainst) {
+                for (let effectiveness of skillData.effectiveAgainst) {
+                    entity.addComponent({
+                        type: "Effectiveness",
+                        value: effectiveness
+                    });
+                }
+            }
+
+            if (skillData.protects) {
+                for (let effectiveness of skillData.protects) {
+                    entity.addComponent({
+                        type: "Immunity",
+                        value: effectiveness
+                    });
                 }
             }
         }

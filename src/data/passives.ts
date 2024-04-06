@@ -69,11 +69,11 @@ function wave(affectedStat: Stat, parity: (turnCount: number) => boolean, buff: 
                 type: "MapBuff",
                 [affectedStat]: buff
             });
-            this.entity.addTag("MapBuff");
+            this.entity.addTag("Bonus");
             const allies = getAllies(state, this.entity);
             for (let ally of allies) {
                 if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                    ally.addTag("MapBuff");
+                    ally.addTag("Bonus");
                     ally.addComponent({
                         type: "MapBuff",
                         [affectedStat]: buff

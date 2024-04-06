@@ -1,3 +1,5 @@
-const STATUSES = ["MapBuffStatus", "MapDebuffStatus", "Gravity", "Panic", "Guidance"] as const;
+export const POSITIVE_STATUSES = ["Bonus", "Guidance", "Increased Movement"] as const;
+export const NEGATIVE_STATUSES = ["Penalty", "Gravity", "Panic", "Guard"] as const;
 
-export default STATUSES;
+export const STATUSES = [...POSITIVE_STATUSES, ...NEGATIVE_STATUSES] as const;
+

@@ -10,47 +10,7 @@ import CombatTurnOutcome from "../interfaces/combat-turn-outcome";
 import SKILLS from "../data/skill-dex";
 import getAttackerAdvantage from "./get-attacker-advantage";
 import getAffinity from "./get-affinity";
-
-function getCombatStats(entity: Entity) {
-    const combatBuffs = entity.getComponents("CombatBuff");
-    const combatDebuffs = entity.getComponents("CombatDebuff");
-    const mapBuffs = entity.getComponents("MapBuff");
-    const mapDebuffs = entity.getComponents("MapDebuff");
-    const baseStats = entity.getOne("Stats");
-
-    const compoundStats: Stats = {
-        atk: baseStats.atk,
-        spd: baseStats.spd,
-        def: baseStats.def,
-        res: baseStats.res
-    };
-
-    combatBuffs.forEach((buff) => {
-        for (let stat in compoundStats) {
-            compoundStats[stat] += buff[stat];
-        }
-    });
-
-    combatDebuffs.forEach((debuff) => {
-        for (let stat in compoundStats) {
-            compoundStats[stat] += debuff[stat];
-        }
-    });
-
-    mapBuffs.forEach((buff) => {
-        for (let stat in compoundStats) {
-            compoundStats[stat] += buff[stat];
-        }
-    });
-
-    mapDebuffs.forEach((debuff) => {
-        for (let stat in mapDebuffs) {
-            compoundStats[stat] += debuff[stat];
-        }
-    });
-
-    return compoundStats;
-};
+import getCombatStats from "./get-combat-stats";
 
 class CombatSystem extends System {
     private state: GameState;

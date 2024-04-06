@@ -37,17 +37,24 @@ class MovementSystem extends System {
             return this.state.map[y][x];
         }) as Uint16Array[];
 
+        const movementTiles = this.getMovementTiles(unit, this.state.map[y][x], pathfinders);
+
         if (!unit.getOne("Pass")) {
             for (let obstructor of obstructors) {
                 if (this.state.skillMap.get(obstructor)?.onTurnEnemyCheckRange) {
                     for (let skill of skillMap.get(obstructor).onTurnEnemyCheckRange) {
-
+                        const skillData = PASSIVES[skill.name];
+                        skillData.onTurnEnemyCheckRange.call(skill, this.state, unit);
                     }
                 }
             }
         }
 
-        const movementTiles = this.getMovementTiles(unit, this.state.map[y][x], pathfinders);
+        const blockedTiles = unit.getComponents("Obstruct");
+        blockedTiles.forEach(({ x, y }) => {
+            const mapTile = this.state.map[y][x];
+            movementTiles.delete(mapTile);
+        });
 
         movementTiles.forEach((tile) => {
             const { x, y } = getTileCoordinates(tile);

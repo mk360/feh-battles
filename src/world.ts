@@ -197,8 +197,8 @@ class GameWorld extends World {
     }
 
     generateMap() {
-        const randomMapIndex = (1 + Math.floor(Math.random() * 90)).toString().padStart(4, "0");
-        const mapId = `Z0025`;
+        const randomMapIndex = (1 + Math.floor(Math.random() * 33)).toString().padStart(4, "0");
+        const mapId = `Z${randomMapIndex}`;
         this.state.mapId = mapId;
         this.state.topology = require(`../maps/${mapId}.json`);
         for (let y = 1; y <= this.state.topology.tileData.length; y++) {

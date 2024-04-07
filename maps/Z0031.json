@@ -1,0 +1,106 @@
+{
+  "tileData": [
+    [
+      "void",
+      "void",
+      "ground",
+      "void",
+      "void",
+      "forest"
+    ],
+    [
+      "ground",
+      "ground",
+      "ground",
+      "ground",
+      "ground",
+      "forest"
+    ],
+    [
+      "ground",
+      "ground",
+      "ground",
+      "ground",
+      "ground-trench",
+      "ground"
+    ],
+    [
+      "ground",
+      "ground",
+      "forest",
+      "ground",
+      "ground",
+      "ground"
+    ],
+    [
+      "ground",
+      "ground",
+      "forest",
+      "ground-defensive",
+      "ground",
+      "ground"
+    ],
+    [
+      "forest",
+      "ground",
+      "ground",
+      "ground",
+      "ground",
+      "ground"
+    ],
+    [
+      "forest",
+      "forest",
+      "ground",
+      "ground",
+      "ground",
+      "ground"
+    ],
+    [
+      "forest",
+      "forest",
+      "ground",
+      "ground",
+      "ground",
+      "ground"
+    ]
+  ],
+  "spawnLocations": {
+    "team1": [
+      {
+        "x": 1,
+        "y": 2
+      },
+      {
+        "x": 2,
+        "y": 2
+      },
+      {
+        "x": 1,
+        "y": 3
+      },
+      {
+        "x": 2,
+        "y": 3
+      }
+    ],
+    "team2": [
+      {
+        "x": 6,
+        "y": 8
+      },
+      {
+        "x": 5,
+        "y": 8
+      },
+      {
+        "x": 4,
+        "y": 8
+      },
+      {
+        "x": 3,
+        "y": 8
+      }
+    ]
+  }
+}

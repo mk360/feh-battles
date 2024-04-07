@@ -11,6 +11,7 @@ import SKILLS from "../data/skill-dex";
 import getAttackerAdvantage from "./get-attacker-advantage";
 import getAffinity from "./get-affinity";
 import getCombatStats from "./get-combat-stats";
+import calculateDamage from "./calculate-damage";
 
 class CombatSystem extends System {
     private state: GameState;
@@ -120,7 +121,16 @@ class CombatSystem extends System {
                     affinity = getAffinity(unit1, unit2);
                 }
 
-                const damage = Math.floor((Math.floor(atkStat * effectivenessMultiplier) + Math.trunc(Math.floor(atkStat * effectivenessMultiplier) * (advantage * (affinity + 20) / 20)) - defenseStat - flatReduction) * damagePercentage);
+                const damage = calculateDamage({
+                    advantage,
+                    affinity,
+                    atkStat,
+                    effectiveness: effectivenessMultiplier,
+                    defenseStat,
+                    defensiveTerrain: false,
+                    flatReduction,
+                    damagePercentage
+                })
 
                 turn.addComponent({
                     type: "DealDamage",

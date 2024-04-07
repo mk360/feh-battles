@@ -1,4 +1,4 @@
-import { Component, IComponentChange, IComponentObject, IWorldConfig, World } from "ape-ecs";
+import { Component, Entity, IComponentChange, IComponentObject, IWorldConfig, World } from "ape-ecs";
 import GameState from "./systems/state";
 import { Stat } from "./interfaces/types";
 interface HeroData {
@@ -45,7 +45,7 @@ declare class GameWorld extends World {
         y: number;
     }): Component;
     generateMap(): void;
-    private createHero;
+    createHero(member: HeroData, team: "team1" | "team2", teamIndex: number): Entity;
     initiate(lineup: InitialLineup): void;
     private createCharacterComponents;
 }

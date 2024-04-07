@@ -228,7 +228,7 @@ class GameWorld extends World {
         }
     };
 
-    private createHero(member: HeroData, team: "team1" | "team2", teamIndex: number) {
+    createHero(member: HeroData, team: "team1" | "team2", teamIndex: number) {
         const dexData = CHARACTERS[member.name];
         const entity = this.createEntity({
             components: [{

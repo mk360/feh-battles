@@ -15,6 +15,7 @@ export function honeStat(thisArg: Skill, state: GameState, stat: Stat, buff: num
                 type: "MapBuff",
                 [stat]: buff
             });
+            ally.addTag("Bonus");
         }
     }
 }
@@ -27,6 +28,7 @@ export function mapBuffByMovementType(thisArg: Skill, state: GameState, movement
                 type: "MapBuff",
                 ...buffs
             });
+            ally.addTag("Bonus");
         }
     }
 }
@@ -39,6 +41,7 @@ export function mapBuffByRange(thisArg: Skill, state: GameState, range: number, 
                 type: "MapBuff",
                 ...buffs
             });
+            ally.addTag("Bonus");
         }
     }
 }
@@ -75,6 +78,7 @@ export function defiant(thisArg: Skill, stat: Stat, buff: number) {
             type: "MapBuff",
             [stat]: buff
         });
+        thisArg.entity.addTag("Bonus");
     }
 }
 

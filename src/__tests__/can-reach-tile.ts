@@ -11,16 +11,12 @@ describe("canReachTile", () => {
             assist: "Swap",
             special: "Dragon Fang",
             A: "Death Blow 3",
-            B: null,
-            C: null,
+            B: "",
+            C: "",
             S: "Life and Death 1",
         },
-        initialPosition: {
-            x: 1,
-            y: 1
-        },
         rarity: 5
-    }, "team1");
+    }, "team1", 1);
 
     it("can cross a valid tile", () => {
         const plains = new Uint16Array(1);
@@ -39,5 +35,12 @@ describe("canReachTile", () => {
 
         expect(canReachTile(unit, plains)).toEqual(true);
         expect(canReachTile(unit, otherPlains)).toEqual(false);
+    });
+
+    it("can't cross a tile where movement type is incompatible", () => {
+        const voidTile = new Uint16Array(1);
+        voidTile[0] |= tileBitmasks.type.void;
+
+        expect(canReachTile(unit, voidTile)).toEqual(false);
     });
 });

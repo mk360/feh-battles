@@ -7,37 +7,29 @@ describe("get-targeted-defense-stat", () => {
         name: "Arvis: Emperor of Flame",
         rarity: 5,
         skills: {
-            assist: null,
-            S: null,
-            special: null,
-            B: null,
-            C: null,
-            A: null
+            assist: "",
+            S: "",
+            special: "",
+            B: "",
+            C: "",
+            A: ""
         },
-        weapon: null,
-        initialPosition: {
-            x: 5,
-            y: 6
-        }
-    }, "team1");
+        weapon: "",
+    }, "team1", 2);
 
     const physicalWeaponUser = TEST_GAME_WORLD.createHero({
         name: "Hector: General of Ostia",
         rarity: 5,
         skills: {
-            assist: null,
-            S: null,
-            special: null,
-            B: null,
-            C: null,
-            A: null
+            assist: "",
+            S: "",
+            special: "",
+            B: "",
+            C: "",
+            A: ""
         },
-        weapon: null,
-        initialPosition: {
-            x: 5,
-            y: 4
-        }
-    }, "team1");
+        weapon: "",
+    }, "team1", 1);
 
     it("should target Defense when using a physical weapon", () => {
         expect(getTargetedDefenseStat(physicalWeaponUser, magicUser, getCombatStats(magicUser))).toEqual("def");

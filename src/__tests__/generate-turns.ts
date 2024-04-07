@@ -1,3 +1,4 @@
+import { Component } from "ape-ecs";
 import generateTurns from "../systems/generate-turns";
 import getCombatStats from "../systems/get-combat-stats";
 import TEST_GAME_WORLD from "./constants/world";
@@ -7,55 +8,43 @@ describe("generate-turns", () => {
         name: "Ryoma: Peerless Samurai",
         weapon: "Sieglinde",
         rarity: 5,
-        initialPosition: {
-            x: 2,
-            y: 3,
-        },
         skills: {
-            A: null,
-            B: null,
-            C: null,
-            assist: null,
-            S: null,
-            special: null,
+            A: "",
+            B: "",
+            C: "",
+            assist: "",
+            S: "",
+            special: "",
         }
-    }, "team1");
+    }, "team1", 1);
 
     const hero2 = TEST_GAME_WORLD.createHero({
         name: "Ryoma: Peerless Samurai",
         weapon: "Sieglinde",
         rarity: 5,
-        initialPosition: {
-            x: 2,
-            y: 3,
-        },
         skills: {
-            A: null,
-            B: null,
-            C: null,
-            assist: null,
-            S: null,
-            special: null,
+            A: "",
+            B: "",
+            C: "",
+            assist: "",
+            S: "",
+            special: "",
         }
-    }, "team2");
+    }, "team2", 1);
 
     const hero3 = TEST_GAME_WORLD.createHero({
-        initialPosition: {
-            x: 5,
-            y: 7,
-        },
         rarity: 5,
         name: "Klein: Silver Nobleman",
         weapon: "Silver Bow",
         skills: {
-            assist: null,
-            special: null,
-            A: null,
-            B: null,
-            C: null,
-            S: null,
+            assist: "",
+            special: "",
+            A: "",
+            B: "",
+            C: "",
+            S: "",
         }
-    }, "team2");
+    }, "team2", 2);
 
     it("should generate a single turn for each in case of a mirror match", () => {
         const stats1 = getCombatStats(hero1);
@@ -76,7 +65,7 @@ describe("generate-turns", () => {
     it("should allow a defender to fight back if they have a Counterattack component", () => {
         const cmp = hero2.addComponent({
             type: "Counterattack"
-        });
+        }) as Component;
         const turns = generateTurns(hero3, hero2, getCombatStats(hero3), getCombatStats(hero2));
         expect(turns.length).toEqual(2);
         expect(turns[1]).toEqual(hero2);

@@ -1,3 +1,4 @@
+import { Component } from "ape-ecs";
 import CHARACTERS from "../data/characters";
 import getCombatStats from "../systems/get-combat-stats";
 import getLv40Stats from "../systems/unit-stats";
@@ -8,20 +9,16 @@ describe("get-combat-stats", () => {
     const entity = TEST_GAME_WORLD.createHero({
         name: "Ryoma: Peerless Samurai",
         rarity: 5,
-        weapon: null,
-        initialPosition: {
-            x: 2,
-            y: 2
-        },
+        weapon: "",
         skills: {
-            assist: null,
-            special: null,
-            A: null,
-            B: null,
-            C: null,
-            S: null
+            assist: "",
+            special: "",
+            A: "",
+            B: "",
+            C: "",
+            S: ""
         }
-    }, "team1");
+    }, "team1", 1);
 
     it("should match level 40 stats if no modifier is applied", () => {
         const { hp, ...rest } = getLv40Stats(dexData.stats, dexData.growthRates, 5);
@@ -35,19 +32,15 @@ describe("get-combat-stats", () => {
             name: "Ryoma: Peerless Samurai",
             rarity: 5,
             weapon: "Raijinto",
-            initialPosition: {
-                x: 2,
-                y: 2
-            },
             skills: {
-                assist: null,
-                special: null,
-                A: null,
-                B: null,
-                C: null,
-                S: null
+                assist: "",
+                special: "",
+                A: "",
+                B: "",
+                C: "",
+                S: ""
             }
-        }, "team1");
+        }, "team1", 1);
 
         const stats = getLv40Stats(dexData.stats, dexData.growthRates, 5);
 
@@ -63,12 +56,12 @@ describe("get-combat-stats", () => {
         const addedBuff = entity.addComponent({
             type: "CombatBuff",
             atk: 6
-        });
+        }) as Component;
 
         const otherBuff = entity.addComponent({
             type: "CombatBuff",
             def: 6
-        });
+        }) as Component;
 
         const stats = getLv40Stats(dexData.stats, dexData.growthRates, 5);
         const combatStats = getCombatStats(entity);
@@ -83,12 +76,12 @@ describe("get-combat-stats", () => {
         const firstBuff = entity.addComponent({
             type: "MapBuff",
             atk: 5
-        });
+        }) as Component;
 
         const secondBuff = entity.addComponent({
             type: "MapBuff",
             atk: 3
-        });
+        }) as Component;
 
         const stats = getLv40Stats(dexData.stats, dexData.growthRates, 5);
 
@@ -104,12 +97,12 @@ describe("get-combat-stats", () => {
         const firstDebuff = entity.addComponent({
             type: "MapDebuff",
             atk: -5
-        });
+        }) as Component;
 
         const secondDebuff = entity.addComponent({
             type: "MapDebuff",
             atk: -3
-        });
+        }) as Component;
 
         const stats = getLv40Stats(dexData.stats, dexData.growthRates, 5);
 

@@ -238,12 +238,6 @@ class GameWorld extends World {
             }]
         });
 
-        const components = this.createCharacterComponents(entity, team, member.rarity);
-
-        for (let component of components) {
-            entity.addComponent(component);
-        }
-
         if (member.bane && member.boon && member.bane !== member.boon) {
             entity.addComponent({
                 type: "Bane",
@@ -253,6 +247,12 @@ class GameWorld extends World {
                 type: "Boon",
                 value: member.boon
             });
+        }
+
+        const components = this.createCharacterComponents(entity, team, member.rarity);
+
+        for (let component of components) {
+            entity.addComponent(component);
         }
 
         const tilePlacement = this.state.topology.spawnLocations[team][teamIndex];

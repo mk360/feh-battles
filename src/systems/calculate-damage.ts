@@ -1,7 +1,7 @@
 interface DamageCalc {
     atkStat: number;
     effectiveness: number;
-    advantage: number;
+    advantage: 0.2 | 0 | -0.2;
     affinity: number;
     defenseStat: number;
     flatReduction: number;
@@ -9,13 +9,14 @@ interface DamageCalc {
     defensiveTerrain: boolean;
 }
 
-function calculateDamage({ atkStat, effectiveness, advantage, affinity, defenseStat, flatReduction, damagePercentage, defensiveTerrain }: DamageCalc) {
-    let atkWithAdvantage = Math.floor(atkStat * advantage);
-    let atkWithEffectiveness = Math.floor(atkWithAdvantage * effectiveness);
-    let baseDamage = atkWithEffectiveness - Math.floor(defenseStat * (defensiveTerrain ? 1.3 : 1));
-    let finalDamage = Math.max(0, baseDamage - flatReduction);
+// to reverse-engineer dmg: lookup "rawDmg" in https://arcticsilverfox.com/feh_sim/
 
-    return finalDamage;
+function calculateDamage({ atkStat, effectiveness, advantage, affinity, defenseStat, flatReduction, damagePercentage, defensiveTerrain }: DamageCalc) {
+    const rawDamage = Math.trunc(atkStat * effectiveness);
+    const damageWithAdvantage = Math.trunc(atkStat * effectiveness * (advantage + affinity));
+    const syntheticDefense = defenseStat + flatReduction;
+
+    return Math.max(0, rawDamage + damageWithAdvantage - syntheticDefense);
 }
 
 export default calculateDamage;

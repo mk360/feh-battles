@@ -4,7 +4,7 @@ import { WeaponColor } from "../interfaces/types";
 // todo: improve when building Cancel Affinity skills
 function getAffinity(unit1: Entity, unit2: Entity) {
     if (unit2.getOne("NeutralizeAffinity")) return 0;
-    if (unit1.getOne("GuaranteedAffinity")) return 20;
+    if (unit1.getOne("GuaranteedAffinity")) return 0.2;
 
     const { color: color1 } = unit1.getOne("WeaponType");
     const { color: color2 } = unit2.getOne("WeaponType");
@@ -17,8 +17,10 @@ function getAffinity(unit1: Entity, unit2: Entity) {
     if (unit2.getOne("ReverseAffinity") && colorRelationship === "advantage") {
         colorRelationship = "disadvantage";
     }
-    
-    return colorRelationship === "advantage" ? 20 : colorRelationship === "disadvantage" ? -20 : 0;
+
+    const maxAffinity = Math.max(unit1.getOne("ApplyAffinity")?.value ?? 0, unit2.getOne("ApplyAffinity")?.value ?? 0);
+
+    return colorRelationship === "advantage" ? maxAffinity / 100 : colorRelationship === "disadvantage" ? -maxAffinity / 100 : 0;
 };
 
 function getColorRelationship(color1: WeaponColor, color2: WeaponColor) {

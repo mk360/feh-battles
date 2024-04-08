@@ -5,7 +5,7 @@ describe("calculateDamage", () => {
         const damage = calculateDamage({
             atkStat: 51,
             effectiveness: 1,
-            advantage: 1,
+            advantage: 0,
             flatReduction: 0,
             damagePercentage: 1,
             affinity: 0,
@@ -20,7 +20,7 @@ describe("calculateDamage", () => {
         const damage = calculateDamage({
             atkStat: 83,
             effectiveness: 1,
-            advantage: 1.2,
+            advantage: 0.2,
             flatReduction: 0,
             damagePercentage: 1,
             affinity: 0,
@@ -35,7 +35,7 @@ describe("calculateDamage", () => {
         const damage = calculateDamage({
             atkStat: 40,
             effectiveness: 1,
-            advantage: 0.8,
+            advantage: -0.2,
             flatReduction: 0,
             damagePercentage: 1,
             affinity: 0,
@@ -52,7 +52,7 @@ describe("calculateDamage", () => {
             defenseStat: 5,
             effectiveness: 1.5,
             flatReduction: 0,
-            advantage: 1,
+            advantage: 0,
             defensiveTerrain: false,
             affinity: 0,
             damagePercentage: 1
@@ -66,7 +66,7 @@ describe("calculateDamage", () => {
             atkStat: 44,
             defenseStat: 9,
             effectiveness: 1.5,
-            advantage: 1.2,
+            advantage: 0.2,
             defensiveTerrain: false,
             damagePercentage: 1,
             affinity: 0,
@@ -74,5 +74,20 @@ describe("calculateDamage", () => {
         });
 
         expect(damage).toEqual(70);
+    });
+
+    it("should stack color advantage with affinity", () => {
+        const damage = calculateDamage({
+            atkStat: 38,
+            advantage: 0.2,
+            affinity: 0.2,
+            defenseStat: 25,
+            effectiveness: 1,
+            defensiveTerrain: false,
+            flatReduction: 0,
+            damagePercentage: 1
+        });
+
+        expect(damage).toEqual(28);
     });
 });

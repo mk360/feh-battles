@@ -1815,7 +1815,8 @@ const WEAPONS: WeaponDict = {
         might: 8,
         onCombatStart() {
             this.entity.addComponent({
-                type: "ApplyAffinity"
+                type: "ApplyAffinity",
+                value: 20
             });
         }
     },
@@ -1825,7 +1826,8 @@ const WEAPONS: WeaponDict = {
         might: 12,
         onCombatStart() {
             this.entity.addComponent({
-                type: "ApplyAffinity"
+                type: "ApplyAffinity",
+                value: 20
             });
         }
     },

@@ -116,7 +116,7 @@ class CombatSystem extends System {
                 });
 
                 const advantage = getAttackerAdvantage(unit1, unit2);
-                let affinity = 1;
+                let affinity = 0;
                 if (unit1.getOne("ApplyAffinity") || unit2.getOne("ApplyAffinity")) {
                     affinity = getAffinity(unit1, unit2);
                 }

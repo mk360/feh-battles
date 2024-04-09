@@ -29,7 +29,7 @@ describe("get-targeted-defense-stat", () => {
             A: ""
         },
         weapon: "",
-    }, "team1", 1);
+    }, "team2", 1);
 
     it("should target Defense when using a physical weapon", () => {
         expect(getTargetedDefenseStat(physicalWeaponUser, magicUser, getCombatStats(magicUser))).toEqual("def");

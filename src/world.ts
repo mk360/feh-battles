@@ -255,7 +255,7 @@ class GameWorld extends World {
             entity.addComponent(component);
         }
 
-        const tilePlacement = this.state.topology.spawnLocations[team][teamIndex];
+        const tilePlacement = this.state.topology.spawnLocations[team][teamIndex - 1];
         const { x, y } = tilePlacement;
 
         entity.addComponent({

@@ -25,7 +25,6 @@ import getEnemies from "./utils/get-enemies";
  * TODO:
  * implement basic combat preview
  * find a way to drop the js files
- * maybe batch all the components into a single file to lower fs syscall count? need to benchmark it to see if it's worth it
  */
 
 const COMPONENTS_DIRECTORY = fs.readdirSync(path.join(__dirname, "./components"));

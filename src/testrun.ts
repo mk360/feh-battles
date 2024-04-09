@@ -5,8 +5,6 @@ const world = new GameWorld({
     trackChanges: true
 });
 
-// world.generateMap(Map1);
-
 world.initiate({
     team1: [{
         name: "Subaki: Perfect Expert",

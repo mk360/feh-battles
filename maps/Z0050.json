@@ -1,0 +1,72 @@
+{
+  "tileData": [
+    [
+      "ground",
+      "ground",
+      "ground",
+      "ground",
+      "ground",
+      "ground"
+    ],
+    [
+      "ground",
+      "ground",
+      "ground",
+      "ground",
+      "ground",
+      "ground"
+    ],
+    [
+      "ground",
+      "ground",
+      "ground",
+      "ground",
+      "ground",
+      "ground"
+    ],
+    [
+      "ground",
+      "ground-trench",
+      "ground",
+      "ground",
+      "ground-trench",
+      "ground"
+    ],
+    [
+      "ground",
+      "ground",
+      "ground-defensive",
+      "ground",
+      "ground",
+      "ground"
+    ],
+    [
+      "ground",
+      "ground",
+      "ground-trench",
+      "ground",
+      "ground",
+      "ground"
+    ],
+    [
+      "forest",
+      "ground",
+      "ground",
+      "ground",
+      "ground",
+      "forest"
+    ],
+    [
+      "forest",
+      "ground",
+      "ground",
+      "ground",
+      "ground",
+      "forest"
+    ]
+  ],
+  "spawnLocations": {
+    "team1": [],
+    "team2": []
+  }
+}

@@ -28,7 +28,6 @@ class MovementSystem extends System {
         const { x, y } = unit.getOne("Position");
         const allies = getAllies(this.state, unit);
         const obstructors = getEnemies(this.state, unit);
-        const obstructedTiles = new Set<Uint16Array>();
 
         const { skillMap } = this.state;
 
@@ -87,9 +86,23 @@ class MovementSystem extends System {
             }
         });
 
-        const attackTilesFromMovement = this.computeAttackRange(new Set([...movementTiles, ...warpTileData]), unit.getOne("Weapon").range);
+        const allMovementTiles = new Set([...movementTiles, ...warpTileData]);
 
-        attackTilesFromMovement.forEach((t) => {
+        const attackTiles = new Set<Uint16Array>();
+
+        allMovementTiles.forEach((tile) => {
+            const { x, y } = getTileCoordinates(tile);
+            const existingUnit = this.state.occupiedTilesMap.get(this.state.map[y][x]);
+            if (existingUnit && existingUnit.id !== unit.id) {
+                return;
+            }
+            const collectedAttackTiles = this.computeAttackRange({ x, y }, allMovementTiles, unit.getOne("Weapon").range);
+            collectedAttackTiles.forEach((tile) => {
+                attackTiles.add(tile);
+            });
+        });
+
+        attackTiles.forEach((t) => {
             const { x, y } = getTileCoordinates(t);
             const occupation = this.state.map[y][x][0] & tileBitmasks.occupation;
             if (occupation && occupation !== unit.getOne("Side").bitfield) { // there's an enemy
@@ -97,7 +110,7 @@ class MovementSystem extends System {
                     type: "TargetableTile",
                     x,
                     y
-                })
+                });
             } else {
                 unit.addComponent({
                     type: "AttackTile",
@@ -161,28 +174,26 @@ class MovementSystem extends System {
         return tiles;
     }
 
-    computeAttackRange(movementTiles: Set<Uint16Array>, attackRange: number) {
-        let tiles = new Set<Uint16Array>();
-        movementTiles.forEach((t) => {
-            let { x, y } = getTileCoordinates(t);
-            const leftTile = this.state.map[y]?.[x - attackRange];
-            if (leftTile && !movementTiles.has(leftTile)) {
-                tiles.add(leftTile);
+    computeAttackRange({ x, y }: { x: number, y: number }, movementTiles: Set<Uint16Array>, attackRange: number) {
+        const tiles = new Set<Uint16Array>();
+        let temporaryTiles = new Set<Uint16Array>().add(this.state.map[y][x]);
+        const surroundings = getSurroundings(this.state.map, y, x, movementTiles).filter((t) => !movementTiles.has(t));
+        for (let a of surroundings) {
+            if (attackRange === 1) {
+                tiles.add(a);
+            } else {
+                temporaryTiles.add(a);
             }
-            const rightTile = this.state.map[y]?.[x + attackRange];
-            if (rightTile && !movementTiles.has(rightTile)) {
-                tiles.add(rightTile);
-            }
-            const upTile = this.state.map[y - attackRange]?.[x];
-            if (upTile && !movementTiles.has(upTile)) {
-                tiles.add(upTile);
-            }
-            const downTile = this.state.map[y + attackRange]?.[x];
-            if (downTile && !movementTiles.has(downTile)) {
-                tiles.add(downTile);
-            }
-        });
-
+        }
+        if (attackRange - 1) {
+            temporaryTiles.forEach((temp) => {
+                const { x: tX, y: tY } = getTileCoordinates(temp);
+                const surroundings = getSurroundings(this.state.map, tY, tX, movementTiles).filter((t) => !movementTiles.has(t));
+                for (let z of surroundings) {
+                    tiles.add(z);
+                }
+            });
+        }
         return tiles;
     }
 

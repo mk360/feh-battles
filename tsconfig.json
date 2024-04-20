@@ -8,7 +8,6 @@
     ],
     "resolveJsonModule": true,
     "target": "ES6",
-    "downlevelIteration": true,
     "esModuleInterop": true,
     "declaration": true,
     "declarationMap": true,

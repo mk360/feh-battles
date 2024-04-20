@@ -83,7 +83,8 @@ class GameWorld extends World {
         },
         currentSide: "team1",
         turn: 1,
-        skillMap: new Map()
+        skillMap: new Map(),
+        occupiedTilesMap: new Map()
     };
 
     constructor(config?: IWorldConfig) {
@@ -153,7 +154,14 @@ class GameWorld extends World {
             }
         }
 
-        return { movementTiles, attackTiles, warpTiles, targetableTiles, effectiveness: effectivenessMap };
+        const targetableEnemies: string[] = [];
+        targetableTiles.forEach(({ x, y }) => {
+            const tile = this.state.map[y][x];
+            const enemy = this.state.occupiedTilesMap.get(tile).id;
+            targetableEnemies.push(enemy);
+        });
+
+        return { movementTiles, attackTiles, warpTiles, targetableTiles, effectiveness: effectivenessMap, targetableEnemies };
     }
 
     previewUnitMovement(id: string, candidateTile: { x: number, y: number }) {
@@ -183,6 +191,8 @@ class GameWorld extends World {
         const { x, y } = positionComponent;
         const { bitfield } = unit.getOne("Side");
         const mapTile = this.state.map[y][x];
+        this.state.occupiedTilesMap.delete(mapTile);
+        this.state.occupiedTilesMap.set(newMapTile, unit);
         const blankBitmap = new Uint16Array(1);
         blankBitmap[0] = -1;
         const bitArray = blankBitmap[0].toString(2).split("");
@@ -269,6 +279,8 @@ class GameWorld extends World {
         }
 
         this.state.map[y][x][0] |= Teams[team];
+
+        this.state.occupiedTilesMap.set(this.state.map[y][x], entity);
 
         const entitySkillDict: { [k: string]: Set<Component> } = {};
 
@@ -370,12 +382,12 @@ class GameWorld extends World {
 
         for (let i = 0; i < team1.length; i++) {
             const member = team1[i];
-            this.createHero(member, "team1", i);
+            this.createHero(member, "team1", i + 1);
         }
 
         for (let i = 0; i < team2.length; i++) {
             const member = team2[i];
-            this.createHero(member, "team2", i);
+            this.createHero(member, "team2", i + 1);
         }
     }
 

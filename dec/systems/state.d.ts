@@ -40,6 +40,7 @@ interface GameState {
     skillMap: Map<Entity, Partial<{
         [hook in SkillHook]: Set<Skill>;
     }>>;
+    occupiedTilesMap: Map<Uint16Array, Entity>;
 }
 export default GameState;
 //# sourceMappingURL=state.d.ts.map

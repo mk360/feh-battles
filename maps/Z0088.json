@@ -2,57 +2,41 @@
   "tileData": [
     [
       "ground",
-      "ground",
-      "ground",
-      "ground",
-      "ground",
-      "ground"
-    ],
-    [
-      "ground",
-      "ground",
+      "ground-trench",
       "ground",
       "ground",
       "ground",
       "ground"
     ],
     [
-      "ground",
-      "forest-defensive",
-      "ground-defensive",
-      "ground-defensive",
-      "forest-defensive",
-      "ground"
-    ],
-    [
-      "ground",
-      "ground-defensive",
       "void",
+      "ground",
       "void",
-      "ground-defensive",
+      "ground",
+      "ground",
+      "ground"
+    ],
+    [
+      "ground-trench",
+      "ground",
+      "ground",
+      "ground",
+      "ground",
       "ground"
     ],
     [
       "ground",
-      "ground-defensive",
       "void",
+      "ground",
       "void",
-      "ground-defensive",
-      "ground"
-    ],
-    [
-      "ground",
-      "forest-defensive",
-      "ground-defensive",
-      "ground-defensive",
-      "forest-defensive",
-      "ground"
+      "ground-trench",
+      "ground-defensive"
     ],
     [
       "ground",
       "ground",
       "ground",
-      "ground",
+      "void",
       "ground",
       "ground"
     ],
@@ -60,45 +44,61 @@
       "ground",
       "ground",
       "ground",
+      "ground-defensive",
+      "ground",
+      "ground"
+    ],
+    [
+      "ground",
+      "ground",
+      "ground",
       "ground",
       "ground",
       "ground"
+    ],
+    [
+      "void",
+      "ground",
+      "ground",
+      "ground",
+      "ground",
+      "ground-defensive"
     ]
   ],
   "spawnLocations": {
     "team1": [
       {
-        "x": 2,
+        "x": 5,
         "y": 1
       },
       {
-        "x": 3,
-        "y": 1
-      },
-      {
-        "x": 4,
+        "x": 6,
         "y": 1
       },
       {
         "x": 5,
-        "y": 1
+        "y": 2
+      },
+      {
+        "x": 6,
+        "y": 2
       }
     ],
     "team2": [
       {
-        "x": 5,
-        "y": 8
+        "x": 1,
+        "y": 7
       },
       {
-        "x": 4,
+        "x": 2,
+        "y": 7
+      },
+      {
+        "x": 2,
         "y": 8
       },
       {
         "x": 3,
-        "y": 8
-      },
-      {
-        "x": 2,
         "y": 8
       }
     ]

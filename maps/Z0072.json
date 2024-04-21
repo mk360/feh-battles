@@ -1,104 +1,104 @@
 {
   "tileData": [
     [
-      "ground",
-      "ground",
-      "ground",
-      "ground",
-      "ground",
-      "ground"
-    ],
-    [
-      "ground",
-      "ground",
-      "ground",
-      "ground",
-      "ground",
-      "ground"
-    ],
-    [
-      "ground",
-      "forest-defensive",
-      "ground-defensive",
-      "ground-defensive",
-      "forest-defensive",
-      "ground"
-    ],
-    [
-      "ground",
-      "ground-defensive",
       "void",
+      "ground",
       "void",
-      "ground-defensive",
-      "ground"
+      "ground",
+      "ground",
+      "void"
     ],
     [
       "ground",
       "ground-defensive",
+      "ground",
+      "ground",
+      "ground",
+      "ground"
+    ],
+    [
       "void",
+      "ground",
+      "ground",
+      "ground",
+      "ground",
+      "ground"
+    ],
+    [
+      "ground",
+      "ground",
+      "ground-defensive-trench",
       "void",
-      "ground-defensive",
-      "ground"
+      "forest",
+      "ground-defensive"
     ],
     [
-      "ground",
-      "forest-defensive",
       "ground-defensive",
-      "ground-defensive",
-      "forest-defensive",
-      "ground"
-    ],
-    [
       "ground",
       "ground",
-      "ground",
-      "ground",
-      "ground",
-      "ground"
+      "void",
+      "ground-trench",
+      "forest"
     ],
     [
       "ground",
       "ground",
       "ground",
-      "ground",
+      "ground-defensive",
       "ground",
       "ground"
+    ],
+    [
+      "ground",
+      "ground",
+      "ground",
+      "ground",
+      "ground",
+      "forest"
+    ],
+    [
+      "void",
+      "ground",
+      "ground",
+      "ground",
+      "forest",
+      "forest"
     ]
   ],
   "spawnLocations": {
     "team1": [
       {
-        "x": 2,
-        "y": 1
-      },
-      {
-        "x": 3,
-        "y": 1
-      },
-      {
         "x": 4,
         "y": 1
       },
       {
-        "x": 5,
-        "y": 1
+        "x": 4,
+        "y": 2
+      },
+      {
+        "x": 3,
+        "y": 2
+      },
+      {
+        "x": 2,
+        "y": 2
       }
     ],
     "team2": [
       {
-        "x": 5,
+        "x": 2,
         "y": 8
       },
       {
-        "x": 4,
-        "y": 8
+        "x": 3,
+        "y": 7
       },
       {
         "x": 3,
         "y": 8
       },
       {
-        "x": 2,
+        "x": 4,
         "y": 8
       }
     ]

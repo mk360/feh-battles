@@ -1,60 +1,52 @@
 {
   "tileData": [
     [
-      "ground",
-      "ground",
-      "ground",
-      "ground",
-      "ground",
-      "ground"
-    ],
-    [
-      "ground",
-      "ground",
-      "ground",
-      "ground",
-      "ground",
-      "ground"
-    ],
-    [
-      "ground",
-      "forest-defensive",
-      "ground-defensive",
-      "ground-defensive",
-      "forest-defensive",
-      "ground"
-    ],
-    [
-      "ground",
-      "ground-defensive",
       "void",
+      "ground",
+      "ground",
+      "ground",
+      "ground",
+      "void"
+    ],
+    [
+      "ground",
+      "ground",
+      "ground",
+      "ground",
+      "ground",
+      "ground-defensive"
+    ],
+    [
+      "ground",
+      "ground-defensive-trench",
+      "ground",
+      "ground-trench",
+      "ground",
+      "ground"
+    ],
+    [
+      "ground",
+      "ground",
       "void",
-      "ground-defensive",
-      "ground"
-    ],
-    [
       "ground",
-      "ground-defensive",
       "void",
+      "ground"
+    ],
+    [
+      "ground",
+      "ground",
       "void",
-      "ground-defensive",
-      "ground"
-    ],
-    [
+      "ground-trench",
       "ground",
-      "forest-defensive",
-      "ground-defensive",
-      "ground-defensive",
-      "forest-defensive",
       "ground"
     ],
     [
       "ground",
       "ground",
+      "void",
       "ground",
       "ground",
-      "ground",
-      "ground"
+      "ground-defensive"
     ],
     [
       "ground",
@@ -62,7 +54,15 @@
       "ground",
       "ground",
       "ground",
-      "ground"
+      "void"
+    ],
+    [
+      "void",
+      "ground",
+      "ground",
+      "ground",
+      "ground",
+      "void"
     ]
   ],
   "spawnLocations": {

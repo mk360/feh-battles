@@ -12,47 +12,47 @@
       "ground",
       "ground",
       "ground",
-      "ground",
-      "ground",
-      "ground"
-    ],
-    [
-      "ground",
-      "forest-defensive",
-      "ground-defensive",
-      "ground-defensive",
-      "forest-defensive",
-      "ground"
-    ],
-    [
-      "ground",
-      "ground-defensive",
       "void",
+      "ground",
+      "ground"
+    ],
+    [
       "void",
+      "ground",
+      "ground",
+      "void",
+      "ground",
+      "ground"
+    ],
+    [
+      "forest",
+      "ground-trench",
+      "ground",
+      "ground",
+      "forest",
+      "ground"
+    ],
+    [
+      "ground-defensive",
+      "ground",
+      "ground-trench",
+      "ground",
       "ground-defensive",
       "ground"
     ],
     [
-      "ground",
-      "ground-defensive",
       "void",
-      "void",
-      "ground-defensive",
-      "ground"
-    ],
-    [
       "ground",
-      "forest-defensive",
-      "ground-defensive",
-      "ground-defensive",
-      "forest-defensive",
+      "ground",
+      "void",
+      "ground",
       "ground"
     ],
     [
       "ground",
       "ground",
       "ground",
-      "ground",
+      "void",
       "ground",
       "ground"
     ],
@@ -86,11 +86,7 @@
     ],
     "team2": [
       {
-        "x": 5,
-        "y": 8
-      },
-      {
-        "x": 4,
+        "x": 2,
         "y": 8
       },
       {
@@ -98,7 +94,11 @@
         "y": 8
       },
       {
-        "x": 2,
+        "x": 4,
+        "y": 8
+      },
+      {
+        "x": 5,
         "y": 8
       }
     ]

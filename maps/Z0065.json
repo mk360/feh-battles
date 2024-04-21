@@ -18,34 +18,34 @@
     ],
     [
       "ground",
-      "forest-defensive",
-      "ground-defensive",
-      "ground-defensive",
-      "forest-defensive",
+      "ground",
+      "ground",
+      "void",
+      "ground",
       "ground"
     ],
     [
       "ground",
-      "ground-defensive",
-      "void",
-      "void",
-      "ground-defensive",
+      "ground-defensive-trench",
+      "ground",
+      "ground",
+      "ground",
       "ground"
     ],
     [
       "ground",
-      "ground-defensive",
-      "void",
-      "void",
-      "ground-defensive",
+      "ground",
+      "ground",
+      "ground",
+      "ground-defensive-trench",
       "ground"
     ],
     [
       "ground",
-      "forest-defensive",
-      "ground-defensive",
-      "ground-defensive",
-      "forest-defensive",
+      "ground",
+      "void",
+      "ground",
+      "ground",
       "ground"
     ],
     [
@@ -68,38 +68,38 @@
   "spawnLocations": {
     "team1": [
       {
+        "x": 1,
+        "y": 1
+      },
+      {
+        "x": 2,
+        "y": 2
+      },
+      {
         "x": 2,
         "y": 1
       },
       {
         "x": 3,
-        "y": 1
-      },
-      {
-        "x": 4,
-        "y": 1
-      },
-      {
-        "x": 5,
         "y": 1
       }
     ],
     "team2": [
       {
-        "x": 5,
-        "y": 8
-      },
-      {
         "x": 4,
         "y": 8
       },
       {
-        "x": 3,
+        "x": 5,
         "y": 8
       },
       {
-        "x": 2,
+        "x": 6,
         "y": 8
+      },
+      {
+        "x": 5,
+        "y": 7
       }
     ]
   }

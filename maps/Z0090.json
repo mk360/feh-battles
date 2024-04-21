@@ -1,10 +1,26 @@
 {
   "tileData": [
     [
+      "forest",
+      "ground",
+      "ground",
+      "ground",
+      "forest",
+      "forest"
+    ],
+    [
       "ground",
       "ground",
       "ground",
       "ground",
+      "ground",
+      "forest"
+    ],
+    [
+      "ground",
+      "ground",
+      "ground-defensive",
+      "ground-defensive",
       "ground",
       "ground"
     ],
@@ -17,39 +33,23 @@
       "ground"
     ],
     [
+      "forest",
       "ground",
-      "forest-defensive",
-      "ground-defensive",
-      "ground-defensive",
-      "forest-defensive",
-      "ground"
+      "ground",
+      "ground",
+      "ground",
+      "ground-defensive"
     ],
     [
       "ground",
-      "ground-defensive",
-      "void",
-      "void",
-      "ground-defensive",
+      "ground-defensive-trench",
+      "ground",
+      "ground",
+      "ground",
       "ground"
     ],
     [
-      "ground",
-      "ground-defensive",
-      "void",
-      "void",
-      "ground-defensive",
-      "ground"
-    ],
-    [
-      "ground",
-      "forest-defensive",
-      "ground-defensive",
-      "ground-defensive",
-      "forest-defensive",
-      "ground"
-    ],
-    [
-      "ground",
+      "forest",
       "ground",
       "ground",
       "ground",
@@ -57,7 +57,7 @@
       "ground"
     ],
     [
-      "ground",
+      "forest",
       "ground",
       "ground",
       "ground",
@@ -68,7 +68,7 @@
   "spawnLocations": {
     "team1": [
       {
-        "x": 2,
+        "x": 4,
         "y": 1
       },
       {
@@ -77,28 +77,28 @@
       },
       {
         "x": 4,
-        "y": 1
+        "y": 2
       },
       {
         "x": 5,
-        "y": 1
+        "y": 2
       }
     ],
     "team2": [
       {
-        "x": 5,
-        "y": 8
+        "x": 2,
+        "y": 7
       },
       {
-        "x": 4,
+        "x": 2,
         "y": 8
       },
       {
         "x": 3,
-        "y": 8
+        "y": 7
       },
       {
-        "x": 2,
+        "x": 3,
         "y": 8
       }
     ]

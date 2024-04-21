@@ -8,6 +8,7 @@ import getSurroundings from "./get-surroundings";
 import PASSIVES from "../data/passives";
 import TileBitshifts from "../data/tile-bitshifts";
 import getTileCoordinates from "./get-tile-coordinates";
+import getDistance from "./get-distance";
 
 class MovementSystem extends System {
     private state: GameState;
@@ -86,17 +87,29 @@ class MovementSystem extends System {
             }
         });
 
-        const allMovementTiles = new Set([...movementTiles, ...warpTileData]);
-
         const attackTiles = new Set<Uint16Array>();
 
-        allMovementTiles.forEach((tile) => {
+        movementTiles.forEach((tile) => {
             const { x, y } = getTileCoordinates(tile);
-            const existingUnit = this.state.occupiedTilesMap.get(this.state.map[y][x]);
-            if (existingUnit && existingUnit.id !== unit.id) {
+            const mapTile = this.state.map[y][x];
+            const existingUnit = this.state.occupiedTilesMap.get(mapTile);
+            if (existingUnit && existingUnit.id !== unit.id || warpTileData.has(mapTile)) {
                 return;
             }
-            const collectedAttackTiles = this.computeAttackRange({ x, y }, allMovementTiles, unit.getOne("Weapon").range);
+            const collectedAttackTiles = this.computeAttackRange({ x, y }, movementTiles, unit.getOne("Weapon").range, false);
+            collectedAttackTiles.forEach((tile) => {
+                attackTiles.add(tile);
+            });
+        });
+
+        warpTileData.forEach((tile) => {
+            const { x, y } = getTileCoordinates(tile);
+            const mapTile = this.state.map[y][x];
+            const existingUnit = this.state.occupiedTilesMap.get(mapTile);
+            if (existingUnit && existingUnit.id !== unit.id || movementTiles.has(mapTile)) {
+                return;
+            }
+            const collectedAttackTiles = this.computeAttackRange({ x, y }, movementTiles, unit.getOne("Weapon").range, true);
             collectedAttackTiles.forEach((tile) => {
                 attackTiles.add(tile);
             });
@@ -174,10 +187,12 @@ class MovementSystem extends System {
         return tiles;
     }
 
-    computeAttackRange({ x, y }: { x: number, y: number }, movementTiles: Set<Uint16Array>, attackRange: number) {
+    computeAttackRange({ x, y }: { x: number, y: number }, movementTiles: Set<Uint16Array>, attackRange: number, isWarp: boolean) {
+        // il va falloir debug la fonction quand l'unité a une portée de 2
         const tiles = new Set<Uint16Array>();
         let temporaryTiles = new Set<Uint16Array>().add(this.state.map[y][x]);
-        const surroundings = getSurroundings(this.state.map, y, x, movementTiles).filter((t) => !movementTiles.has(t));
+        let surroundings = getSurroundings(this.state.map, y, x, movementTiles);
+        if (attackRange === 1) surroundings = surroundings.filter((tile) => !movementTiles.has(tile));
         for (let a of surroundings) {
             if (attackRange === 1) {
                 tiles.add(a);
@@ -194,6 +209,16 @@ class MovementSystem extends System {
                 }
             });
         }
+
+        if (isWarp) {
+            tiles.forEach((tile) => {
+                const distance = getDistance(getTileCoordinates(tile), { x, y });
+                if (distance !== attackRange) {
+                    tiles.delete(tile);
+                }
+            });
+        }
+
         return tiles;
     }
 

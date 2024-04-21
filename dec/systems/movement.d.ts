@@ -12,7 +12,7 @@ declare class MovementSystem extends System {
     computeAttackRange({ x, y }: {
         x: number;
         y: number;
-    }, movementTiles: Set<Uint16Array>, attackRange: number): Set<Uint16Array>;
+    }, movementTiles: Set<Uint16Array>, attackRange: number, isWarp: boolean): Set<Uint16Array>;
     getFinalMovementRange(unit: Entity): number;
 }
 export default MovementSystem;

@@ -21,7 +21,7 @@ class TurnStartSystem extends System {
         const teamMembers = entities.filter(entity => entity.getOne("Side").value === this.state.currentSide);
         for (let member of teamMembers) {
             const skillMap = this.state.skillMap.get(member);
-            if (skillMap.onTurnStart) {
+            if (skillMap?.onTurnStart) {
                 for (let skill of skillMap.onTurnStart) {
                     SKILLS[skill.name].onTurnStart.call(skill, this.state);
                 }

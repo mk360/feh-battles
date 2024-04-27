@@ -66,7 +66,7 @@ class MovementSystem extends System {
         });
 
         for (let ally of allies) {
-            if (skillMap.get(ally).onTurnAllyCheckRange) {
+            if (skillMap.get(ally)?.onTurnAllyCheckRange) {
                 for (let skill of this.state.skillMap.get(ally).onTurnAllyCheckRange) {
                     const skillData = PASSIVES[skill.name];
                     skillData.onTurnAllyCheckRange.call(skill, this.state, unit);

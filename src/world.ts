@@ -20,6 +20,8 @@ import AfterCombatSystem from "./systems/after-combat";
 import { STATUSES } from "./statuses";
 import checkBattleEffectiveness from "./systems/effectiveness";
 import getEnemies from "./utils/get-enemies";
+import ASSISTS from "./data/assists";
+import SPECIALS from "./data/specials";
 
 /**
  * TODO:
@@ -324,6 +326,36 @@ class GameWorld extends World {
                         value: effectiveness
                     });
                 }
+            }
+        }
+
+        if (member.skills.assist) {
+            const skillData = ASSISTS[member.skills.assist];
+            if (skillData) {
+                const assistComponent = {
+                    type: "Assist",
+                    description: skillData.description,
+                    name: member.skills.assist,
+                    range: skillData.range
+                };
+
+                entity.addComponent(assistComponent);
+            }
+        }
+
+        if (member.skills.special) {
+            const skillData = SPECIALS[member.skills.special];
+            if (skillData) {
+                const specialComponent = {
+                    type: "Special",
+                    description: skillData.description,
+                    slot: "special",
+                    name: member.skills.special,
+                    baseCooldown: skillData.cooldown,
+                    cooldown: skillData.cooldown
+                };
+
+                entity.addComponent(specialComponent);
             }
         }
 

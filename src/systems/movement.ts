@@ -146,7 +146,7 @@ class MovementSystem extends System {
             return 2;
         }
 
-        if ((tileBitfield >> TileBitshifts.trench) && movementType.value === "cavalry") {
+        if ((tileBitfield & (1 << TileBitshifts.trench)) && movementType.value === "cavalry") {
             return 3;
         }
 

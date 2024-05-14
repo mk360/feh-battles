@@ -3,6 +3,7 @@ declare class DealDamage extends Component {
     static properties: {
         damage: number;
         turnIndex: number;
+        special: boolean;
         target: typeof EntityRef;
     };
 }

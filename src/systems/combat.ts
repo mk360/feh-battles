@@ -12,6 +12,7 @@ import getAttackerAdvantage from "./get-attacker-advantage";
 import getAffinity from "./get-affinity";
 import getCombatStats from "./get-combat-stats";
 import calculateDamage from "./calculate-damage";
+import collectCombatMods from "./collect-combat-mods";
 
 class CombatSystem extends System {
     private state: GameState;
@@ -32,58 +33,61 @@ class CombatSystem extends System {
     // Round 3 ou 4 ou 5, bis repetita en alternant
 
     update() {
-        const [unit1, unit2] = this.battlingQuery.execute();
-        if (unit1 && unit2) {
-            if (!unit2.getOne(PreventEnemyAlliesInteraction)) {
-                this.runAllySkills(unit1);
+        const [attacker, target] = this.battlingQuery.execute();
+        if (attacker && target) {
+            if (!target.getOne(PreventEnemyAlliesInteraction)) {
+                this.runAllySkills(attacker);
             }
 
-            if (!unit1.getOne(PreventEnemyAlliesInteraction)) {
-                this.runAllySkills(unit2);
+            if (!attacker.getOne(PreventEnemyAlliesInteraction)) {
+                this.runAllySkills(target);
             }
 
-            const attackerSkills = this.state.skillMap.get(unit1);
-            const defenderSkills = this.state.skillMap.get(unit2);
+            const attackerSkills = this.state.skillMap.get(attacker);
+            const defenderSkills = this.state.skillMap.get(target);
             attackerSkills?.onCombatStart?.forEach((skill) => {
-                SKILLS[skill.name].onCombatStart.call(skill, this.state, unit2);
+                SKILLS[skill.name].onCombatStart.call(skill, this.state, target);
             });
 
             attackerSkills?.onCombatInitiate?.forEach((skill) => {
-                SKILLS[skill.name].onCombatInitiate.call(skill, this.state, unit2);
+                SKILLS[skill.name].onCombatInitiate.call(skill, this.state, target);
             });
 
             defenderSkills?.onCombatStart?.forEach((skill) => {
-                SKILLS[skill.name].onCombatStart.call(skill, this.state, unit1);
+                SKILLS[skill.name].onCombatStart.call(skill, this.state, attacker);
             });
 
             defenderSkills?.onCombatDefense?.forEach((skill) => {
-                SKILLS[skill.name].onCombatDefense.call(skill, this.state, unit1);
+                SKILLS[skill.name].onCombatDefense.call(skill, this.state, attacker);
             });
 
             const combatMap = new Map<Entity, {
                 stats: Stats,
                 effective: boolean,
                 turns: number,
+                hp: number,
                 consecutiveTurns: number,
             }>();
-            combatMap.set(unit1, {
-                effective: checkBattleEffectiveness(unit1, unit2),
-                stats: getCombatStats(unit1),
+            combatMap.set(attacker, {
+                effective: checkBattleEffectiveness(attacker, target),
+                stats: getCombatStats(attacker),
                 turns: 0,
+                hp: attacker.getOne("Stats").hp,
                 consecutiveTurns: 1,
             });
-            combatMap.set(unit2, {
-                effective: checkBattleEffectiveness(unit2, unit1),
-                stats: getCombatStats(unit2),
+            combatMap.set(target, {
+                effective: checkBattleEffectiveness(target, attacker),
+                stats: getCombatStats(target),
                 turns: 0,
+                hp: target.getOne("Stats").hp,
                 consecutiveTurns: 1
             });
-            const turns = generateTurns(unit1, unit2, combatMap.get(unit1).stats, combatMap.get(unit2).stats);
+            const turns = generateTurns(attacker, target, combatMap.get(attacker).stats, combatMap.get(target).stats);
 
             let lastAttacker: Entity;
             for (let i = 0; i < turns.length; i++) {
                 const turn = turns[i];
-                const defender = turn === unit1 ? unit2 : unit1;
+                const defender = turn === attacker ? target : attacker;
                 if (lastAttacker === turn) {
                     combatMap.get(turn).consecutiveTurns++;
                 } else {
@@ -98,9 +102,9 @@ class CombatSystem extends System {
                 const attackerSkills = this.state.skillMap.get(turn);
                 attackerSkills?.onCombatRoundAttack?.forEach((skill) => {
                     const dexData = SKILLS[skill.name];
-                    dexData.onCombatRoundDefense.call(skill, turn, turnData);
+                    dexData.onCombatRoundAttack.call(skill, turn, turnData);
                     if (skill.slot === "special") {
-                        turnData.defenderTriggeredSpecial = true;
+                        turnData.attackerTriggeredSpecial = true;
                     }
                 });
                 const defenderSkills = this.state.skillMap.get(defender);
@@ -127,10 +131,10 @@ class CombatSystem extends System {
                     }
                 });
 
-                const advantage = getAttackerAdvantage(unit1, unit2);
+                const advantage = getAttackerAdvantage(attacker, target);
                 let affinity = 0;
-                if (unit1.getOne("ApplyAffinity") || unit2.getOne("ApplyAffinity")) {
-                    affinity = getAffinity(unit1, unit2);
+                if (attacker.getOne("ApplyAffinity") || target.getOne("ApplyAffinity")) {
+                    affinity = getAffinity(attacker, target);
                 }
 
                 const damage = calculateDamage({
@@ -150,11 +154,14 @@ class CombatSystem extends System {
                     damage: damage,
                     turnIndex: i,
                 });
+
+                combatMap.get(defender).hp -= damage;
+                if (combatMap.get(defender).hp <= 0) {
+                    break;
+                }
                 lastAttacker = turn;
             }
         }
-
-        console.log(this.world.getEntities("DealDamage"));
     }
 
     runAllySkills(ally: Entity) {

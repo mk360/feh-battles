@@ -14,7 +14,7 @@ import Teams from "./data/teams";
 import MovementSystem from "./systems/movement";
 import tileBitmasks from "./data/tile-bitmasks";
 import TileBitshifts from "./data/tile-bitshifts";
-import { Stat } from "./interfaces/types";
+import { Stat, Stats } from "./interfaces/types";
 import getAllies from "./utils/get-allies";
 import AfterCombatSystem from "./systems/after-combat";
 import { STATUSES } from "./statuses";
@@ -22,6 +22,7 @@ import checkBattleEffectiveness from "./systems/effectiveness";
 import getEnemies from "./utils/get-enemies";
 import ASSISTS from "./data/assists";
 import SPECIALS from "./data/specials";
+import collectCombatMods from "./systems/collect-combat-mods";
 
 /**
  * TODO:
@@ -242,11 +243,11 @@ class GameWorld extends World {
 
     previewAttack(attackerId: string, targetId: string, temporaryCoordinates: { x: number, y: number }) {
         const attacker = this.getEntity(attackerId);
-        const target = this.getEntity(targetId);
-        attacker.addComponent({
+        const defender = this.getEntity(targetId);
+        const b1 = attacker.addComponent({
             type: "Battling"
         });
-        target.addComponent({
+        const b2 = defender.addComponent({
             type: "Battling"
         });
         attacker.addComponent({
@@ -255,6 +256,71 @@ class GameWorld extends World {
         });
         this.runSystems("before-combat");
         this.runSystems("combat");
+
+        attacker.removeComponent(b1);
+        defender.removeComponent(b2);
+
+        return this.produceCombatPreview(attacker, defender);
+    }
+
+    produceCombatPreview(attacker: Entity, defender: Entity) {
+        const attackerCombatBuffs = collectCombatMods(attacker);
+        const defenderCombatBuffs = collectCombatMods(defender);
+
+        const attackerDamage = attacker.getComponents("DealDamage");
+        const defenderDamage = defender.getComponents("DealDamage");
+        this.systems.get("combat").forEach((sy) => {
+            // @ts-ignore
+            console.log({ changes: sy._stagedChanges });
+        });
+
+        let totalAttackerDamage = 0;
+        let attackerDamagePerTurn = 0;
+        attackerDamage.forEach((comp) => {
+            if (!comp.special) {
+                attackerDamagePerTurn = comp.damage;
+            }
+            totalAttackerDamage += comp.damage;
+        });
+
+        let totalDefenderDamage = 0;
+        let defenderDamagePerTurn = 0;
+        defenderDamage.forEach((comp) => {
+            if (!comp.special) {
+                defenderDamagePerTurn = comp.damage;
+            }
+            totalDefenderDamage += comp.damage;
+        });
+
+        const attackerNewHP = Math.max(0, attacker.getOne("Stats").hp - totalDefenderDamage);
+        const defenderNewHP = Math.max(0, defender.getOne("Stats").hp - totalAttackerDamage);
+
+        const attackerDamageData = {
+            previousHP: attacker.getOne("Stats").hp,
+            newHP: attackerNewHP,
+            dealtDamage: totalAttackerDamage,
+            turns: attackerDamage.size
+        };
+
+        const defenderDamageData = {
+            previousHP: defender.getOne("Stats").hp,
+            newHP: defenderNewHP,
+            dealtDamage: totalDefenderDamage,
+            turns: defenderDamage.size
+        };
+
+        return {
+            attacker: {
+                id: attacker.id,
+                combatBuffs: attackerCombatBuffs,
+                ...attackerDamageData
+            },
+            defender: {
+                id: defender.id,
+                combatBuffs: defenderCombatBuffs,
+                ...defenderDamageData
+            }
+        };
     }
 
     createHero(member: HeroData, team: "team1" | "team2", teamIndex: number) {
@@ -491,6 +557,20 @@ class GameWorld extends World {
                 ...MovementTypes[dexData.movementType]
             }
         ];
+    }
+
+    private undoComponentChange(change: IComponentChange) {
+        const targetEntity = this.getEntity(change.entity);
+        const targetComponent = this.getComponent(change.component);
+        switch (change.type) {
+            case "add": {
+                targetEntity.removeComponent(targetComponent);
+            }
+                break;
+            case "remove": {
+
+            }
+        }
     }
 };
 

@@ -1,5 +1,6 @@
 import { Entity } from "ape-ecs";
 import { Stats } from "../interfaces/types";
+import collectCombatMods from "./collect-combat-mods";
 
 function getCombatStats(entity: Entity) {
     const combatBuffs = entity.getComponents("CombatBuff");
@@ -51,17 +52,11 @@ function getCombatStats(entity: Entity) {
         compoundStats[stat] += maxDebuffs[stat];
     }
 
-    combatBuffs.forEach((buff) => {
-        for (let stat in compoundStats) {
-            compoundStats[stat] += buff[stat];
-        }
-    });
+    const combatMods = collectCombatMods(entity);
 
-    combatDebuffs.forEach((debuff) => {
-        for (let stat in compoundStats) {
-            compoundStats[stat] += debuff[stat];
-        }
-    });
+    for (let stat in combatMods) {
+        compoundStats[stat] += combatMods[stat];
+    }
 
     return compoundStats;
 };

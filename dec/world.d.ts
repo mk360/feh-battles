@@ -49,10 +49,46 @@ declare class GameWorld extends World {
     previewAttack(attackerId: string, targetId: string, temporaryCoordinates: {
         x: number;
         y: number;
-    }): void;
+    }): {
+        attacker: {
+            previousHP: any;
+            newHP: number;
+            dealtDamage: number;
+            turns: number;
+            id: string;
+            combatBuffs: Partial<import("./interfaces/types").MandatoryStats>;
+        };
+        defender: {
+            previousHP: any;
+            newHP: number;
+            dealtDamage: number;
+            turns: number;
+            id: string;
+            combatBuffs: Partial<import("./interfaces/types").MandatoryStats>;
+        };
+    };
+    produceCombatPreview(attacker: Entity, defender: Entity): {
+        attacker: {
+            previousHP: any;
+            newHP: number;
+            dealtDamage: number;
+            turns: number;
+            id: string;
+            combatBuffs: Partial<import("./interfaces/types").MandatoryStats>;
+        };
+        defender: {
+            previousHP: any;
+            newHP: number;
+            dealtDamage: number;
+            turns: number;
+            id: string;
+            combatBuffs: Partial<import("./interfaces/types").MandatoryStats>;
+        };
+    };
     createHero(member: HeroData, team: "team1" | "team2", teamIndex: number): Entity;
     initiate(lineup: InitialLineup): void;
     private createCharacterComponents;
+    private undoComponentChange;
 }
 export default GameWorld;
 //# sourceMappingURL=world.d.ts.map

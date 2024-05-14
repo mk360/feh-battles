@@ -46,6 +46,10 @@ declare class GameWorld extends World {
         y: number;
     }): Component;
     generateMap(): void;
+    previewAttack(attackerId: string, targetId: string, temporaryCoordinates: {
+        x: number;
+        y: number;
+    }): void;
     createHero(member: HeroData, team: "team1" | "team2", teamIndex: number): Entity;
     initiate(lineup: InitialLineup): void;
     private createCharacterComponents;

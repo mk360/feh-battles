@@ -19,6 +19,10 @@ class CombatSystem extends System {
 
     init(state: GameState) {
         this.state = state;
+        this.subscribe("DealDamage");
+        this.subscribe("CombatBuff");
+        this.subscribe("CombatDebuff");
+
         this.battlingQuery = this.createQuery().fromAll("Battling");
     }
 
@@ -91,6 +95,14 @@ class CombatSystem extends System {
                     defender,
                     consecutiveTurnNumber: combatMap.get(turn).consecutiveTurns,
                 };
+                const attackerSkills = this.state.skillMap.get(turn);
+                attackerSkills?.onCombatRoundAttack?.forEach((skill) => {
+                    const dexData = SKILLS[skill.name];
+                    dexData.onCombatRoundDefense.call(skill, turn, turnData);
+                    if (skill.slot === "special") {
+                        turnData.defenderTriggeredSpecial = true;
+                    }
+                });
                 const defenderSkills = this.state.skillMap.get(defender);
                 defenderSkills?.onCombatRoundDefense?.forEach((skill) => {
                     const dexData = SKILLS[skill.name];
@@ -141,12 +153,14 @@ class CombatSystem extends System {
                 lastAttacker = turn;
             }
         }
+
+        console.log(this.world.getEntities("DealDamage"));
     }
 
     runAllySkills(ally: Entity) {
         const allies = getAllies(this.state, ally);
         for (let ally of allies) {
-            this.state.skillMap.get(ally).onCombatAllyStart?.forEach((skill) => {
+            this.state.skillMap.get(ally)?.onCombatAllyStart?.forEach((skill) => {
                 SKILLS[skill.name].onCombatAllyStart.call(skill, this.state, ally);
             });
         }

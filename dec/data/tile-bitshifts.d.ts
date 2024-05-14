@@ -1,6 +1,6 @@
 declare const TileBitshifts: {
-    readonly trench: 11;
-    readonly defensiveTile: 12;
+    readonly trench: 12;
+    readonly defensiveTile: 13;
     readonly x: 6;
     readonly y: 9;
     readonly occupation1: 5;

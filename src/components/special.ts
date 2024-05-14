@@ -5,6 +5,7 @@ class Special extends Component {
         name: "",
         description: "",
         baseCooldown: 0,
+        maxCooldown: 0,
         cooldown: 0
     };
 };

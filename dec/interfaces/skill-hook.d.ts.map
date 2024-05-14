@@ -1,1 +1,1 @@
-{"version":3,"file":"skill-hook.d.ts","sourceRoot":"","sources":["../../src/interfaces/skill-hook.ts"],"names":[],"mappings":"AAAA,KAAK,SAAS,GAAG,eAAe,GAAG,mBAAmB,GAAG,kBAAkB,GAAG,iBAAiB,GAAG,sBAAsB,GAAG,SAAS,GAAG,eAAe,GAAG,aAAa,GAAG,sBAAsB,GAAG,uBAAuB,CAAC;AAE1N,eAAe,SAAS,CAAC"}
+{"version":3,"file":"skill-hook.d.ts","sourceRoot":"","sources":["../../src/interfaces/skill-hook.ts"],"names":[],"mappings":"AAAA,KAAK,SAAS,GAAG,eAAe,GAAG,mBAAmB,GAAG,kBAAkB,GAAG,iBAAiB,GAAG,qBAAqB,GAAG,sBAAsB,GAAG,SAAS,GAAG,eAAe,GAAG,aAAa,GAAG,sBAAsB,GAAG,uBAAuB,CAAC;AAElP,eAAe,SAAS,CAAC"}

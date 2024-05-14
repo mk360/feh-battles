@@ -4,6 +4,7 @@ declare class Special extends Component {
         name: string;
         description: string;
         baseCooldown: number;
+        maxCooldown: number;
         cooldown: number;
     };
 }

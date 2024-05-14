@@ -20,6 +20,7 @@ interface WeaponDict {
         onCombatInitiate?(this: Skill, state: GameState, target: Entity): void;
         onCombatAllyStart?(this: Skill, state: GameState, ally: Entity): void;
         onCombatDefense?(this: Skill, state: GameState, attacker: Entity): void;
+        onCombatRoundAttack?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): void;
         onCombatRoundDefense?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): void;
         onEquip?(this: Skill): any;
         onTurnStart?(this: Skill, battleState: GameState): void;

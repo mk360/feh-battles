@@ -34,6 +34,7 @@ declare const SKILLS: {
         onCombatInitiate?(this: import("../components/skill").default, state: import("../systems/state").default, target: import("ape-ecs").Entity): void;
         onCombatAllyStart?(this: import("../components/skill").default, state: import("../systems/state").default, ally: import("ape-ecs").Entity): void;
         onCombatDefense?(this: import("../components/skill").default, state: import("../systems/state").default, attacker: import("ape-ecs").Entity): void;
+        onCombatRoundAttack?(this: import("../components/skill").default, enemy: import("ape-ecs").Entity, combatRound: Partial<import("../interfaces/combat-turn-outcome").default>): void;
         onCombatRoundDefense?(this: import("../components/skill").default, enemy: import("ape-ecs").Entity, combatRound: Partial<import("../interfaces/combat-turn-outcome").default>): void;
         onEquip?(this: import("../components/skill").default): any;
         onTurnStart?(this: import("../components/skill").default, battleState: import("../systems/state").default): void;

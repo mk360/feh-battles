@@ -99,7 +99,7 @@ class GameWorld extends World {
         }
         this.registerTags(...STATUSES);
         this.registerSystem("every-turn", TurnStart, [this.state]);
-        this.registerSystem("combats", SkillInteractionSystem, [this.state]);
+        this.registerSystem("before-combat", SkillInteractionSystem, [this.state]);
         this.registerSystem("combat", CombatSystem, [this.state]);
         this.registerSystem("movement", MovementSystem, [this.state]);
         this.registerSystem("after-combat", AfterCombatSystem, [this.state]);
@@ -210,6 +210,7 @@ class GameWorld extends World {
     generateMap() {
         const randomMapIndex = (1 + Math.floor(Math.random() * 90)).toString().padStart(4, "0");
         const mapId = `Z${randomMapIndex}`;
+        console.log({ randomMapIndex });
         this.state.mapId = mapId;
         this.state.topology = require(`../maps/${mapId}.json`);
         for (let y = 1; y <= this.state.topology.tileData.length; y++) {
@@ -238,6 +239,23 @@ class GameWorld extends World {
             }
         }
     };
+
+    previewAttack(attackerId: string, targetId: string, temporaryCoordinates: { x: number, y: number }) {
+        const attacker = this.getEntity(attackerId);
+        const target = this.getEntity(targetId);
+        attacker.addComponent({
+            type: "Battling"
+        });
+        target.addComponent({
+            type: "Battling"
+        });
+        attacker.addComponent({
+            type: "TemporaryPosition",
+            ...temporaryCoordinates
+        });
+        this.runSystems("before-combat");
+        this.runSystems("combat");
+    }
 
     createHero(member: HeroData, team: "team1" | "team2", teamIndex: number) {
         const dexData = CHARACTERS[member.name];
@@ -352,8 +370,17 @@ class GameWorld extends World {
                     slot: "special",
                     name: member.skills.special,
                     baseCooldown: skillData.cooldown,
+                    maxCooldown: skillData.cooldown,
                     cooldown: skillData.cooldown
                 };
+
+                const modifiedCooldown = entity.getOne("ModifySpecialCooldown");
+
+                if (modifiedCooldown) {
+                    specialComponent.maxCooldown += modifiedCooldown.value;
+                    specialComponent.cooldown += modifiedCooldown.value;
+                    entity.removeComponent(modifiedCooldown);
+                }
 
                 entity.addComponent(specialComponent);
             }

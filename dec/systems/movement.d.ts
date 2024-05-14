@@ -7,7 +7,7 @@ declare class MovementSystem extends System {
     private obstructQuery;
     init(state: GameState): void;
     update(): void;
-    getTileCost(hero: Entity, tile: Uint16Array, pathfinder: Uint16Array[]): 0 | 2 | 3 | 1;
+    getTileCost(hero: Entity, tile: Uint16Array, pathfinder: Uint16Array[]): 0 | 2 | 1 | 3;
     getMovementTiles(hero: Entity, checkedTile: Uint16Array, pathfinderTiles: Uint16Array[], remainingRange?: number): Set<Uint16Array>;
     computeAttackRange({ x, y }: {
         x: number;

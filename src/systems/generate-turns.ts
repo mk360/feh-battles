@@ -10,7 +10,15 @@ function generateTurns(attacker: Entity, defender: Entity, attackerCombatStats: 
 
     turns.push(attacker);
 
+    if (attacker.getOne("BraveWeapon")) {
+        turns.push(attacker);
+    }
+
     if (defenderIsAllowed) {
+        turns.push(defender);
+    }
+
+    if (defender.getOne("BraveWeapon")) {
         turns.push(defender);
     }
 

@@ -44,6 +44,7 @@ class CombatSystem extends System {
             }
 
             const attackerSkills = this.state.skillMap.get(attacker);
+
             const defenderSkills = this.state.skillMap.get(target);
             attackerSkills?.onCombatStart?.forEach((skill) => {
                 SKILLS[skill.name].onCombatStart.call(skill, this.state, target);

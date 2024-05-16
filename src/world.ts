@@ -259,8 +259,23 @@ class GameWorld extends World {
 
         attacker.removeComponent(b1);
         defender.removeComponent(b2);
+        const producedPreview = this.produceCombatPreview(attacker, defender);
 
-        return this.produceCombatPreview(attacker, defender);
+        this.systems.get("before-combat").forEach((sys) => {
+            // @ts-ignore
+            for (let change of sys._stagedChanges) {
+                this.undoComponentChange(change);
+            }
+        });
+
+        this.systems.get("combat").forEach((sys) => {
+            // @ts-ignore
+            for (let change of sys._stagedChanges) {
+                this.undoComponentChange(change);
+            }
+        });
+
+        return producedPreview;
     }
 
     produceCombatPreview(attacker: Entity, defender: Entity) {
@@ -271,7 +286,9 @@ class GameWorld extends World {
         const defenderDamage = defender.getComponents("DealDamage");
         this.systems.get("combat").forEach((sy) => {
             // @ts-ignore
-            console.log({ changes: sy._stagedChanges });
+            for (let change of sy._stagedChanges) {
+                this.undoComponentChange(change);
+            }
         });
 
         let totalAttackerDamage = 0;
@@ -298,16 +315,24 @@ class GameWorld extends World {
         const attackerDamageData = {
             previousHP: attacker.getOne("Stats").hp,
             newHP: attackerNewHP,
-            dealtDamage: totalAttackerDamage,
+            damagePerTurn: attackerDamagePerTurn,
             turns: attackerDamage.size
         };
 
         const defenderDamageData = {
             previousHP: defender.getOne("Stats").hp,
             newHP: defenderNewHP,
-            dealtDamage: totalDefenderDamage,
+            damagePerTurn: defenderDamagePerTurn,
             turns: defenderDamage.size
         };
+
+        attackerDamage.forEach((comp) => {
+            attacker.removeComponent(comp);
+        });
+
+        defenderDamage.forEach((comp) => {
+            defender.removeComponent(comp);
+        });
 
         return {
             attacker: {
@@ -568,7 +593,12 @@ class GameWorld extends World {
             }
                 break;
             case "remove": {
-
+                const component = this.getComponent(change.component);
+                const { type, ...properties } = component;
+                targetEntity.addComponent({
+                    type,
+                    ...properties
+                });
             }
         }
     }

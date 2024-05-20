@@ -33,7 +33,7 @@ class CombatSystem extends System {
     // Round 3 ou 4 ou 5, bis repetita en alternant
 
     update() {
-        const [attacker, target] = this.battlingQuery.execute();
+        const [attacker, target] = this.battlingQuery.refresh().execute();
         if (attacker && target) {
             if (!target.getOne(PreventEnemyAlliesInteraction)) {
                 this.runAllySkills(attacker);

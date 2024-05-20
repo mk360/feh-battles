@@ -14,7 +14,7 @@ import Teams from "./data/teams";
 import MovementSystem from "./systems/movement";
 import tileBitmasks from "./data/tile-bitmasks";
 import TileBitshifts from "./data/tile-bitshifts";
-import { Stat, Stats } from "./interfaces/types";
+import { Stat } from "./interfaces/types";
 import getAllies from "./utils/get-allies";
 import AfterCombatSystem from "./systems/after-combat";
 import { STATUSES } from "./statuses";
@@ -282,18 +282,17 @@ class GameWorld extends World {
         const attackerCombatBuffs = collectCombatMods(attacker);
         const defenderCombatBuffs = collectCombatMods(defender);
 
+        attacker.removeComponent("Battling");
+        defender.removeComponent("Battling");
+
         const attackerDamage = attacker.getComponents("DealDamage");
         const defenderDamage = defender.getComponents("DealDamage");
-        this.systems.get("combat").forEach((sy) => {
-            // @ts-ignore
-            for (let change of sy._stagedChanges) {
-                this.undoComponentChange(change);
-            }
-        });
 
         let totalAttackerDamage = 0;
         let attackerDamagePerTurn = 0;
+        let attackerTurns = 0;
         attackerDamage.forEach((comp) => {
+            attackerTurns++;
             if (!comp.special) {
                 attackerDamagePerTurn = comp.damage;
             }
@@ -302,11 +301,20 @@ class GameWorld extends World {
 
         let totalDefenderDamage = 0;
         let defenderDamagePerTurn = 0;
+        let defenderTurns = 0;
         defenderDamage.forEach((comp) => {
+            defenderTurns++;
             if (!comp.special) {
                 defenderDamagePerTurn = comp.damage;
             }
             totalDefenderDamage += comp.damage;
+        });
+
+        this.systems.get("combat").forEach((sy) => {
+            // @ts-ignore
+            for (let change of sy._stagedChanges) {
+                this.undoComponentChange(change);
+            }
         });
 
         const attackerNewHP = Math.max(0, attacker.getOne("Stats").hp - totalDefenderDamage);
@@ -316,14 +324,14 @@ class GameWorld extends World {
             previousHP: attacker.getOne("Stats").hp,
             newHP: attackerNewHP,
             damagePerTurn: attackerDamagePerTurn,
-            turns: attackerDamage.size
+            turns: attackerTurns
         };
 
         const defenderDamageData = {
             previousHP: defender.getOne("Stats").hp,
             newHP: defenderNewHP,
             damagePerTurn: defenderDamagePerTurn,
-            turns: defenderDamage.size
+            turns: defenderTurns
         };
 
         attackerDamage.forEach((comp) => {
@@ -500,8 +508,6 @@ class GameWorld extends World {
                     }
                 }
 
-                this.state.skillMap.set(entity, entitySkillDict);
-
                 if (skillData.protects) {
                     for (let immunity of skillData.protects) {
                         entity.addComponent({
@@ -521,6 +527,8 @@ class GameWorld extends World {
                 }
             }
         }
+
+        this.state.skillMap.set(entity, entitySkillDict);
 
         this.state.teams[team].add(entity);
 
@@ -587,7 +595,7 @@ class GameWorld extends World {
     private undoComponentChange(change: IComponentChange) {
         const targetEntity = this.getEntity(change.entity);
         const targetComponent = this.getComponent(change.component);
-        switch (change.type) {
+        switch (change.op) {
             case "add": {
                 targetEntity.removeComponent(targetComponent);
             }

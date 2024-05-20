@@ -71,4 +71,16 @@ describe("generate-turns", () => {
         expect(turns[1]).toEqual(hero2);
         hero2.removeComponent(cmp);
     });
+
+    it("should generate two turns with a Brave weapon", () => {
+        const cmp = hero1.addComponent({
+            type: "BraveWeapon"
+        }) as Component;
+
+        const turns = generateTurns(hero1, hero2, getCombatStats(hero1), getCombatStats(hero2));
+        expect(turns[0]).toEqual(hero1);
+        expect(turns[1]).toEqual(hero1);
+        expect(turns[2]).toEqual(hero2);
+        hero1.removeComponent(cmp);
+    });
 });

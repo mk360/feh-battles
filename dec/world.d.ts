@@ -27,6 +27,11 @@ declare class GameWorld extends World {
         detailedComponent: IComponentObject;
     }>)[];
     private processOperation;
+    getUnitMapStats(id: string): {
+        buffs: Partial<import("./interfaces/types").MandatoryStats>;
+        debuffs: Partial<import("./interfaces/types").MandatoryStats>;
+        changes: Partial<import("./interfaces/types").MandatoryStats>;
+    };
     getUnitMovement(id: string): {
         movementTiles: Set<Component>;
         attackTiles: Set<Component>;
@@ -53,7 +58,7 @@ declare class GameWorld extends World {
         attacker: {
             previousHP: any;
             newHP: number;
-            dealtDamage: number;
+            damagePerTurn: number;
             turns: number;
             id: string;
             combatBuffs: Partial<import("./interfaces/types").MandatoryStats>;
@@ -61,7 +66,7 @@ declare class GameWorld extends World {
         defender: {
             previousHP: any;
             newHP: number;
-            dealtDamage: number;
+            damagePerTurn: number;
             turns: number;
             id: string;
             combatBuffs: Partial<import("./interfaces/types").MandatoryStats>;
@@ -71,7 +76,7 @@ declare class GameWorld extends World {
         attacker: {
             previousHP: any;
             newHP: number;
-            dealtDamage: number;
+            damagePerTurn: number;
             turns: number;
             id: string;
             combatBuffs: Partial<import("./interfaces/types").MandatoryStats>;
@@ -79,7 +84,7 @@ declare class GameWorld extends World {
         defender: {
             previousHP: any;
             newHP: number;
-            dealtDamage: number;
+            damagePerTurn: number;
             turns: number;
             id: string;
             combatBuffs: Partial<import("./interfaces/types").MandatoryStats>;

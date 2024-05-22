@@ -23,6 +23,7 @@ import getEnemies from "./utils/get-enemies";
 import ASSISTS from "./data/assists";
 import SPECIALS from "./data/specials";
 import collectCombatMods from "./systems/collect-combat-mods";
+import collectMapMods from "./systems/collect-map-mods";
 
 /**
  * TODO:
@@ -127,6 +128,13 @@ class GameWorld extends World {
         }
 
         return op;
+    }
+
+    getUnitMapStats(id: string) {
+        const entity = this.getEntity(id);
+        const mapMods = collectMapMods(entity);
+
+        return mapMods;
     }
 
     getUnitMovement(id: string) {

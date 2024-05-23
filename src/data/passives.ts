@@ -2076,9 +2076,7 @@ const PASSIVES: PassivesDict = {
                 if (enemyPosition.x === x || enemyPosition.y === y) {
                     const { hp: enemyHp } = enemy.getOne("Stats");
                     if (enemyHp <= hp - 5) {
-                        enemy.addComponent({
-                            type: "Panic"
-                        });
+                        enemy.addTag("Panic");
                     }
                 }
             }
@@ -2097,9 +2095,7 @@ const PASSIVES: PassivesDict = {
                 if (enemyPosition.x === x || enemyPosition.y === y) {
                     const { hp: enemyHp } = enemy.getOne("Stats");
                     if (enemyHp <= hp - 3) {
-                        enemy.addComponent({
-                            type: "Panic"
-                        });
+                        enemy.addTag("Panic");
                     }
                 }
             }
@@ -2118,9 +2114,7 @@ const PASSIVES: PassivesDict = {
                 if (enemyPosition.x === x || enemyPosition.y === y) {
                     const { hp: enemyHp } = enemy.getOne("Stats");
                     if (enemyHp < hp) {
-                        enemy.addComponent({
-                            type: "Panic"
-                        });
+                        enemy.addTag("Panic");
                     }
                 }
             }

@@ -49,7 +49,8 @@ function collectMapMods(unit: Entity) {
     return {
         buffs: mapBuffs,
         debuffs: mapDebuffs,
-        changes: finalMapChanges
+        changes: finalMapChanges,
+        hasPanic
     };
 };
 

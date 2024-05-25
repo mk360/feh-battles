@@ -299,6 +299,7 @@ class GameWorld extends World {
         let totalAttackerDamage = 0;
         let attackerDamagePerTurn = 0;
         let attackerTurns = 0;
+        const attackerEffectiveness = checkBattleEffectiveness(attacker, defender);
         attackerDamage.forEach((comp) => {
             attackerTurns++;
             if (!comp.special) {
@@ -310,6 +311,7 @@ class GameWorld extends World {
         let totalDefenderDamage = 0;
         let defenderDamagePerTurn = 0;
         let defenderTurns = 0;
+        const defenderEffectiveness = checkBattleEffectiveness(defender, attacker);
         defenderDamage.forEach((comp) => {
             defenderTurns++;
             if (!comp.special) {
@@ -332,14 +334,16 @@ class GameWorld extends World {
             previousHP: attacker.getOne("Stats").hp,
             newHP: attackerNewHP,
             damagePerTurn: attackerDamagePerTurn,
-            turns: attackerTurns
+            turns: attackerTurns,
+            effectiveness: attackerEffectiveness,
         };
 
         const defenderDamageData = {
             previousHP: defender.getOne("Stats").hp,
             newHP: defenderNewHP,
             damagePerTurn: defenderDamagePerTurn,
-            turns: defenderTurns
+            turns: defenderTurns,
+            effectiveness: defenderEffectiveness,
         };
 
         attackerDamage.forEach((comp) => {

@@ -18,7 +18,7 @@
     ],
     [
       "ground-defensive",
-      "ground-trench",
+      "ground-defensive-trench",
       "ground",
       "ground",
       "ground",
@@ -28,14 +28,14 @@
       "ground",
       "ground",
       "ground-defensive-trench",
-      "ground",
+      "void",
       "ground",
       "ground"
     ],
     [
       "ground",
       "ground",
-      "ground",
+      "void",
       "ground-defensive-trench",
       "ground",
       "ground"
@@ -45,8 +45,8 @@
       "ground",
       "ground",
       "ground",
-      "ground-trench",
-      "ground"
+      "ground-defensive-trench",
+      "ground-defensive"
     ],
     [
       "forest-defensive",
@@ -54,7 +54,7 @@
       "ground",
       "ground",
       "ground",
-      "ground-trench"
+      "ground-defensive-trench"
     ],
     [
       "forest-defensive",
@@ -90,12 +90,12 @@
         "y": 8
       },
       {
-        "x": 3,
-        "y": 7
-      },
-      {
         "x": 4,
         "y": 8
+      },
+      {
+        "x": 3,
+        "y": 7
       },
       {
         "x": 4,

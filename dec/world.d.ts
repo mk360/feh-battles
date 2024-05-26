@@ -31,6 +31,12 @@ declare class GameWorld extends World {
         buffs: Partial<import("./interfaces/types").MandatoryStats>;
         debuffs: Partial<import("./interfaces/types").MandatoryStats>;
         changes: Partial<import("./interfaces/types").MandatoryStats>;
+        /**
+         * TODO:
+         * implement basic combat preview
+         * find a way to drop the js files
+         */
+        hasPanic: boolean;
     };
     getUnitMovement(id: string): {
         movementTiles: Set<Component>;
@@ -51,7 +57,10 @@ declare class GameWorld extends World {
         y: number;
     }): Component;
     generateMap(): void;
-    previewAttack(attackerId: string, targetId: string, temporaryCoordinates: {
+    previewAttack(attackerId: string, targetCoordinates: {
+        x: number;
+        y: number;
+    }, temporaryCoordinates: {
         x: number;
         y: number;
     }): {
@@ -60,6 +69,7 @@ declare class GameWorld extends World {
             newHP: number;
             damagePerTurn: number;
             turns: number;
+            effectiveness: boolean;
             id: string;
             combatBuffs: Partial<import("./interfaces/types").MandatoryStats>;
         };
@@ -68,6 +78,7 @@ declare class GameWorld extends World {
             newHP: number;
             damagePerTurn: number;
             turns: number;
+            effectiveness: boolean;
             id: string;
             combatBuffs: Partial<import("./interfaces/types").MandatoryStats>;
         };
@@ -78,6 +89,7 @@ declare class GameWorld extends World {
             newHP: number;
             damagePerTurn: number;
             turns: number;
+            effectiveness: boolean;
             id: string;
             combatBuffs: Partial<import("./interfaces/types").MandatoryStats>;
         };
@@ -86,6 +98,7 @@ declare class GameWorld extends World {
             newHP: number;
             damagePerTurn: number;
             turns: number;
+            effectiveness: boolean;
             id: string;
             combatBuffs: Partial<import("./interfaces/types").MandatoryStats>;
         };

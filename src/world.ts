@@ -115,6 +115,8 @@ class GameWorld extends World {
             changes = changes.concat(system._stagedChanges.map((op) => this.processOperation(op)));
         });
 
+        console.log({ changes });
+
         return changes;
     }
 
@@ -249,9 +251,10 @@ class GameWorld extends World {
         }
     };
 
-    previewAttack(attackerId: string, targetId: string, temporaryCoordinates: { x: number, y: number }) {
+    previewAttack(attackerId: string, targetCoordinates: { x: number, y: number }, temporaryCoordinates: { x: number, y: number }) {
+        const mapTile = this.state.map[targetCoordinates.y][targetCoordinates.x];
         const attacker = this.getEntity(attackerId);
-        const defender = this.getEntity(targetId);
+        const defender = this.state.occupiedTilesMap.get(mapTile);
         const b1 = attacker.addComponent({
             type: "Battling"
         });

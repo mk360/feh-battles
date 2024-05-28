@@ -132,10 +132,10 @@ class CombatSystem extends System {
                     }
                 });
 
-                const advantage = getAttackerAdvantage(attacker, target);
+                const advantage = getAttackerAdvantage(turn, defender);
                 let affinity = 0;
                 if (attacker.getOne("ApplyAffinity") || target.getOne("ApplyAffinity")) {
-                    affinity = getAffinity(attacker, target);
+                    affinity = getAffinity(turn, defender);
                 }
 
                 const damage = calculateDamage({

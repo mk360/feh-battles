@@ -19,7 +19,7 @@ const ASSISTS: AssistsDict = {
         description: "Unit moves to opposite side of target ally.",
         canApply(state, ally) {
             const firstPosition = this.entity.getOne("TemporaryPosition");
-            const secondPosition = ally.getOne("TemporaryPosition");
+            const secondPosition = ally.getOne("Position");
             const vector = new Direction(secondPosition.x - firstPosition.x, secondPosition.y - firstPosition.y);
             const newPosition = vector.reverse().add(secondPosition.x, secondPosition.y);
             const mapSlot = state.map[newPosition.y][newPosition.x] as Uint16Array;
@@ -28,7 +28,7 @@ const ASSISTS: AssistsDict = {
         },
         onApply(state, ally) {
             const firstPosition = this.entity.getOne("TemporaryPosition");
-            const secondPosition = ally.getOne("TemporaryPosition");
+            const secondPosition = ally.getOne("Position");
             const vector = new Direction(secondPosition.x - firstPosition.x, secondPosition.y - firstPosition.y);
             const newPosition = vector.reverse().add(secondPosition.x, secondPosition.y);
             this.entity.addComponent({
@@ -43,7 +43,7 @@ const ASSISTS: AssistsDict = {
         range: 1,
         canApply(state, ally) {
             const firstPosition = this.entity.getOne("TemporaryPosition");
-            const secondPosition = ally.getOne("TemporaryPosition");
+            const secondPosition = ally.getOne("Position");
             const vector = new Direction(secondPosition.x - firstPosition.x, secondPosition.y - firstPosition.y);
             const newAllyPosition = vector.reverse().add(secondPosition.x, secondPosition.y);
             const mapSlot = state.map[newAllyPosition.y][newAllyPosition.x] as Uint16Array;
@@ -52,10 +52,10 @@ const ASSISTS: AssistsDict = {
         },
         onApply(state, ally) {
             const firstPosition = this.entity.getOne("TemporaryPosition");
-            const secondPosition = ally.getOne("TemporaryPosition");
+            const secondPosition = ally.getOne("Position");
             const vector = new Direction(secondPosition.x - firstPosition.x, secondPosition.y - firstPosition.y);
             const newAllyPosition = vector.reverse().add(secondPosition.x, secondPosition.y);
-            
+
             ally.addComponent({
                 type: "Move",
                 x: newAllyPosition.x,
@@ -68,7 +68,7 @@ const ASSISTS: AssistsDict = {
         description: "Pushes target ally 1 space away.",
         canApply(state, ally) {
             const firstPosition = this.entity.getOne("TemporaryPosition");
-            const secondPosition = ally.getOne("TemporaryPosition");
+            const secondPosition = ally.getOne("Position");
             const vector = new Direction(secondPosition.x - firstPosition.x, secondPosition.y - secondPosition.y);
             const newAllyPosition = vector.add(vector.x, vector.y);
             const mapSlot = state.map[newAllyPosition.y][newAllyPosition.x] as Uint16Array;
@@ -77,7 +77,7 @@ const ASSISTS: AssistsDict = {
         },
         onApply(state, ally) {
             const firstPosition = this.entity.getOne("TemporaryPosition");
-            const secondPosition = ally.getOne("TemporaryPosition");
+            const secondPosition = ally.getOne("Position");
             const vector = new Direction(secondPosition.x - firstPosition.x, secondPosition.y - secondPosition.y);
             const newAllyPosition = vector.add(vector.x, vector.y);
             ally.addComponent({

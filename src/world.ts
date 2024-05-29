@@ -233,7 +233,6 @@ class GameWorld extends World {
                 const uint16 = new Uint16Array(1);
                 // initial 4 bits determine tile type
                 bitField |= tileBitmasks.type[tileType as keyof typeof tileBitmasks.type];
-
                 for (let addedCharacteristic of addedCharacteristics) {
                     if (addedCharacteristic === "trench") {
                         bitField |= 1 << TileBitshifts.trench;

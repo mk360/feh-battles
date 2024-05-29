@@ -12,7 +12,7 @@ import getAttackerAdvantage from "./get-attacker-advantage";
 import getAffinity from "./get-affinity";
 import getCombatStats from "./get-combat-stats";
 import calculateDamage from "./calculate-damage";
-import collectCombatMods from "./collect-combat-mods";
+import TileBitshifts from "../data/tile-bitshifts";
 
 class CombatSystem extends System {
     private state: GameState;
@@ -44,21 +44,21 @@ class CombatSystem extends System {
             }
 
             const attackerSkills = this.state.skillMap.get(attacker);
-
             const defenderSkills = this.state.skillMap.get(target);
-            attackerSkills?.onCombatStart?.forEach((skill) => {
+
+            attackerSkills.onCombatStart?.forEach((skill) => {
                 SKILLS[skill.name].onCombatStart.call(skill, this.state, target);
             });
 
-            attackerSkills?.onCombatInitiate?.forEach((skill) => {
+            attackerSkills.onCombatInitiate?.forEach((skill) => {
                 SKILLS[skill.name].onCombatInitiate.call(skill, this.state, target);
             });
 
-            defenderSkills?.onCombatStart?.forEach((skill) => {
+            defenderSkills.onCombatStart?.forEach((skill) => {
                 SKILLS[skill.name].onCombatStart.call(skill, this.state, attacker);
             });
 
-            defenderSkills?.onCombatDefense?.forEach((skill) => {
+            defenderSkills.onCombatDefense?.forEach((skill) => {
                 SKILLS[skill.name].onCombatDefense.call(skill, this.state, attacker);
             });
 
@@ -68,21 +68,31 @@ class CombatSystem extends System {
                 turns: number,
                 hp: number,
                 consecutiveTurns: number,
+                defensiveTile: boolean;
             }>();
+            const attackerPosition = attacker.getOne("TemporaryPosition");
+            const attackerTile = this.state.map[attackerPosition.y][attackerPosition.x];
+
             combatMap.set(attacker, {
                 effective: checkBattleEffectiveness(attacker, target),
                 stats: getCombatStats(attacker),
                 turns: 0,
                 hp: attacker.getOne("Stats").hp,
                 consecutiveTurns: 1,
+                defensiveTile: Boolean(attackerTile[0] >> TileBitshifts.defensiveTile)
             });
+
+            const defenderPosition = target.getOne("Position");
+            const defenderTile = this.state.map[defenderPosition.y][defenderPosition.x];
             combatMap.set(target, {
                 effective: checkBattleEffectiveness(target, attacker),
                 stats: getCombatStats(target),
                 turns: 0,
                 hp: target.getOne("Stats").hp,
-                consecutiveTurns: 1
+                consecutiveTurns: 1,
+                defensiveTile: Boolean(defenderTile[0] >> TileBitshifts.defensiveTile)
             });
+
             const turns = generateTurns(attacker, target, combatMap.get(attacker).stats, combatMap.get(target).stats);
 
             let lastAttacker: Entity;
@@ -101,7 +111,7 @@ class CombatSystem extends System {
                     consecutiveTurnNumber: combatMap.get(turn).consecutiveTurns,
                 };
                 const attackerSkills = this.state.skillMap.get(turn);
-                attackerSkills?.onCombatRoundAttack?.forEach((skill) => {
+                attackerSkills.onCombatRoundAttack?.forEach((skill) => {
                     const dexData = SKILLS[skill.name];
                     dexData.onCombatRoundAttack.call(skill, turn, turnData);
                     if (skill.slot === "special") {
@@ -109,7 +119,7 @@ class CombatSystem extends System {
                     }
                 });
                 const defenderSkills = this.state.skillMap.get(defender);
-                defenderSkills?.onCombatRoundDefense?.forEach((skill) => {
+                defenderSkills.onCombatRoundDefense?.forEach((skill) => {
                     const dexData = SKILLS[skill.name];
                     dexData.onCombatRoundDefense.call(skill, turn, turnData);
                     if (skill.slot === "special") {
@@ -144,10 +154,10 @@ class CombatSystem extends System {
                     atkStat,
                     effectiveness: effectivenessMultiplier,
                     defenseStat,
-                    defensiveTerrain: false,
+                    defensiveTerrain: combatMap.get(defender).defensiveTile,
                     flatReduction,
                     damagePercentage
-                })
+                });
 
                 turn.addComponent({
                     type: "DealDamage",

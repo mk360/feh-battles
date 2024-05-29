@@ -7,7 +7,7 @@ describe("calculateDamage", () => {
             effectiveness: 1,
             advantage: 0,
             flatReduction: 0,
-            damagePercentage: 1,
+            damagePercentage: 100,
             affinity: 0,
             defenseStat: 19,
             defensiveTerrain: false
@@ -22,7 +22,7 @@ describe("calculateDamage", () => {
             effectiveness: 1,
             advantage: 0.2,
             flatReduction: 0,
-            damagePercentage: 1,
+            damagePercentage: 100,
             affinity: 0,
             defenseStat: 17,
             defensiveTerrain: false
@@ -37,7 +37,7 @@ describe("calculateDamage", () => {
             effectiveness: 1,
             advantage: -0.2,
             flatReduction: 0,
-            damagePercentage: 1,
+            damagePercentage: 100,
             affinity: 0,
             defenseStat: 9,
             defensiveTerrain: false
@@ -55,7 +55,7 @@ describe("calculateDamage", () => {
             advantage: 0,
             defensiveTerrain: false,
             affinity: 0,
-            damagePercentage: 1
+            damagePercentage: 100
         });
 
         expect(damage).toEqual(64);
@@ -68,7 +68,7 @@ describe("calculateDamage", () => {
             effectiveness: 1.5,
             advantage: 0.2,
             defensiveTerrain: false,
-            damagePercentage: 1,
+            damagePercentage: 100,
             affinity: 0,
             flatReduction: 0,
         });
@@ -85,9 +85,24 @@ describe("calculateDamage", () => {
             effectiveness: 1,
             defensiveTerrain: false,
             flatReduction: 0,
-            damagePercentage: 1
+            damagePercentage: 100
         });
 
         expect(damage).toEqual(28);
+    });
+
+    it("should should take defensive tile reduction", () => {
+        const damage = calculateDamage({
+            atkStat: 38,
+            advantage: 0,
+            affinity: 0,
+            defenseStat: 25,
+            effectiveness: 1,
+            defensiveTerrain: true,
+            flatReduction: 0,
+            damagePercentage: 100
+        });
+
+        expect(damage).toBeLessThan(38 - 25);
     });
 });

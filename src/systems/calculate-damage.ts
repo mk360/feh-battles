@@ -14,7 +14,8 @@ interface DamageCalc {
 function calculateDamage({ atkStat, effectiveness, advantage, affinity, defenseStat, flatReduction, damagePercentage, defensiveTerrain }: DamageCalc) {
     const rawDamage = Math.trunc(atkStat * effectiveness);
     const damageWithAdvantage = Math.trunc(atkStat * effectiveness * (advantage + affinity));
-    const syntheticDefense = defenseStat + flatReduction;
+    const defensiveTerrainBonus = defensiveTerrain ? Math.trunc(defenseStat * 0.3) : 0;
+    const syntheticDefense = defenseStat + defensiveTerrainBonus + flatReduction;
 
     return Math.max(0, rawDamage + damageWithAdvantage - syntheticDefense);
 }

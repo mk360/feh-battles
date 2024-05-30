@@ -17,13 +17,14 @@ import TileBitshifts from "./data/tile-bitshifts";
 import { Stat } from "./interfaces/types";
 import getAllies from "./utils/get-allies";
 import AfterCombatSystem from "./systems/after-combat";
-import { STATUSES } from "./statuses";
+import { NEGATIVE_STATUSES, STATUSES } from "./statuses";
 import checkBattleEffectiveness from "./systems/effectiveness";
 import getEnemies from "./utils/get-enemies";
 import ASSISTS from "./data/assists";
 import SPECIALS from "./data/specials";
 import collectCombatMods from "./systems/collect-combat-mods";
 import collectMapMods from "./systems/collect-map-mods";
+import KillSystem from "./systems/kill";
 
 /**
  * TODO:
@@ -105,6 +106,7 @@ class GameWorld extends World {
         this.registerSystem("combat", CombatSystem, [this.state]);
         this.registerSystem("movement", MovementSystem, [this.state]);
         this.registerSystem("after-combat", AfterCombatSystem, [this.state]);
+        this.registerSystem("kill", KillSystem, [this.state]);
     }
 
     startTurn() {
@@ -139,16 +141,50 @@ class GameWorld extends World {
         return mapMods;
     }
 
+    runCombat(attackerId: string, targetCoordinates: { x: number, y: number }) {
+        const attacker = this.getEntity(attackerId);
+        const defender = this.getEntity(this.state.map[targetCoordinates.y][targetCoordinates.x]);
+        const b1 = attacker.addComponent({
+            type: "Battling"
+        });
+        const b2 = defender.addComponent({
+            type: "Battling"
+        });
+
+        let changes = [];
+
+        this.runSystems("before-combat");
+        this.runSystems("combat");
+        this.runSystems("after-combat");
+
+        this.systems.get("before-combat").forEach((system) => {
+            // @ts-ignore
+            changes = changes.concat(system._stagedChanges.map((op) => this.processOperation(op)));
+        });
+
+        this.systems.get("combat").forEach((system) => {
+            // @ts-ignore
+            changes = changes.concat(system._stagedChanges.map((op) => this.processOperation(op)));
+        });
+
+        this.systems.get("after-combat").forEach((system) => {
+            // @ts-ignore
+            changes = changes.concat(system._stagedChanges.map((op) => this.processOperation(op)));
+        });
+
+        return changes;
+    }
+
     getUnitMovement(id: string) {
         const entity = this.getEntity(id);
         const comp = entity.addComponent({
             type: "Movable"
         });
-        entity.getComponents("MovementTile").forEach((t) => { if (t) entity.removeComponent(t) });
-        entity.getComponents("AttackTile").forEach((t) => { if (t) entity.removeComponent(t) });
-        entity.getComponents("WarpTile").forEach((t) => { if (t) entity.removeComponent(t) });
-        entity.getComponents("TargetableTile").forEach((t) => { if (t) entity.removeComponent(t) });
-        entity.getComponents("Obstruct").forEach((t) => { if (t) entity.removeComponent(t) });
+        entity.getComponents("MovementTile").forEach((t) => { if (t) { entity.removeComponent(t); t.destroy(); } });
+        entity.getComponents("AttackTile").forEach((t) => { if (t) { entity.removeComponent(t); t.destroy(); } });
+        entity.getComponents("WarpTile").forEach((t) => { if (t) { entity.removeComponent(t); t.destroy(); } });
+        entity.getComponents("TargetableTile").forEach((t) => { if (t) { entity.removeComponent(t); t.destroy(); } });
+        entity.getComponents("Obstruct").forEach((t) => { if (t) { entity.removeComponent(t); t.destroy(); } });
         this.runSystems("movement");
         const movementTiles = entity.getComponents("MovementTile");
         const attackTiles = entity.getComponents("AttackTile");
@@ -215,7 +251,33 @@ class GameWorld extends World {
         mapTile[0] &= newBinaryMap;
         newMapTile[0] |= bitfield;
         positionComponent.update(newTile);
+
+        const mapDebuffs = Array.from(unit.getComponents("MapDebuff"));
+        mapDebuffs.forEach((comp) => {
+            unit.removeComponent(comp);
+        });
+
+        unit.tags.forEach((tag) => {
+            if (NEGATIVE_STATUSES.includes(tag as typeof NEGATIVE_STATUSES[number])) {
+                unit.removeTag(tag);
+            }
+        });
+
         return positionComponent;
+    };
+
+    endAction(id: string) {
+        const unit = this.getEntity(id);
+
+        unit.addComponent({
+            type: "FinishedAction"
+        });
+
+        const team = this.state.teams[unit.getOne("Side").value as "team1" | "team2"];
+        const remainingUnits = Array.from(team).filter((e) => !e.getOne("FinishedAction"));
+        if (remainingUnits.length === 0) {
+
+        }
     }
 
     generateMap() {

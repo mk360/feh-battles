@@ -1,1 +1,0 @@
-{"version":3,"file":"map-effects.d.ts","sourceRoot":"","sources":["../../src/systems/map-effects.ts"],"names":[],"mappings":"AAAA,OAAO,EAAS,MAAM,EAAE,MAAM,SAAS,CAAC;AACxC,OAAO,SAAS,MAAM,SAAS,CAAC;AAIhC,cAAM,eAAgB,SAAQ,MAAM;IAChC,OAAO,CAAC,KAAK,CAAY;IACzB,OAAO,CAAC,WAAW,CAAQ;IAE3B,IAAI,CAAC,KAAK,EAAE,SAAS;IAOrB,MAAM;IAaN,cAAc;CAIjB;AAED,eAAe,eAAe,CAAC"}

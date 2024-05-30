@@ -1,1 +1,0 @@
-{"version":3,"file":"directions.d.ts","sourceRoot":"","sources":["../../src/systems/directions.ts"],"names":[],"mappings":"AAAA,cAAM,SAAS;IACX,CAAC,EAAE,MAAM,CAAC;IACV,CAAC,EAAE,MAAM,CAAC;gBAEE,CAAC,EAAE,MAAM,EAAE,CAAC,EAAE,MAAM;IAKhC,OAAO;IAIP,GAAG,CAAC,CAAC,EAAE,MAAM,EAAE,CAAC,EAAE,MAAM;CAG3B;AAED,eAAe,SAAS,CAAC"}

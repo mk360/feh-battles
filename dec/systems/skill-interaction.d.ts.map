@@ -1,1 +1,0 @@
-{"version":3,"file":"skill-interaction.d.ts","sourceRoot":"","sources":["../../src/systems/skill-interaction.ts"],"names":[],"mappings":"AAAA,OAAO,EAAoC,MAAM,EAAE,MAAM,SAAS,CAAC;AAenE,OAAO,SAAS,MAAM,SAAS,CAAC;AAmBhC,cAAM,sBAAuB,SAAQ,MAAM;IACvC,OAAO,CAAC,KAAK,CAAY;IACzB,OAAO,CAAC,aAAa,CAAQ;IAE7B,IAAI,CAAC,KAAK,EAAE,SAAS,GAAG,IAAI;IAK5B,MAAM;CAwCT;AAED,eAAe,sBAAsB,CAAC"}

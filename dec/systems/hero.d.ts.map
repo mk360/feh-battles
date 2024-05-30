@@ -1,1 +1,0 @@
-{"version":3,"file":"hero.d.ts","sourceRoot":"","sources":["../../src/systems/hero.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAE,MAAM,EAAE,MAAM,SAAS,CAAC;AAEzC,cAAM,UAAW,SAAQ,MAAM;IAC3B,MAAM,CAAC,WAAW,CAAC,KAAK,EAAE,MAAM,EAAE,KAAK,EAAE,MAAM;CAMlD;AAED,eAAe,UAAU,CAAC"}

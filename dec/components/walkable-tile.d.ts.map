@@ -1,1 +1,0 @@
-{"version":3,"file":"walkable-tile.d.ts","sourceRoot":"","sources":["../../src/components/walkable-tile.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,SAAS,EAAE,MAAM,SAAS,CAAC;AAEpC,cAAM,YAAa,SAAQ,SAAS;IAChC,MAAM,CAAC,UAAU;;;MAGhB;IACD,MAAM,CAAC,eAAe,WAAc;CACvC;AAED,eAAe,YAAY,CAAC"}

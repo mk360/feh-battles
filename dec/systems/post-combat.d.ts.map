@@ -1,1 +1,0 @@
-{"version":3,"file":"post-combat.d.ts","sourceRoot":"","sources":["../../src/systems/post-combat.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAE,MAAM,SAAS,CAAC;AACjC,OAAO,SAAS,MAAM,SAAS,CAAC;AAEhC,cAAM,gBAAiB,SAAQ,MAAM;IACjC,OAAO,CAAC,KAAK,CAAY;IAEzB,IAAI,CAAC,KAAK,EAAE,SAAS,GAAG,IAAI;CAG/B;AAED,eAAe,gBAAgB,CAAC"}

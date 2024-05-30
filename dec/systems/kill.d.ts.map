@@ -1,0 +1,1 @@
+{"version":3,"file":"kill.d.ts","sourceRoot":"","sources":["../../src/systems/kill.ts"],"names":[],"mappings":"AAAA,OAAO,EAAS,MAAM,EAAE,MAAM,SAAS,CAAC;AACxC,OAAO,SAAS,MAAM,SAAS,CAAC;AAGhC,cAAM,UAAW,SAAQ,MAAM;IAC3B,OAAO,CAAC,KAAK,CAAY;IACzB,OAAO,CAAC,KAAK,CAAQ;IAErB,IAAI,CAAC,KAAK,EAAE,SAAS;IAKrB,MAAM;CAkBT;AAED,eAAe,UAAU,CAAC"}

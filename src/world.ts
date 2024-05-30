@@ -180,11 +180,11 @@ class GameWorld extends World {
         const comp = entity.addComponent({
             type: "Movable"
         });
-        entity.getComponents("MovementTile").forEach((t) => { if (t) { entity.removeComponent(t); t.destroy(); } });
-        entity.getComponents("AttackTile").forEach((t) => { if (t) { entity.removeComponent(t); t.destroy(); } });
-        entity.getComponents("WarpTile").forEach((t) => { if (t) { entity.removeComponent(t); t.destroy(); } });
-        entity.getComponents("TargetableTile").forEach((t) => { if (t) { entity.removeComponent(t); t.destroy(); } });
-        entity.getComponents("Obstruct").forEach((t) => { if (t) { entity.removeComponent(t); t.destroy(); } });
+        entity.getComponents("MovementTile").forEach((t) => { if (t) entity.removeComponent(t); });
+        entity.getComponents("AttackTile").forEach((t) => { if (t) entity.removeComponent(t); });
+        entity.getComponents("WarpTile").forEach((t) => { if (t) entity.removeComponent(t); });
+        entity.getComponents("TargetableTile").forEach((t) => { if (t) entity.removeComponent(t); });
+        entity.getComponents("Obstruct").forEach((t) => { if (t) entity.removeComponent(t); });
         this.runSystems("movement");
         const movementTiles = entity.getComponents("MovementTile");
         const attackTiles = entity.getComponents("AttackTile");

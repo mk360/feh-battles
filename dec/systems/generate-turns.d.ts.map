@@ -1,0 +1,1 @@
+{"version":3,"file":"generate-turns.d.ts","sourceRoot":"","sources":["../../src/systems/generate-turns.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAE,MAAM,SAAS,CAAC;AACjC,OAAO,EAAE,KAAK,EAAE,MAAM,qBAAqB,CAAC;AAE5C,iBAAS,aAAa,CAAC,QAAQ,EAAE,MAAM,EAAE,QAAQ,EAAE,MAAM,EAAE,mBAAmB,EAAE,KAAK,EAAE,mBAAmB,EAAE,KAAK,YA8BhH;AAcD,eAAe,aAAa,CAAC"}

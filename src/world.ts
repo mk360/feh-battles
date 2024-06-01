@@ -25,6 +25,7 @@ import SPECIALS from "./data/specials";
 import collectCombatMods from "./systems/collect-combat-mods";
 import collectMapMods from "./systems/collect-map-mods";
 import KillSystem from "./systems/kill";
+import clearTile from "./systems/clear-tile";
 
 /**
  * TODO:
@@ -185,11 +186,13 @@ class GameWorld extends World {
         entity.getComponents("WarpTile").forEach((t) => { if (t) entity.removeComponent(t); });
         entity.getComponents("TargetableTile").forEach((t) => { if (t) entity.removeComponent(t); });
         entity.getComponents("Obstruct").forEach((t) => { if (t) entity.removeComponent(t); });
+        entity.getComponents("AssistTile").forEach((t) => { if (t) entity.removeComponent(t); });
         this.runSystems("movement");
         const movementTiles = entity.getComponents("MovementTile");
         const attackTiles = entity.getComponents("AttackTile");
         const warpTiles = entity.getComponents("WarpTile");
         const targetableTiles = entity.getComponents("TargetableTile");
+        const assistTiles = entity.getComponents("AssistTile");
         entity.removeComponent(comp);
         const enemies = getEnemies(this.state, entity);
         const effectivenessMap: {
@@ -203,14 +206,7 @@ class GameWorld extends World {
             }
         }
 
-        const targetableEnemies: string[] = [];
-        targetableTiles.forEach(({ x, y }) => {
-            const tile = this.state.map[y][x];
-            const enemy = this.state.occupiedTilesMap.get(tile).id;
-            targetableEnemies.push(enemy);
-        });
-
-        return { movementTiles, attackTiles, warpTiles, targetableTiles, effectiveness: effectivenessMap, targetableEnemies };
+        return { movementTiles, attackTiles, warpTiles, targetableTiles, effectiveness: effectivenessMap };
     }
 
     previewUnitMovement(id: string, candidateTile: { x: number, y: number }) {
@@ -242,13 +238,7 @@ class GameWorld extends World {
         const mapTile = this.state.map[y][x];
         this.state.occupiedTilesMap.delete(mapTile);
         this.state.occupiedTilesMap.set(newMapTile, unit);
-        const blankBitmap = new Uint16Array(1);
-        blankBitmap[0] = -1;
-        const bitArray = blankBitmap[0].toString(2).split("");
-        bitArray[bitArray.length - TileBitshifts.occupation1 - 1] = "0";
-        bitArray[bitArray.length - TileBitshifts.occupation2 - 1] = "0";
-        const newBinaryMap = +`0b${bitArray.join("")}`;
-        mapTile[0] &= newBinaryMap;
+        clearTile(mapTile);
         newMapTile[0] |= bitfield;
         positionComponent.update(newTile);
 

@@ -1,13 +1,13 @@
 import { Entity } from "ape-ecs";
 import GameState from "../systems/state";
 import Direction from "../systems/directions";
-import Skill from "../components/skill";
+import Assists from "../components/assist";
 import canReachTile from "../systems/can-reach-tile";
 
 interface AssistsDict {
     [k: string]: {
-        canApply(this: Skill, state: GameState, ally: Entity): boolean;
-        onApply(this: Skill, state: GameState, ally: Entity): void;
+        canApply(this: Assists, state: GameState, ally: Entity): boolean;
+        onApply(this: Assists, state: GameState, ally: Entity): void;
         description: string;
         range: number;
     }

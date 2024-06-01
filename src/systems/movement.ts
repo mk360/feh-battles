@@ -9,6 +9,24 @@ import PASSIVES from "../data/passives";
 import TileBitshifts from "../data/tile-bitshifts";
 import getTileCoordinates from "./get-tile-coordinates";
 import getDistance from "./get-distance";
+import ASSISTS from "../data/assists";
+import HeroSystem from "./hero";
+
+function findCommonInSets(set1: Uint16Array[], set2: Uint16Array[]) {
+    const setElements: {
+        [k: number]: number
+    } = {};
+    const commonSet: Uint16Array[] = [];
+    set1.forEach((item) => {
+        setElements[item[0]] = item[0];
+    });
+
+    set2.forEach((item) => {
+        if (setElements[item[0]]) commonSet.push(item);
+    });
+
+    return commonSet;
+}
 
 class MovementSystem extends System {
     private state: GameState;
@@ -96,10 +114,11 @@ class MovementSystem extends System {
             if (existingUnit && existingUnit.id !== unit.id || warpTileData.has(mapTile)) {
                 return;
             }
-            const collectedAttackTiles = this.computeAttackRange({ x, y }, movementTiles, unit.getOne("Weapon").range, false);
+            const collectedAttackTiles = this.computeFixedRange({ x, y }, movementTiles, unit.getOne("Weapon").range, false);
             collectedAttackTiles.forEach((tile) => {
                 attackTiles.add(tile);
             });
+
         });
 
         warpTileData.forEach((tile) => {
@@ -109,7 +128,7 @@ class MovementSystem extends System {
             if (existingUnit && existingUnit.id !== unit.id || movementTiles.has(mapTile)) {
                 return;
             }
-            const collectedAttackTiles = this.computeAttackRange({ x, y }, movementTiles, unit.getOne("Weapon").range, true);
+            const collectedAttackTiles = this.computeFixedRange({ x, y }, movementTiles, unit.getOne("Weapon").range, true);
             collectedAttackTiles.forEach((tile) => {
                 attackTiles.add(tile);
             });
@@ -132,6 +151,29 @@ class MovementSystem extends System {
                 });
             }
         });
+
+        const assist = unit.getOne("Assist");
+
+
+        if (assist) {
+            const arrayedMovementTiles = Array.from(movementTiles);
+            const { range } = assist;
+            const allies = getAllies(this.state, unit);
+            const assistData = ASSISTS[assist.name];
+            const targetableAllies: Entity[] = [];
+
+            for (let ally of allies) {
+                const pos = ally.getOne("Position");
+                const { x, y } = pos;
+                const setWithPosition = new Set<Uint16Array>();
+                setWithPosition.add(this.state.map[y][x]);
+                const allowedTiles = Array.from(this.computeFixedRange({ x, y }, setWithPosition, range, false));
+                const common = findCommonInSets(allowedTiles, arrayedMovementTiles).filter((tile) => canReachTile(unit, tile));
+                if (common.length) {
+                    targetableAllies.push(ally);
+                }
+            }
+        }
     }
 
     getTileCost(hero: Entity, tile: Uint16Array, pathfinder: Uint16Array[]) {
@@ -187,19 +229,18 @@ class MovementSystem extends System {
         return tiles;
     }
 
-    computeAttackRange({ x, y }: { x: number, y: number }, movementTiles: Set<Uint16Array>, attackRange: number, isWarp: boolean) {
+    computeFixedRange({ x, y }: { x: number, y: number }, movementTiles: Set<Uint16Array>, attackRange: number, isWarp: boolean) {
         // il va falloir debug la fonction quand l'unité a une portée de 2
         const tiles = new Set<Uint16Array>();
         let temporaryTiles = new Set<Uint16Array>().add(this.state.map[y][x]);
         let surroundings = getSurroundings(this.state.map, y, x, movementTiles);
         if (attackRange === 1) surroundings = surroundings.filter((tile) => !movementTiles.has(tile));
-        for (let a of surroundings) {
-            if (attackRange === 1) {
-                tiles.add(a);
-            } else {
-                temporaryTiles.add(a);
-            }
+        const targetSet = attackRange === 1 ? tiles : temporaryTiles;
+
+        for (let surroundingTile of surroundings) {
+            targetSet.add(surroundingTile);
         }
+
         if (attackRange - 1) {
             temporaryTiles.forEach((temp) => {
                 const { x: tX, y: tY } = getTileCoordinates(temp);

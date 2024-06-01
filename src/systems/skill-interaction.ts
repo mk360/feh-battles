@@ -15,6 +15,10 @@ import PreventTargetLowestDefense from "../components/prevent-target-lowest-defe
 import TargetLowestDefense from "../components/target-lowest-defense";
 import GameState from "./state";
 import ApplyAffinity from "../components/apply-affinity";
+import SlowSpecial from "../components/slow-special";
+import NeutralizeSlowSpecial from "../components/neutralize-slow-special";
+import AccelerateSpecial from "../components/accelerate-special";
+import NeutralizeAccelerateSpecial from "../components/neutralize-accelerate-special";
 
 const NeutralizationMap = new Map<ComponentClass, ComponentClass>();
 
@@ -25,9 +29,11 @@ NeutralizationMap.set(GuaranteedFollowup, PreventFollowUp);
 NeutralizationMap.set(NormalizeStaffDamage, NeutralizeNormalizeStaffDamage);
 NeutralizationMap.set(GuaranteedAffinity, NeutralizeAffinity);
 NeutralizationMap.set(ApplyAffinity, NeutralizeAffinity);
+NeutralizationMap.set(SlowSpecial, NeutralizeSlowSpecial);
+NeutralizationMap.set(AccelerateSpecial, NeutralizeAccelerateSpecial);
 
 // 1-to-many neutralizations, e.g. one effect is enough to neutralize all target effects
-const MultipleNeutralizationsMap = new Map<new () => Component, new () => Component>();
+const MultipleNeutralizationsMap = new Map<ComponentClass, ComponentClass>();
 
 MultipleNeutralizationsMap.set(PreventDamageReduction, DamageReduction);
 MultipleNeutralizationsMap.set(NeutralizeMapBuffs, MapBuff);

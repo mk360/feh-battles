@@ -1,6 +1,7 @@
 import { Query, System } from "ape-ecs";
 import GameState from "./state";
 import Position from "../components/position";
+import clearTile from "./clear-tile";
 
 class KillSystem extends System {
     private state: GameState;
@@ -22,7 +23,7 @@ class KillSystem extends System {
             const position = deadUnit.getOne(Position);
             const mapTile = this.state.map[position.y][position.x];
             this.state.occupiedTilesMap.delete(mapTile);
-            // free map tile
+            clearTile(mapTile);
             this.state.teams[castTeam].delete(deadUnit);
             this.state.teamsByMovementTypes[castTeam][movementType]--;
             this.state.teamsByWeaponTypes[castTeam][weaponType]--;

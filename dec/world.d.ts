@@ -45,7 +45,7 @@ declare class GameWorld extends World {
         effectiveness: {
             [k: string]: [boolean, boolean];
         };
-        targetableEnemies: string[];
+        assistTiles: Set<Component>;
     };
     previewUnitMovement(id: string, candidateTile: {
         x: number;

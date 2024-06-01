@@ -3,10 +3,11 @@ import GameState from "../systems/state";
 import Direction from "../systems/directions";
 import Assists from "../components/assist";
 import canReachTile from "../systems/can-reach-tile";
+import tileBitmasks from "./tile-bitmasks";
 
 interface AssistsDict {
     [k: string]: {
-        canApply(this: Assists, state: GameState, ally: Entity): boolean;
+        canApply(this: Assists, state: GameState, ally: Entity, position: { x: number, y: number }): boolean;
         onApply(this: Assists, state: GameState, ally: Entity): void;
         description: string;
         range: number;
@@ -17,20 +18,23 @@ const ASSISTS: AssistsDict = {
     "Pivot": {
         range: 1,
         description: "Unit moves to opposite side of target ally.",
-        canApply(state, ally) {
-            const firstPosition = this.entity.getOne("TemporaryPosition");
+        canApply(state, ally, position: { x: number, y: number }) {
             const secondPosition = ally.getOne("Position");
-            const vector = new Direction(secondPosition.x - firstPosition.x, secondPosition.y - firstPosition.y);
-            const newPosition = vector.reverse().add(secondPosition.x, secondPosition.y);
-            const mapSlot = state.map[newPosition.y][newPosition.x] as Uint16Array;
-
-            return canReachTile(this.entity, mapSlot);
+            const vector = new Direction(position.x - secondPosition.x, position.y - secondPosition.y);
+            const newVector = vector.add(vector.x, vector.y).add(vector.x, vector.y);
+            const newPosition = new Direction(position.x - newVector.x, position.y - newVector.y);
+            const mapSlot = state.map[newPosition.y + 1]?.[newPosition.x] as Uint16Array;
+            if (mapSlot) {
+                return canReachTile(this.entity, mapSlot) && (mapSlot[0] & tileBitmasks.occupation) === 0;
+            }
+            return false;
         },
         onApply(state, ally) {
-            const firstPosition = this.entity.getOne("TemporaryPosition");
+            const firstPosition = this.entity.getOne("Position");
             const secondPosition = ally.getOne("Position");
-            const vector = new Direction(secondPosition.x - firstPosition.x, secondPosition.y - firstPosition.y);
-            const newPosition = vector.reverse().add(secondPosition.x, secondPosition.y);
+            const vector = new Direction(firstPosition.x - secondPosition.x, firstPosition.y - secondPosition.y);
+            const newVector = vector.add(vector.x, vector.y).add(vector.x, vector.y);
+            const newPosition = new Direction(firstPosition.x - newVector.x, firstPosition.y - newVector.y);
             this.entity.addComponent({
                 type: "Move",
                 x: newPosition.x,
@@ -45,10 +49,15 @@ const ASSISTS: AssistsDict = {
             const firstPosition = this.entity.getOne("TemporaryPosition");
             const secondPosition = ally.getOne("Position");
             const vector = new Direction(secondPosition.x - firstPosition.x, secondPosition.y - firstPosition.y);
-            const newAllyPosition = vector.reverse().add(secondPosition.x, secondPosition.y);
-            const mapSlot = state.map[newAllyPosition.y][newAllyPosition.x] as Uint16Array;
+            const reversed = vector.reverse();
+            const newAllyPosition = reversed.add(reversed.x, reversed.y);
+            const mapSlot = state.map[newAllyPosition.y]?.[newAllyPosition.x] as Uint16Array;
 
-            return canReachTile(ally, mapSlot);
+            if (mapSlot) {
+                return canReachTile(ally, mapSlot) && (mapSlot[0] & tileBitmasks.occupation) === 0;
+            }
+
+            return false;
         },
         onApply(state, ally) {
             const firstPosition = this.entity.getOne("TemporaryPosition");

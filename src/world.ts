@@ -206,7 +206,7 @@ class GameWorld extends World {
             }
         }
 
-        return { movementTiles, attackTiles, warpTiles, targetableTiles, effectiveness: effectivenessMap };
+        return { movementTiles, attackTiles, warpTiles, targetableTiles, effectiveness: effectivenessMap, assistTiles };
     }
 
     previewUnitMovement(id: string, candidateTile: { x: number, y: number }) {

@@ -1,10 +1,13 @@
 import { Entity } from "ape-ecs";
 import GameState from "../systems/state";
-import Skill from "../components/skill";
+import Assists from "../components/assist";
 interface AssistsDict {
     [k: string]: {
-        canApply(this: Skill, state: GameState, ally: Entity): boolean;
-        onApply(this: Skill, state: GameState, ally: Entity): void;
+        canApply(this: Assists, state: GameState, ally: Entity, position: {
+            x: number;
+            y: number;
+        }): boolean;
+        onApply(this: Assists, state: GameState, ally: Entity): void;
         description: string;
         range: number;
     };

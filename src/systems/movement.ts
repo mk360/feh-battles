@@ -160,7 +160,6 @@ class MovementSystem extends System {
             const { range } = assist;
             const allies = getAllies(this.state, unit);
             const assistData = ASSISTS[assist.name];
-            const targetableAllies: Entity[] = [];
 
             for (let ally of allies) {
                 const pos = ally.getOne("Position");
@@ -168,9 +167,21 @@ class MovementSystem extends System {
                 const setWithPosition = new Set<Uint16Array>();
                 setWithPosition.add(this.state.map[y][x]);
                 const allowedTiles = Array.from(this.computeFixedRange({ x, y }, setWithPosition, range, false));
-                const common = findCommonInSets(allowedTiles, arrayedMovementTiles).filter((tile) => canReachTile(unit, tile));
+                const common = findCommonInSets(allowedTiles, arrayedMovementTiles).filter((tile) => {
+                    const eligible = canReachTile(unit, tile);
+                    const occupied = this.state.occupiedTilesMap.get(tile)?.id !== unit.id;
+                    const coords = getTileCoordinates(tile);
+                    const canApply = assistData.canApply.call(assist, this.state, ally, coords);
+
+                    return eligible && !occupied && canApply;
+                });
+
                 if (common.length) {
-                    targetableAllies.push(ally);
+                    unit.addComponent({
+                        type: "AssistTile",
+                        x,
+                        y
+                    });
                 }
             }
         }

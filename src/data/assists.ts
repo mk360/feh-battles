@@ -20,25 +20,23 @@ const ASSISTS: AssistsDict = {
         description: "Unit moves to opposite side of target ally.",
         canApply(state, ally, position: { x: number, y: number }) {
             const secondPosition = ally.getOne("Position");
-            const vector = new Direction(position.x - secondPosition.x, position.y - secondPosition.y);
-            const newVector = vector.add(vector.x, vector.y).add(vector.x, vector.y);
-            const newPosition = new Direction(position.x - newVector.x, position.y - newVector.y);
-            const mapSlot = state.map[newPosition.y + 1]?.[newPosition.x] as Uint16Array;
-            if (mapSlot) {
-                return canReachTile(this.entity, mapSlot) && (mapSlot[0] & tileBitmasks.occupation) === 0;
+            const vector = new Direction(secondPosition.x - position.x, secondPosition.y - position.y);
+            const newVector = vector.add(position.x, position.y).add(vector.x, vector.y);
+            const targetedMapSlot = state.map[newVector.y]?.[newVector.x] as Uint16Array;
+            if (targetedMapSlot) {
+                return canReachTile(this.entity, targetedMapSlot) && (targetedMapSlot[0] & tileBitmasks.occupation) === 0;
             }
             return false;
         },
         onApply(state, ally) {
             const firstPosition = this.entity.getOne("Position");
             const secondPosition = ally.getOne("Position");
-            const vector = new Direction(firstPosition.x - secondPosition.x, firstPosition.y - secondPosition.y);
-            const newVector = vector.add(vector.x, vector.y).add(vector.x, vector.y);
-            const newPosition = new Direction(firstPosition.x - newVector.x, firstPosition.y - newVector.y);
+            const vector = new Direction(secondPosition.x - firstPosition.x, secondPosition.y - firstPosition.y);
+            const newVector = vector.add(firstPosition.x, firstPosition.y).add(vector.x, vector.y);
             this.entity.addComponent({
                 type: "Move",
-                x: newPosition.x,
-                y: newPosition.y
+                x: newVector.x,
+                y: newVector.y
             });
         },
     },

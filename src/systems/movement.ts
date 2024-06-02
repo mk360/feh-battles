@@ -156,7 +156,7 @@ class MovementSystem extends System {
 
 
         if (assist) {
-            const arrayedMovementTiles = Array.from(movementTiles);
+            const arrayedMovementTiles = Array.from(movementTiles).concat(Array.from(warpTileData));
             const { range } = assist;
             const allies = getAllies(this.state, unit);
             const assistData = ASSISTS[assist.name];
@@ -166,17 +166,18 @@ class MovementSystem extends System {
                 const { x, y } = pos;
                 const setWithPosition = new Set<Uint16Array>();
                 setWithPosition.add(this.state.map[y][x]);
-                const allowedTiles = Array.from(this.computeFixedRange({ x, y }, setWithPosition, range, false));
-                const common = findCommonInSets(allowedTiles, arrayedMovementTiles).filter((tile) => {
+                const tilesSurroundingAlly = Array.from(this.computeFixedRange({ x, y }, setWithPosition, range, false));
+                const tilesOccupiableByUnit = findCommonInSets(tilesSurroundingAlly, arrayedMovementTiles).filter((tile) => {
                     const eligible = canReachTile(unit, tile);
-                    const occupied = this.state.occupiedTilesMap.get(tile)?.id !== unit.id;
+                    const occupier = this.state.occupiedTilesMap.get(tile);
+                    const occupied = occupier ? occupier.id !== unit.id : false;
                     const coords = getTileCoordinates(tile);
                     const canApply = assistData.canApply.call(assist, this.state, ally, coords);
 
                     return eligible && !occupied && canApply;
                 });
 
-                if (common.length) {
+                if (tilesOccupiableByUnit.length) {
                     unit.addComponent({
                         type: "AssistTile",
                         x,

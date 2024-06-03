@@ -139,7 +139,21 @@ const ASSISTS: AssistsDict = {
                 y: firstPosition.y
             });
         }
-    }
+    },
+    "Mend": {
+        canApply(state, ally) {
+            const { hp, maxHP } = ally.getOne("Stats");
+            return hp < maxHP;
+        },
+        onApply(state, ally) {
+            ally.addComponent({
+                type: "Heal",
+                value: 10
+            })
+        },
+        range: 1,
+        description: "Restores 10 HP to target ally."
+    },
 } as const;
 
 export default ASSISTS;

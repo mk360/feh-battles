@@ -154,7 +154,6 @@ class MovementSystem extends System {
 
         const assist = unit.getOne("Assist");
 
-
         if (assist) {
             const arrayedMovementTiles = Array.from(movementTiles).concat(Array.from(warpTileData));
             const { range } = assist;

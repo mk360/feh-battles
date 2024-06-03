@@ -118,8 +118,6 @@ class GameWorld extends World {
             changes = changes.concat(system._stagedChanges.map((op) => this.processOperation(op)));
         });
 
-        console.log({ changes });
-
         return changes;
     }
 
@@ -374,13 +372,6 @@ class GameWorld extends World {
             totalDefenderDamage += comp.damage;
         });
 
-        this.systems.get("combat").forEach((sy) => {
-            // @ts-ignore
-            for (let change of sy._stagedChanges) {
-                this.undoComponentChange(change);
-            }
-        });
-
         const attackerNewHP = Math.max(0, attacker.getOne("Stats").hp - totalDefenderDamage);
         const defenderNewHP = Math.max(0, defender.getOne("Stats").hp - totalAttackerDamage);
 
@@ -399,14 +390,6 @@ class GameWorld extends World {
             turns: defenderTurns,
             effectiveness: defenderEffectiveness,
         };
-
-        attackerDamage.forEach((comp) => {
-            attacker.removeComponent(comp);
-        });
-
-        defenderDamage.forEach((comp) => {
-            defender.removeComponent(comp);
-        });
 
         return {
             attacker: {

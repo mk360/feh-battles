@@ -14,15 +14,17 @@ import getCombatStats from "./get-combat-stats";
 import calculateDamage from "./calculate-damage";
 import TileBitshifts from "../data/tile-bitshifts";
 
+const COMBAT_COMPONENTS = ["DealDamage", "CombatBuff", "BraveWeapon", "CombatDebuff"];
+
 class CombatSystem extends System {
     private state: GameState;
     private battlingQuery: Query;
 
     init(state: GameState) {
         this.state = state;
-        this.subscribe("DealDamage");
-        this.subscribe("CombatBuff");
-        this.subscribe("CombatDebuff");
+        for (let comp of COMBAT_COMPONENTS) {
+            this.subscribe(comp);
+        }
 
         this.battlingQuery = this.createQuery().fromAll("Battling");
     }

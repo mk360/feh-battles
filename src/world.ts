@@ -26,6 +26,7 @@ import collectCombatMods from "./systems/collect-combat-mods";
 import collectMapMods from "./systems/collect-map-mods";
 import KillSystem from "./systems/kill";
 import clearTile from "./systems/clear-tile";
+import { Action } from "./interfaces/actions";
 
 /**
  * TODO:
@@ -121,6 +122,36 @@ class GameWorld extends World {
         return changes;
     }
 
+    private outputEngineActions(events: IComponentChange[]): Action[] {
+        const actions: Action[] = [];
+        for (let event of events) {
+            if (event.type === "DealDamage" && event.op === "add") {
+                const comp = this.getComponent(event.component);
+                actions.push({
+                    type: "attack",
+                    attacker: {
+                        id: event.entity,
+                        damage: comp.damage,
+                        heal: comp.heal,
+                        activateSpecial: comp.special,
+                    },
+                    defender: {
+                        id: event.target,
+                        activateSpecial: comp.targetTriggersSpecial
+                    }
+                });
+            }
+
+            if (event.type === "Kill") {
+                actions.push({
+                    type: "kill",
+                    target: event.entity
+                });
+            }
+        }
+        return actions;
+    };
+
     private processOperation(op: IComponentChange) {
         if (["update", "add"].includes(op.op)) {
             const { type, ...component } = this.getComponent(op.component).getObject(false);
@@ -142,7 +173,8 @@ class GameWorld extends World {
 
     runCombat(attackerId: string, targetCoordinates: { x: number, y: number }) {
         const attacker = this.getEntity(attackerId);
-        const defender = this.getEntity(this.state.map[targetCoordinates.y][targetCoordinates.x]);
+        const targetTile = this.state.map[targetCoordinates.y][targetCoordinates.x];
+        const defender = this.state.occupiedTilesMap.get(targetTile);
         const b1 = attacker.addComponent({
             type: "Battling"
         });
@@ -150,26 +182,36 @@ class GameWorld extends World {
             type: "Battling"
         });
 
-        let changes = [];
+        let changes: Action[] = [];
 
         this.runSystems("before-combat");
         this.runSystems("combat");
         this.runSystems("after-combat");
+        this.runSystems("kill");
 
         this.systems.get("before-combat").forEach((system) => {
             // @ts-ignore
-            changes = changes.concat(system._stagedChanges.map((op) => this.processOperation(op)));
+            changes = changes.concat(this.outputEngineActions(system._stagedChanges));
         });
 
         this.systems.get("combat").forEach((system) => {
             // @ts-ignore
-            changes = changes.concat(system._stagedChanges.map((op) => this.processOperation(op)));
+            changes = changes.concat(this.outputEngineActions(system._stagedChanges));
         });
 
         this.systems.get("after-combat").forEach((system) => {
             // @ts-ignore
-            changes = changes.concat(system._stagedChanges.map((op) => this.processOperation(op)));
+            changes = changes.concat(this.outputEngineActions(system._stagedChanges));
         });
+
+        if (!attacker.destroyed) {
+            attacker.removeComponent(b1);
+        }
+
+        if (!defender.destroyed) {
+            defender.removeComponent(b2);
+        }
+
 
         return changes;
     }
@@ -196,6 +238,7 @@ class GameWorld extends World {
         const effectivenessMap: {
             [k: string]: [boolean, boolean];
         } = {};
+
         for (let enemy of enemies) {
             const heroIsEffective = checkBattleEffectiveness(entity, enemy);
             const enemyIsEffective = checkBattleEffectiveness(enemy, entity);
@@ -205,6 +248,15 @@ class GameWorld extends World {
         }
 
         return { movementTiles, attackTiles, warpTiles, targetableTiles, effectiveness: effectivenessMap, assistTiles };
+    }
+
+    private undoSystemChanges(systemTag: string) {
+        this.systems.get(systemTag).forEach((sys) => {
+            // @ts-ignore
+            for (let change of sys._stagedChanges) {
+                this.undoComponentChange(change);
+            }
+        });
     }
 
     previewUnitMovement(id: string, candidateTile: { x: number, y: number }) {
@@ -321,19 +373,8 @@ class GameWorld extends World {
         defender.removeComponent(b2);
         const producedPreview = this.produceCombatPreview(attacker, defender);
 
-        this.systems.get("before-combat").forEach((sys) => {
-            // @ts-ignore
-            for (let change of sys._stagedChanges) {
-                this.undoComponentChange(change);
-            }
-        });
-
-        this.systems.get("combat").forEach((sys) => {
-            // @ts-ignore
-            for (let change of sys._stagedChanges) {
-                this.undoComponentChange(change);
-            }
-        });
+        this.undoSystemChanges("before-combat");
+        this.undoSystemChanges("combat");
 
         return producedPreview;
     }
@@ -643,10 +684,14 @@ class GameWorld extends World {
 
     private undoComponentChange(change: IComponentChange) {
         const targetEntity = this.getEntity(change.entity);
+        if (!targetEntity) return;
+
         const targetComponent = this.getComponent(change.component);
         switch (change.op) {
             case "add": {
-                targetEntity.removeComponent(targetComponent);
+                if (targetEntity) {
+                    targetEntity.removeComponent(targetComponent);
+                }
             }
                 break;
             case "remove": {

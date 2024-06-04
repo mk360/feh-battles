@@ -3,8 +3,6 @@ import { Stats } from "../interfaces/types";
 import collectCombatMods from "./collect-combat-mods";
 
 function getCombatStats(entity: Entity) {
-    const combatBuffs = entity.getComponents("CombatBuff");
-    const combatDebuffs = entity.getComponents("CombatDebuff");
     const mapBuffs = entity.getComponents("MapBuff");
     const mapDebuffs = entity.getComponents("MapDebuff");
     const baseStats = entity.getOne("Stats");

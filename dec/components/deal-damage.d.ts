@@ -4,7 +4,12 @@ declare class DealDamage extends Component {
         damage: number;
         turnIndex: number;
         special: boolean;
+        cooldown: number;
+        heal: number;
         target: typeof EntityRef;
+        targetTriggersSpecial: boolean;
+        targetHP: number;
+        targetCooldown: number;
     };
 }
 export default DealDamage;

@@ -9,7 +9,7 @@ class KillSystem extends System {
 
     init(state: GameState) {
         this.state = state;
-        this.query = this.createQuery().from("Kill");
+        this.query = this.createQuery().fromAll("Kill");
     };
 
     update() {
@@ -19,7 +19,7 @@ class KillSystem extends System {
             const { value } = deadUnit.getOne("Side");
             const castTeam = value as "team1" | "team2";
             const { value: movementType } = deadUnit.getOne("MovementType");
-            const { value: weaponType } = deadUnit.getOne("WeaponType");
+            const { weaponType } = deadUnit.getOne("Weapon");
             const position = deadUnit.getOne(Position);
             const mapTile = this.state.map[position.y][position.x];
             this.state.occupiedTilesMap.delete(mapTile);

@@ -14,7 +14,7 @@ import getCombatStats from "./get-combat-stats";
 import calculateDamage from "./calculate-damage";
 import TileBitshifts from "../data/tile-bitshifts";
 
-const COMBAT_COMPONENTS = ["DealDamage", "CombatBuff", "BraveWeapon", "CombatDebuff"];
+const SUBSCRIBED_COMPONENTS = ["DealDamage", "CombatBuff", "BraveWeapon", "CombatDebuff", "DamageIncrease", "Kill"];
 
 class CombatSystem extends System {
     private state: GameState;
@@ -22,7 +22,8 @@ class CombatSystem extends System {
 
     init(state: GameState) {
         this.state = state;
-        for (let comp of COMBAT_COMPONENTS) {
+
+        for (let comp of SUBSCRIBED_COMPONENTS) {
             this.subscribe(comp);
         }
 
@@ -161,15 +162,35 @@ class CombatSystem extends System {
                     damagePercentage
                 });
 
-                turn.addComponent({
-                    type: "DealDamage",
-                    target: defender,
-                    damage: damage,
-                    turnIndex: i,
-                });
+                const heal = turn.getOne("CombatHeal");
+                const maxHP = turn.getOne("Stats").maxHP;
 
                 combatMap.get(defender).hp -= damage;
+
+                if (heal) {
+                    combatMap.get(turn).hp = Math.min(maxHP, combatMap.get(turn).hp + heal.value);
+                    turn.removeComponent(heal);
+                }
+
+                turn.addComponent({
+                    type: "DealDamage",
+                    damage,
+                    turnIndex: i,
+                    cooldown: turnData.attackerSpecialCooldown,
+                    special: turnData.attackerTriggeredSpecial,
+                    heal: heal?.value ?? 0,
+                    target: defender,
+                    targetHP: combatMap.get(turn).hp,
+                    targetTriggersSpecial: turnData.defenderTriggeredSpecial,
+                    targetCooldown: turnData.defenderSpecialCooldown,
+                });
+
+                console.log(combatMap.get(defender).hp)
+
                 if (combatMap.get(defender).hp <= 0) {
+                    defender.addComponent({
+                        type: "Kill"
+                    });
                     break;
                 }
                 lastAttacker = turn;
@@ -180,7 +201,7 @@ class CombatSystem extends System {
     runAllySkills(ally: Entity) {
         const allies = getAllies(this.state, ally);
         for (let ally of allies) {
-            this.state.skillMap.get(ally)?.onCombatAllyStart?.forEach((skill) => {
+            this.state.skillMap.get(ally).onCombatAllyStart?.forEach((skill) => {
                 SKILLS[skill.name].onCombatAllyStart.call(skill, this.state, ally);
             });
         }

@@ -10,7 +10,6 @@ import TileBitshifts from "../data/tile-bitshifts";
 import getTileCoordinates from "./get-tile-coordinates";
 import getDistance from "./get-distance";
 import ASSISTS from "../data/assists";
-import HeroSystem from "./hero";
 
 function findCommonInSets(set1: Uint16Array[], set2: Uint16Array[]) {
     const setElements: {
@@ -30,15 +29,11 @@ function findCommonInSets(set1: Uint16Array[], set2: Uint16Array[]) {
 
 class MovementSystem extends System {
     private state: GameState;
-    private pathfinderQuery: Query;
     private movableQuery: Query;
-    private obstructQuery: Query;
 
     init(state: GameState): void {
         this.state = state;
-        this.pathfinderQuery = this.createQuery().fromAll("Pathfinder");
         this.movableQuery = this.createQuery().fromAll("Movable");
-        this.obstructQuery = this.createQuery().fromAll("Obstruct");
     }
 
     update() {
@@ -84,7 +79,7 @@ class MovementSystem extends System {
         });
 
         for (let ally of allies) {
-            if (skillMap.get(ally)?.onTurnAllyCheckRange) {
+            if (skillMap.get(ally).onTurnAllyCheckRange) {
                 for (let skill of this.state.skillMap.get(ally).onTurnAllyCheckRange) {
                     const skillData = PASSIVES[skill.name];
                     skillData.onTurnAllyCheckRange.call(skill, this.state, unit);
@@ -157,7 +152,6 @@ class MovementSystem extends System {
         if (assist) {
             const arrayedMovementTiles = Array.from(movementTiles).concat(Array.from(warpTileData));
             const { range } = assist;
-            const allies = getAllies(this.state, unit);
             const assistData = ASSISTS[assist.name];
 
             for (let ally of allies) {

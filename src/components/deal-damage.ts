@@ -5,7 +5,12 @@ class DealDamage extends Component {
         damage: 0,
         turnIndex: 0,
         special: false,
-        target: EntityRef
+        cooldown: 0,
+        heal: 0,
+        target: EntityRef,
+        targetTriggersSpecial: false,
+        targetHP: 0,
+        targetCooldown: 0,
     };
 };
 

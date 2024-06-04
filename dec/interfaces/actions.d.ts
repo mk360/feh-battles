@@ -32,11 +32,12 @@ export type AfterCombatAction = ActionType<"after-combat"> & {
         statuses?: string[];
     };
 };
-export interface MoveAction {
-    type: "move";
-    entity: string;
-    tile: number;
-}
+export type MoveAction = ActionType<"move"> & {
+    [entityId: string]: {
+        x: number;
+        y: number;
+    };
+};
 export interface EndTurnAction {
     type: "end-turn";
     newSide: string;

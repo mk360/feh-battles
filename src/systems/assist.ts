@@ -2,6 +2,8 @@ import { Entity, Query, System } from "ape-ecs";
 import GameState from "./state";
 import ASSISTS from "../data/assists";
 
+const SUBSCRIBED_COMPONENTS = ["Move", "Heal", "MapBuff", "MapDebuff"];
+
 class AssistSystem extends System {
     private state: GameState;
     private query: Query;
@@ -9,6 +11,9 @@ class AssistSystem extends System {
     init(state: GameState): void {
         this.state = state;
         this.query = this.createQuery().from("Assisting");
+        for (let component of SUBSCRIBED_COMPONENTS) {
+            this.subscribe(component);
+        }
     }
 
     update(): void {

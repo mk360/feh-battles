@@ -116,7 +116,7 @@ class GameWorld extends World {
         this.runSystems("every-turn");
         this.systems.get("every-turn").forEach((system) => {
             // @ts-ignore
-            changes = changes.concat(system._stagedChanges.map((op) => this.processOperation(op)));
+            // changes = changes.concat(system._stagedChanges.map((op) => this.processOperation(op)));
         });
 
         return changes;
@@ -151,18 +151,6 @@ class GameWorld extends World {
         }
         return actions;
     };
-
-    private processOperation(op: IComponentChange) {
-        if (["update", "add"].includes(op.op)) {
-            const { type, ...component } = this.getComponent(op.component).getObject(false);
-            return {
-                ...op,
-                ...component
-            };
-        }
-
-        return op;
-    }
 
     getUnitMapStats(id: string) {
         const entity = this.getEntity(id);

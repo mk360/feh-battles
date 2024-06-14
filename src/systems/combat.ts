@@ -185,8 +185,6 @@ class CombatSystem extends System {
                     targetCooldown: turnData.defenderSpecialCooldown,
                 });
 
-                console.log(combatMap.get(defender).hp)
-
                 if (combatMap.get(defender).hp <= 0) {
                     defender.addComponent({
                         type: "Kill"

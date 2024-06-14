@@ -1678,6 +1678,7 @@ const PASSIVES: PassivesDict = {
                 }
             }
         },
+        allowedMovementTypes: ["flier"]
     },
     "Guidance 2": {
         slot: "C",
@@ -1696,6 +1697,7 @@ const PASSIVES: PassivesDict = {
                 }
             }
         },
+        allowedMovementTypes: ["flier"],
         onTurnAllyCheckRange(state, ally) {
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp / maxHP >= 0.5) {

@@ -1,16 +1,22 @@
 import { Entity } from "ape-ecs";
 import GameState from "../systems/state";
 import Direction from "../systems/directions";
-import Assists from "../components/assist";
+import Assist from "../components/assist";
 import canReachTile from "../systems/can-reach-tile";
 import tileBitmasks from "./tile-bitmasks";
+import { WeaponType } from "../interfaces/types";
+import MovementType from "../components/movement-type";
+import Characters from "./characters.json";
 
 interface AssistsDict {
     [k: string]: {
-        canApply(this: Assists, state: GameState, ally: Entity, position: { x: number, y: number }): boolean;
-        onApply(this: Assists, state: GameState, ally: Entity): void;
+        canApply(this: Assist, state: GameState, ally: Entity, position: { x: number, y: number }): boolean;
+        onApply(this: Assist, state: GameState, ally: Entity): void;
         description: string;
         range: number;
+        allowedWeaponTypes?: WeaponType[];
+        allowedMovementTypes?: MovementType[];
+        exclusiveTo?: (keyof typeof Characters)[];
     }
 }
 
@@ -152,6 +158,7 @@ const ASSISTS: AssistsDict = {
             })
         },
         range: 1,
+        allowedWeaponTypes: ["staff"],
         description: "Restores 10 HP to target ally."
     },
 } as const;

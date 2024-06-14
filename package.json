@@ -12,6 +12,9 @@
     "email": "n_tonio36.poke@outlook.com",
     "url": "https://github.com/mk360"
   },
+  "scripts": {
+    "movesets": "ts-node --project tsconfig-dev.json ./src/scripts/generate-movesets"
+  },
   "license": "MIT",
   "dependencies": {
     "ape-ecs": "^1.3.1",

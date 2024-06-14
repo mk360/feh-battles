@@ -5,7 +5,7 @@ declare class MovementSystem extends System {
     private movableQuery;
     init(state: GameState): void;
     update(): void;
-    getTileCost(hero: Entity, tile: Uint16Array, pathfinder: Uint16Array[]): 0 | 2 | 1 | 3;
+    getTileCost(hero: Entity, tile: Uint16Array, pathfinder: Uint16Array[]): 0 | 1 | 2 | 3;
     getMovementTiles(hero: Entity, checkedTile: Uint16Array, pathfinderTiles: Uint16Array[], remainingRange?: number): Set<Uint16Array>;
     computeFixedRange({ x, y }: {
         x: number;

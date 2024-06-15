@@ -174,8 +174,8 @@ class GameWorld extends World {
 
         this.runSystems("before-combat");
         this.runSystems("combat");
-        this.runSystems("after-combat");
         this.runSystems("kill");
+        this.runSystems("after-combat");
 
         this.systems.get("before-combat").forEach((system) => {
             // @ts-ignore

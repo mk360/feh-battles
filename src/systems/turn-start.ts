@@ -2,7 +2,7 @@ import { Query, System } from "ape-ecs";
 import GameState from "./state";
 import SKILLS from "../data/skill-dex";
 
-const MAP_STATUSES = ["MapBuff", "MapDebuff", "FinishedAction"];
+const MAP_STATUSES = ["MapBuff", "MapDebuff", "FinishedAction", "ModifySpecialCooldown"];
 
 class TurnStartSystem extends System {
     private state: GameState;
@@ -21,9 +21,22 @@ class TurnStartSystem extends System {
         const teamMembers = entities.filter(entity => entity.getOne("Side").value === this.state.currentSide);
         for (let member of teamMembers) {
             const skillMap = this.state.skillMap.get(member);
+
+            if (skillMap.onTurnStartBefore) {
+                for (let skill of skillMap.onTurnStartBefore) {
+                    SKILLS[skill.name].onTurnStartBefore.call(skill, this.state);
+                }
+            }
+
             if (skillMap.onTurnStart) {
                 for (let skill of skillMap.onTurnStart) {
                     SKILLS[skill.name].onTurnStart.call(skill, this.state);
+                }
+            }
+
+            if (skillMap.onTurnStartAfter) {
+                for (let skill of skillMap.onTurnStartBefore) {
+                    SKILLS[skill.name].onTurnStartBefore.call(skill, this.state);
                 }
             }
         }

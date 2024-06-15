@@ -13,7 +13,7 @@
     "url": "https://github.com/mk360"
   },
   "scripts": {
-    "movesets": "ts-node --project tsconfig-dev.json ./src/scripts/generate-movesets"
+    "movesets": "ts-node --project tsconfig.json ./src/scripts/generate-movesets"
   },
   "license": "MIT",
   "dependencies": {

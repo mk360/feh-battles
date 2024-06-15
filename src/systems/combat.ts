@@ -13,8 +13,9 @@ import getAffinity from "./get-affinity";
 import getCombatStats from "./get-combat-stats";
 import calculateDamage from "./calculate-damage";
 import TileBitshifts from "../data/tile-bitshifts";
+import SPECIALS from "../data/specials";
 
-const SUBSCRIBED_COMPONENTS = ["DealDamage", "CombatBuff", "BraveWeapon", "CombatDebuff", "DamageIncrease", "Kill"];
+const SUBSCRIBED_COMPONENTS = ["DealDamage", "CombatBuff", "BraveWeapon", "CombatDebuff", "DamageIncrease", "Kill", "Special"];
 
 class CombatSystem extends System {
     private state: GameState;
@@ -72,6 +73,7 @@ class CombatSystem extends System {
                 hp: number,
                 consecutiveTurns: number,
                 defensiveTile: boolean;
+                cooldown: number;
             }>();
             const attackerPosition = attacker.getOne("TemporaryPosition");
             const attackerTile = this.state.map[attackerPosition.y][attackerPosition.x];
@@ -82,7 +84,8 @@ class CombatSystem extends System {
                 turns: 0,
                 hp: attacker.getOne("Stats").hp,
                 consecutiveTurns: 1,
-                defensiveTile: Boolean(attackerTile[0] >> TileBitshifts.defensiveTile)
+                defensiveTile: Boolean(attackerTile[0] >> TileBitshifts.defensiveTile),
+                cooldown: attacker.getOne("Special")?.cooldown
             });
 
             const defenderPosition = target.getOne("Position");
@@ -93,7 +96,8 @@ class CombatSystem extends System {
                 turns: 0,
                 hp: target.getOne("Stats").hp,
                 consecutiveTurns: 1,
-                defensiveTile: Boolean(defenderTile[0] >> TileBitshifts.defensiveTile)
+                defensiveTile: Boolean(defenderTile[0] >> TileBitshifts.defensiveTile),
+                cooldown: target.getOne("Special")?.cooldown
             });
 
             const turns = generateTurns(attacker, target, combatMap.get(attacker).stats, combatMap.get(target).stats);
@@ -117,21 +121,45 @@ class CombatSystem extends System {
                 attackerSkills.onCombatRoundAttack?.forEach((skill) => {
                     const dexData = SKILLS[skill.name];
                     dexData.onCombatRoundAttack.call(skill, turn, turnData);
-                    if (skill.slot === "special") {
-                        turnData.attackerTriggeredSpecial = true;
-                    }
                 });
+
+                const attackerSpecial = defender.getOne("Special");
+                const attackerSpecialData = SPECIALS[attackerSpecial.name];
+                if (attackerSpecial && attackerSpecialData && combatMap.get(defender).cooldown === 0) {
+                    attackerSkills.onSpecialTrigger?.forEach((skill) => {
+                        const dexData = SKILLS[skill.name];
+                        dexData.onSpecialTrigger.call(skill, turn, turnData);
+                    });
+                    attackerSpecialData.onCombatRoundAttack?.call(attackerSpecial, defender);
+                    turnData.attackerTriggeredSpecial = true;
+                    attackerSpecial.update({
+                        cooldown: attackerSpecial.maxCooldown
+                    });
+                }
+
                 const defenderSkills = this.state.skillMap.get(defender);
                 defenderSkills.onCombatRoundDefense?.forEach((skill) => {
                     const dexData = SKILLS[skill.name];
                     dexData.onCombatRoundDefense.call(skill, turn, turnData);
-                    if (skill.slot === "special") {
-                        turnData.defenderTriggeredSpecial = true;
-                    }
                 });
+
+                const defenderSpecial = defender.getOne("Special");
+                const defenderSpecialData = SPECIALS[defenderSpecial.name];
+                if (defenderSpecial && defenderSpecialData && combatMap.get(defender).cooldown === 0) {
+                    defenderSkills.onSpecialTrigger?.forEach((skill) => {
+                        const dexData = SKILLS[skill.name];
+                        dexData.onSpecialTrigger.call(skill, defender, turnData);
+                    });
+                    defenderSpecialData.onCombatRoundDefense?.call(defenderSpecial, defender);
+                    turnData.attackerTriggeredSpecial = true;
+                    defenderSpecial.update({
+                        cooldown: defenderSpecial.maxCooldown
+                    });
+                }
+
                 const defenderStats = combatMap.get(defender).stats;
                 const defenseStat = defenderStats[getTargetedDefenseStat(turn, defender, defenderStats)];
-                const effectivenessMultiplier = combatMap.get(defender).effective ? 1.5 : 1;
+                const effectivenessMultiplier = combatMap.get(turn).effective ? 1.5 : 1;
                 const atkStat = combatMap.get(turn).stats.atk;
                 const damageReductionComponents = defender.getComponents("DamageReduction");
                 let flatReduction = 0;

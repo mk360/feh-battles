@@ -10,6 +10,11 @@ import HeroSystem from "../systems/hero";
 import getAllies from "../utils/get-allies";
 import CombatTurnOutcome from "../interfaces/combat-turn-outcome";
 import CombatOutcome from "../interfaces/combat-outcome";
+import getSurroundings from "../systems/get-surroundings";
+import canReachTile from "../systems/can-reach-tile";
+import getTileCoordinates from "../systems/get-tile-coordinates";
+import getCombatStats from "../systems/get-combat-stats";
+import getMapStats from "../systems/get-map-stats";
 
 interface WeaponDict {
     [k: string]: {
@@ -21,6 +26,7 @@ interface WeaponDict {
         exclusiveTo?: (keyof typeof Characters)[];
         effectiveAgainst?: (MovementType | WeaponType)[];
         protects?: (MovementType | WeaponType)[];
+        onSpecialTrigger?(this: Skill, battleState: GameState, target: Entity): void;
         onCombatStart?(this: Skill, battleState: GameState, target: Entity): void;
         onCombatAfter?(this: Skill, battleState: GameState, target: Entity, combat: CombatOutcome): void;
         onCombatInitiate?(this: Skill, state: GameState, target: Entity): void;
@@ -29,7 +35,10 @@ interface WeaponDict {
         onCombatRoundAttack?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): void;
         onCombatRoundDefense?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): void;
         onEquip?(this: Skill): any;
+        onTurnCheckRange?(this: Skill, state: GameState): void;
         onTurnStart?(this: Skill, battleState: GameState): void;
+        onTurnStartBefore?(this: Skill, battleState: GameState): void;
+        oonTurnStartAfter?(this: Skill, battleState: GameState): void;
     }
 }
 
@@ -69,6 +78,33 @@ const WEAPONS: WeaponDict = {
                 }
             }
         },
+    },
+    "Nóatún": {
+        description: "If unit's HP ≤ 40%, unit can move to a space adjacent to any ally.",
+        exclusiveTo: ["Anna: Commander"],
+        might: 16,
+        type: "axe",
+        onTurnCheckRange(state) {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP <= 0.4) {
+                const allies = getAllies(state, this.entity);
+                for (let ally of allies) {
+                    const { x, y } = ally.getOne("Position");
+                    const tile = state.map[y][x];
+                    const surroundings = getSurroundings(state.map, y, x);
+                    surroundings.splice(surroundings.indexOf(tile), 1);
+                    const validAllyTiles = surroundings.filter((tile) => canReachTile(this.entity, tile));
+                    for (let tile of validAllyTiles) {
+                        const { x: tileX, y: tileY } = getTileCoordinates(tile);
+                        this.entity.addComponent({
+                            type: "WarpTile",
+                            x: tileX,
+                            y: tileY
+                        });
+                    }
+                }
+            }
+        }
     },
     "Fire Breath": {
         description: "",
@@ -443,6 +479,24 @@ const WEAPONS: WeaponDict = {
         effectiveAgainst: ["armored"],
         exclusiveTo: ["Bartre: Fearless Warrior"]
     },
+    "Ayra's Blade": {
+        type: "sword",
+        exclusiveTo: ["Ayra: Astra's Wielder"],
+        might: 16,
+        description: "Grants Spd+3. If unit's Spd > foe's Spd, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)",
+        onEquip() {
+            this.entity.getOne("Stats").spd += 3;
+        },
+        onCombatRoundAttack(enemy) {
+            const { spd: enemySpd } = getCombatStats(enemy);
+            const { spd } = getCombatStats(this.entity);
+            if (spd > enemySpd) {
+                this.entity.addComponent({
+                    type: "AccelerateSpecial"
+                });
+            }
+        },
+    },
     "Basilikos": {
         description: "Accelerates Special trigger (cooldown count-1).",
         might: 16,
@@ -580,6 +634,19 @@ const WEAPONS: WeaponDict = {
                 atk: 6
             });
         }
+    },
+    "Bow of Beauty": {
+        description: "Accelerates Special trigger (cooldown count-1). Effective against flying foes.",
+        type: "bow",
+        effectiveAgainst: ["flier"],
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        },
+        might: 14,
+        exclusiveTo: ["Leon: True of Heart"]
     },
     "Brave Axe": {
         description: "Inflicts Spd-5. If unit initiates combat, unit attacks twice.",
@@ -842,6 +909,7 @@ const WEAPONS: WeaponDict = {
             const { maxHP, hp } = target.getOne("Stats");
             if (hp === maxHP) {
                 this.entity.addComponent({
+                    type: "CombatBuff",
                     atk: 5,
                     def: 5,
                     res: 5
@@ -1185,6 +1253,18 @@ const WEAPONS: WeaponDict = {
         might: 16,
         type: "sword",
     },
+    "Golden Dagger": {
+        description: "Accelerates Special trigger (cooldown count-1).",
+        type: "sword",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        },
+        might: 16,
+        exclusiveTo: ["Saber: Driven Mercenary"]
+    },
     "Gradivus": {
         description: "Unit can counterattack regardless of enemy range.",
         might: 16,
@@ -1193,6 +1273,18 @@ const WEAPONS: WeaponDict = {
         onCombatStart() {
             Effects.counterattack(this);
         }
+    },
+    "Grado Poleax": {
+        description: "Accelerates Special trigger (cooldown count-1).",
+        might: 16,
+        type: "axe",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        },
+        exclusiveTo: ["Amelia: Rose of the War"]
     },
     "Gronnblade": {
         description: "Slows Special trigger (cooldown count+1). Grants bonus to unit's Atk = total bonuses on unit during combat.",
@@ -1371,6 +1463,38 @@ const WEAPONS: WeaponDict = {
             }
         }
     },
+    "Inveterate Axe": {
+        type: "axe",
+        might: 16,
+        exclusiveTo: ["Gunter: Inveterate Soldier"],
+        description: "At start of turn, if unit's HP ≥ 50%, inflicts Atk/Def-5 on foe on the enemy team with the lowest Spd through its next action.",
+        onTurnStartBefore(battleState) {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP >= 0.5) {
+                const enemies = getEnemies(battleState, this.entity);
+                let lowestSpeed = 99;
+                let targets: Entity[] = [];
+                for (let enemy of enemies) {
+                    const { spd } = getMapStats(enemy);
+                    if (spd === lowestSpeed) {
+                        targets.push(enemy);
+                    }
+                    if (spd < lowestSpeed) {
+                        lowestSpeed = spd;
+                        targets = [enemy];
+                    }
+                }
+
+                for (let target of targets) {
+                    target.addComponent({
+                        type: "MapDebuff",
+                        atk: -5,
+                        def: -5
+                    });
+                }
+            }
+        },
+    },
     "Iris's Tome": {
         type: "tome",
         color: "green",
@@ -1474,6 +1598,18 @@ const WEAPONS: WeaponDict = {
             });
         },
     },
+    "Knightly Lance": {
+        description: "Accelerates Special trigger (cooldown count-1).",
+        might: 16,
+        exclusiveTo: ["Mathilda: Legendary Knight"],
+        type: "lance",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        }
+    },
     "Laid-Back Blade": {
         exclusiveTo: ["Gray: Wry Comrade"],
         might: 16,
@@ -1512,6 +1648,18 @@ const WEAPONS: WeaponDict = {
         exclusiveTo: ["Lyn: Brave Lady"],
         type: "bow"
     },
+    "Mystletainn": {
+        description: "Accelerates Special trigger (cooldown count-1).",
+        type: "sword",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        },
+        might: 16,
+        exclusiveTo: ["Eldigan: Lionheart"]
+    },
     "Naga": {
         description: "Effective against dragon foes. If foe initiates combat, grants Def/Res+2 during combat.",
         effectiveAgainst: ["breath"],
@@ -1545,7 +1693,7 @@ const WEAPONS: WeaponDict = {
         },
         effectiveAgainst: ["flier"],
         onCombatStart(state, target) {
-            const { def, res } = target.getOne("Stats");
+            const { def, res } = getCombatStats(target);
             if (def >= res + 5) {
                 this.entity.addComponent({
                     type: "DamageIncrease",
@@ -1737,6 +1885,19 @@ const WEAPONS: WeaponDict = {
         type: "tome",
         color: "red"
     },
+    "Rebecca's Bow": {
+        description: "Accelerates Special trigger (cooldown count-1). Effective against flying foes.",
+        type: "bow",
+        effectiveAgainst: ["flier"],
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        },
+        might: 14,
+        exclusiveTo: ["Rebecca: Wildflower"]
+    },
     "Reese's Tome": {
         description: "During combat, boosts unit's Atk/Spd/Def/Res by number of adjacent allies × 2.",
         type: "tome",
@@ -1832,6 +1993,22 @@ const WEAPONS: WeaponDict = {
             });
         }
     },
+    "Saizo's Star": {
+        type: "dagger",
+        exclusiveTo: ["Saizo: Angry Ninja"],
+        description: "After combat, if unit attacked, inflicts Atk/Spd/Def/Res-6 on target and foes within 2 spaces of target through their next actions.",
+        might: 14,
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
+                Effects.dagger(battleState, target, {
+                    atk: -6,
+                    spd: -6,
+                    def: -6,
+                    res: -6
+                });
+            }
+        },
+    },
     "Sapphire Lance": {
         description: "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
         type: "lance",
@@ -1926,6 +2103,30 @@ const WEAPONS: WeaponDict = {
             Effects.honeStat(this, battleState, "atk", 3);
         },
         exclusiveTo: ["Ephraim: Restoration Lord"]
+    },
+    "Slaying Bow": {
+        description: "Accelerates Special trigger (cooldown count-1). Effective against flying foes.",
+        might: 8,
+        effectiveAgainst: ["flier"],
+        type: "bow",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        }
+    },
+    "Slaying Bow+": {
+        description: "Accelerates Special trigger (cooldown count-1). Effective against flying foes.",
+        might: 12,
+        effectiveAgainst: ["flier"],
+        type: "bow",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        }
     },
     "Stalwart Sword": {
         description: "If foe initiates combat, inflicts Atk-6 on foe during combat.",

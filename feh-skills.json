@@ -10,16 +10,6 @@
         "Might": 16
     },
     {
-        "WeaponName": "Nóatún",
-        "CanUseWeapon": [
-            "Green Axe"
-        ],
-        "Exclusive": 1,
-        "Hero": "Anna: Commander",
-        "Description": "If unit's HP ≤ 40%, unit can move to a space adjacent to any ally.",
-        "Might": 16
-    },
-    {
         "WeaponName": "Gronnraven",
         "CanUseWeapon": [
             "Green Tome"
@@ -179,16 +169,6 @@
         "Hero": "Kagero: Honorable Ninja",
         "Description": "At start of combat, if unit's Atk > foe's Atk, grants Atk/Spd+4 during combat.&lt;br>Effect:\u3010Dagger \uff17\u3011&lt;br>&lt;br>\u3010Dagger \uff17\u3011&lt;br>After combat, if unit attacked, inflicts Def/Res-\uff17 on target and foes within 2 spaces of target through their next actions.",
         "Might": 14
-    },
-    {
-        "WeaponName": "Inveterate Axe",
-        "CanUseWeapon": [
-            "Green Axe"
-        ],
-        "Exclusive": 1,
-        "Hero": "Gunter: Inveterate Soldier",
-        "Description": "At start of turn, if unit's HP ≥ 50%, inflicts Atk/Def-5 on foe on the enemy team with the lowest Spd through its next action.",
-        "Might": 16
     },
     {
         "WeaponName": "Brynhildr",
@@ -487,19 +467,6 @@
         "Might": 9
     },
     {
-        "WeaponName": "Saizo's Star",
-        "CanUseWeapon": [
-            "Red Dagger",
-            "  Blue Dagger",
-            "  Green Dagger",
-            "  Colorless Dagger"
-        ],
-        "Exclusive": 1,
-        "Hero": "Saizo: Angry Ninja",
-        "Description": "After combat, if unit attacked, inflicts Atk/Spd/Def/Res-6 on target and foes within 2 spaces of target through their next actions.",
-        "Might": 14
-    },
-    {
         "WeaponName": "Runeaxe",
         "CanUseWeapon": [
             "Green Axe"
@@ -520,16 +487,6 @@
         "Might": 14
     },
     {
-        "WeaponName": "Mystletainn",
-        "CanUseWeapon": [
-            "Red Sword"
-        ],
-        "Exclusive": 1,
-        "Hero": "Eldigan: Lionheart",
-        "Description": "Accelerates Special trigger (cooldown count-1).",
-        "Might": 16
-    },
-    {
         "WeaponName": "Wo Dao",
         "CanUseWeapon": [
             "Red Sword"
@@ -548,19 +505,6 @@
         "Hero": "Karel: Sword Demon",
         "Description": "Deals +10 damage when Special triggers.",
         "Might": 13
-    },
-    {
-        "WeaponName": "Rebecca's Bow",
-        "CanUseWeapon": [
-            "Red Bow",
-            "  Blue Bow",
-            "  Green Bow",
-            "  Colorless Bow"
-        ],
-        "Exclusive": 1,
-        "Hero": "Rebecca: Wildflower",
-        "Description": "Accelerates Special trigger (cooldown count-1). Effective against flying foes.",
-        "Might": 14
     },
     {
         "WeaponName": "Panic",
@@ -993,16 +937,6 @@
         "Might": 10
     },
     {
-        "WeaponName": "Knightly Lance",
-        "CanUseWeapon": [
-            "Blue Lance"
-        ],
-        "Exclusive": 1,
-        "Hero": "Mathilda: Legendary Knight",
-        "Description": "Accelerates Special trigger (cooldown count-1).",
-        "Might": 16
-    },
-    {
         "WeaponName": "Slaying Edge",
         "CanUseWeapon": [
             "Red Sword"
@@ -1023,16 +957,6 @@
         "Might": 14
     },
     {
-        "WeaponName": "Golden Dagger",
-        "CanUseWeapon": [
-            "Red Sword"
-        ],
-        "Exclusive": 1,
-        "Hero": "Saber: Driven Mercenary",
-        "Description": "Accelerates Special trigger (cooldown count-1).",
-        "Might": 16
-    },
-    {
         "WeaponName": "Dark Excalibur",
         "CanUseWeapon": [
             "Green Tome"
@@ -1040,45 +964,6 @@
         "Exclusive": 1,
         "Hero": "Sonya: Vengeful Mage",
         "Description": "Deals +10 damage when Special triggers.",
-        "Might": 14
-    },
-    {
-        "WeaponName": "Slaying Bow",
-        "CanUseWeapon": [
-            "Red Bow",
-            "  Blue Bow",
-            "  Green Bow",
-            "  Colorless Bow"
-        ],
-        "Exclusive": 0,
-        "Hero": "Leon: True of Heart",
-        "Description": "Accelerates Special trigger (cooldown count-1). Effective against flying foes.",
-        "Might": 8
-    },
-    {
-        "WeaponName": "Slaying Bow+",
-        "CanUseWeapon": [
-            "Red Bow",
-            "  Blue Bow",
-            "  Green Bow",
-            "  Colorless Bow"
-        ],
-        "Exclusive": 0,
-        "Hero": "Leon: True of Heart",
-        "Description": "Accelerates Special trigger (cooldown count-1). Effective against flying foes.",
-        "Might": 12
-    },
-    {
-        "WeaponName": "Bow of Beauty",
-        "CanUseWeapon": [
-            "Red Bow",
-            "  Blue Bow",
-            "  Green Bow",
-            "  Colorless Bow"
-        ],
-        "Exclusive": 1,
-        "Hero": "Leon: True of Heart",
-        "Description": "Accelerates Special trigger (cooldown count-1). Effective against flying foes.",
         "Might": 14
     },
     {
@@ -1180,16 +1065,6 @@
         "Hero": "Amelia: Rose of the War",
         "Description": "Accelerates Special trigger (cooldown count-1).",
         "Might": 14
-    },
-    {
-        "WeaponName": "Grado Poleax",
-        "CanUseWeapon": [
-            "Green Axe"
-        ],
-        "Exclusive": 1,
-        "Hero": "Amelia: Rose of the War",
-        "Description": "Accelerates Special trigger (cooldown count-1).",
-        "Might": 16
     },
     {
         "WeaponName": "Silverbrand",

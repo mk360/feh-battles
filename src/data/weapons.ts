@@ -38,7 +38,7 @@ interface WeaponDict {
         onTurnCheckRange?(this: Skill, state: GameState): void;
         onTurnStart?(this: Skill, battleState: GameState): void;
         onTurnStartBefore?(this: Skill, battleState: GameState): void;
-        oonTurnStartAfter?(this: Skill, battleState: GameState): void;
+        onTurnStartAfter?(this: Skill, battleState: GameState): void;
     }
 }
 

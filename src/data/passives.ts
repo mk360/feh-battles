@@ -29,9 +29,12 @@ interface PassivesDict {
         onCombatAllyStart?(this: Skill, state: GameState, ally: Entity): void;
         onCombatDefense?(this: Skill, state: GameState, attacker: Entity): void;
         onCombatAfter?(this: Skill, state: GameState, target: Entity): void;
-        onTurnStart?(this: Skill, state: GameState): void;
         onCombatRoundAttack?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): void;
         onCombatRoundDefense?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): void;
+        onSpecialTrigger?(this: Skill, battleState: GameState, target: Entity): void;
+        onTurnStart?(this: Skill, state: GameState): void;
+        onTurnStartBefore?(this: Skill, state: GameState): void;
+        onTurnStartAfter?(this: Skill, state: GameState): void;
         onTurnCheckRange?(this: Skill, state: GameState): void;
         onTurnAllyCheckRange?(this: Skill, state: GameState, ally: Entity): void;
         onTurnEnemyCheckRange?(this: Skill, state: GameState, enemy: Entity): void;
@@ -572,8 +575,58 @@ const PASSIVES: PassivesDict = {
     "Wrath 1": {
         slot: "B",
         description: "At start of turn, if unit's HP ≤ 25% and unit's attack can trigger their Special, grants Special cooldown count-1, and deals +10 damage when Special triggers.",
-        onCombatRoundAttack() {
-
+        onTurnStart() {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP <= 0.25) {
+                this.entity.addComponent({
+                    type: "ModifySpecialCooldown",
+                    value: -1
+                });
+            }
+        },
+        onSpecialTrigger() {
+            this.entity.addComponent({
+                type: "DamageIncrease",
+                value: 10
+            });
+        }
+    },
+    "Wrath 2": {
+        slot: "B",
+        description: "At start of turn, if unit's HP ≤ 50% and unit's attack can trigger their Special, grants Special cooldown count-1, and deals +10 damage when Special triggers.",
+        onTurnStart() {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP <= 0.5) {
+                this.entity.addComponent({
+                    type: "ModifySpecialCooldown",
+                    value: -1
+                });
+            }
+        },
+        onSpecialTrigger() {
+            this.entity.addComponent({
+                type: "DamageIncrease",
+                value: 10
+            });
+        }
+    },
+    "Wrath 3": {
+        slot: "B",
+        description: "At start of turn, if unit's HP ≤ 75% and unit's attack can trigger their Special, grants Special cooldown count-1, and deals +10 damage when Special triggers.",
+        onTurnStart() {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP <= 0.75) {
+                this.entity.addComponent({
+                    type: "ModifySpecialCooldown",
+                    value: -1
+                });
+            }
+        },
+        onSpecialTrigger() {
+            this.entity.addComponent({
+                type: "DamageIncrease",
+                value: 10
+            });
         }
     },
     "Obstruct 1": {

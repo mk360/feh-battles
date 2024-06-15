@@ -6,7 +6,7 @@ import Characters from "./characters.json";
 import getCombatStats from "../systems/get-combat-stats";
 import getTargetedDefenseStat from "../systems/get-targeted-defense-stat";
 
-const exceptStaves: WeaponType[] = ["axe", "beast", "bow", "breath", "dagger", "lance", "sword", "tome"]
+const exceptStaves: WeaponType[] = ["axe", "beast", "bow", "breath", "dagger", "lance", "sword", "tome"];
 
 interface SpecialsDict {
     [k: string]: {

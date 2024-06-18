@@ -12,6 +12,7 @@ import CombatTurnOutcome from "../interfaces/combat-turn-outcome";
 import getSurroundings from "../systems/get-surroundings";
 import getTileCoordinates from "../systems/get-tile-coordinates";
 import canReachTile from "../systems/can-reach-tile";
+import SPECIALS from "./specials";
 
 interface PassivesDict {
     [k: string]: {
@@ -585,10 +586,14 @@ const PASSIVES: PassivesDict = {
             }
         },
         onSpecialTrigger() {
-            this.entity.addComponent({
-                type: "DamageIncrease",
-                value: 10
-            });
+            const special = this.entity.getOne("Special");
+            const specialData = SPECIALS[special.name];
+            if (specialData.onCombatRoundAttack) {
+                this.entity.addComponent({
+                    type: "RoundDamageIncrease",
+                    value: 10
+                });
+            }
         }
     },
     "Wrath 2": {
@@ -604,10 +609,14 @@ const PASSIVES: PassivesDict = {
             }
         },
         onSpecialTrigger() {
-            this.entity.addComponent({
-                type: "DamageIncrease",
-                value: 10
-            });
+            const special = this.entity.getOne("Special");
+            const specialData = SPECIALS[special.name];
+            if (specialData.onCombatRoundAttack) {
+                this.entity.addComponent({
+                    type: "RoundDamageIncrease",
+                    value: 10
+                });
+            }
         }
     },
     "Wrath 3": {
@@ -623,10 +632,15 @@ const PASSIVES: PassivesDict = {
             }
         },
         onSpecialTrigger() {
-            this.entity.addComponent({
-                type: "DamageIncrease",
-                value: 10
-            });
+            const special = this.entity.getOne("Special");
+            const specialData = SPECIALS[special.name];
+            if (specialData.onCombatRoundAttack) {
+                this.entity.addComponent({
+                    type: "RoundDamageIncrease",
+                    value: 10
+                });
+            }
+
         }
     },
     "Obstruct 1": {

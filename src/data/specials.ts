@@ -29,7 +29,7 @@ const SPECIALS: SpecialsDict = {
             const combatStats = getCombatStats(target);
             const defStat = getTargetedDefenseStat(this.entity, target, combatStats);
             this.entity.addComponent({
-                type: "DamageIncrease",
+                type: "RoundDamageIncrease",
                 value: Math.floor(combatStats[defStat] * 0.8)
             });
         },
@@ -41,7 +41,7 @@ const SPECIALS: SpecialsDict = {
         onCombatRoundAttack() {
             const { atk } = getCombatStats(this.entity);
             this.entity.addComponent({
-                type: "DamageIncrease",
+                type: "RoundDamageIncrease",
                 value: Math.floor(atk / 2)
             });
         },
@@ -53,7 +53,7 @@ const SPECIALS: SpecialsDict = {
         onCombatRoundAttack() {
             const { res } = getCombatStats(this.entity);
             this.entity.addComponent({
-                type: "DamageIncrease",
+                type: "RoundDamageIncrease",
                 value: Math.floor(res / 2)
             });
         },
@@ -68,7 +68,7 @@ const SPECIALS: SpecialsDict = {
             const defenseStat = getTargetedDefenseStat(this.entity, target, combatStats);
             const stat = combatStats[defenseStat];
             this.entity.addComponent({
-                type: "DamageIncrease",
+                type: "RoundDamageIncrease",
                 value: Math.floor(stat * 0.5)
             });
 

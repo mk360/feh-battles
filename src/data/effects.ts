@@ -145,6 +145,7 @@ export function threaten(thisArg: Skill, state: GameState, statDebuffs: Stats) {
                 type: "MapDebuff",
                 ...statDebuffs
             });
+            enemy.addTag("Penalty");
         }
     }
 }
@@ -155,6 +156,7 @@ export function dagger(state: GameState, target: Entity, debuffs: Stats) {
         type: "MapDebuff",
         ...debuffs,
     });
+    target.addTag("Penalty");
 
     for (let ally of allies) {
         if (HeroSystem.getDistance(ally, target) <= 2) {
@@ -162,6 +164,7 @@ export function dagger(state: GameState, target: Entity, debuffs: Stats) {
                 type: "MapDebuff",
                 ...debuffs,
             });
+            ally.addTag("Penalty");
         }
     }
 };

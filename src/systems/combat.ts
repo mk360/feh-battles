@@ -163,15 +163,17 @@ class CombatSystem extends System {
                 const defenderSpecial = defender.getOne("Special");
                 if (defenderSpecial && combatMap.get(defender).cooldown === 0) {
                     const defenderSpecialData = SPECIALS[defenderSpecial.name];
-                    defenderSkills.onSpecialTrigger?.forEach((skill) => {
-                        const dexData = SKILLS[skill.name];
-                        dexData.onSpecialTrigger.call(skill, defender, turnData);
-                    });
-                    defenderSpecialData.onCombatRoundDefense?.call(defenderSpecial, defender);
-                    turnData.attackerTriggeredSpecial = true;
-                    defenderSpecial.update({
-                        cooldown: defenderSpecial.maxCooldown
-                    });
+                    if (defenderSpecialData.onCombatRoundDefense) {
+                        defenderSkills.onSpecialTrigger?.forEach((skill) => {
+                            const dexData = SKILLS[skill.name];
+                            dexData.onSpecialTrigger.call(skill, defender, turnData);
+                        });
+                        defenderSpecialData.onCombatRoundDefense?.call(defenderSpecial, defender);
+                        turnData.attackerTriggeredSpecial = true;
+                        defenderSpecial.update({
+                            cooldown: defenderSpecial.maxCooldown
+                        });
+                    }
                 }
 
                 const defenderStats = combatMap.get(defender).stats;

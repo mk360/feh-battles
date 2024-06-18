@@ -7,17 +7,33 @@ interface DamageCalc {
     flatReduction: number;
     damagePercentage: number;
     defensiveTerrain: boolean;
+    specialIncreasePercentage: number;
+    flatIncrease: number;
+    staffPenalty: boolean;
 }
 
 // to reverse-engineer dmg: lookup "rawDmg" in https://arcticsilverfox.com/feh_sim/
 
-function calculateDamage({ atkStat, effectiveness, advantage, affinity, defenseStat, flatReduction, damagePercentage, defensiveTerrain }: DamageCalc) {
-    const rawDamage = Math.trunc(atkStat * effectiveness);
-    const damageWithAdvantage = Math.trunc(atkStat * effectiveness * (advantage + affinity));
+function calculateDamage({ atkStat, effectiveness, advantage, affinity, defenseStat, flatReduction, damagePercentage, defensiveTerrain, flatIncrease, specialIncreasePercentage, staffPenalty }: DamageCalc) {
+    const damageWithAdvantage = Math.trunc(atkStat * (advantage + affinity));
+    const damageWithEffectiveness = Math.trunc(damageWithAdvantage * effectiveness);
     const defensiveTerrainBonus = defensiveTerrain ? Math.trunc(defenseStat * 0.3) : 0;
-    const syntheticDefense = defenseStat + defensiveTerrainBonus + flatReduction;
+    const netDefense = defenseStat + defensiveTerrainBonus;
+    let netDamage = damageWithEffectiveness - netDefense;
 
-    return Math.max(0, rawDamage + damageWithAdvantage - syntheticDefense);
+    if (specialIncreasePercentage) {
+        netDamage = Math.trunc(netDamage * specialIncreasePercentage);
+    }
+    if (flatIncrease) {
+        netDamage = Math.max(0, netDamage + flatIncrease);
+    }
+    if (staffPenalty) {
+        netDamage = Math.trunc(netDamage * 0.5);
+    }
+
+    netDamage = Math.ceil(netDamage * damagePercentage / 100);
+
+    return Math.max(0, netDamage - Math.floor(flatReduction));
 }
 
 export default calculateDamage;

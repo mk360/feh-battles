@@ -15,7 +15,7 @@ import calculateDamage from "./calculate-damage";
 import TileBitshifts from "../data/tile-bitshifts";
 import SPECIALS from "../data/specials";
 
-const SUBSCRIBED_COMPONENTS = ["DealDamage", "CombatBuff", "BraveWeapon", "CombatDebuff", "DamageIncrease", "Kill", "Special"];
+const SUBSCRIBED_COMPONENTS = ["DealDamage", "CombatBuff", "BraveWeapon", "CombatDebuff", "RoundDamageIncrease", "RoundDamageReduction", "DamageIncrease", "Kill", "Special"];
 
 class CombatSystem extends System {
     private state: GameState;
@@ -123,19 +123,36 @@ class CombatSystem extends System {
                     dexData.onCombatRoundAttack.call(skill, turn, turnData);
                 });
 
-                const attackerSpecial = defender.getOne("Special");
-                const attackerSpecialData = SPECIALS[attackerSpecial.name];
-                if (attackerSpecial && attackerSpecialData && combatMap.get(defender).cooldown === 0) {
-                    attackerSkills.onSpecialTrigger?.forEach((skill) => {
-                        const dexData = SKILLS[skill.name];
-                        dexData.onSpecialTrigger.call(skill, turn, turnData);
-                    });
-                    attackerSpecialData.onCombatRoundAttack?.call(attackerSpecial, defender);
-                    turnData.attackerTriggeredSpecial = true;
-                    attackerSpecial.update({
-                        cooldown: attackerSpecial.maxCooldown
-                    });
+                const attackerSpecial = turn.getOne("Special");
+                if (attackerSpecial && combatMap.get(turn).cooldown === 0) {
+                    const attackerSpecialData = SPECIALS[attackerSpecial.name];
+                    if (attackerSpecialData.onCombatRoundAttack) {
+                        attackerSkills.onSpecialTrigger?.forEach((skill) => {
+                            const dexData = SKILLS[skill.name];
+                            dexData.onSpecialTrigger.call(skill, turn, turnData);
+                        });
+                        attackerSpecialData.onCombatRoundAttack?.call(attackerSpecial, defender);
+                        turnData.attackerTriggeredSpecial = true;
+                        attackerSpecial.update({
+                            cooldown: attackerSpecial.maxCooldown
+                        });
+                    }
                 }
+
+                let flatExtraDamage = 0;
+                let damageIncreasePercentage = 100;
+                attacker.getComponents("DamageIncrease").forEach((damageIncrease) => {
+                    flatExtraDamage += damageIncrease.value;
+                });
+                attacker.getComponents("RoundDamageIncrease").forEach((damageIncrease) => {
+                    if (damageIncrease.value) {
+                        flatExtraDamage += damageIncrease.value;
+                    }
+                    if (damageIncrease.percentage) {
+                        damageIncreasePercentage *= damageIncrease.percentage / 100;
+                    }
+                    attacker.removeComponent(damageIncrease);
+                });
 
                 const defenderSkills = this.state.skillMap.get(defender);
                 defenderSkills.onCombatRoundDefense?.forEach((skill) => {
@@ -144,8 +161,8 @@ class CombatSystem extends System {
                 });
 
                 const defenderSpecial = defender.getOne("Special");
-                const defenderSpecialData = SPECIALS[defenderSpecial.name];
-                if (defenderSpecial && defenderSpecialData && combatMap.get(defender).cooldown === 0) {
+                if (defenderSpecial && combatMap.get(defender).cooldown === 0) {
+                    const defenderSpecialData = SPECIALS[defenderSpecial.name];
                     defenderSkills.onSpecialTrigger?.forEach((skill) => {
                         const dexData = SKILLS[skill.name];
                         dexData.onSpecialTrigger.call(skill, defender, turnData);
@@ -187,7 +204,10 @@ class CombatSystem extends System {
                     defenseStat,
                     defensiveTerrain: combatMap.get(defender).defensiveTile,
                     flatReduction,
-                    damagePercentage
+                    damagePercentage,
+                    specialIncreasePercentage: damageIncreasePercentage,
+                    flatIncrease: flatExtraDamage,
+                    staffPenalty: turn.getOne("Weapon").weaponType === "staff" && !turn.getOne("NormalizeStaffDamage")
                 });
 
                 const heal = turn.getOne("CombatHeal");

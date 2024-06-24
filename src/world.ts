@@ -27,6 +27,7 @@ import collectMapMods from "./systems/collect-map-mods";
 import KillSystem from "./systems/kill";
 import clearTile from "./systems/clear-tile";
 import { Action } from "./interfaces/actions";
+import shortid from "shortid";
 
 /**
  * TODO:
@@ -59,8 +60,9 @@ interface InitialLineup {
 
 class GameWorld extends World {
     state: GameState = {
+        teamIds: ["", ""],
         /**
-         * Map is stored in an 8x6 matrix of 16 bits for each cell (column x row, top-left is indexed at [1][0]).
+         * Map is stored in an 8x6 matrix of 16 bits for each cell (column x row, top-left is indexed at [1][1]).
          * This map is used to store basic information on the cell coordinates, what's the cell's type, does it have anything special
          * (trench, defensive tile) added. It acts as the source of truth in case any state or data conflict arises.
          */
@@ -75,33 +77,38 @@ class GameWorld extends World {
             8: [null, new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1)],
         },
         mapId: "",
-        topology: null,
-        teams: {
-            team1: new Set(),
-            team2: new Set(),
+        topology: {
+            tileData: [],
+            spawnLocations: {}
         },
-        teamsByMovementTypes: {
-            team1: {},
-            team2: {}
-        },
-        teamsByWeaponTypes: {
-            team1: {},
-            team2: {}
-        },
-        currentSide: "team1",
+        teams: {},
+        teamsByMovementTypes: {},
+        teamsByWeaponTypes: {},
+        currentSide: "",
         turn: 1,
         skillMap: new Map(),
         occupiedTilesMap: new Map()
     };
 
-    constructor(config?: IWorldConfig) {
+    constructor(config: Partial<IWorldConfig> & { team1: string; team2: string }) {
         super(config);
         const COMPONENTS = COMPONENTS_DIRECTORY.map((componentFile) => {
             return require(path.join(__dirname, "./components", componentFile)).default;
         });
+        this.state.teamIds = [config.team1, config.team2];
         for (let component of COMPONENTS) {
             this.registerComponent(component);
         }
+        this.state.currentSide = this.state.teamIds[0];
+        for (let id of this.state.teamIds) {
+            this.state.teamsByWeaponTypes[id] = {};
+            this.state.teamsByMovementTypes[id] = {};
+            this.state.teams[id] = new Set();
+        }
+        this.state.topology.spawnLocations = {
+            [config.team1]: [],
+            [config.team2]: [],
+        };
         this.registerTags(...STATUSES);
         this.registerSystem("every-turn", TurnStart, [this.state]);
         this.registerSystem("before-combat", SkillInteractionSystem, [this.state]);
@@ -116,39 +123,28 @@ class GameWorld extends World {
         this.runSystems("every-turn");
         this.systems.get("every-turn").forEach((system) => {
             // @ts-ignore
-            // changes = changes.concat(system._stagedChanges.map((op) => this.processOperation(op)));
+            changes = changes.concat(system._stagedChanges);
         });
 
-        return changes;
+        return this.outputEngineActions(changes, "turn-start");
     }
 
-    private outputEngineActions(events: IComponentChange[]): Action[] {
-        const actions: Action[] = [];
-        for (let event of events) {
-            if (event.type === "DealDamage" && event.op === "add") {
-                const comp = this.getComponent(event.component);
-                actions.push({
-                    type: "attack",
-                    attacker: {
-                        id: event.entity,
-                        damage: comp.damage,
-                        heal: comp.heal,
-                        activateSpecial: comp.special,
-                    },
-                    defender: {
-                        id: event.target,
-                        activateSpecial: comp.targetTriggersSpecial
-                    }
-                });
-            }
-
-            if (event.type === "Kill") {
-                actions.push({
-                    type: "kill",
-                    target: event.entity
-                });
-            }
+    private outputEngineActions(events: IComponentChange[], type: Action["type"]) {
+        const actions: string[] = [];
+        const statuses = events.filter((change) => change.type === "Status" && change.op === "add");
+        const statusDealingMap: { [k: string]: { target: string, status: string }[] } = {};
+        for (let status of statuses) {
+            const comp = this.getComponent(status.component);
+            if (!statusDealingMap[comp.source.id]) statusDealingMap[comp.source.id] = [];
+            statusDealingMap[comp.source.id].push({ target: comp.entity.id, status: comp.value });
         }
+
+        for (let dealer in statusDealingMap) {
+            const effect = statusDealingMap[dealer];
+            const line = `status add ${dealer},` + effect.map((status) => `${status.target} ${status.status}`).join(",");
+            actions.push(line);
+        }
+
         return actions;
     };
 
@@ -311,9 +307,12 @@ class GameWorld extends World {
     generateMap() {
         const randomMapIndex = (1 + Math.floor(Math.random() * 90)).toString().padStart(4, "0");
         const mapId = `Z${randomMapIndex}`;
-        console.log({ randomMapIndex });
         this.state.mapId = mapId;
         this.state.topology = require(`../maps/${mapId}.json`);
+        this.state.topology.spawnLocations[this.state.teamIds[0]] = this.state.topology.spawnLocations.team1;
+        this.state.topology.spawnLocations[this.state.teamIds[1]] = this.state.topology.spawnLocations.team2;
+        delete this.state.topology.spawnLocations.team1;
+        delete this.state.topology.spawnLocations.team2;
         for (let y = 1; y <= this.state.topology.tileData.length; y++) {
             const line = this.state.topology.tileData[y - 1];
             for (let x = 0; x < line.length; x++) {
@@ -434,7 +433,7 @@ class GameWorld extends World {
         };
     }
 
-    createHero(member: HeroData, team: "team1" | "team2", teamIndex: number) {
+    createHero(member: HeroData, team: string, teamIndex: number) {
         const dexData = CHARACTERS[member.name];
         const entity = this.createEntity({
             components: [{
@@ -615,19 +614,18 @@ class GameWorld extends World {
 
     initiate(lineup: InitialLineup) {
         const { team1, team2 } = lineup;
-
         for (let i = 0; i < team1.length; i++) {
             const member = team1[i];
-            this.createHero(member, "team1", i + 1);
+            this.createHero(member, this.state.teamIds[0], i + 1);
         }
 
         for (let i = 0; i < team2.length; i++) {
             const member = team2[i];
-            this.createHero(member, "team2", i + 1);
+            this.createHero(member, this.state.teamIds[1], i + 1);
         }
     }
 
-    private createCharacterComponents(hero: Entity, team: "team1" | "team2", rarity: number): { type: string;[k: string]: any }[] {
+    private createCharacterComponents(hero: Entity, team: string, rarity: number): { type: string;[k: string]: any }[] {
         const { value: name } = hero.getOne("Name");
         const dexData = CHARACTERS[name];
         const { stats, growthRates } = dexData;
@@ -660,7 +658,7 @@ class GameWorld extends World {
             {
                 type: "Side",
                 value: team,
-                bitfield: Teams[team]
+                bitfield: Teams[this.state.teamIds.indexOf(team)]
             },
             {
                 type: "MovementType",

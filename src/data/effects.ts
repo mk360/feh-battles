@@ -15,7 +15,11 @@ export function honeStat(thisArg: Skill, state: GameState, stat: Stat, buff: num
                 type: "MapBuff",
                 [stat]: buff
             });
-            ally.addTag("Bonus");
+            ally.addComponent({
+                type: "Status",
+                value: "Bonus",
+                source: thisArg.entity
+            });
         }
     }
 }
@@ -28,7 +32,11 @@ export function mapBuffByMovementType(thisArg: Skill, state: GameState, movement
                 type: "MapBuff",
                 ...buffs
             });
-            ally.addTag("Bonus");
+            ally.addComponent({
+                type: "Status",
+                value: "Bonus",
+                source: thisArg.entity
+            });
         }
     }
 }
@@ -41,7 +49,11 @@ export function mapBuffByRange(thisArg: Skill, state: GameState, range: number, 
                 type: "MapBuff",
                 ...buffs
             });
-            ally.addTag("Bonus");
+            ally.addComponent({
+                type: "Status",
+                value: "Bonus",
+                source: thisArg.entity
+            });
         }
     }
 }
@@ -78,7 +90,11 @@ export function defiant(thisArg: Skill, stat: Stat, buff: number) {
             type: "MapBuff",
             [stat]: buff
         });
-        thisArg.entity.addTag("Bonus");
+        thisArg.entity.addComponent({
+            type: "Status",
+            value: "Bonus",
+            source: thisArg.entity
+        });
     }
 }
 
@@ -145,18 +161,26 @@ export function threaten(thisArg: Skill, state: GameState, statDebuffs: Stats) {
                 type: "MapDebuff",
                 ...statDebuffs
             });
-            enemy.addTag("Penalty");
+            enemy.addComponent({
+                type: "Status",
+                value: "Penalty",
+                source: thisArg.entity
+            });
         }
     }
 }
 
-export function dagger(state: GameState, target: Entity, debuffs: Stats) {
+export function dagger(thisArg: Skill, state: GameState, target: Entity, debuffs: Stats) {
     const allies = getAllies(state, target);
     target.addComponent({
         type: "MapDebuff",
         ...debuffs,
     });
-    target.addTag("Penalty");
+    target.addComponent({
+        type: "Status",
+        value: "Penalty",
+        source: thisArg.entity
+    });
 
     for (let ally of allies) {
         if (HeroSystem.getDistance(ally, target) <= 2) {
@@ -164,7 +188,11 @@ export function dagger(state: GameState, target: Entity, debuffs: Stats) {
                 type: "MapDebuff",
                 ...debuffs,
             });
-            ally.addTag("Penalty");
+            ally.addComponent({
+                type: "Status",
+                value: "Penalty",
+                source: thisArg.entity
+            });
         }
     }
 };

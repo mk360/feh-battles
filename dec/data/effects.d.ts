@@ -15,7 +15,7 @@ export declare function bond(thisArg: Skill, state: GameState, buffs: Stats): vo
 export declare function elementalBoost(thisArg: Skill, target: Entity, buffs: Stats): void;
 export declare function renewal(thisArg: Skill, shouldActivate: boolean, amount: number): void;
 export declare function threaten(thisArg: Skill, state: GameState, statDebuffs: Stats): void;
-export declare function dagger(state: GameState, target: Entity, debuffs: Stats): void;
+export declare function dagger(thisArg: Skill, state: GameState, target: Entity, debuffs: Stats): void;
 export declare function counterattack(thisArg: Skill): void;
 export declare function owl(thisArg: Skill, state: GameState): void;
 export declare function blade(thisArg: Skill): void;

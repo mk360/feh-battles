@@ -4,9 +4,9 @@ import Skill from "../components/skill";
 import SkillHook from "../interfaces/skill-hook";
 
 interface GameState {
+    teamIds: [string, string];
     teams: {
-        team1: Set<Entity>;
-        team2: Set<Entity>;
+        [teamId: string]: Set<Entity>;
     };
     mapId: string;
     topology: JSONMapData;
@@ -21,22 +21,16 @@ interface GameState {
         8: [null, Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array];
     };
     teamsByWeaponTypes: {
-        team1: Partial<{
-            [k in WeaponType]: number
-        }>;
-        team2: Partial<{
+        [teamId: string]: Partial<{
             [k in WeaponType]: number
         }>;
     };
     teamsByMovementTypes: {
-        team1: Partial<{
-            [k in MovementType]: number
-        }>;
-        team2: Partial<{
+        [teamId: string]: Partial<{
             [k in MovementType]: number
         }>;
     };
-    currentSide: "team1" | "team2";
+    currentSide: string;
     turn: number;
     skillMap: Map<Entity, Partial<{
         [hook in SkillHook]: Set<Skill>;

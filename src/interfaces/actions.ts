@@ -10,6 +10,14 @@ interface AttackParticipant {
     damage?: number;
 }
 
+export type TurnStartAction = ActionType<"turn-start"> & {
+    [entityId: string]: {
+        damage?: number;
+        statuses?: string[];
+        source?: string;
+    }
+}
+
 export interface AttackAction {
     type: "attack";
     attacker: AttackParticipant;
@@ -33,6 +41,7 @@ export type AfterCombatAction = ActionType<"after-combat"> & {
         damage?: number;
         heal?: number;
         statuses?: string[];
+        kill?: boolean;
     }
 };
 
@@ -49,4 +58,8 @@ export interface EndTurnAction {
     turnCount: number;
 }
 
-export type Action = AttackAction | BeforeCombatAction | AfterCombatAction | MoveAction | EndTurnAction | KillAction;
+export type EndCharacterActionAction = ActionType<"end-action"> & {
+    status?: string[];
+}
+
+export type Action = AttackAction | BeforeCombatAction | AfterCombatAction | MoveAction | EndTurnAction | EndCharacterActionAction | KillAction | TurnStartAction;

@@ -1,8 +1,9 @@
-import { Component } from "ape-ecs";
+import { Component, EntityRef } from "ape-ecs";
 
 class Status extends Component {
     static properties = {
-        value: ""
+        value: "",
+        source: EntityRef
     };
 };
 

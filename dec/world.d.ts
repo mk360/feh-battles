@@ -1,4 +1,4 @@
-import { Component, Entity, IComponentChange, IComponentObject, IWorldConfig, World } from "ape-ecs";
+import { Component, Entity, IWorldConfig, World } from "ape-ecs";
 import GameState from "./systems/state";
 import { Stat } from "./interfaces/types";
 import { Action } from "./interfaces/actions";
@@ -23,12 +23,12 @@ interface InitialLineup {
 }
 declare class GameWorld extends World {
     state: GameState;
-    constructor(config?: IWorldConfig);
-    startTurn(): (IComponentChange & Partial<{
-        detailedComponent: IComponentObject;
-    }>)[];
+    constructor(config: Partial<IWorldConfig> & {
+        team1: string;
+        team2: string;
+    });
+    startTurn(): string[];
     private outputEngineActions;
-    private processOperation;
     getUnitMapStats(id: string): {
         buffs: Partial<import("./interfaces/types").MandatoryStats>;
         debuffs: Partial<import("./interfaces/types").MandatoryStats>;
@@ -106,7 +106,7 @@ declare class GameWorld extends World {
             combatBuffs: Partial<import("./interfaces/types").MandatoryStats>;
         };
     };
-    createHero(member: HeroData, team: "team1" | "team2", teamIndex: number): Entity;
+    createHero(member: HeroData, team: string, teamIndex: number): Entity;
     initiate(lineup: InitialLineup): void;
     private createCharacterComponents;
     private undoComponentChange;

@@ -15,6 +15,7 @@ interface WeaponDict {
         exclusiveTo?: (keyof typeof Characters)[];
         effectiveAgainst?: (MovementType | WeaponType)[];
         protects?: (MovementType | WeaponType)[];
+        onSpecialTrigger?(this: Skill, battleState: GameState, target: Entity): void;
         onCombatStart?(this: Skill, battleState: GameState, target: Entity): void;
         onCombatAfter?(this: Skill, battleState: GameState, target: Entity, combat: CombatOutcome): void;
         onCombatInitiate?(this: Skill, state: GameState, target: Entity): void;
@@ -23,7 +24,10 @@ interface WeaponDict {
         onCombatRoundAttack?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): void;
         onCombatRoundDefense?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): void;
         onEquip?(this: Skill): any;
+        onTurnCheckRange?(this: Skill, state: GameState): void;
         onTurnStart?(this: Skill, battleState: GameState): void;
+        onTurnStartBefore?(this: Skill, battleState: GameState): void;
+        onTurnStartAfter?(this: Skill, battleState: GameState): void;
     };
 }
 declare const WEAPONS: WeaponDict;

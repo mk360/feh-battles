@@ -1117,7 +1117,7 @@ const WEAPONS: WeaponDict = {
             });
         },
         onCombatAfter(battleState, target, combat) {
-            Effects.dagger(battleState, target, {
+            Effects.dagger(this, battleState, target, {
                 def: -7,
                 res: -7
             });
@@ -2000,7 +2000,7 @@ const WEAPONS: WeaponDict = {
         might: 14,
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
-                Effects.dagger(battleState, target, {
+                Effects.dagger(this, battleState, target, {
                     atk: -6,
                     spd: -6,
                     def: -6,

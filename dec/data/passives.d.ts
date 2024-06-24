@@ -20,9 +20,12 @@ interface PassivesDict {
         onCombatAllyStart?(this: Skill, state: GameState, ally: Entity): void;
         onCombatDefense?(this: Skill, state: GameState, attacker: Entity): void;
         onCombatAfter?(this: Skill, state: GameState, target: Entity): void;
-        onTurnStart?(this: Skill, state: GameState): void;
         onCombatRoundAttack?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): void;
         onCombatRoundDefense?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): void;
+        onSpecialTrigger?(this: Skill, battleState: GameState, target: Entity): void;
+        onTurnStart?(this: Skill, state: GameState): void;
+        onTurnStartBefore?(this: Skill, state: GameState): void;
+        onTurnStartAfter?(this: Skill, state: GameState): void;
         onTurnCheckRange?(this: Skill, state: GameState): void;
         onTurnAllyCheckRange?(this: Skill, state: GameState, ally: Entity): void;
         onTurnEnemyCheckRange?(this: Skill, state: GameState, enemy: Entity): void;

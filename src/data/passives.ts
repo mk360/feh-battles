@@ -73,11 +73,11 @@ function wave(affectedStat: Stat, parity: (turnCount: number) => boolean, buff: 
                 type: "MapBuff",
                 [affectedStat]: buff
             });
-            this.entity.addTag("Bonus");
+            this.entity.addComponent({ type: "Status", value: "Bonus", source: this.entity });
             const allies = getAllies(state, this.entity);
             for (let ally of allies) {
                 if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                    ally.addTag("Bonus");
+                    ally.addComponent({ type: "Status", value: "Bonus", source: this.entity });
                     ally.addComponent({
                         type: "MapBuff",
                         [affectedStat]: buff
@@ -1802,7 +1802,7 @@ const PASSIVES: PassivesDict = {
         //     // }
         // },
         onTurnStart() {
-            this.entity.addTag("Guidance");
+            this.entity.addComponent({ type: "Status", value: "Guidance", source: this.entity });
         },
         onTurnAllyCheckRange(state, ally) {
             if (["armored", "infantry"].includes(ally.getOne("MovementType").value) && HeroSystem.getDistance(ally, this.entity) <= 2) {
@@ -2145,7 +2145,7 @@ const PASSIVES: PassivesDict = {
                 if (enemyPosition.x === x || enemyPosition.y === y) {
                     const { hp: enemyHp } = enemy.getOne("Stats");
                     if (enemyHp <= hp - 5) {
-                        enemy.addTag("Panic");
+                        enemy.addComponent({ type: "Status", value: "Panic", source: this.entity });
                     }
                 }
             }
@@ -2164,7 +2164,7 @@ const PASSIVES: PassivesDict = {
                 if (enemyPosition.x === x || enemyPosition.y === y) {
                     const { hp: enemyHp } = enemy.getOne("Stats");
                     if (enemyHp <= hp - 3) {
-                        enemy.addTag("Panic");
+                        enemy.addComponent({ type: "Status", value: "Panic", source: this.entity });
                     }
                 }
             }
@@ -2183,7 +2183,7 @@ const PASSIVES: PassivesDict = {
                 if (enemyPosition.x === x || enemyPosition.y === y) {
                     const { hp: enemyHp } = enemy.getOne("Stats");
                     if (enemyHp < hp) {
-                        enemy.addTag("Panic");
+                        enemy.addComponent({ type: "Status", value: "Panic", source: this.entity });
                     }
                 }
             }

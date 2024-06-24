@@ -7,7 +7,10 @@ interface DamageCalc {
     flatReduction: number;
     damagePercentage: number;
     defensiveTerrain: boolean;
+    specialIncreasePercentage: number;
+    flatIncrease: number;
+    staffPenalty: boolean;
 }
-declare function calculateDamage({ atkStat, effectiveness, advantage, affinity, defenseStat, flatReduction, damagePercentage, defensiveTerrain }: DamageCalc): number;
+declare function calculateDamage({ atkStat, effectiveness, advantage, affinity, defenseStat, flatReduction, damagePercentage, defensiveTerrain, flatIncrease, specialIncreasePercentage, staffPenalty }: DamageCalc): number;
 export default calculateDamage;
 //# sourceMappingURL=calculate-damage.d.ts.map

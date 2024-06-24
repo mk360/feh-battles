@@ -55,6 +55,11 @@ function ploy(thisArg: Skill, state: GameState, affectedStat: Stat, debuff: numb
                 type: "MapDebuff",
                 [affectedStat]: debuff
             });
+            enemy.addComponent({
+                type: "Status",
+                value: "Penalty",
+                source: thisArg.entity
+            })
         }
     }
 }
@@ -1801,9 +1806,6 @@ const PASSIVES: PassivesDict = {
         //     //     }
         //     // }
         // },
-        onTurnStart() {
-            this.entity.addComponent({ type: "Status", value: "Guidance", source: this.entity });
-        },
         onTurnAllyCheckRange(state, ally) {
             if (["armored", "infantry"].includes(ally.getOne("MovementType").value) && HeroSystem.getDistance(ally, this.entity) <= 2) {
                 const { x, y } = this.entity.getOne("Position");

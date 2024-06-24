@@ -126,12 +126,15 @@ class GameWorld extends World {
             changes = changes.concat(system._stagedChanges);
         });
 
-        return this.outputEngineActions(changes, "turn-start");
+        var a = this.outputEngineActions(changes, "turn-start");
+        console.log(a);
+        return a;
     }
 
     private outputEngineActions(events: IComponentChange[], type: Action["type"]) {
         const actions: string[] = [];
         const statuses = events.filter((change) => change.type === "Status" && change.op === "add");
+
         const statusDealingMap: { [k: string]: { target: string, status: string }[] } = {};
         for (let status of statuses) {
             const comp = this.getComponent(status.component);
@@ -141,7 +144,7 @@ class GameWorld extends World {
 
         for (let dealer in statusDealingMap) {
             const effect = statusDealingMap[dealer];
-            const line = `status add ${dealer},` + effect.map((status) => `${status.target} ${status.status}`).join(",");
+            const line = `trigger ${dealer},` + effect.map((status) => `${status.status} ${status.target}`).join(",");
             actions.push(line);
         }
 
@@ -305,7 +308,9 @@ class GameWorld extends World {
     }
 
     generateMap() {
-        const randomMapIndex = (1 + Math.floor(Math.random() * 90)).toString().padStart(4, "0");
+        // const randomMapIndex = (1 + Math.floor(Math.random() * 90)).toString().padStart(4, "0");
+        const randomMapIndex = "0011";
+        console.log({ randomMapIndex });
         const mapId = `Z${randomMapIndex}`;
         this.state.mapId = mapId;
         this.state.topology = require(`../maps/${mapId}.json`);

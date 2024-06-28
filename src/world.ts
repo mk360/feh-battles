@@ -49,6 +49,7 @@ interface HeroData {
         C: string;
         S: string;
     };
+    merges?: number;
     boon?: Stat;
     bane?: Stat;
 }
@@ -142,9 +143,12 @@ class GameWorld extends World {
             statusDealingMap[comp.source.id].push({ target: comp.entity.id, status: comp.value });
         }
 
+        const line = Object.keys(statusDealingMap).map((dealer) => `trigger ${dealer}`).join(",");
+        actions.push(line);
+
         for (let dealer in statusDealingMap) {
             const effect = statusDealingMap[dealer];
-            const line = `trigger ${dealer},` + effect.map((status) => `${status.status} ${status.target}`).join(",");
+            const line = effect.map((status) => `${status.status} ${status.target}`).join(",");
             actions.push(line);
         }
 
@@ -459,7 +463,7 @@ class GameWorld extends World {
             });
         }
 
-        const components = this.createCharacterComponents(entity, team, member.rarity);
+        const components = this.createCharacterComponents(entity, team, member.rarity, member.merges);
 
         for (let component of components) {
             entity.addComponent(component);
@@ -630,7 +634,7 @@ class GameWorld extends World {
         }
     }
 
-    private createCharacterComponents(hero: Entity, team: string, rarity: number): { type: string;[k: string]: any }[] {
+    private createCharacterComponents(hero: Entity, team: string, rarity: number, merges: number): { type: string;[k: string]: any }[] {
         const { value: name } = hero.getOne("Name");
         const dexData = CHARACTERS[name];
         const { stats, growthRates } = dexData;
@@ -645,9 +649,9 @@ class GameWorld extends World {
 
         this.state.teamsByWeaponTypes[team][dexData.weaponType]++;
 
-        const lv40Stats = getLv40Stats(stats, growthRates, rarity, hero.getOne("Boon")?.value, hero.getOne("Bane")?.value);
+        const lv40Stats = getLv40Stats(stats, growthRates, rarity, hero.getOne("Boon")?.value, hero.getOne("Bane")?.value, merges, hero.getOne("Name").value);
 
-        return [
+        const components: { type: string;[k: string]: any }[] = [
             {
                 type: "Weapon",
                 weaponType: dexData.weaponType,
@@ -671,6 +675,15 @@ class GameWorld extends World {
                 ...MovementTypes[dexData.movementType]
             }
         ];
+
+        if (merges) {
+            components.push({
+                type: "HeroMerge",
+                value: merges
+            });
+        }
+
+        return components;
     }
 
     private undoComponentChange(change: IComponentChange) {

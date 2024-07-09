@@ -14,6 +14,7 @@ interface HeroData {
         C: string;
         S: string;
     };
+    merges?: number;
     boon?: Stat;
     bane?: Stat;
 }

@@ -127,9 +127,9 @@ class GameWorld extends World {
             changes = changes.concat(system._stagedChanges);
         });
 
-        var a = this.outputEngineActions(changes, "turn-start");
-        console.log(a);
-        return a;
+        const turnEvents = this.outputEngineActions(changes, "turn-start");
+        const withTurnChange = [`turn ${this.state.currentSide} ${this.state.turn}`].concat(turnEvents);
+        return withTurnChange;
     }
 
     private outputEngineActions(events: IComponentChange[], type: Action["type"]) {

@@ -1,5 +1,5 @@
 import { MandatoryStats, Stat } from "../interfaces/types";
-declare function getLv40Stats(lv1Stats: MandatoryStats, growthRates: MandatoryStats, rarity: number, boon?: Stat, bane?: Stat): {
+declare function getLv40Stats(lv1Stats: MandatoryStats, growthRates: MandatoryStats, rarity: number, boon?: Stat, bane?: Stat, merges?: number, namae?: string): {
     atk: number;
     def: number;
     res: number;

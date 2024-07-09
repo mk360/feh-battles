@@ -4,7 +4,6 @@ function getLv40Stats(lv1Stats: MandatoryStats, growthRates: MandatoryStats, rar
     const copy = { ...lv1Stats };
     const growthRateCopy = { ...growthRates };
     if (namae === "Clarisse: Sniper in the Dark") {
-        console.log("before mods", growthRateCopy);
     }
 
     if (boon && bane) {
@@ -41,11 +40,6 @@ function getLv40Stats(lv1Stats: MandatoryStats, growthRates: MandatoryStats, rar
         const growthRate = growthRateCopy[stat as Stat];
         const masterGrowthRate = Math.floor(growthRate * (0.79 + 0.07 * rarity));
         const growthValue = Math.floor(39 * masterGrowthRate / 100);
-        if (namae === "Clarisse: Sniper in the Dark") {
-            if (stat === "spd") {
-                console.log(copy[stat], masterGrowthRate, growthValue);
-            }
-        }
         copy[stat] += growthValue;
     }
 

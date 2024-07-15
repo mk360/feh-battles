@@ -483,7 +483,7 @@ class GameWorld extends World {
             throw new Error("Tile is already occupied");
         }
 
-        this.state.map[y][x][0] |= Teams[team];
+        this.state.map[y][x][0] |= Teams[this.state.teamIds.indexOf(team)];
 
         this.state.occupiedTilesMap.set(this.state.map[y][x], entity);
 

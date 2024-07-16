@@ -59,6 +59,10 @@ declare class GameWorld extends World {
         x: number;
         y: number;
     }): Component;
+    runAssist(source: string, target: string, sourceCoordinates: {
+        x: number;
+        y: number;
+    }): string[];
     endAction(id: string): void;
     generateMap(): void;
     previewAttack(attackerId: string, targetCoordinates: {

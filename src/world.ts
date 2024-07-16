@@ -28,6 +28,7 @@ import KillSystem from "./systems/kill";
 import clearTile from "./systems/clear-tile";
 import { Action } from "./interfaces/actions";
 import shortid from "shortid";
+import AssistSystem from "./systems/assist";
 
 /**
  * TODO:
@@ -117,6 +118,7 @@ class GameWorld extends World {
         this.registerSystem("movement", MovementSystem, [this.state]);
         this.registerSystem("after-combat", AfterCombatSystem, [this.state]);
         this.registerSystem("kill", KillSystem, [this.state]);
+        this.registerSystem("assist", AssistSystem, [this.state]);
     }
 
     startTurn() {
@@ -127,12 +129,12 @@ class GameWorld extends World {
             changes = changes.concat(system._stagedChanges);
         });
 
-        const turnEvents = this.outputEngineActions(changes, "turn-start");
+        const turnEvents = this.outputEngineActions(changes);
         const withTurnChange = [`turn ${this.state.currentSide} ${this.state.turn}`].concat(turnEvents);
         return withTurnChange;
     }
 
-    private outputEngineActions(events: IComponentChange[], type: Action["type"]) {
+    private outputEngineActions(events: IComponentChange[]) {
         const actions: string[] = [];
         const statuses = events.filter((change) => change.type === "Status" && change.op === "add");
 
@@ -151,6 +153,13 @@ class GameWorld extends World {
             const line = effect.map((status) => `${status.status} ${status.target}`).join(",");
             actions.push(line);
         }
+
+        const moveActions = events.filter((change) => change.type === "Move" && change.op === "add");
+
+        actions.push(moveActions.map((action) => {
+            const component = this.getComponent(action.component);
+            return `move ${action.entity} ${component.x} ${component.y}`;
+        }).join(","));
 
         return actions;
     };
@@ -296,6 +305,34 @@ class GameWorld extends World {
 
         return positionComponent;
     };
+
+    runAssist(source: string, target: string, sourceCoordinates: { x: number, y: number }) {
+        let changes: string[] = [];
+
+        const assistSource = this.getEntity(source);
+        if (!assistSource.has("Assist")) {
+            // shouldn't be here
+            return null;
+        } else {
+            const assistTarget = this.getEntity(target);
+            assistSource.addComponent({
+                type: "Assisting"
+            });
+
+            assistTarget.addComponent({
+                type: "Assisting"
+            });
+
+            this.runSystems("assist");
+
+            this.systems.get("assist").forEach((system) => {
+                // @ts-ignore
+                changes = changes.concat(this.outputEngineActions(system._stagedChanges));
+            });
+        }
+
+        return changes;
+    }
 
     endAction(id: string) {
         const unit = this.getEntity(id);

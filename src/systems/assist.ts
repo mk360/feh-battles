@@ -23,7 +23,7 @@ class AssistSystem extends System {
         const assistSkill = assisting.getOne("Assist");
         const assistData = ASSISTS[assistSkill.name];
         if (assistSkill && assistData) {
-            // todo pour plus tard : ajouter des "onAssist" aux skills (pour les trucs du genre Snare, le B de Mordecai, etc.)
+            // todo pour plus tard : ajouter des "onAssist" aux skills qui s'activent après un assist (pour les trucs du genre Snare, le B de Mordecai, etc.)
             assistData.onApply.call(assisting, this.state, assisted);
         }
         const newAssistingHealth = getNewHealth(assisting);

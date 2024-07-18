@@ -135,7 +135,7 @@ class GameWorld extends World {
     }
 
     private outputEngineActions(events: IComponentChange[]) {
-        const actions: string[] = [];
+        let actions: string[] = [];
         const statuses = events.filter((change) => change.type === "Status" && change.op === "add");
 
         const statusDealingMap: { [k: string]: { target: string, status: string }[] } = {};
@@ -161,6 +161,20 @@ class GameWorld extends World {
             return `move ${action.entity} ${component.x} ${component.y}`;
         }).join(","));
 
+        const dealDamageActions = events.filter((change) => change.type === "DealDamage" && change.op === "add");
+
+        actions = actions.concat(dealDamageActions.map((damageAction) => {
+            const comp = this.getComponent(damageAction.component);
+
+            return `attack ${comp.entity.id} ${comp.cooldown} ${+comp.special} ${comp.damage} ${comp.target.id} ${+comp.targetTriggersSpecial} ${comp.targetCooldown} ${comp.targetHP}`;
+        }));
+
+        const killAction = events.filter((change) => change.type === "Kill" && change.op === "add");
+
+        actions = actions.concat(killAction.map((kill) => {
+            return `kill ${kill.entity}`;
+        }));
+
         return actions;
     };
 
@@ -171,7 +185,7 @@ class GameWorld extends World {
         return mapMods;
     }
 
-    runCombat(attackerId: string, targetCoordinates: { x: number, y: number }) {
+    runCombat(attackerId: string, movementCoordinates: { x: number, y: number }, targetCoordinates: { x: number, y: number }) {
         const attacker = this.getEntity(attackerId);
         const targetTile = this.state.map[targetCoordinates.y][targetCoordinates.x];
         const defender = this.state.occupiedTilesMap.get(targetTile);
@@ -182,7 +196,7 @@ class GameWorld extends World {
             type: "Battling"
         });
 
-        let changes: Action[] = [];
+        let changes: string[] = this.moveUnit(attackerId, movementCoordinates);
 
         this.runSystems("before-combat");
         this.runSystems("combat");
@@ -204,8 +218,14 @@ class GameWorld extends World {
             changes = changes.concat(this.outputEngineActions(system._stagedChanges));
         });
 
+        this.systems.get("kill").forEach((system) => {
+            // @ts-ignore
+            changes = changes.concat(this.outputEngineActions(system._stagedChanges));
+        });
+
         if (!attacker.destroyed) {
             attacker.removeComponent(b1);
+            changes = changes.concat(this.endAction(attacker.id));
         }
 
         if (!defender.destroyed) {

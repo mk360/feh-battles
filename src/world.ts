@@ -303,11 +303,13 @@ class GameWorld extends World {
             }
         });
 
-        return positionComponent;
+        const change = [`move ${id} ${x} ${y}`];
+
+        return change;
     };
 
-    runAssist(source: string, target: string, sourceCoordinates: { x: number, y: number }) {
-        let changes: string[] = [];
+    runAssist(source: string, target: string, actionCoordinates: { x: number, y: number }) {
+        let changes = this.moveUnit(source, actionCoordinates);
 
         const assistSource = this.getEntity(source);
         if (!assistSource.has("Assist")) {
@@ -335,17 +337,25 @@ class GameWorld extends World {
     }
 
     endAction(id: string) {
+        let changes: string[] = [];
+
         const unit = this.getEntity(id);
 
         unit.addComponent({
             type: "FinishedAction"
         });
 
+        changes.push(`finish ${id}`);
+
         const team = this.state.teams[unit.getOne("Side").value as "team1" | "team2"];
         const remainingUnits = Array.from(team).filter((e) => !e.getOne("FinishedAction"));
-        if (remainingUnits.length === 0) {
 
+        if (remainingUnits.length === 0) {
+            const turnChanges = this.startTurn();
+            changes = changes.concat(turnChanges);
         }
+
+        return changes;
     }
 
     generateMap() {

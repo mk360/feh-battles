@@ -1,7 +1,6 @@
 import { Component, Entity, IWorldConfig, World } from "ape-ecs";
 import GameState from "./systems/state";
 import { Stat } from "./interfaces/types";
-import { Action } from "./interfaces/actions";
 interface HeroData {
     name: string;
     rarity: number;
@@ -28,6 +27,7 @@ declare class GameWorld extends World {
         team1: string;
         team2: string;
     });
+    switchSides(): void;
     startTurn(): string[];
     private outputEngineActions;
     getUnitMapStats(id: string): {
@@ -36,10 +36,13 @@ declare class GameWorld extends World {
         changes: Partial<import("./interfaces/types").MandatoryStats>;
         hasPanic: boolean;
     };
-    runCombat(attackerId: string, targetCoordinates: {
+    runCombat(attackerId: string, movementCoordinates: {
         x: number;
         y: number;
-    }): Action[];
+    }, targetCoordinates: {
+        x: number;
+        y: number;
+    }): string[];
     getUnitMovement(id: string): {
         movementTiles: Set<Component>;
         attackTiles: Set<Component>;
@@ -58,12 +61,12 @@ declare class GameWorld extends World {
     moveUnit(id: string, newTile: {
         x: number;
         y: number;
-    }): Component;
-    runAssist(source: string, target: string, sourceCoordinates: {
+    }): string[];
+    runAssist(source: string, target: string, actionCoordinates: {
         x: number;
         y: number;
     }): string[];
-    endAction(id: string): void;
+    endAction(id: string): string[];
     generateMap(): void;
     previewAttack(attackerId: string, targetCoordinates: {
         x: number;

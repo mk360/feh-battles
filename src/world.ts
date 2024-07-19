@@ -26,7 +26,6 @@ import collectCombatMods from "./systems/collect-combat-mods";
 import collectMapMods from "./systems/collect-map-mods";
 import KillSystem from "./systems/kill";
 import clearTile from "./systems/clear-tile";
-import { Action } from "./interfaces/actions";
 import shortid from "shortid";
 import AssistSystem from "./systems/assist";
 
@@ -121,6 +120,14 @@ class GameWorld extends World {
         this.registerSystem("assist", AssistSystem, [this.state]);
     }
 
+    switchSides() {
+        const otherSide = this.state.currentSide === this.state.teamIds[0] ? this.state.teamIds[1] : this.state.teamIds[0];
+        if (this.state.currentSide === this.state.teamIds[1]) {
+            this.state.turn++;
+        }
+        this.state.currentSide = otherSide;
+    }
+
     startTurn() {
         let changes: (IComponentChange & Partial<{ detailedComponent: IComponentObject }>)[] = [];
         this.runSystems("every-turn");
@@ -148,14 +155,17 @@ class GameWorld extends World {
         const line = Object.keys(statusDealingMap).map((dealer) => `trigger ${dealer}`).join(",");
         actions.push(line);
 
+        const appliedStatuses: string[] = [];
+
         for (let dealer in statusDealingMap) {
             const effect = statusDealingMap[dealer];
             const line = effect.map((status) => `${status.status} ${status.target}`).join(",");
-            actions.push(line);
+            appliedStatuses.push(line);
         }
 
-        const moveActions = events.filter((change) => change.type === "Move" && change.op === "add");
+        actions = actions.concat(appliedStatuses.join(","));
 
+        const moveActions = events.filter((change) => change.type === "Move" && change.op === "add");
         actions.push(moveActions.map((action) => {
             const component = this.getComponent(action.component);
             return `move ${action.entity} ${component.x} ${component.y}`;
@@ -337,11 +347,11 @@ class GameWorld extends World {
             return null;
         } else {
             const assistTarget = this.getEntity(target);
-            assistSource.addComponent({
+            const c1 = assistSource.addComponent({
                 type: "Assisting"
             });
 
-            assistTarget.addComponent({
+            const c2 = assistTarget.addComponent({
                 type: "Assisting"
             });
 
@@ -351,6 +361,9 @@ class GameWorld extends World {
                 // @ts-ignore
                 changes = changes.concat(this.outputEngineActions(system._stagedChanges));
             });
+
+            assistSource.removeComponent(c1);
+            assistTarget.removeComponent(c2);
         }
 
         return changes;
@@ -371,6 +384,7 @@ class GameWorld extends World {
         const remainingUnits = Array.from(team).filter((e) => !e.getOne("FinishedAction"));
 
         if (remainingUnits.length === 0) {
+            team.forEach((hero) => hero.removeComponent(hero.getOne("FinishedAction")));
             const turnChanges = this.startTurn();
             changes = changes.concat(turnChanges);
         }

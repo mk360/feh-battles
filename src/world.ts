@@ -26,7 +26,7 @@ import collectCombatMods from "./systems/collect-combat-mods";
 import collectMapMods from "./systems/collect-map-mods";
 import KillSystem from "./systems/kill";
 import clearTile from "./systems/clear-tile";
-import shortid from "shortid";
+// import shortid from "shortid";
 import AssistSystem from "./systems/assist";
 
 /**
@@ -62,6 +62,7 @@ interface InitialLineup {
 class GameWorld extends World {
     state: GameState = {
         teamIds: ["", ""],
+        lastChangeSequence: [],
         /**
          * Map is stored in an 8x6 matrix of 16 bits for each cell (column x row, top-left is indexed at [1][1]).
          * This map is used to store basic information on the cell coordinates, what's the cell's type, does it have anything special
@@ -385,6 +386,7 @@ class GameWorld extends World {
 
         if (remainingUnits.length === 0) {
             team.forEach((hero) => hero.removeComponent(hero.getOne("FinishedAction")));
+            this.switchSides();
             const turnChanges = this.startTurn();
             changes = changes.concat(turnChanges);
         }

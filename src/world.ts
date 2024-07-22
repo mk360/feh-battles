@@ -14,7 +14,7 @@ import Teams from "./data/teams";
 import MovementSystem from "./systems/movement";
 import tileBitmasks from "./data/tile-bitmasks";
 import TileBitshifts from "./data/tile-bitshifts";
-import { Stat } from "./interfaces/types";
+import { Stat, Stats } from "./interfaces/types";
 import getAllies from "./utils/get-allies";
 import AfterCombatSystem from "./systems/after-combat";
 import { NEGATIVE_STATUSES, STATUSES } from "./statuses";
@@ -52,6 +52,10 @@ interface HeroData {
     merges?: number;
     boon?: Stat;
     bane?: Stat;
+    allySupport?: {
+        hero: string;
+        level: "S" | "A" | "B" | "C";
+    }
 }
 
 interface InitialLineup {

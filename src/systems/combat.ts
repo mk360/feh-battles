@@ -207,7 +207,7 @@ class CombatSystem extends System {
                     defensiveTerrain: combatMap.get(defender).defensiveTile,
                     flatReduction,
                     damagePercentage,
-                    specialIncreasePercentage: damageIncreasePercentage,
+                    specialIncreasePercentage: 0,
                     flatIncrease: flatExtraDamage,
                     staffPenalty: turn.getOne("Weapon").weaponType === "staff" && !turn.getOne("NormalizeStaffDamage")
                 });

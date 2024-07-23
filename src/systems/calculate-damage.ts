@@ -15,7 +15,7 @@ interface DamageCalc {
 // to reverse-engineer dmg: lookup "rawDmg" in https://arcticsilverfox.com/feh_sim/
 
 function calculateDamage({ atkStat, effectiveness, advantage, affinity, defenseStat, flatReduction, damagePercentage, defensiveTerrain, flatIncrease, specialIncreasePercentage, staffPenalty }: DamageCalc) {
-    const damageWithAdvantage = Math.trunc(atkStat * (advantage + affinity));
+    const damageWithAdvantage = Math.trunc(atkStat * (advantage + (1 + affinity)));
     const damageWithEffectiveness = Math.trunc(damageWithAdvantage * effectiveness);
     const defensiveTerrainBonus = defensiveTerrain ? Math.trunc(defenseStat * 0.3) : 0;
     const netDefense = defenseStat + defensiveTerrainBonus;
@@ -24,9 +24,11 @@ function calculateDamage({ atkStat, effectiveness, advantage, affinity, defenseS
     if (specialIncreasePercentage) {
         netDamage = Math.trunc(netDamage * specialIncreasePercentage);
     }
+
     if (flatIncrease) {
         netDamage = Math.max(0, netDamage + flatIncrease);
     }
+
     if (staffPenalty) {
         netDamage = Math.trunc(netDamage * 0.5);
     }

@@ -213,7 +213,7 @@ class GameWorld extends World {
         const range = attacker.getOne("Weapon").range;
         const targetTile = this.state.map[targetCoordinates.y][targetCoordinates.x];
         const defender = this.state.occupiedTilesMap.get(targetTile);
-        const bestTile = path.find((tile) => getDistance(movementCoordinates, tile) === range);
+        const bestTile = path.find((tile) => getDistance(tile, targetCoordinates) === range);
         const b1 = attacker.addComponent({
             type: "Battling"
         });
@@ -348,7 +348,7 @@ class GameWorld extends World {
             }
         });
 
-        const change = [`move ${id} ${x} ${y}`];
+        const change = [`move ${id} ${positionComponent.x} ${positionComponent.y}`];
 
         if (endAction) {
             const endActionChanges = this.endAction(id);

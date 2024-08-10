@@ -181,7 +181,7 @@ class GameWorld extends World {
         actions = actions.concat(dealDamageActions.map((damageAction) => {
             const comp = this.getComponent(damageAction.component);
 
-            return `attack ${comp.entity.id} ${comp.cooldown} ${+comp.special} ${comp.damage} ${comp.target.id} ${+comp.targetTriggersSpecial} ${comp.targetCooldown} ${comp.targetHP}`;
+            return `attack ${comp.attacker.entity} ${comp.attacker.hp} ${comp.attacker.specialCooldown} ${+comp.attacker.triggerSpecial} ${comp.attacker.damage} ${comp.attacker.heal} ${comp.target.entity} ${comp.target.hp} ${comp.target.specialCooldown} ${+comp.target.triggerSpecial} ${comp.target.damage} ${comp.target.heal}`;
         }));
 
         const killAction = events.filter((change) => change.type === "Kill" && change.op === "add");
@@ -211,7 +211,7 @@ class GameWorld extends World {
             type: "Battling"
         });
 
-        let changes: string[] = this.moveUnit(attackerId, movementCoordinates);
+        let changes: string[] = this.moveUnit(attackerId, movementCoordinates, false);
 
         this.runSystems("before-combat");
         this.runSystems("combat");
@@ -314,7 +314,7 @@ class GameWorld extends World {
         return !!foundTile;
     }
 
-    moveUnit(id: string, newTile: { x: number, y: number }) {
+    moveUnit(id: string, newTile: { x: number, y: number }, endAction: boolean) {
         const newMapTile = this.state.map[newTile.y][newTile.x];
         const unit = this.getEntity(id);
         const positionComponent = unit.getOne("Position");
@@ -340,11 +340,16 @@ class GameWorld extends World {
 
         const change = [`move ${id} ${x} ${y}`];
 
+        if (endAction) {
+            const endActionChanges = this.endAction(id);
+            return change.concat(endActionChanges);
+        }
+
         return change;
     };
 
     runAssist(source: string, target: string, actionCoordinates: { x: number, y: number }) {
-        let changes = this.moveUnit(source, actionCoordinates);
+        let changes = this.moveUnit(source, actionCoordinates, false);
 
         const assistSource = this.getEntity(source);
         if (!assistSource.has("Assist")) {
@@ -479,9 +484,9 @@ class GameWorld extends World {
         attackerDamage.forEach((comp) => {
             attackerTurns++;
             if (!comp.special) {
-                attackerDamagePerTurn = comp.damage;
+                attackerDamagePerTurn = comp.target.damage;
             }
-            totalAttackerDamage += comp.damage;
+            totalAttackerDamage += comp.target.damage;
         });
 
         let totalDefenderDamage = 0;
@@ -491,9 +496,9 @@ class GameWorld extends World {
         defenderDamage.forEach((comp) => {
             defenderTurns++;
             if (!comp.special) {
-                defenderDamagePerTurn = comp.damage;
+                defenderDamagePerTurn = comp.target.damage;
             }
-            totalDefenderDamage += comp.damage;
+            totalDefenderDamage += comp.target.damage;
         });
 
         const attackerNewHP = Math.max(0, attacker.getOne("Stats").hp - totalDefenderDamage);

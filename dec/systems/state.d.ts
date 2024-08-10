@@ -4,6 +4,7 @@ import Skill from "../components/skill";
 import SkillHook from "../interfaces/skill-hook";
 interface GameState {
     teamIds: [string, string];
+    lastChangeSequence: string[];
     teams: {
         [teamId: string]: Set<Entity>;
     };

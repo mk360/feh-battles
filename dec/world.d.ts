@@ -16,6 +16,10 @@ interface HeroData {
     merges?: number;
     boon?: Stat;
     bane?: Stat;
+    allySupport?: {
+        hero: string;
+        level: "S" | "A" | "B" | "C";
+    };
 }
 interface InitialLineup {
     team1: HeroData[];
@@ -61,7 +65,7 @@ declare class GameWorld extends World {
     moveUnit(id: string, newTile: {
         x: number;
         y: number;
-    }): string[];
+    }, endAction: boolean): string[];
     runAssist(source: string, target: string, actionCoordinates: {
         x: number;
         y: number;

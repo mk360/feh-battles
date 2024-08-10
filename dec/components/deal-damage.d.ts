@@ -1,15 +1,25 @@
 import { Component, EntityRef } from "ape-ecs";
 declare class DealDamage extends Component {
     static properties: {
-        damage: number;
-        turnIndex: number;
-        special: boolean;
-        cooldown: number;
-        heal: number;
-        target: typeof EntityRef;
-        targetTriggersSpecial: boolean;
-        targetHP: number;
-        targetCooldown: number;
+        round: number;
+        attacker: {
+            hp: number;
+            entity: typeof EntityRef;
+            heal: number;
+            triggerSpecial: boolean;
+            specialCooldown: number;
+            turn: number;
+            damage: number;
+        };
+        target: {
+            hp: number;
+            entity: typeof EntityRef;
+            heal: number;
+            triggerSpecial: boolean;
+            specialCooldown: number;
+            turn: number;
+            damage: number;
+        };
     };
 }
 export default DealDamage;

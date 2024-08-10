@@ -103,8 +103,8 @@ class CombatSystem extends System {
             const turns = generateTurns(attacker, target, combatMap.get(attacker).stats, combatMap.get(target).stats);
 
             let lastAttacker: Entity;
-            for (let i = 0; i < turns.length; i++) {
-                const turn = turns[i];
+            for (let round = 0; round < turns.length; round++) {
+                const turn = turns[round];
                 const defender = turn === attacker ? target : attacker;
                 if (lastAttacker === turn) {
                     combatMap.get(turn).consecutiveTurns++;
@@ -214,25 +214,37 @@ class CombatSystem extends System {
 
                 const heal = turn.getOne("CombatHeal");
                 const maxHP = turn.getOne("Stats").maxHP;
+                let healingAmount = 0;
 
                 combatMap.get(defender).hp -= damage;
 
                 if (heal) {
+                    healingAmount += heal.value;
                     combatMap.get(turn).hp = Math.min(maxHP, combatMap.get(turn).hp + heal.value);
                     turn.removeComponent(heal);
                 }
 
                 turn.addComponent({
                     type: "DealDamage",
-                    damage,
-                    turnIndex: i,
-                    cooldown: turnData.attackerSpecialCooldown,
-                    special: turnData.attackerTriggeredSpecial,
-                    heal: heal?.value ?? 0,
-                    target: defender,
-                    targetHP: combatMap.get(turn).hp,
-                    targetTriggersSpecial: turnData.defenderTriggeredSpecial,
-                    targetCooldown: turnData.defenderSpecialCooldown,
+                    round,
+                    attacker: {
+                        hp: combatMap.get(turn).hp,
+                        entity: turn,
+                        damage: 0,
+                        heal: healingAmount,
+                        triggerSpecial: turnData.attackerTriggeredSpecial,
+                        specialCooldown: turnData.attackerSpecialCooldown,
+                        turn: turnData.consecutiveTurnNumber,
+                    },
+                    target: {
+                        hp: combatMap.get(target).hp,
+                        entity: target,
+                        damage,
+                        heal: 0,
+                        triggerSpecial: turnData.defenderTriggeredSpecial,
+                        specialCooldown: turnData.defenderSpecialCooldown,
+                        turn: 0
+                    },
                 });
 
                 if (combatMap.get(defender).hp <= 0) {

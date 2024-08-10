@@ -46,7 +46,10 @@ declare class GameWorld extends World {
     }, targetCoordinates: {
         x: number;
         y: number;
-    }): string[];
+    }, path: {
+        x: number;
+        y: number;
+    }[]): string[];
     getUnitMovement(id: string): {
         movementTiles: Set<Component>;
         attackTiles: Set<Component>;

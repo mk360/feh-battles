@@ -28,6 +28,7 @@ import KillSystem from "./systems/kill";
 import clearTile from "./systems/clear-tile";
 // import shortid from "shortid";
 import AssistSystem from "./systems/assist";
+import getDistance from "./systems/get-distance";
 
 /**
  * TODO:
@@ -158,7 +159,9 @@ class GameWorld extends World {
         }
 
         const line = Object.keys(statusDealingMap).map((dealer) => `trigger ${dealer}`).join(",");
-        actions.push(line);
+        if (line.length) {
+            actions.push(line);
+        }
 
         const appliedStatuses: string[] = [];
 
@@ -168,21 +171,26 @@ class GameWorld extends World {
             appliedStatuses.push(line);
         }
 
-        actions = actions.concat(appliedStatuses.join(","));
+        if (appliedStatuses.length) {
+            actions = actions.concat(appliedStatuses.join(","));
+        }
 
         const moveActions = events.filter((change) => change.type === "Move" && change.op === "add");
-        actions.push(moveActions.map((action) => {
-            const component = this.getComponent(action.component);
-            return `move ${action.entity} ${component.x} ${component.y}`;
-        }).join(","));
+        if (moveActions.length) {
+            actions.push(moveActions.map((action) => {
+                const component = this.getComponent(action.component);
+                return `move ${action.entity} ${component.x} ${component.y}`;
+            }).join(","));
+        }
 
         const dealDamageActions = events.filter((change) => change.type === "DealDamage" && change.op === "add");
+        if (dealDamageActions.length) {
+            actions = actions.concat(dealDamageActions.map((damageAction) => {
+                const comp = this.getComponent(damageAction.component);
 
-        actions = actions.concat(dealDamageActions.map((damageAction) => {
-            const comp = this.getComponent(damageAction.component);
-
-            return `attack ${comp.attacker.entity} ${comp.attacker.hp} ${comp.attacker.specialCooldown} ${+comp.attacker.triggerSpecial} ${comp.attacker.damage} ${comp.attacker.heal} ${comp.target.entity} ${comp.target.hp} ${comp.target.specialCooldown} ${+comp.target.triggerSpecial} ${comp.target.damage} ${comp.target.heal}`;
-        }));
+                return `attack ${comp.attacker.entity.id} ${comp.attacker.hp} ${comp.attacker.specialCooldown} ${+comp.attacker.triggerSpecial} ${comp.attacker.damage} ${comp.attacker.heal} ${comp.target.entity.id} ${comp.target.hp} ${comp.target.specialCooldown} ${+comp.target.triggerSpecial} ${comp.target.damage} ${comp.target.heal}`;
+            }));
+        }
 
         const killAction = events.filter((change) => change.type === "Kill" && change.op === "add");
 
@@ -200,10 +208,12 @@ class GameWorld extends World {
         return mapMods;
     }
 
-    runCombat(attackerId: string, movementCoordinates: { x: number, y: number }, targetCoordinates: { x: number, y: number }) {
+    runCombat(attackerId: string, movementCoordinates: { x: number, y: number }, targetCoordinates: { x: number, y: number }, path: { x: number, y: number }[]) {
         const attacker = this.getEntity(attackerId);
+        const range = attacker.getOne("Weapon").range;
         const targetTile = this.state.map[targetCoordinates.y][targetCoordinates.x];
         const defender = this.state.occupiedTilesMap.get(targetTile);
+        const bestTile = path.find((tile) => getDistance(movementCoordinates, tile) === range);
         const b1 = attacker.addComponent({
             type: "Battling"
         });
@@ -211,7 +221,7 @@ class GameWorld extends World {
             type: "Battling"
         });
 
-        let changes: string[] = this.moveUnit(attackerId, movementCoordinates, false);
+        let changes: string[] = this.moveUnit(attackerId, bestTile, false);
 
         this.runSystems("before-combat");
         this.runSystems("combat");

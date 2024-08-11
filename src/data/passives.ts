@@ -42,23 +42,24 @@ interface PassivesDict {
     }
 }
 
-function ploy(thisArg: Skill, state: GameState, affectedStat: Stat, debuff: number) {
-    const { x, y } = thisArg.entity.getOne("Position");
-    const enemies = getEnemies(state, thisArg.entity);
+function ploy(skill: Skill, state: GameState, affectedStat: Stat, debuff: number) {
+    const { x, y } = skill.entity.getOne("Position");
+    const enemies = getEnemies(state, skill.entity);
 
     for (let enemy of enemies) {
         const enemyPos = enemy.getOne("Position");
         const isCardinal = x === enemyPos.x || y === enemyPos.y;
-        const resIsHigher = thisArg.entity.getOne("Stats").res > enemy.getOne("Stats").res;
+        const resIsHigher = skill.entity.getOne("Stats").res > enemy.getOne("Stats").res;
         if (isCardinal && resIsHigher) {
             enemy.addComponent({
                 type: "MapDebuff",
                 [affectedStat]: debuff
             });
+            enemy.addTag("Penalty");
             enemy.addComponent({
                 type: "Status",
                 value: "Penalty",
-                source: thisArg.entity
+                source: skill.entity
             })
         }
     }
@@ -79,6 +80,7 @@ function wave(affectedStat: Stat, parity: (turnCount: number) => boolean, buff: 
                 [affectedStat]: buff
             });
             this.entity.addComponent({ type: "Status", value: "Bonus", source: this.entity });
+            this.entity.addTag("Bonus");
             const allies = getAllies(state, this.entity);
             for (let ally of allies) {
                 if (HeroSystem.getDistance(ally, this.entity) === 1) {
@@ -87,6 +89,7 @@ function wave(affectedStat: Stat, parity: (turnCount: number) => boolean, buff: 
                         type: "MapBuff",
                         [affectedStat]: buff
                     });
+                    ally.addTag("Bonus");
                 }
             }
         }

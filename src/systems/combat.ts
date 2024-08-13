@@ -14,12 +14,14 @@ import getCombatStats from "./get-combat-stats";
 import calculateDamage from "./calculate-damage";
 import TileBitshifts from "../data/tile-bitshifts";
 import SPECIALS from "../data/specials";
+import getPosition from "./get-position";
+import battlingEntitiesQuery from "./battling-entities-query";
 
 const SUBSCRIBED_COMPONENTS = ["DealDamage", "CombatBuff", "BraveWeapon", "CombatDebuff", "RoundDamageIncrease", "RoundDamageReduction", "DamageIncrease", "Kill", "Special"];
 
 class CombatSystem extends System {
     private state: GameState;
-    private battlingQuery: Query;
+    private battlingQuery = battlingEntitiesQuery(this);
 
     init(state: GameState) {
         this.state = state;
@@ -27,8 +29,6 @@ class CombatSystem extends System {
         for (let comp of SUBSCRIBED_COMPONENTS) {
             this.subscribe(comp);
         }
-
-        this.battlingQuery = this.createQuery().fromAll("Battling");
     }
 
     // Ike vs. Corrin
@@ -37,7 +37,8 @@ class CombatSystem extends System {
     // Round 3 ou 4 ou 5, bis repetita en alternant
 
     update() {
-        const [attacker, target] = this.battlingQuery.refresh().execute();
+        const { attacker, defender: target } = this.battlingQuery();
+
         if (attacker && target) {
             if (!target.getOne(PreventEnemyAlliesInteraction)) {
                 this.runAllySkills(attacker);
@@ -75,7 +76,7 @@ class CombatSystem extends System {
                 defensiveTile: boolean;
                 cooldown: number;
             }>();
-            const attackerPosition = attacker.getOne("TemporaryPosition");
+            const attackerPosition = getPosition(attacker);
             const attackerTile = this.state.map[attackerPosition.y][attackerPosition.x];
 
             combatMap.set(attacker, {
@@ -232,7 +233,7 @@ class CombatSystem extends System {
                         entity: turn,
                         damage: 0,
                         heal: healingAmount,
-                        triggerSpecial: turnData.attackerTriggeredSpecial,
+                        triggerSpecial: !!turnData.attackerTriggeredSpecial,
                         specialCooldown: turnData.attackerSpecialCooldown,
                         turn: turnData.consecutiveTurnNumber,
                     },
@@ -241,11 +242,20 @@ class CombatSystem extends System {
                         entity: target,
                         damage,
                         heal: 0,
-                        triggerSpecial: turnData.defenderTriggeredSpecial,
+                        triggerSpecial: !!turnData.defenderTriggeredSpecial,
                         specialCooldown: turnData.defenderSpecialCooldown,
                         turn: 0
                     },
                 });
+
+                if (turn.getOne("Battling") && defender.getOne("Battling")) {
+                    const defenderStatsComponent = defender.getOne("Stats");
+                    const { type, ...stats } = defenderStatsComponent.getObject(false);
+                    defenderStatsComponent.update({
+                        ...stats,
+                        hp: combatMap.get(defender).hp
+                    });
+                }
 
                 if (combatMap.get(defender).hp <= 0) {
                     defender.addComponent({

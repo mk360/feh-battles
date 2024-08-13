@@ -185,11 +185,12 @@ class GameWorld extends World {
 
         const dealDamageActions = events.filter((change) => change.type === "DealDamage" && change.op === "add");
         if (dealDamageActions.length) {
-            actions = actions.concat(dealDamageActions.map((damageAction) => {
-                const comp = this.getComponent(damageAction.component);
-
+            const attackActions = dealDamageActions.map((damageAction) => {
+                const comp = this.getComponent(damageAction.component).getObject(false);
                 return `attack ${comp.attacker.entity.id} ${comp.attacker.hp} ${comp.attacker.specialCooldown} ${+comp.attacker.triggerSpecial} ${comp.attacker.damage} ${comp.attacker.heal} ${comp.target.entity.id} ${comp.target.hp} ${comp.target.specialCooldown} ${+comp.target.triggerSpecial} ${comp.target.damage} ${comp.target.heal}`;
-            }));
+            }).join("|");
+
+            actions.push(attackActions);
         }
 
         const killAction = events.filter((change) => change.type === "Kill" && change.op === "add");
@@ -455,10 +456,10 @@ class GameWorld extends World {
         const attacker = this.getEntity(attackerId);
         const defender = this.state.occupiedTilesMap.get(mapTile);
         const b1 = attacker.addComponent({
-            type: "Battling"
+            type: "PreviewingBattle"
         });
         const b2 = defender.addComponent({
-            type: "Battling"
+            type: "PreviewingBattle"
         });
         attacker.addComponent({
             type: "TemporaryPosition",

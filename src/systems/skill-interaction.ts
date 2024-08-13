@@ -19,6 +19,7 @@ import SlowSpecial from "../components/slow-special";
 import NeutralizeSlowSpecial from "../components/neutralize-slow-special";
 import AccelerateSpecial from "../components/accelerate-special";
 import NeutralizeAccelerateSpecial from "../components/neutralize-accelerate-special";
+import battlingEntitiesQuery from "./battling-entities-query";
 
 const NeutralizationMap = new Map<ComponentClass, ComponentClass>();
 
@@ -40,15 +41,14 @@ MultipleNeutralizationsMap.set(NeutralizeMapBuffs, MapBuff);
 
 class SkillInteractionSystem extends System {
     private state: GameState;
-    private battlingQuery: Query;
+    private battlingQuery = battlingEntitiesQuery(this);
 
     init(state: GameState): void {
         this.state = state;
-        this.battlingQuery = this.createQuery().fromAll("Battling");
     }
 
     update() {
-        const [attacker, defender] = this.battlingQuery.refresh().execute();
+        const { attacker, defender } = this.battlingQuery();
 
         NeutralizationMap.forEach((neutralizingComponent, neutralizedComponent) => {
             defender.getComponents(neutralizingComponent).forEach((comp) => {

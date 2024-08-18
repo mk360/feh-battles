@@ -7,10 +7,10 @@ import getAllies from "../utils/get-allies";
 import getEnemies from "../utils/get-enemies";
 import getCombatStats from "../systems/get-combat-stats";
 
-export function honeStat(thisArg: Skill, state: GameState, stat: Stat, buff: number) {
-    const allies = getAllies(state, thisArg.entity);
+export function honeStat(skill: Skill, state: GameState, stat: Stat, buff: number) {
+    const allies = getAllies(state, skill.entity);
     for (let ally of allies) {
-        if (HeroSystem.getDistance(ally, thisArg.entity) === 1) {
+        if (HeroSystem.getDistance(ally, skill.entity) === 1) {
             ally.addComponent({
                 type: "MapBuff",
                 [stat]: buff
@@ -18,14 +18,14 @@ export function honeStat(thisArg: Skill, state: GameState, stat: Stat, buff: num
             ally.addComponent({
                 type: "Status",
                 value: "Bonus",
-                source: thisArg.entity
+                source: skill.entity
             });
         }
     }
 }
 
-export function mapBuffByMovementType(thisArg: Skill, state: GameState, movementType: MovementType, buffs: Stats) {
-    const allies = getAllies(state, thisArg.entity);
+export function mapBuffByMovementType(skill: Skill, state: GameState, movementType: MovementType, buffs: Stats) {
+    const allies = getAllies(state, skill.entity);
     for (let ally of allies) {
         if (ally.getOne("MovementType").value === movementType) {
             ally.addComponent({
@@ -35,16 +35,16 @@ export function mapBuffByMovementType(thisArg: Skill, state: GameState, movement
             ally.addComponent({
                 type: "Status",
                 value: "Bonus",
-                source: thisArg.entity
+                source: skill.entity
             });
         }
     }
 }
 
-export function mapBuffByRange(thisArg: Skill, state: GameState, range: number, buffs: Stats) {
-    const allies = getAllies(state, thisArg.entity);
+export function mapBuffByRange(skill: Skill, state: GameState, range: number, buffs: Stats) {
+    const allies = getAllies(state, skill.entity);
     for (let ally of allies) {
-        if (HeroSystem.getDistance(ally, thisArg.entity) <= range) {
+        if (HeroSystem.getDistance(ally, skill.entity) <= range) {
             ally.addComponent({
                 type: "MapBuff",
                 ...buffs
@@ -52,26 +52,26 @@ export function mapBuffByRange(thisArg: Skill, state: GameState, range: number, 
             ally.addComponent({
                 type: "Status",
                 value: "Bonus",
-                source: thisArg.entity
+                source: skill.entity
             });
         }
     }
 }
 
-export function dodgeStat(thisArg: Skill, enemy: Entity, comparedStat: Stat) {
-    const heroStats = getCombatStats(thisArg.entity);
+export function dodgeStat(skill: Skill, enemy: Entity, comparedStat: Stat) {
+    const heroStats = getCombatStats(skill.entity);
     const enemyStats = getCombatStats(enemy);
     if (heroStats[comparedStat] > enemyStats[comparedStat]) {
         const diff = heroStats[comparedStat] - enemyStats[comparedStat];
-        thisArg.entity.addComponent({
+        skill.entity.addComponent({
             type: "DamageReduction",
             percentage: Math.min(40, diff * 4) / 100
         });
     }
 }
 
-export function combatBuffByRange(thisArg: Skill, ally: Entity, range: number, buffs: Stats) {
-    if (HeroSystem.getDistance(ally, thisArg.entity) <= range) {
+export function combatBuffByRange(skill: Skill, ally: Entity, range: number, buffs: Stats) {
+    if (HeroSystem.getDistance(ally, skill.entity) <= range) {
         ally.addComponent({
             type: "CombatBuff",
             ...buffs
@@ -79,51 +79,52 @@ export function combatBuffByRange(thisArg: Skill, ally: Entity, range: number, b
     }
 }
 
-export function combatBuffByMovementType(thisArg: Skill, ally: Entity, movementType: MovementType, buffs: Stats) {
+export function combatBuffByMovementType(skill: Skill, ally: Entity, movementType: MovementType, buffs: Stats) {
 
 };
 
-export function defiant(thisArg: Skill, stat: Stat, buff: number) {
-    const { maxHP, hp } = thisArg.entity.getOne("Stats");
+export function defiant(skill: Skill, stat: Stat, buff: number) {
+    const { maxHP, hp } = skill.entity.getOne("Stats");
     if (hp / maxHP <= 0.5) {
-        thisArg.entity.addComponent({
+        skill.entity.addComponent({
             type: "MapBuff",
             [stat]: buff
         });
-        thisArg.entity.addComponent({
+        skill.entity.addComponent({
             type: "Status",
             value: "Bonus",
-            source: thisArg.entity
+            source: skill.entity
         });
     }
 }
 
-export function breaker(thisArg: Skill, enemy: Entity, targetWeaponType: WeaponType, hpPercentage: number) {
+export function breaker(skill: Skill, enemy: Entity, targetWeaponType: WeaponType, hpPercentage: number) {
     const { value } = enemy.getOne("WeaponType");
-    const { hp, maxHP } = thisArg.entity.getOne("Stats");
+    const { hp, maxHP } = skill.entity.getOne("Stats");
     if (value === targetWeaponType && hp / maxHP >= hpPercentage) {
         enemy.addComponent({
             type: "PreventFollowUp"
         });
-        thisArg.entity.addComponent({
+        skill.entity.addComponent({
             type: "GuaranteedFollowup"
         });
     }
 }
 
-export function raven(thisArg: Skill, enemy: Entity) {
+export function raven(skill: Skill, enemy: Entity) {
     if (enemy.getOne("Weapon").color === "colorless") {
-        thisArg.entity.addComponent({
+        skill.entity.addComponent({
             type: "GuaranteedAdvantage"
         });
     }
 }
 
-export function bond(thisArg: Skill, state: GameState, buffs: Stats) {
-    const allies = getAllies(state, thisArg.entity);
+export function bond(skill: Skill, state: GameState, buffs: Stats) {
+    const allies = getAllies(state, skill.entity);
     for (let ally of allies) {
-        if (HeroSystem.getDistance(ally, thisArg.entity) === 1) {
-            thisArg.entity.addComponent({
+        if (HeroSystem.getDistance(ally, skill.entity) === 1) {
+            console.log(skill.entity.getOne("Name").value, ally.getOne("Name").value);
+            skill.entity.addComponent({
                 type: "CombatBuff",
                 ...buffs
             });
@@ -132,31 +133,31 @@ export function bond(thisArg: Skill, state: GameState, buffs: Stats) {
     }
 }
 
-export function elementalBoost(thisArg: Skill, target: Entity, buffs: Stats) {
-    const wielderHP = thisArg.entity.getOne("Stats").hp;
+export function elementalBoost(skill: Skill, target: Entity, buffs: Stats) {
+    const wielderHP = skill.entity.getOne("Stats").hp;
     const enemyHP = target.getOne("Stats").hp;
 
     if (wielderHP >= enemyHP + 3) {
-        thisArg.entity.addComponent({
+        skill.entity.addComponent({
             type: "CombatBuff",
             ...buffs
         });
     }
 };
 
-export function renewal(thisArg: Skill, shouldActivate: boolean, amount: number) {
+export function renewal(skill: Skill, shouldActivate: boolean, amount: number) {
     if (shouldActivate) {
-        thisArg.entity.addComponent({
+        skill.entity.addComponent({
             type: "Heal",
             value: amount
         });
     }
 }
 
-export function threaten(thisArg: Skill, state: GameState, statDebuffs: Stats) {
-    const enemies = getEnemies(state, thisArg.entity);
+export function threaten(skill: Skill, state: GameState, statDebuffs: Stats) {
+    const enemies = getEnemies(state, skill.entity);
     for (let enemy of enemies) {
-        if (HeroSystem.getDistance(enemy, thisArg.entity) <= 2) {
+        if (HeroSystem.getDistance(enemy, skill.entity) <= 2) {
             enemy.addComponent({
                 type: "MapDebuff",
                 ...statDebuffs
@@ -164,13 +165,13 @@ export function threaten(thisArg: Skill, state: GameState, statDebuffs: Stats) {
             enemy.addComponent({
                 type: "Status",
                 value: "Penalty",
-                source: thisArg.entity
+                source: skill.entity
             });
         }
     }
 }
 
-export function dagger(thisArg: Skill, state: GameState, target: Entity, debuffs: Stats) {
+export function dagger(skill: Skill, state: GameState, target: Entity, debuffs: Stats) {
     const allies = getAllies(state, target);
     target.addComponent({
         type: "MapDebuff",
@@ -179,7 +180,7 @@ export function dagger(thisArg: Skill, state: GameState, target: Entity, debuffs
     target.addComponent({
         type: "Status",
         value: "Penalty",
-        source: thisArg.entity
+        source: skill.entity
     });
 
     for (let ally of allies) {
@@ -191,23 +192,23 @@ export function dagger(thisArg: Skill, state: GameState, target: Entity, debuffs
             ally.addComponent({
                 type: "Status",
                 value: "Penalty",
-                source: thisArg.entity
+                source: skill.entity
             });
         }
     }
 };
 
-export function counterattack(thisArg: Skill) {
-    thisArg.entity.addComponent({
+export function counterattack(skill: Skill) {
+    skill.entity.addComponent({
         type: "Counterattack"
     });
 };
 
-export function owl(thisArg: Skill, state: GameState) {
+export function owl(skill: Skill, state: GameState) {
     const allies = getAllies(state, this.entity).filter((ally) => HeroSystem.getDistance(ally, this.entity) === 1);
     const buff = allies.length * 2;
 
-    thisArg.entity.addComponent({
+    skill.entity.addComponent({
         type: "CombatBuff",
         atk: buff,
         def: buff,
@@ -216,15 +217,15 @@ export function owl(thisArg: Skill, state: GameState) {
     });
 }
 
-export function blade(thisArg: Skill) {
-    const mapBuffs = thisArg.entity.getComponents("MapBuff");
+export function blade(skill: Skill) {
+    const mapBuffs = skill.entity.getComponents("MapBuff");
     let statsSum = 0;
     mapBuffs.forEach((buff) => {
         const { atk, def, res, spd } = buff;
         statsSum += atk + def + res + spd;
     });
 
-    thisArg.entity.addComponent({
+    skill.entity.addComponent({
         type: "CombatBuff",
         atk: statsSum
     });

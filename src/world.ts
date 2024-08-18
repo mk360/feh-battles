@@ -187,7 +187,7 @@ class GameWorld extends World {
         if (dealDamageActions.length) {
             const attackActions = dealDamageActions.map((damageAction) => {
                 const comp = this.getComponent(damageAction.component).getObject(false);
-                return `attack ${comp.attacker.entity.id} ${comp.attacker.hp} ${comp.attacker.specialCooldown} ${+comp.attacker.triggerSpecial} ${comp.attacker.damage} ${comp.attacker.heal} ${comp.target.entity.id} ${comp.target.hp} ${comp.target.specialCooldown} ${+comp.target.triggerSpecial} ${comp.target.damage} ${comp.target.heal}`;
+                return `attack ${comp.attacker.entity.id} ${comp.attacker.hp} ${comp.attacker.specialCooldown} ${+comp.attacker.triggerSpecial} ${comp.target.damage} ${comp.attacker.heal} ${comp.target.entity.id} ${comp.target.hp} ${comp.target.specialCooldown} ${+comp.target.triggerSpecial} ${comp.target.damage} ${comp.target.heal}`;
             }).join("|");
 
             actions.push(attackActions);
@@ -300,6 +300,7 @@ class GameWorld extends World {
         this.systems.get(systemTag).forEach((sys) => {
             // @ts-ignore
             for (let change of sys._stagedChanges) {
+                // if (systemTag === "combat") { console.log({ change }) };
                 this.undoComponentChange(change);
             }
         });

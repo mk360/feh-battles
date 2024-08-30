@@ -1,5 +1,5 @@
 import { Component } from "ape-ecs";
 
-class PreventFollowUp extends Component { };
+class PreventFollowup extends Component { };
 
-export default PreventFollowUp;
+export default PreventFollowup;

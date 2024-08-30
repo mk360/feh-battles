@@ -15,6 +15,7 @@ import canReachTile from "../systems/can-reach-tile";
 import getTileCoordinates from "../systems/get-tile-coordinates";
 import getCombatStats from "../systems/get-combat-stats";
 import getMapStats from "../systems/get-map-stats";
+import getDistance from "../systems/get-distance";
 
 interface WeaponDict {
     [k: string]: {
@@ -874,6 +875,29 @@ const WEAPONS: WeaponDict = {
         might: 16,
         exclusiveTo: ["Sheena: Princess of Gra"]
     },
+    "Cymbeline": {
+        exclusiveTo: ["Sanaki: Begnion's Apostle"],
+        might: 14,
+        description: "If unit initiates combat, grants Atk+4 to adjacent allies for 1 turn after combat.",
+        type: "tome",
+        onCombatInitiate(state) {
+            const allies = getAllies(state, this.entity);
+            for (let ally of allies) {
+                if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                    ally.addComponent({
+                        type: "MapBuff",
+                        atk: 4,
+                    });
+
+                    ally.addComponent({
+                        type: "Status",
+                        value: "Bonus",
+                        source: this.entity
+                    });
+                }
+            }
+        }
+    },
     "Dark Aura": {
         description: "At start of turn, if adjacent allies use sword, axe, lance, dragonstone, or beast damage, grants Atk+6 to those allies for 1 turn.",
         type: "tome",
@@ -927,6 +951,26 @@ const WEAPONS: WeaponDict = {
                 type: "ModifySpecialCooldown",
                 value: -1
             });
+        },
+    },
+    "Dignified Bow": {
+        description: "Effective against flying foes. At start of turn, if any foe's HP ≤ unit's HP-1 and that foe is adjacent to another foe, inflicts\u3010Panic\u3011on that foe.",
+        might: 14,
+        exclusiveTo: ["Virion: Elite Archer"],
+        type: "bow",
+        onTurnStart(state) {
+            const targetIds: string[] = [];
+            const enemies = getEnemies(state, this.entity);
+            const { hp } = this.entity.getOne("Stats");
+            for (let enemy of enemies) {
+                const { hp: enemyHP } = enemy.getOne("Stats");
+                if (enemyHP > hp - 1 || targetIds.includes(enemy.id)) continue;
+                const allies = getAllies(state, enemy).filter((ally) => HeroSystem.getDistance(ally, enemy) === 1);
+                targetIds.push(enemy.id);
+                for (let ally of allies) {
+                    targetIds.push(ally.id);
+                }
+            }
         },
     },
     "Dire Thunder": {
@@ -2127,6 +2171,63 @@ const WEAPONS: WeaponDict = {
                 value: -1
             });
         }
+    },
+    "Spy's Dagger": {
+        exclusiveTo: ["Matthew: Faithful Spy"],
+        might: 14,
+        type: "dagger",
+        description: "After combat, if unit attacked, grants Def/Res+6 to unit and allies within 2 spaces of unit for 1 turn.&lt;br>Effect:\u3010Dagger \uff16\u3011",
+        onCombatAfter(state, target, combat) {
+            if (combat) {
+                Effects.dagger(this, state, target, {
+                    def: -7,
+                    res: -7
+                });
+
+                const allies = getAllies(state, this.entity);
+                this.entity.addComponent({
+                    type: "MapBuff",
+                    def: 6,
+                    res: 6,
+                });
+
+                this.entity.addComponent({
+                    type: "Status",
+                    value: "Bonus",
+                    source: this.entity
+                });
+
+                for (let ally of allies) {
+                    if (HeroSystem.getDistance(ally, this.entity) <= 2) {
+                        ally.addComponent({
+                            type: "MapBuff",
+                            def: 6,
+                            res: 6,
+                        });
+
+                        ally.addComponent({
+                            type: "Status",
+                            value: "Bonus",
+                            source: this.entity
+                        });
+                    }
+                }
+            }
+        }
+    },
+    "Sol Katti": {
+        description: "If unit's HP ≤ 50% and unit initiates combat, unit can make a follow-up attack before foe can counterattack.",
+        onCombatInitiate() {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP <= 0.5) {
+                this.entity.addComponent({
+                    type: "Desperation"
+                });
+            }
+        },
+        exclusiveTo: ["Lyn: Lady of the Plains"],
+        might: 16,
+        type: "sword"
     },
     "Stalwart Sword": {
         description: "If foe initiates combat, inflicts Atk-6 on foe during combat.",

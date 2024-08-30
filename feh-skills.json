@@ -1,15 +1,5 @@
 [
     {
-        "WeaponName": "Sol Katti",
-        "CanUseWeapon": [
-            "Red Sword"
-        ],
-        "Exclusive": 1,
-        "Hero": "Lyn: Lady of the Plains",
-        "Description": "If unit's HP ≤ 50% and unit initiates combat, unit can make a follow-up attack before foe can counterattack.",
-        "Might": 16
-    },
-    {
         "WeaponName": "Gronnraven",
         "CanUseWeapon": [
             "Green Tome"
@@ -319,19 +309,6 @@
         "Might": 16
     },
     {
-        "WeaponName": "Dignified Bow",
-        "CanUseWeapon": [
-            "Red Bow",
-            "  Blue Bow",
-            "  Green Bow",
-            "  Colorless Bow"
-        ],
-        "Exclusive": 1,
-        "Hero": "Virion: Elite Archer",
-        "Description": "Effective against flying foes. At start of turn, if any foe's HP ≤ unit's HP-1 and that foe is adjacent to another foe, inflicts\u3010Panic\u3011on that foe.&lt;br>&lt;br>\u3010Panic\u3011&lt;br>Converts bonuses on target into penalties through its next action.",
-        "Might": 14
-    },
-    {
         "WeaponName": "Absorb",
         "CanUseWeapon": [
             "Colorless Staff"
@@ -350,19 +327,6 @@
         "Hero": "Serra: Outspoken Cleric",
         "Description": "Restores HP = 50% of damage dealt.&lt;br>After combat, if unit attacked, restores 7 HP to allies within 2 spaces of unit.",
         "Might": 7
-    },
-    {
-        "WeaponName": "Spy's Dagger",
-        "CanUseWeapon": [
-            "Red Dagger",
-            "  Blue Dagger",
-            "  Green Dagger",
-            "  Colorless Dagger"
-        ],
-        "Exclusive": 1,
-        "Hero": "Matthew: Faithful Spy",
-        "Description": "After combat, if unit attacked, grants Def/Res+6 to unit and allies within 2 spaces of unit for 1 turn.&lt;br>Effect:\u3010Dagger \uff16\u3011&lt;br>&lt;br>\u3010Dagger \uff16\u3011&lt;br />After combat, if unit attacked, inflicts Def/Res-\uff16 on target and foes within 2 spaces of target through their next actions.",
-        "Might": 14
     },
     {
         "WeaponName": "Light Breath",
@@ -475,16 +439,6 @@
         "Hero": "Narcian: Wyvern General",
         "Description": "When unit deals damage to foe during combat, restores 7 HP to unit. (Triggers even if 0 damage is dealt.)",
         "Might": 16
-    },
-    {
-        "WeaponName": "Cymbeline",
-        "CanUseWeapon": [
-            "Red Tome"
-        ],
-        "Exclusive": 1,
-        "Hero": "Sanaki: Begnion's Apostle",
-        "Description": "If unit initiates combat, grants Atk+4 to adjacent allies for 1 turn after combat.",
-        "Might": 14
     },
     {
         "WeaponName": "Wo Dao",

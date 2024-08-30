@@ -1,4 +1,4 @@
-import { Component, ComponentClass, Query, System } from "ape-ecs";
+import { ComponentClass, System } from "ape-ecs";
 import Counterattack from "../components/counterattack";
 import DamageReduction from "../components/damage-reduction";
 import GuaranteedAffinity from "../components/guaranteed-affinity";
@@ -45,6 +45,9 @@ class SkillInteractionSystem extends System {
 
     init(state: GameState): void {
         this.state = state;
+        for (let component of ["Counterattack", "PreventCounterattack", "TargetLowestDefense", "PreventTargetLowestDefense", "GuaranteedFollowup", "PreventFollowup", "NormalizeStaffDamage", "NeutralizeNormalizeStaffDamage", "GuaranteedAffinity", "NeutralizeAffinity", "ApplyAffinity", "SlowSpecial", "NeutralizeSlowSpecial", "AccelerateSpecial", "NeutralizeAccelerateSpecial", "PreventDamageReduction", "DamageReduction", "NeutralizeMapBuffs", "MapBuff"]) {
+            this.subscribe(component);
+        }
     }
 
     update() {

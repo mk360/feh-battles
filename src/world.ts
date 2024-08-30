@@ -249,6 +249,11 @@ class GameWorld extends World {
             changes = changes.concat(this.outputEngineActions(system._stagedChanges));
         });
 
+        this.systems.get("after-combat").forEach((system) => {
+            // @ts-ignore
+            changes = changes.concat(this.outputEngineActions(system._stagedChanges));
+        });
+
         if (!attacker.destroyed) {
             attacker.removeComponent(b1);
             changes = changes.concat(this.endAction(attacker.id));
@@ -462,7 +467,7 @@ class GameWorld extends World {
         const b2 = defender.addComponent({
             type: "PreviewingBattle"
         });
-        attacker.addComponent({
+        const tempPos = attacker.addComponent({
             type: "TemporaryPosition",
             ...temporaryCoordinates
         });
@@ -475,6 +480,8 @@ class GameWorld extends World {
 
         this.undoSystemChanges("before-combat");
         this.undoSystemChanges("combat");
+
+        attacker.removeComponent(tempPos);
 
         return producedPreview;
     }

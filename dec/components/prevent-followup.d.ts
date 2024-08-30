@@ -1,5 +1,5 @@
 import { Component } from "ape-ecs";
-declare class PreventFollowUp extends Component {
+declare class PreventFollowup extends Component {
 }
-export default PreventFollowUp;
+export default PreventFollowup;
 //# sourceMappingURL=prevent-followup.d.ts.map

@@ -9,13 +9,12 @@ import getEnemies from "../utils/get-enemies";
 import HeroSystem from "../systems/hero";
 import getAllies from "../utils/get-allies";
 import CombatTurnOutcome from "../interfaces/combat-turn-outcome";
-import CombatOutcome from "../interfaces/combat-outcome";
 import getSurroundings from "../systems/get-surroundings";
 import canReachTile from "../systems/can-reach-tile";
 import getTileCoordinates from "../systems/get-tile-coordinates";
 import getCombatStats from "../systems/get-combat-stats";
 import getMapStats from "../systems/get-map-stats";
-import getDistance from "../systems/get-distance";
+import { getUnitsLowerThanOrEqualingValue, getUnitsWithHighestValue, getUnitsWithLowestValue } from "../systems/value-matchers";
 
 interface WeaponDict {
     [k: string]: {
@@ -29,7 +28,7 @@ interface WeaponDict {
         protects?: (MovementType | WeaponType)[];
         onSpecialTrigger?(this: Skill, battleState: GameState, target: Entity): void;
         onCombatStart?(this: Skill, battleState: GameState, target: Entity): void;
-        onCombatAfter?(this: Skill, battleState: GameState, target: Entity, combat: CombatOutcome): void;
+        onCombatAfter?(this: Skill, battleState: GameState, target: Entity): void;
         onCombatInitiate?(this: Skill, state: GameState, target: Entity): void;
         onCombatAllyStart?(this: Skill, state: GameState, ally: Entity): void;
         onCombatDefense?(this: Skill, state: GameState, attacker: Entity): void;
@@ -41,16 +40,6 @@ interface WeaponDict {
         onTurnStartBefore?(this: Skill, battleState: GameState): void;
         onTurnStartAfter?(this: Skill, battleState: GameState): void;
     }
-}
-
-type Battle = Turn[];
-
-interface Turn {
-    attacker: Hero;
-    defender: Hero;
-    damage: number;
-    order: number; // ordre absolu
-    consecutiveOrder: number; // si tours consécutifs, incrémenter ce
 }
 
 const WEAPONS: WeaponDict = {
@@ -151,12 +140,18 @@ const WEAPONS: WeaponDict = {
     "Iron Dagger": {
         description: "After combat, if unit attacked, inflicts Def/Res-3 on foe through its next action.",
         might: 3,
-        onCombatAfter(state, target, combat) {
-            if (combat) { // TODO COMBAT API
+        onCombatAfter(state, target) {
+            if (this.entity.getOne("DealDamage")) {
                 target.addComponent({
                     type: "MapDebuff",
                     def: -3,
                     res: -3
+                });
+
+                target.addComponent({
+                    type: "Status",
+                    value: "Penalty",
+                    source: this.entity,
                 });
             }
         },
@@ -187,8 +182,8 @@ const WEAPONS: WeaponDict = {
         description: "After combat, if unit attacked, inflicts Def/Res-3 on foe through its next action.",
         type: "dagger",
         might: 5,
-        onCombatAfter(state, target, combat) {
-            if (combat) { // TODO COMBAT API
+        onCombatAfter(state, target) {
+            if (this.entity.getOne("DealDamage")) {
                 target.addComponent({
                     type: "MapDebuff",
                     def: -3,
@@ -220,8 +215,8 @@ const WEAPONS: WeaponDict = {
     },
     "Silver Dagger": {
         description: "After combat, if unit attacked, inflicts Def/Res-5 on foe through its next action.",
-        onCombatAfter(battleState, target, combat) {
-            if (combat) { // TODO COMBAT API
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
                 target.addComponent({
                     type: "MapDebuff",
                     def: -5,
@@ -255,12 +250,17 @@ const WEAPONS: WeaponDict = {
     },
     "Silver Dagger+": {
         description: "After combat, if unit attacked, inflicts Def/Res-7 on foe through its next action.",
-        onCombatAfter(battleState, target, combat) {
-            if (combat) { // TODO COMBAT API
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
                 target.addComponent({
                     type: "MapDebuff",
                     def: -7,
                     res: -7
+                });
+                target.addComponent({
+                    type: "Status",
+                    value: "Penalty",
+                    source: this.entity,
                 });
             }
         },
@@ -356,6 +356,11 @@ const WEAPONS: WeaponDict = {
         might: 13,
         type: "tome",
         color: "green"
+    },
+    "Assault": {
+        type: "staff",
+        description: "",
+        might: 10
     },
     "Alondite": {
         description: "Unit can counterattack regardless of enemy range.",
@@ -1017,6 +1022,17 @@ const WEAPONS: WeaponDict = {
         type: "sword",
         might: 16
     },
+    "Draconic Poleaxe": {
+        description: "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
+        might: 16,
+        exclusiveTo: ["Titania: Mighty Mercenary"],
+        type: "axe",
+        onCombatStart() {
+            this.entity.addComponent({
+                type: "ApplyAffinity"
+            });
+        }
+    },
     "Durandal": {
         might: 16,
         type: "sword",
@@ -1038,6 +1054,40 @@ const WEAPONS: WeaponDict = {
             Effects.threaten(this, battleState, {
                 def: -4
             });
+        },
+    },
+    "Elena's Staff": {
+        description: "Grants Res+3. Foe cannot counterattack. At start of turn, inflicts Atk/Spd-7 on nearest foes within 4 spaces through their next actions. After combat, if unit attacked, inflicts Atk/Spd-7 on target and foes within 2 spaces of target through their next actions.",
+        onEquip() {
+            this.entity.getOne("Stats").res += 3;
+        },
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "PreventCounterattack"
+            });
+        },
+        might: 14,
+        exclusiveTo: ["Mist: Helpful Sister"],
+        type: "staff",
+        onTurnStart(battleState) {
+            const enemies = getEnemies(battleState, this.entity);
+            const nearestIn4Spaces = getUnitsLowerThanOrEqualingValue(enemies, (unit) => HeroSystem.getDistance(this.entity, unit), 4);
+            const nearest = getUnitsWithLowestValue(nearestIn4Spaces, (unit) => HeroSystem.getDistance(this.entity, unit));
+
+            for (let nearEnemy of nearest) {
+                Effects.dagger(this, battleState, nearEnemy, {
+                    atk: -7,
+                    spd: -7
+                });
+            }
+        },
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
+                Effects.dagger(this, battleState, target, {
+                    atk: -7,
+                    spd: -7
+                });
+            }
         },
     },
     "Emerald Axe": {
@@ -1160,7 +1210,7 @@ const WEAPONS: WeaponDict = {
                 type: "TargetLowestDefense"
             });
         },
-        onCombatAfter(battleState, target, combat) {
+        onCombatAfter(battleState, target) {
             Effects.dagger(this, battleState, target, {
                 def: -7,
                 res: -7
@@ -1309,6 +1359,31 @@ const WEAPONS: WeaponDict = {
         might: 16,
         exclusiveTo: ["Saber: Driven Mercenary"]
     },
+    "Golden Naginata": {
+        exclusiveTo: ["Subaki: Perfect Expert"],
+        might: 16,
+        type: "lance",
+        description: "Accelerates Special trigger (cooldown count-1). At start of combat, if foe's Atk ≥ unit's Atk+3, grants Atk/Spd/Def/Res+3 during combat.",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        },
+        onCombatStart(battleState, target) {
+            const foeAtk = getCombatStats(target).atk;
+            const selfAtk = getCombatStats(this.entity).atk;
+            if (foeAtk >= selfAtk + 3) {
+                this.entity.addComponent({
+                    type: "CombatBuff",
+                    atk: 3,
+                    def: 3,
+                    res: 3,
+                    spd: 3
+                });
+            }
+        },
+    },
     "Gradivus": {
         description: "Unit can counterattack regardless of enemy range.",
         might: 16,
@@ -1368,6 +1443,24 @@ const WEAPONS: WeaponDict = {
         onCombatStart(battleState) {
             Effects.owl(this, battleState);
         },
+    },
+    "Gronnraven": {
+        description: "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
+        type: "tome",
+        color: "green",
+        might: 7,
+        onCombatStart(state, target) {
+            Effects.raven(this, target);
+        }
+    },
+    "Gronnraven+": {
+        description: "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
+        type: "tome",
+        color: "green",
+        might: 11,
+        onCombatStart(state, target) {
+            Effects.raven(this, target);
+        }
     },
     "Gronnowl+": {
         description: "During combat, boosts unit's Atk/Spd/Def/Res by number of adjacent allies × 2.",
@@ -1507,6 +1600,15 @@ const WEAPONS: WeaponDict = {
             }
         }
     },
+    "Inscribed Tome": {
+        description: "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
+        type: "tome",
+        exclusiveTo: ["Boey: Skillful Survivor"],
+        might: 14,
+        onCombatStart(state, target) {
+            Effects.raven(this, target);
+        }
+    },
     "Inveterate Axe": {
         type: "axe",
         might: 16,
@@ -1563,7 +1665,7 @@ const WEAPONS: WeaponDict = {
                 res: 4
             });
         },
-        onCombatAfter(battleState, target, combat) {
+        onCombatAfter(battleState, target) {
 
         },
     },
@@ -1812,6 +1914,21 @@ const WEAPONS: WeaponDict = {
             });
         },
     },
+    "Poison Dagger": {
+        description: "Effective against infantry foes.&lt;br>After combat, if unit attacked, inflicts Def/Res-4 on infantry foe through its next action.",
+        might: 2,
+        type: "dagger",
+        exclusiveTo: ["Kagero: Honorable Ninja"],
+        effectiveAgainst: ["infantry"],
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
+                Effects.dagger(this, battleState, target, {
+                    def: -4,
+                    res: -4
+                });
+            }
+        },
+    },
     "Ragnarok": {
         description: "At start of combat, if unit's HP = 100%, grants Atk/Spd+5, but after combat, if unit attacked, deals 5 damage to unit.",
         type: "tome",
@@ -2037,6 +2154,18 @@ const WEAPONS: WeaponDict = {
             });
         }
     },
+    "Runeaxe": {
+        description: "When unit deals damage to foe during combat, restores 7 HP to unit. (Triggers even if 0 damage is dealt.)",
+        might: 16,
+        exclusiveTo: ["Narcian: Wyvern General"],
+        type: "axe",
+        onCombatRoundAttack() {
+            this.entity.addComponent({
+                type: "CombatHeal",
+                amount: 7
+            });
+        }
+    },
     "Saizo's Star": {
         type: "dagger",
         exclusiveTo: ["Saizo: Angry Ninja"],
@@ -2148,6 +2277,17 @@ const WEAPONS: WeaponDict = {
         },
         exclusiveTo: ["Ephraim: Restoration Lord"]
     },
+    "Silverbrand": {
+        type: "sword",
+        exclusiveTo: ["Seth: Silver Knight"],
+        might: 16,
+        description: "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
+        onCombatStart() {
+            this.entity.addComponent({
+                type: "ApplyAffinity"
+            });
+        }
+    },
     "Slaying Bow": {
         description: "Accelerates Special trigger (cooldown count-1). Effective against flying foes.",
         might: 8,
@@ -2172,13 +2312,45 @@ const WEAPONS: WeaponDict = {
             });
         }
     },
+    "Springtime Staff": {
+        exclusiveTo: ["Genny: Endearing Ally"],
+        onEquip() {
+            this.entity.getOne("Stats").atk += 3;
+        },
+        onCombatInitiate() {
+            this.entity.addComponent({
+                type: "PreventCounterattack"
+            })
+        },
+        type: "staff",
+        might: 14,
+        description: "Grants Atk+3. Foe cannot counterattack. After combat, if unit attacked, inflicts \u3010Gravity\u3011on target and foes within 1 space of target.",
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
+                const enemies = getAllies(battleState, target).filter((enemy) => HeroSystem.getDistance(enemy, target) === 1);
+                target.addComponent({
+                    type: "Status",
+                    value: "Gravity",
+                    source: this.entity
+                });
+
+                for (let enemy of enemies) {
+                    enemy.addComponent({
+                        type: "Status",
+                        value: "Gravity",
+                        source: this.entity
+                    });
+                }
+            }
+        },
+    },
     "Spy's Dagger": {
         exclusiveTo: ["Matthew: Faithful Spy"],
         might: 14,
         type: "dagger",
         description: "After combat, if unit attacked, grants Def/Res+6 to unit and allies within 2 spaces of unit for 1 turn.&lt;br>Effect:\u3010Dagger \uff16\u3011",
-        onCombatAfter(state, target, combat) {
-            if (combat) {
+        onCombatAfter(state, target) {
+            if (this.entity.getOne("DealDamage")) {
                 Effects.dagger(this, state, target, {
                     def: -7,
                     res: -7
@@ -2389,11 +2561,20 @@ const WEAPONS: WeaponDict = {
         type: "tome",
         onTurnStart(battleState) {
             const enemies = getEnemies(battleState, this.entity);
-            const [highestAtk] = enemies.sort((hero1, hero2) => hero2.getOne("Stats").atk - hero1.getOne("Stats").atk);
-            highestAtk.addComponent({
-                type: "MapDebuff",
-                atk: -7
-            });
+            const highestAtk = getUnitsWithHighestValue(enemies, (entity) => entity.getOne("Stats").atk);
+
+            for (let hero of highestAtk) {
+                hero.addComponent({
+                    type: "MapDebuff",
+                    atk: -7
+                });
+
+                hero.addComponent({
+                    type: "Status",
+                    value: "Penalty",
+                    source: this.entity,
+                });
+            }
         },
     },
     "Wing Sword": {

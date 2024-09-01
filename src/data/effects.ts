@@ -83,6 +83,9 @@ export function combatBuffByMovementType(skill: Skill, ally: Entity, movementTyp
 
 };
 
+/**
+ * If unit has 50% HP or less, add specified Map Buffs
+ */
 export function defiant(skill: Skill, stat: Stat, buff: number) {
     const { maxHP, hp } = skill.entity.getOne("Stats");
     if (hp / maxHP <= 0.5) {
@@ -98,6 +101,9 @@ export function defiant(skill: Skill, stat: Stat, buff: number) {
     }
 }
 
+/**
+ * If enemy has specified weapon, prevents them from doing a followup, and guarantees unit followup on them.
+ */
 export function breaker(skill: Skill, enemy: Entity, targetWeaponType: WeaponType, hpPercentage: number) {
     const { value } = enemy.getOne("WeaponType");
     const { hp, maxHP } = skill.entity.getOne("Stats");
@@ -111,6 +117,9 @@ export function breaker(skill: Skill, enemy: Entity, targetWeaponType: WeaponTyp
     }
 }
 
+/**
+ * Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.
+ */
 export function raven(skill: Skill, enemy: Entity) {
     if (enemy.getOne("Weapon").color === "colorless") {
         skill.entity.addComponent({
@@ -119,11 +128,13 @@ export function raven(skill: Skill, enemy: Entity) {
     }
 }
 
+/**
+ * Grants Combat Buffs if unit is adjacent to ally
+ */
 export function bond(skill: Skill, state: GameState, buffs: Stats) {
     const allies = getAllies(state, skill.entity);
     for (let ally of allies) {
         if (HeroSystem.getDistance(ally, skill.entity) === 1) {
-            console.log(skill.entity.getOne("Name").value, ally.getOne("Name").value);
             skill.entity.addComponent({
                 type: "CombatBuff",
                 ...buffs
@@ -133,6 +144,9 @@ export function bond(skill: Skill, state: GameState, buffs: Stats) {
     }
 }
 
+/**
+ * Fire, Water, Wind, etc. Boosts: if HP >= enemy HP + 3, apply specified Combat Buffs
+ */
 export function elementalBoost(skill: Skill, target: Entity, buffs: Stats) {
     const wielderHP = skill.entity.getOne("Stats").hp;
     const enemyHP = target.getOne("Stats").hp;
@@ -145,6 +159,9 @@ export function elementalBoost(skill: Skill, target: Entity, buffs: Stats) {
     }
 };
 
+/**
+ * If `shouldActivate` is met, heal unit.
+ */
 export function renewal(skill: Skill, shouldActivate: boolean, amount: number) {
     if (shouldActivate) {
         skill.entity.addComponent({
@@ -154,6 +171,9 @@ export function renewal(skill: Skill, shouldActivate: boolean, amount: number) {
     }
 }
 
+/**
+ * If enemy is 2 or less spaces away from unit, apply specified debuffs
+ */
 export function threaten(skill: Skill, state: GameState, statDebuffs: Stats) {
     const enemies = getEnemies(state, skill.entity);
     for (let enemy of enemies) {
@@ -171,6 +191,9 @@ export function threaten(skill: Skill, state: GameState, statDebuffs: Stats) {
     }
 }
 
+/**
+ * Lowers target's map stats by specified debuffs. Lowers enemies' map stats by specified debuffs, if they are max. 2 tiles away from target.
+ */
 export function dagger(skill: Skill, state: GameState, target: Entity, debuffs: Stats) {
     const allies = getAllies(state, target);
     target.addComponent({
@@ -204,6 +227,9 @@ export function counterattack(skill: Skill) {
     });
 };
 
+/**
+ * Add Combat Buffs to all stats matching 2 * adjacent units count
+ */
 export function owl(skill: Skill, state: GameState) {
     const allies = getAllies(state, this.entity).filter((ally) => HeroSystem.getDistance(ally, this.entity) === 1);
     const buff = allies.length * 2;
@@ -217,6 +243,9 @@ export function owl(skill: Skill, state: GameState) {
     });
 }
 
+/**
+ * Add Combat Buffs to Atk = total map buffs on unit. Ignores Penalties.
+ */
 export function blade(skill: Skill) {
     const mapBuffs = skill.entity.getComponents("MapBuff");
     let statsSum = 0;

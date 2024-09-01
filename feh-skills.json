@@ -1,35 +1,5 @@
 [
     {
-        "WeaponName": "Gronnraven",
-        "CanUseWeapon": [
-            "Green Tome"
-        ],
-        "Exclusive": 0,
-        "Hero": "Cecilia: Etrurian General",
-        "Description": "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
-        "Might": 7
-    },
-    {
-        "WeaponName": "Gronnraven+",
-        "CanUseWeapon": [
-            "Green Tome"
-        ],
-        "Exclusive": 0,
-        "Hero": "Cecilia: Etrurian General",
-        "Description": "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
-        "Might": 11
-    },
-    {
-        "WeaponName": "Assault",
-        "CanUseWeapon": [
-            "Colorless Staff"
-        ],
-        "Exclusive": 0,
-        "Hero": "Elise: Budding Flower",
-        "Description": null,
-        "Might": 10
-    },
-    {
         "WeaponName": "Gravity",
         "CanUseWeapon": [
             "Colorless Staff"
@@ -122,19 +92,6 @@
         "Might": 16
     },
     {
-        "WeaponName": "Poison Dagger",
-        "CanUseWeapon": [
-            "Red Dagger",
-            "  Blue Dagger",
-            "  Green Dagger",
-            "  Colorless Dagger"
-        ],
-        "Exclusive": 0,
-        "Hero": "Kagero: Honorable Ninja",
-        "Description": "Effective against infantry foes.&lt;br>After combat, if unit attacked, inflicts Def/Res-4 on infantry foe through its next action.",
-        "Might": 2
-    },
-    {
         "WeaponName": "Poison Dagger+",
         "CanUseWeapon": [
             "Red Dagger",
@@ -189,16 +146,6 @@
         "Hero": "Sakura: Loving Priestess",
         "Description": "After combat, if unit attacked, inflicts Atk-7 on target and foes within 2 spaces of target through their next actions.",
         "Might": 12
-    },
-    {
-        "WeaponName": "Golden Naginata",
-        "CanUseWeapon": [
-            "Blue Lance"
-        ],
-        "Exclusive": 1,
-        "Hero": "Subaki: Perfect Expert",
-        "Description": "Accelerates Special trigger (cooldown count-1). At start of combat, if foe's Atk ≥ unit's Atk+3, grants Atk/Spd/Def/Res+3 during combat.",
-        "Might": 16
     },
     {
         "WeaponName": "Rogue Dagger",
@@ -431,16 +378,6 @@
         "Might": 9
     },
     {
-        "WeaponName": "Runeaxe",
-        "CanUseWeapon": [
-            "Green Axe"
-        ],
-        "Exclusive": 1,
-        "Hero": "Narcian: Wyvern General",
-        "Description": "When unit deals damage to foe during combat, restores 7 HP to unit. (Triggers even if 0 damage is dealt.)",
-        "Might": 16
-    },
-    {
         "WeaponName": "Wo Dao",
         "CanUseWeapon": [
             "Red Sword"
@@ -602,46 +539,6 @@
         "Hero": "Navarre: Scarlet Sword",
         "Description": "Accelerates Special trigger (cooldown count-1).",
         "Might": 16
-    },
-    {
-        "WeaponName": "Draconic Poleax",
-        "CanUseWeapon": [
-            "Green Axe"
-        ],
-        "Exclusive": 1,
-        "Hero": "Titania: Mighty Mercenary",
-        "Description": "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
-        "Might": 16
-    },
-    {
-        "WeaponName": "Elena's Staff",
-        "CanUseWeapon": [
-            "Colorless Staff"
-        ],
-        "Exclusive": 1,
-        "Hero": "Mist: Helpful Sister",
-        "Description": "Grants Res+3. Foe cannot counterattack. At start of turn, inflicts Atk/Spd-7 on nearest foes within 4 spaces through their next actions. After combat, if unit attacked, inflicts Atk/Spd-7 on target and foes within 2 spaces of target through their next actions.",
-        "Might": 14
-    },
-    {
-        "WeaponName": "Inscribed Tome",
-        "CanUseWeapon": [
-            "Green Tome"
-        ],
-        "Exclusive": 1,
-        "Hero": "Boey: Skillful Survivor",
-        "Description": "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
-        "Might": 14
-    },
-    {
-        "WeaponName": "Springtime Staff",
-        "CanUseWeapon": [
-            "Colorless Staff"
-        ],
-        "Exclusive": 1,
-        "Hero": "Genny: Endearing Ally",
-        "Description": "Grants Atk+3. Foe cannot counterattack. After combat, if unit attacked, inflicts \u3010Gravity\u3011on target and foes within 1 space of target. &lt;br>&lt;br>\u3010Gravity\u3011&lt;br>Restricts target's movement to 1 space through its next action.",
-        "Might": 14
     },
     {
         "WeaponName": "First Bite",
@@ -1019,16 +916,6 @@
         "Hero": "Amelia: Rose of the War",
         "Description": "Accelerates Special trigger (cooldown count-1).",
         "Might": 14
-    },
-    {
-        "WeaponName": "Silverbrand",
-        "CanUseWeapon": [
-            "Red Sword"
-        ],
-        "Exclusive": 1,
-        "Hero": "Seth: Silver Knight",
-        "Description": "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
-        "Might": 16
     },
     {
         "WeaponName": "Cursed Lance",

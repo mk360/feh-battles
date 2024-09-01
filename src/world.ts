@@ -218,6 +218,9 @@ class GameWorld extends World {
         const b1 = attacker.addComponent({
             type: "Battling"
         });
+        const i1 = attacker.addComponent({
+            type: "InitiateCombat"
+        });
         const b2 = defender.addComponent({
             type: "Battling"
         });
@@ -256,6 +259,7 @@ class GameWorld extends World {
 
         if (!attacker.destroyed) {
             attacker.removeComponent(b1);
+            attacker.removeComponent(i1);
             changes = changes.concat(this.endAction(attacker.id));
         }
 
@@ -464,6 +468,9 @@ class GameWorld extends World {
         const b1 = attacker.addComponent({
             type: "PreviewingBattle"
         });
+        const i1 = attacker.addComponent({
+            type: "InitiateCombat"
+        });
         const b2 = defender.addComponent({
             type: "PreviewingBattle"
         });
@@ -476,6 +483,7 @@ class GameWorld extends World {
 
         attacker.removeComponent(b1);
         defender.removeComponent(b2);
+        attacker.removeComponent(i1);
         const producedPreview = this.produceCombatPreview(attacker, defender);
 
         this.undoSystemChanges("before-combat");

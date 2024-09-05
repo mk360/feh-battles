@@ -8,6 +8,13 @@ import { WeaponType } from "../interfaces/types";
 import MovementType from "../components/movement-type";
 import Characters from "./characters.json";
 
+type AssistKind = "refresh" | "movement" | "buff" | "healing";
+
+function entityCanBeHealed(state: GameState, ally: Entity) {
+    const { hp, maxHP } = ally.getOne("Stats");
+    return hp < maxHP;
+};
+
 interface AssistsDict {
     [k: string]: {
         canApply(this: Assist, state: GameState, ally: Entity, position: { x: number, y: number }): boolean;
@@ -17,6 +24,7 @@ interface AssistsDict {
         allowedWeaponTypes?: WeaponType[];
         allowedMovementTypes?: MovementType[];
         exclusiveTo?: (keyof typeof Characters)[];
+        type: AssistKind[];
     }
 }
 
@@ -24,6 +32,7 @@ const ASSISTS: AssistsDict = {
     "Pivot": {
         range: 1,
         description: "Unit moves to opposite side of target ally.",
+        type: ["movement"],
         canApply(state, ally, position: { x: number, y: number }) {
             const secondPosition = ally.getOne("Position");
             const vector = new Direction(secondPosition.x - position.x, secondPosition.y - position.y);
@@ -49,6 +58,7 @@ const ASSISTS: AssistsDict = {
     "Reposition": {
         description: "Target ally moves to opposite side of unit.",
         range: 1,
+        type: ["movement"],
         canApply(state, ally) {
             const firstPosition = this.entity.getOne("TemporaryPosition");
             const secondPosition = ally.getOne("Position");
@@ -79,6 +89,7 @@ const ASSISTS: AssistsDict = {
     "Shove": {
         range: 1,
         description: "Pushes target ally 1 space away.",
+        type: ["movement"],
         canApply(state, ally) {
             const firstPosition = this.entity.getOne("TemporaryPosition");
             const secondPosition = ally.getOne("Position");
@@ -103,6 +114,7 @@ const ASSISTS: AssistsDict = {
     "Dance": {
         range: 1,
         description: "Grants another action to target ally. (Cannot target an ally with Sing or Dance.)",
+        type: ["refresh"],
         canApply(state, ally) {
             return ally.getOne("FinishedAction") && !ally.getOne("Refresher");
         },
@@ -112,6 +124,7 @@ const ASSISTS: AssistsDict = {
     },
     "Sing": {
         range: 1,
+        type: ["refresh"],
         description: "Grants another action to target ally. (Cannot target an ally with Sing or Dance.)",
         canApply(state, ally) {
             return ally.getOne("FinishedAction") && !ally.getOne("Refresher");
@@ -123,6 +136,7 @@ const ASSISTS: AssistsDict = {
     "Swap": {
         range: 1,
         description: "Unit and target ally swap spaces.",
+        type: ["movement"],
         canApply(state, ally) {
             const firstPosition = this.entity.getOne("TemporaryPosition");
             const secondPosition = ally.getOne("Position");
@@ -147,10 +161,8 @@ const ASSISTS: AssistsDict = {
         }
     },
     "Mend": {
-        canApply(state, ally) {
-            const { hp, maxHP } = ally.getOne("Stats");
-            return hp < maxHP;
-        },
+        type: ["healing"],
+        canApply: entityCanBeHealed,
         onApply(state, ally) {
             ally.addComponent({
                 type: "Heal",

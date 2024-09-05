@@ -14,7 +14,7 @@ import Teams from "./data/teams";
 import MovementSystem from "./systems/movement";
 import tileBitmasks from "./data/tile-bitmasks";
 import TileBitshifts from "./data/tile-bitshifts";
-import { Stat, Stats } from "./interfaces/types";
+import { Stat } from "./interfaces/types";
 import getAllies from "./utils/get-allies";
 import AfterCombatSystem from "./systems/after-combat";
 import { NEGATIVE_STATUSES, STATUSES } from "./statuses";
@@ -370,7 +370,7 @@ class GameWorld extends World {
     };
 
     runAssist(source: string, target: string, actionCoordinates: { x: number, y: number }) {
-        let changes = this.moveUnit(source, actionCoordinates, false);
+        let changes = this.moveUnit(source, actionCoordinates, true);
 
         const assistSource = this.getEntity(source);
         if (!assistSource.has("Assist")) {

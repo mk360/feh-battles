@@ -3,7 +3,7 @@ import GameState from "./state";
 import battlingEntitiesQuery from "./battling-entities-query";
 import SKILLS from "../data/skill-dex";
 
-const subscribedComponents = ["MapBuff", "MapDebuff", "Status"];
+const subscribedComponents = ["MapBuff", "MapDebuff", "Status", "MapDamage"];
 
 class AfterCombatSystem extends System {
     private state: GameState;

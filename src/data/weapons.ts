@@ -15,6 +15,7 @@ import getTileCoordinates from "../systems/get-tile-coordinates";
 import getCombatStats from "../systems/get-combat-stats";
 import getMapStats from "../systems/get-map-stats";
 import { getUnitsLowerThanOrEqualingValue, getUnitsWithHighestValue, getUnitsWithLowestValue } from "../systems/value-matchers";
+import ASSISTS from "./assists";
 
 interface WeaponDict {
     [k: string]: {
@@ -39,6 +40,7 @@ interface WeaponDict {
         onTurnStart?(this: Skill, battleState: GameState): void;
         onTurnStartBefore?(this: Skill, battleState: GameState): void;
         onTurnStartAfter?(this: Skill, battleState: GameState): void;
+        onAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: Skill): void;
     }
 }
 
@@ -478,6 +480,19 @@ const WEAPONS: WeaponDict = {
             }
         }
     },
+    "Audhulma": {
+        description: "Accelerates Special trigger (cooldown count-1).&lt;br>Grants Res+5.",
+        type: "sword",
+        might: 16,
+        exclusiveTo: ["Joshua: Tempest King"],
+        onEquip() {
+            this.entity.getOne("Stats").res += 5;
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        },
+    },
     "Axe of Virility": {
         description: "Effective against armored foes.",
         might: 16,
@@ -885,23 +900,101 @@ const WEAPONS: WeaponDict = {
         might: 14,
         description: "If unit initiates combat, grants Atk+4 to adjacent allies for 1 turn after combat.",
         type: "tome",
-        onCombatInitiate(state) {
-            const allies = getAllies(state, this.entity);
-            for (let ally of allies) {
-                if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                    ally.addComponent({
-                        type: "MapBuff",
-                        atk: 4,
-                    });
+        onCombatAfter(state) {
+            if (this.entity.getOne("InitiateCombat")) {
+                const allies = getAllies(state, this.entity);
+                for (let ally of allies) {
+                    if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                        ally.addComponent({
+                            type: "MapBuff",
+                            atk: 4,
+                        });
 
-                    ally.addComponent({
-                        type: "Status",
-                        value: "Bonus",
-                        source: this.entity
-                    });
+                        ally.addComponent({
+                            type: "Status",
+                            value: "Bonus",
+                            source: this.entity
+                        });
+                    }
                 }
             }
         }
+    },
+    "Dancer's Ring": {
+        description: "If unit initiates combat, restores 7 HP to adjacent allies after combat.",
+        might: 8,
+        type: "tome",
+        color: "green",
+        onCombatAfter(battleState) {
+            if (this.entity.getOne("InitiateCombat")) {
+                const allies = getAllies(battleState, this.entity);
+                for (let ally of allies) {
+                    if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                        ally.addComponent({
+                            type: "Heal",
+                            value: 7
+                        });
+                    }
+                }
+            }
+        },
+    },
+    "Dancer's Ring+": {
+        description: "If unit initiates combat, restores 7 HP to adjacent allies after combat.",
+        might: 12,
+        type: "tome",
+        color: "green",
+        onCombatAfter(battleState) {
+            if (this.entity.getOne("InitiateCombat")) {
+                const allies = getAllies(battleState, this.entity);
+                for (let ally of allies) {
+                    if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                        ally.addComponent({
+                            type: "Heal",
+                            value: 7
+                        });
+                    }
+                }
+            }
+        },
+    },
+    "Dancer's Score": {
+        description: "If unit initiates combat, restores 7 HP to adjacent allies after combat.",
+        might: 8,
+        type: "tome",
+        color: "blue",
+        onCombatAfter(battleState) {
+            if (this.entity.getOne("InitiateCombat")) {
+                const allies = getAllies(battleState, this.entity);
+                for (let ally of allies) {
+                    if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                        ally.addComponent({
+                            type: "Heal",
+                            value: 7
+                        });
+                    }
+                }
+            }
+        },
+    },
+    "Dancer's Score+": {
+        description: "If unit initiates combat, restores 7 HP to adjacent allies after combat.",
+        might: 12,
+        type: "tome",
+        color: "blue",
+        onCombatAfter(battleState) {
+            if (this.entity.getOne("InitiateCombat")) {
+                const allies = getAllies(battleState, this.entity);
+                for (let ally of allies) {
+                    if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                        ally.addComponent({
+                            type: "Heal",
+                            value: 7
+                        });
+                    }
+                }
+            }
+        },
     },
     "Dark Aura": {
         description: "At start of turn, if adjacent allies use sword, axe, lance, dragonstone, or beast damage, grants Atk+6 to those allies for 1 turn.",
@@ -946,6 +1039,19 @@ const WEAPONS: WeaponDict = {
             }
         },
     },
+    "Dauntless Lance": {
+        description: "Accelerates Special trigger (cooldown count-1). Effective against armored foes.",
+        effectiveAgainst: ["armored"],
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        },
+        type: "lance",
+        exclusiveTo: ["Nephenee: Fierce Halberdier"],
+        might: 16
+    },
     "Daybreak Lance": {
         description: "Accelerates Special trigger (cooldown count-1).",
         exclusiveTo: ["Lukas: Sharp Soldier"],
@@ -956,6 +1062,29 @@ const WEAPONS: WeaponDict = {
                 type: "ModifySpecialCooldown",
                 value: -1
             });
+        },
+    },
+    "Devil's Axe": {
+        type: "axe",
+        exclusiveTo: ["Barst: The Hatchet"],
+        might: 16,
+        description: "Grants Atk/Spd/Def/Res+4 during combat, but if unit attacked, deals 4 damage to unit after combat.",
+        onCombatStart() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                atk: 4,
+                res: 4,
+                spd: 4,
+                def: 4
+            });
+        },
+        onCombatAfter() {
+            if (this.entity.getOne("DealDamage")) {
+                this.entity.addComponent({
+                    type: "MapDamage",
+                    value: 4
+                });
+            }
         },
     },
     "Dignified Bow": {
@@ -1744,6 +1873,28 @@ const WEAPONS: WeaponDict = {
             });
         },
     },
+    "Killing Edge": {
+        description: "Accelerates Special trigger (cooldown count-1).",
+        type: "sword",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        },
+        might: 7,
+    },
+    "Killing Edge+": {
+        description: "Accelerates Special trigger (cooldown count-1).",
+        type: "sword",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        },
+        might: 11,
+    },
     "Knightly Lance": {
         description: "Accelerates Special trigger (cooldown count-1).",
         might: 16,
@@ -1781,6 +1932,18 @@ const WEAPONS: WeaponDict = {
         might: 16,
         type: "lance",
         exclusiveTo: ["Clive: Idealistic Knight"]
+    },
+    "Loyal Greatlance": {
+        type: "lance",
+        exclusiveTo: ["Oscar: Agile Horseman"],
+        might: 16,
+        description: "Accelerates Special trigger (cooldown count-1).",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        },
     },
     "Mulagir": {
         description: "Effective against flying foes. Grants Spd+3. Neutralizes magic foe's bonuses (from skills like Fortify, Rally, etc.) during combat.",
@@ -1928,6 +2091,28 @@ const WEAPONS: WeaponDict = {
                 });
             }
         },
+    },
+    "Purifying Breath": {
+        exclusiveTo: ["Nowi: Eternal Youth"],
+        might: 14,
+        description: "Slows Special trigger (cooldown count+1). Unit can counterattack regardless of foe's range. If foe's Range = 2, calculates damage using the lower of foe's Def or Res.",
+        type: "breath",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: 1
+            });
+        },
+        onCombatStart(state, target) {
+            this.entity.addComponent({
+                type: "Counterattack"
+            });
+            if (target.getOne("Weapon").range === 2) {
+                this.entity.addComponent({
+                    type: "TargetLowestDefense"
+                });
+            }
+        }
     },
     "Ragnarok": {
         description: "At start of combat, if unit's HP = 100%, grants Atk/Spd+5, but after combat, if unit attacked, deals 5 damage to unit.",
@@ -2288,6 +2473,28 @@ const WEAPONS: WeaponDict = {
             });
         }
     },
+    "Slaying Axe": {
+        type: "axe",
+        might: 10,
+        description: "Accelerates Special trigger (cooldown count-1).",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        },
+    },
+    "Slaying Axe+": {
+        type: "axe",
+        might: 14,
+        description: "Accelerates Special trigger (cooldown count-1).",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        },
+    },
     "Slaying Bow": {
         description: "Accelerates Special trigger (cooldown count-1). Effective against flying foes.",
         might: 8,
@@ -2311,6 +2518,77 @@ const WEAPONS: WeaponDict = {
                 value: -1
             });
         }
+    },
+    "Slaying Lance": {
+        description: "Accelerates Special trigger (cooldown count-1).",
+        might: 10,
+        type: "lance",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        }
+    },
+    "Slaying Lance+": {
+        description: "Accelerates Special trigger (cooldown count-1).",
+        might: 14,
+        type: "lance",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        }
+    },
+    "Slaying Edge": {
+        type: "sword",
+        might: 10,
+        description: "Accelerates Special trigger (cooldown count-1).",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        },
+    },
+    "Slaying Edge+": {
+        type: "sword",
+        might: 14,
+        description: "Accelerates Special trigger (cooldown count-1).",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        },
+    },
+    "Sniper's Bow": {
+        description: "Effective against flying foes. After combat, if unit attacked, deals 7 damage to target and foes within 2 spaces of target, and inflicts Atk/Spd-7 on them through their next actions.",
+        might: 14,
+        exclusiveTo: ["Clarisse: Sniper in the Dark"],
+        effectiveAgainst: ["flier"],
+        type: "bow",
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
+                Effects.dagger(this, battleState, target, {
+                    atk: -7,
+                    spd: -7
+                });
+            }
+        },
+    },
+    "Solitary Blade": {
+        description: "Accelerates Special trigger (cooldown count-1).",
+        type: "sword",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        },
+        might: 16,
+        exclusiveTo: ["Lon'qu: Solitary Blade"]
     },
     "Springtime Staff": {
         exclusiveTo: ["Genny: Endearing Ally"],
@@ -2483,6 +2761,50 @@ const WEAPONS: WeaponDict = {
             }
         }
     },
+    "Urðr": {
+        description: "If Sing or Dance is used, grants Atk/Spd/Def/Res+3 to target.",
+        type: "axe",
+        might: 16,
+        exclusiveTo: ["Azura: Lady of Ballads"],
+        onAssistAfter(battleState, ally, skill) {
+            const assistDex = ASSISTS[skill.name];
+            if (assistDex.type.includes("refresh")) {
+                ally.addComponent({
+                    type: "MapBuff",
+                    atk: 3,
+                    spd: 3,
+                    def: 3,
+                    res: 3
+                });
+
+                ally.addComponent({
+                    type: "Status",
+                    value: "Bonus",
+                    source: this.entity
+                });
+            }
+        },
+    },
+    "Urvan": {
+        description: "Accelerates Special trigger (cooldown count-1). If unit receives consecutive attacks, reduces damage from foe's second attack onward by 80%.",
+        type: "axe",
+        might: 16,
+        exclusiveTo: ["Ike: Brave Mercenary"],
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        },
+        onCombatRoundDefense(enemy, combatRound) {
+            if (combatRound.consecutiveTurnNumber > 1) {
+                this.entity.addComponent({
+                    type: "DamageReduction",
+                    percentage: 0.8,
+                });
+            }
+        },
+    },
     "Valflame": {
         description: "At start of turn, inflicts Atk/Res-4 on foes in cardinal directions with Res < unit's Res through their next actions.",
         type: "tome",
@@ -2552,6 +2874,36 @@ const WEAPONS: WeaponDict = {
                 type: "CombatBuff",
                 spd: 4
             });
+        },
+    },
+    "Weirding Tome": {
+        type: "tome",
+        might: 14,
+        exclusiveTo: ["Lute: Prodigy"],
+        description: "Grants Spd+3. At start of turn, inflicts Spd-5 on foes in cardinal directions with Res < unit's Res through their next actions.",
+        onEquip() {
+            this.entity.getOne("Stats").spd += 3;
+        },
+        onTurnStart(battleState) {
+            const enemies = getEnemies(battleState, this.entity);
+            const selfPosition = this.entity.getOne("Position");
+            const selfStats = this.entity.getOne("Stats");
+            for (let enemy of enemies) {
+                const { x, y } = enemy.getOne("Position");
+                const { res } = enemy.getOne("Stats");
+                if ((selfPosition.x === x || selfPosition.y === y) && selfStats.res > res) {
+                    enemy.addComponent({
+                        type: "MapDebuff",
+                        spd: -5
+                    });
+
+                    enemy.addComponent({
+                        type: "Status",
+                        value: "Penalty",
+                        source: this.entity
+                    });
+                }
+            }
         },
     },
     "Wind's Brand": {

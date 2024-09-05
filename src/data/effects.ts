@@ -102,7 +102,7 @@ export function defiant(skill: Skill, stat: Stat, buff: number) {
 }
 
 /**
- * If enemy has specified weapon, prevents them from doing a followup, and guarantees unit followup on them.
+ * If enemy has specified weapon and unit has specified % of HP, prevents enemy from doing a followup, and guarantees unit followup on them.
  */
 export function breaker(skill: Skill, enemy: Entity, targetWeaponType: WeaponType, hpPercentage: number) {
     const { value } = enemy.getOne("WeaponType");

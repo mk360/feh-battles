@@ -1,4 +1,3 @@
-import Hero from "../entities/hero";
 import GameState from "../systems/state";
 import { MovementType, WeaponColor, WeaponType } from "../interfaces/types";
 import * as Effects from "./effects";
@@ -792,6 +791,21 @@ const WEAPONS: WeaponDict = {
             }
         }
     },
+    "Brynhildr": {
+        description: "If unit initiates combat, inflicts status on foe restricting movement to 1 space through its next action.",
+        exclusiveTo: ["Leo: Sorcerous Prince"],
+        type: "tome",
+        might: 14,
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("InitiateCombat")) {
+                target.addComponent({
+                    type: "Status",
+                    value: "Gravity",
+                    source: this.entity
+                });
+            }
+        },
+    },
     "Bull Blade": {
         description: "During combat, boosts unit's Atk/Def by number of allies within 2 spaces × 2. (Maximum bonus of +6 to each stat.)",
         exclusiveTo: ["Cain: The Bull"],
@@ -895,6 +909,21 @@ const WEAPONS: WeaponDict = {
         might: 16,
         exclusiveTo: ["Sheena: Princess of Gra"]
     },
+    "Cursed Lance": {
+        description: "Accelerates Special trigger (cooldown count-1). Grants Atk/Spd+2. Deals 4 damage to unit after combat.",
+        exclusiveTo: ["Valter: Dark Moonstone"],
+        might: 16,
+        type: "lance",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+            this.entity.getOne("Stats").atk += 2;
+            this.entity.getOne("Stats").spd += 2;
+        },
+
+    },
     "Cymbeline": {
         exclusiveTo: ["Sanaki: Begnion's Apostle"],
         might: 14,
@@ -919,6 +948,56 @@ const WEAPONS: WeaponDict = {
                 }
             }
         }
+    },
+    "Dark Breath": {
+        description: "If unit initiates combat, inflicts Atk/Spd-5 on foes within 2 spaces of target through their next actions after combat.",
+        might: 9,
+        type: "breath",
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("InitiateCombat")) {
+                const enemies = getAllies(battleState, target);
+                for (let enemy of enemies) {
+                    if (HeroSystem.getDistance(enemy, target) <= 2) {
+                        target.addComponent({
+                            type: "MapDebuff",
+                            atk: -5,
+                            spd: -5
+                        });
+
+                        target.addComponent({
+                            type: "Status",
+                            value: "Penalty",
+                            source: this.entity
+                        });
+                    }
+                }
+            }
+        },
+    },
+    "Dark Breath+": {
+        description: "If unit initiates combat, inflicts Atk/Spd-5 on foes within 2 spaces of target through their next actions after combat.",
+        might: 13,
+        type: "breath",
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("InitiateCombat")) {
+                const enemies = getAllies(battleState, target);
+                for (let enemy of enemies) {
+                    if (HeroSystem.getDistance(enemy, target) <= 2) {
+                        target.addComponent({
+                            type: "MapDebuff",
+                            atk: -5,
+                            spd: -5
+                        });
+
+                        target.addComponent({
+                            type: "Status",
+                            value: "Penalty",
+                            source: this.entity
+                        });
+                    }
+                }
+            }
+        },
     },
     "Dancer's Ring": {
         description: "If unit initiates combat, restores 7 HP to adjacent allies after combat.",
@@ -1090,6 +1169,7 @@ const WEAPONS: WeaponDict = {
     "Dignified Bow": {
         description: "Effective against flying foes. At start of turn, if any foe's HP ≤ unit's HP-1 and that foe is adjacent to another foe, inflicts\u3010Panic\u3011on that foe.",
         might: 14,
+        effectiveAgainst: ["flier"],
         exclusiveTo: ["Virion: Elite Archer"],
         type: "bow",
         onTurnStart(state) {
@@ -1099,7 +1179,7 @@ const WEAPONS: WeaponDict = {
             for (let enemy of enemies) {
                 const { hp: enemyHP } = enemy.getOne("Stats");
                 if (enemyHP > hp - 1 || targetIds.includes(enemy.id)) continue;
-                const allies = getAllies(state, enemy).filter((ally) => HeroSystem.getDistance(ally, enemy) === 1);
+                const allies = getAllies(state, enemy).filter((ally) => HeroSystem.getDistance(ally, enemy) === 1 && !targetIds.includes(ally.id));
                 targetIds.push(enemy.id);
                 for (let ally of allies) {
                     targetIds.push(ally.id);
@@ -1219,6 +1299,40 @@ const WEAPONS: WeaponDict = {
             }
         },
     },
+    "Elise's Staff": {
+        description: "Grants Spd+3. Calculates damage from staff like other weapons. After combat, if unit attacked, inflicts \u3010Gravity\u3011on target and foes within 1 space of target.",
+        exclusiveTo: ["Elise: Budding Flower"],
+        type: "staff",
+        might: 14,
+        onEquip() {
+            this.entity.getOne("Stats").spd += 3;
+        },
+        onCombatStart() {
+            this.entity.addComponent({
+                type: "NormalizeStaffDamage"
+            });
+        },
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
+                const enemyAllies = getAllies(battleState, target);
+                target.addComponent({
+                    type: "Status",
+                    value: "Gravity",
+                    source: this.entity
+                });
+
+                for (let enemy of enemyAllies) {
+                    if (HeroSystem.getDistance(enemy, target) === 1) {
+                        enemy.addComponent({
+                            type: "Status",
+                            value: "Gravity",
+                            source: this.entity
+                        });
+                    }
+                }
+            }
+        },
+    },
     "Emerald Axe": {
         description: "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
         type: "axe",
@@ -1328,6 +1442,37 @@ const WEAPONS: WeaponDict = {
             Effects.renewal(this, battleState.turn % 3 === 0, 10);
         },
         exclusiveTo: ["Alm: Hero of Prophecy"]
+    },
+    "Fear": {
+        description: "After combat, if unit attacked, inflicts Atk-6 on foe through its next action.",
+        might: 5,
+        type: "staff",
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
+                target.addComponent({
+                    type: "MapDebuff",
+                    atk: -6,
+                });
+
+                target.addComponent({
+                    type: "Status",
+                    value: "Penalty",
+                    source: this.entity
+                });
+            }
+        },
+    },
+    "Fear+": {
+        description: "After combat, if unit attacked, inflicts Atk-7 on target and foes within 2 spaces of target through their next actions.",
+        might: 12,
+        type: "staff",
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
+                Effects.dagger(this, battleState, target, {
+                    atk: -7
+                });
+            }
+        },
     },
     "Felicia's Plate": {
         description: "After combat, if unit attacked, inflicts Def/Res-7 on target and foes within 2 spaces through their next actions. Calculates damage using the lower of foe's Def or Res.",
@@ -1476,6 +1621,45 @@ const WEAPONS: WeaponDict = {
         might: 16,
         type: "sword",
     },
+    "Gloom Breath": {
+        might: 16,
+        type: "breath",
+        exclusiveTo: ["Corrin: Fateful Princess"],
+        description: "At start of turn, inflicts Atk/Spd-7 on foes within 2 spaces through their next actions. After combat, if unit attacked, inflicts Atk/Spd-7 on target and foes within 2 spaces of target through their next actions. If foe's Range = 2, calculates damage using the lower of foe's Def or Res.",
+        onTurnStart(battleState) {
+            const enemies = getEnemies(battleState, this.entity);
+            for (let enemy of enemies) {
+                if (HeroSystem.getDistance(enemy, this.entity) <= 2) {
+                    enemy.addComponent({
+                        type: "MapDebuff",
+                        atk: -7,
+                        spd: -7
+                    });
+
+                    enemy.addComponent({
+                        type: "Status",
+                        value: "Penalty",
+                        source: this.entity
+                    });
+                }
+            }
+        },
+        onCombatStart(battleState, target) {
+            if (target.getOne("Weapon").range === 2) {
+                this.entity.addComponent({
+                    type: "TargetLowestDefense"
+                });
+            }
+        },
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
+                Effects.dagger(this, battleState, target, {
+                    atk: -7,
+                    spd: -7
+                });
+            }
+        },
+    },
     "Golden Dagger": {
         description: "Accelerates Special trigger (cooldown count-1).",
         type: "sword",
@@ -1533,6 +1717,56 @@ const WEAPONS: WeaponDict = {
             });
         },
         exclusiveTo: ["Amelia: Rose of the War"]
+    },
+    "Gravity": {
+        description: "After combat, if unit attacked, inflicts status on foe restricting movement to 1 space through its next action.",
+        type: "staff",
+        might: 6,
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
+                const enemyAllies = getAllies(battleState, target);
+                target.addComponent({
+                    type: "Status",
+                    value: "Gravity",
+                    source: this.entity
+                });
+
+                for (let enemy of enemyAllies) {
+                    if (HeroSystem.getDistance(enemy, target) === 1) {
+                        enemy.addComponent({
+                            type: "Status",
+                            value: "Gravity",
+                            source: this.entity
+                        });
+                    }
+                }
+            }
+        },
+    },
+    "Gravity+": {
+        description: "After combat, if unit attacked, inflicts status on foe restricting movement to 1 space through its next action.",
+        type: "staff",
+        might: 10,
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
+                const enemyAllies = getAllies(battleState, target);
+                target.addComponent({
+                    type: "Status",
+                    value: "Gravity",
+                    source: this.entity
+                });
+
+                for (let enemy of enemyAllies) {
+                    if (HeroSystem.getDistance(enemy, target) === 1) {
+                        enemy.addComponent({
+                            type: "Status",
+                            value: "Gravity",
+                            source: this.entity
+                        });
+                    }
+                }
+            }
+        },
     },
     "Gronnblade": {
         description: "Slows Special trigger (cooldown count+1). Grants bonus to unit's Atk = total bonuses on unit during combat.",
@@ -1786,16 +2020,21 @@ const WEAPONS: WeaponDict = {
         might: 16,
         description: "If unit initiates combat, inflicts Atk/Spd/Def/Res-4 on foe during combat.&lt;br>Effect:\u3010Dagger \uff17\u3011&lt;br>&lt;br>\u3010Dagger \uff17\u3011&lt;br>After combat, if unit attacked, inflicts Def/Res-\uff17 on target and foes within 2 spaces of target through their next actions.",
         onCombatInitiate(state, target) {
-            this.entity.addComponent({
+            target.addComponent({
                 type: "CombatDebuff",
-                atk: 4,
-                spd: 4,
-                def: 4,
-                res: 4
+                atk: -4,
+                spd: -4,
+                def: -4,
+                res: -4
             });
         },
         onCombatAfter(battleState, target) {
-
+            if (this.entity.getOne("DealDamage")) {
+                Effects.dagger(this, battleState, target, {
+                    def: -7,
+                    res: -7
+                });
+            }
         },
     },
     "Jubilant Blade": {

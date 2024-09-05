@@ -1,74 +1,5 @@
 [
     {
-        "WeaponName": "Gravity",
-        "CanUseWeapon": [
-            "Colorless Staff"
-        ],
-        "Exclusive": 0,
-        "Hero": "Elise: Budding Flower",
-        "Description": "After combat, if unit attacked, inflicts status on foe restricting movement to 1 space through its next action.",
-        "Might": 6
-    },
-    {
-        "WeaponName": "Gravity+",
-        "CanUseWeapon": [
-            "Colorless Staff"
-        ],
-        "Exclusive": 0,
-        "Hero": "Elise: Budding Flower",
-        "Description": "After combat, if unit attacked, inflicts status on target and foes within 1 space of target restricting movement to 1 space through their next actions.",
-        "Might": 10
-    },
-    {
-        "WeaponName": "Elise's Staff",
-        "CanUseWeapon": [
-            "Colorless Staff"
-        ],
-        "Exclusive": 1,
-        "Hero": "Elise: Budding Flower",
-        "Description": "Grants Spd+3. Calculates damage from staff like other weapons. After combat, if unit attacked, inflicts \u3010Gravity\u3011on target and foes within 1 space of target. &lt;br>&lt;br>\u3010Gravity\u3011&lt;br>Restricts target's movement to 1 space through its next action.",
-        "Might": 14
-    },
-    {
-        "WeaponName": "Dark Breath",
-        "CanUseWeapon": [
-            "Red Breath",
-            "  Blue Breath",
-            "  Green Breath",
-            "  Colorless Breath"
-        ],
-        "Exclusive": 0,
-        "Hero": "Corrin: Fateful Princess",
-        "Description": "If unit initiates combat, inflicts Atk/Spd-5 on foes within 2 spaces of target through their next actions after combat.",
-        "Might": 9
-    },
-    {
-        "WeaponName": "Dark Breath+",
-        "CanUseWeapon": [
-            "Red Breath",
-            "  Blue Breath",
-            "  Green Breath",
-            "  Colorless Breath"
-        ],
-        "Exclusive": 0,
-        "Hero": "Corrin: Fateful Princess",
-        "Description": "If unit initiates combat, inflicts Atk/Spd-5 on foes within 2 spaces of target through their next actions after combat.",
-        "Might": 13
-    },
-    {
-        "WeaponName": "Gloom Breath",
-        "CanUseWeapon": [
-            "Red Breath",
-            "  Blue Breath",
-            "  Green Breath",
-            "  Colorless Breath"
-        ],
-        "Exclusive": 1,
-        "Hero": "Corrin: Fateful Princess",
-        "Description": "At start of turn, inflicts Atk/Spd-7 on foes within 2 spaces through their next actions. After combat, if unit attacked, inflicts Atk/Spd-7 on target and foes within 2 spaces of target through their next actions. If foe's Range = 2, calculates damage using the lower of foe's Def or Res.",
-        "Might": 16
-    },
-    {
         "WeaponName": "Jakob's Tray",
         "CanUseWeapon": [
             "Red Dagger",
@@ -116,36 +47,6 @@
         "Hero": "Kagero: Honorable Ninja",
         "Description": "At start of combat, if unit's Atk > foe's Atk, grants Atk/Spd+4 during combat.&lt;br>Effect:\u3010Dagger \uff17\u3011&lt;br>&lt;br>\u3010Dagger \uff17\u3011&lt;br>After combat, if unit attacked, inflicts Def/Res-\uff17 on target and foes within 2 spaces of target through their next actions.",
         "Might": 14
-    },
-    {
-        "WeaponName": "Brynhildr",
-        "CanUseWeapon": [
-            "Red Tome"
-        ],
-        "Exclusive": 1,
-        "Hero": "Leo: Sorcerous Prince",
-        "Description": "If unit initiates combat, inflicts status on foe restricting movement to 1 space through its next action.",
-        "Might": 14
-    },
-    {
-        "WeaponName": "Fear",
-        "CanUseWeapon": [
-            "Colorless Staff"
-        ],
-        "Exclusive": 0,
-        "Hero": "Sakura: Loving Priestess",
-        "Description": "After combat, if unit attacked, inflicts Atk-6 on foe through its next action.",
-        "Might": 5
-    },
-    {
-        "WeaponName": "Fear+",
-        "CanUseWeapon": [
-            "Colorless Staff"
-        ],
-        "Exclusive": 0,
-        "Hero": "Sakura: Loving Priestess",
-        "Description": "After combat, if unit attacked, inflicts Atk-7 on target and foes within 2 spaces of target through their next actions.",
-        "Might": 12
     },
     {
         "WeaponName": "Rogue Dagger",

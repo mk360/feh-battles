@@ -5,6 +5,7 @@ import { WeaponType } from "../interfaces/types";
 import Characters from "./characters.json";
 import getCombatStats from "../systems/get-combat-stats";
 import getTargetedDefenseStat from "../systems/get-targeted-defense-stat";
+import GameState from "../systems/state";
 
 const exceptStaves: WeaponType[] = ["axe", "beast", "bow", "breath", "dagger", "lance", "sword", "tome"];
 
@@ -17,6 +18,8 @@ interface SpecialsDict {
         allowedMovementTypes?: MovementType[];
         onCombatRoundAttack?(this: Skill, target: Entity): void;
         onCombatRoundDefense?(this: Skill, target: Entity): void;
+        type?: "aoe";
+        getAoETargets?(state: GameState, target: Entity): Set<Entity>;
     }
 }
 

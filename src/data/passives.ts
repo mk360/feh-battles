@@ -102,9 +102,15 @@ function tactic(thisArg: Skill, state: GameState, affectedStat: Stat, buff: numb
     const allies = getAllies(state, thisArg.entity);
 
     if (state.teamsByMovementTypes[thisArg.entity.getOne("Side").value][userMovementType] <= 2) {
-        this.entity.addComponent({
+        thisArg.entity.addComponent({
             type: "MapBuff",
             [affectedStat]: buff
+        });
+
+        thisArg.entity.addComponent({
+            type: "Status",
+            value: "Bonus",
+            source: thisArg.entity,
         });
     }
 
@@ -114,6 +120,12 @@ function tactic(thisArg: Skill, state: GameState, affectedStat: Stat, buff: numb
             ally.addComponent({
                 type: "MapBuff",
                 [affectedStat]: buff
+            });
+
+            ally.addComponent({
+                type: "Status",
+                value: "Bonus",
+                source: thisArg.entity,
             });
         }
     }
@@ -598,7 +610,7 @@ const PASSIVES: PassivesDict = {
             const specialData = SPECIALS[special.name];
             if (specialData.onCombatRoundAttack) {
                 this.entity.addComponent({
-                    type: "RoundDamageIncrease",
+                    type: "DamageIncrease",
                     value: 10
                 });
             }
@@ -621,7 +633,7 @@ const PASSIVES: PassivesDict = {
             const specialData = SPECIALS[special.name];
             if (specialData.onCombatRoundAttack) {
                 this.entity.addComponent({
-                    type: "RoundDamageIncrease",
+                    type: "DamageIncrease",
                     value: 10
                 });
             }
@@ -644,7 +656,7 @@ const PASSIVES: PassivesDict = {
             const specialData = SPECIALS[special.name];
             if (specialData.onCombatRoundAttack) {
                 this.entity.addComponent({
-                    type: "RoundDamageIncrease",
+                    type: "DamageIncrease",
                     value: 10
                 });
             }

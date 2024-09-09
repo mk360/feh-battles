@@ -121,8 +121,8 @@ class GameWorld extends World {
         this.registerSystem("before-combat", SkillInteractionSystem, [this.state]);
         this.registerSystem("combat", CombatSystem, [this.state]);
         this.registerSystem("movement", MovementSystem, [this.state]);
-        this.registerSystem("after-combat", AfterCombatSystem, [this.state]);
         this.registerSystem("kill", KillSystem, [this.state]);
+        this.registerSystem("after-combat", AfterCombatSystem, [this.state]);
         this.registerSystem("assist", AssistSystem, [this.state]);
     }
 
@@ -461,6 +461,20 @@ class GameWorld extends World {
         }
     };
 
+    previewAssist(sourceId: string, targetCoordinates: { x: number, y: number }, temporaryCoordinates: { x: number, y: number }) {
+        const mapTile = this.state.map[targetCoordinates.y][targetCoordinates.x];
+        const source = this.getEntity(sourceId);
+        const target = this.state.occupiedTilesMap.get(mapTile);
+        source.addComponent({
+            type: "Assisting",
+        });
+        target.addComponent({
+            type: "Assisting"
+        });
+
+        this.runSystems("assist");
+    }
+
     previewAttack(attackerId: string, targetCoordinates: { x: number, y: number }, temporaryCoordinates: { x: number, y: number }) {
         const mapTile = this.state.map[targetCoordinates.y][targetCoordinates.x];
         const attacker = this.getEntity(attackerId);
@@ -468,9 +482,7 @@ class GameWorld extends World {
         const b1 = attacker.addComponent({
             type: "PreviewingBattle"
         });
-        const i1 = attacker.addComponent({
-            type: "InitiateCombat"
-        });
+
         const b2 = defender.addComponent({
             type: "PreviewingBattle"
         });
@@ -483,7 +495,6 @@ class GameWorld extends World {
 
         attacker.removeComponent(b1);
         defender.removeComponent(b2);
-        attacker.removeComponent(i1);
         const producedPreview = this.produceCombatPreview(attacker, defender);
 
         this.undoSystemChanges("before-combat");

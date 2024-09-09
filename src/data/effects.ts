@@ -6,20 +6,18 @@ import { MovementType, Stat, Stats, WeaponType } from "../interfaces/types";
 import getAllies from "../utils/get-allies";
 import getEnemies from "../utils/get-enemies";
 import getCombatStats from "../systems/get-combat-stats";
+import applyMapComponent from "../systems/apply-map-effect";
 
+/**
+ * Apply specified map buff to adjacent allies
+ */
 export function honeStat(skill: Skill, state: GameState, stat: Stat, buff: number) {
     const allies = getAllies(state, skill.entity);
     for (let ally of allies) {
         if (HeroSystem.getDistance(ally, skill.entity) === 1) {
-            ally.addComponent({
-                type: "MapBuff",
-                [stat]: buff
-            });
-            ally.addComponent({
-                type: "Status",
-                value: "Bonus",
-                source: skill.entity
-            });
+            applyMapComponent(ally, "MapBuff", {
+                [stat]: buff,
+            }, skill.entity);
         }
     }
 }
@@ -28,15 +26,9 @@ export function mapBuffByMovementType(skill: Skill, state: GameState, movementTy
     const allies = getAllies(state, skill.entity);
     for (let ally of allies) {
         if (ally.getOne("MovementType").value === movementType) {
-            ally.addComponent({
-                type: "MapBuff",
-                ...buffs
-            });
-            ally.addComponent({
-                type: "Status",
-                value: "Bonus",
-                source: skill.entity
-            });
+            applyMapComponent(ally, "MapBuff", {
+                ...buffs,
+            }, skill.entity);
         }
     }
 }
@@ -45,15 +37,9 @@ export function mapBuffByRange(skill: Skill, state: GameState, range: number, bu
     const allies = getAllies(state, skill.entity);
     for (let ally of allies) {
         if (HeroSystem.getDistance(ally, skill.entity) <= range) {
-            ally.addComponent({
-                type: "MapBuff",
-                ...buffs
-            });
-            ally.addComponent({
-                type: "Status",
-                value: "Bonus",
-                source: skill.entity
-            });
+            applyMapComponent(ally, "MapBuff", {
+                ...buffs,
+            }, skill.entity);
         }
     }
 }
@@ -89,15 +75,9 @@ export function combatBuffByMovementType(skill: Skill, ally: Entity, movementTyp
 export function defiant(skill: Skill, stat: Stat, buff: number) {
     const { maxHP, hp } = skill.entity.getOne("Stats");
     if (hp / maxHP <= 0.5) {
-        skill.entity.addComponent({
-            type: "MapBuff",
-            [stat]: buff
-        });
-        skill.entity.addComponent({
-            type: "Status",
-            value: "Bonus",
-            source: skill.entity
-        });
+        applyMapComponent(skill.entity, "MapBuff", {
+            [stat]: buff,
+        }, skill.entity);
     }
 }
 
@@ -178,15 +158,9 @@ export function threaten(skill: Skill, state: GameState, statDebuffs: Stats) {
     const enemies = getEnemies(state, skill.entity);
     for (let enemy of enemies) {
         if (HeroSystem.getDistance(enemy, skill.entity) <= 2) {
-            enemy.addComponent({
-                type: "MapDebuff",
-                ...statDebuffs
-            });
-            enemy.addComponent({
-                type: "Status",
-                value: "Penalty",
-                source: skill.entity
-            });
+            applyMapComponent(enemy, "MapDebuff", {
+                ...statDebuffs,
+            }, skill.entity);
         }
     }
 }
@@ -196,27 +170,15 @@ export function threaten(skill: Skill, state: GameState, statDebuffs: Stats) {
  */
 export function dagger(skill: Skill, state: GameState, target: Entity, debuffs: Stats) {
     const allies = getAllies(state, target);
-    target.addComponent({
-        type: "MapDebuff",
+    applyMapComponent(target, "MapDebuff", {
         ...debuffs,
-    });
-    target.addComponent({
-        type: "Status",
-        value: "Penalty",
-        source: skill.entity
-    });
+    }, skill.entity);
 
     for (let ally of allies) {
         if (HeroSystem.getDistance(ally, target) <= 2) {
-            ally.addComponent({
-                type: "MapDebuff",
+            applyMapComponent(ally, "MapDebuff", {
                 ...debuffs,
-            });
-            ally.addComponent({
-                type: "Status",
-                value: "Penalty",
-                source: skill.entity
-            });
+            }, skill.entity);
         }
     }
 };

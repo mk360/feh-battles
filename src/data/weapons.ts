@@ -15,6 +15,7 @@ import getCombatStats from "../systems/get-combat-stats";
 import getMapStats from "../systems/get-map-stats";
 import { getUnitsLowerThanOrEqualingValue, getUnitsWithHighestValue, getUnitsWithLowestValue } from "../systems/value-matchers";
 import ASSISTS from "./assists";
+import applyMapComponent from "../systems/apply-map-effect";
 
 interface WeaponDict {
     [k: string]: {
@@ -40,6 +41,7 @@ interface WeaponDict {
         onTurnStartBefore?(this: Skill, battleState: GameState): void;
         onTurnStartAfter?(this: Skill, battleState: GameState): void;
         onAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: Skill): void;
+        onAllyAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: Skill): void;
     }
 }
 
@@ -836,7 +838,8 @@ const WEAPONS: WeaponDict = {
         might: 16,
         onCombatStart() {
             this.entity.addComponent({
-                type: "ApplyAffinity"
+                type: "ApplyAffinity",
+                value: 20
             });
         }
     },
@@ -856,6 +859,33 @@ const WEAPONS: WeaponDict = {
                     });
                     return;
                 }
+            }
+        },
+    },
+    "Candied Dagger": {
+        exclusiveTo: ["Gaius: Candy Stealer"],
+        might: 14,
+        type: "dagger",
+        description: "If unit initiates combat, grants Spd+4 and deals damage = 10% of unit's Spd during combat.&lt;br>Effect:\u3010Dagger \uff17\u3011",
+        onCombatInitiate(state, target) {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                spd: 4
+            });
+
+            const { spd } = getCombatStats(this.entity);
+
+            this.entity.addComponent({
+                type: "DamageIncrease",
+                value: Math.floor(spd * 0.1)
+            });
+        },
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
+                Effects.dagger(this, battleState, target, {
+                    def: -7,
+                    res: -7
+                });
             }
         },
     },
@@ -1238,7 +1268,8 @@ const WEAPONS: WeaponDict = {
         type: "axe",
         onCombatStart() {
             this.entity.addComponent({
-                type: "ApplyAffinity"
+                type: "ApplyAffinity",
+                value: 20
             });
         }
     },
@@ -1339,7 +1370,8 @@ const WEAPONS: WeaponDict = {
         might: 8,
         onCombatStart() {
             this.entity.addComponent({
-                type: "ApplyAffinity"
+                type: "ApplyAffinity",
+                value: 20,
             });
         }
     },
@@ -1349,7 +1381,8 @@ const WEAPONS: WeaponDict = {
         might: 12,
         onCombatStart() {
             this.entity.addComponent({
-                type: "ApplyAffinity"
+                type: "ApplyAffinity",
+                value: 20,
             });
         }
     },
@@ -2017,7 +2050,7 @@ const WEAPONS: WeaponDict = {
     "Jakob's Tray": {
         exclusiveTo: ["Jakob: Devoted Servant"],
         type: "dagger",
-        might: 16,
+        might: 14,
         description: "If unit initiates combat, inflicts Atk/Spd/Def/Res-4 on foe during combat.&lt;br>Effect:\u3010Dagger \uff17\u3011&lt;br>&lt;br>\u3010Dagger \uff17\u3011&lt;br>After combat, if unit attacked, inflicts Def/Res-\uff17 on target and foes within 2 spaces of target through their next actions.",
         onCombatInitiate(state, target) {
             target.addComponent({
@@ -2043,6 +2076,31 @@ const WEAPONS: WeaponDict = {
         effectiveAgainst: ["armored"],
         might: 16,
         type: "sword"
+    },
+    "Kagero's Dart": {
+        description: "At start of combat, if unit's Atk > foe's Atk, grants Atk/Spd+4 during combat.&lt;br>Effect:\u3010Dagger \uff17\u3011",
+        might: 14,
+        type: "dagger",
+        exclusiveTo: ["Kagero: Honorable Ninja"],
+        onCombatStart(state, target) {
+            const { atk: currentAtk } = this.entity.getOne("Stats").atk;
+            const { atk: opponentAtk } = target.getOne("Stats").atk;
+            if (currentAtk > opponentAtk) {
+                this.entity.addComponent({
+                    type: "CombatBuff",
+                    atk: 4,
+                    spd: 4
+                });
+            }
+        },
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
+                Effects.dagger(this, battleState, target, {
+                    def: -7,
+                    res: -7
+                });
+            }
+        },
     },
     "Killer Axe": {
         type: "axe",
@@ -2164,6 +2222,106 @@ const WEAPONS: WeaponDict = {
                 });
             }
         }
+    },
+    "Laslow's Blade": {
+        might: 16,
+        exclusiveTo: ["Laslow: Dancing Duelist"],
+        type: "sword",
+        description: "If a movement Assist skill (like Reposition, Shove, Pivot, etc.) is used by unit or targets unit, grants Atk/Spd/Def/Res+4 to target or targeting ally and allies within 2 spaces of unit and target or targeting ally for 1 turn after movement. (Excludes unit.)",
+        onAssistAfter(battleState, ally, assistSkill) {
+            const targetedEntities = new Set<Entity>().add(ally);
+            const assistData = ASSISTS[assistSkill.name];
+            if (assistData.type.includes("movement")) {
+                const allies = getAllies(battleState, this.entity);
+                for (let validAlly of allies) {
+                    if (HeroSystem.getDistance(validAlly, this.entity) <= 2) {
+                        targetedEntities.add(validAlly);
+                        applyMapComponent(validAlly, "MapBuff", {
+                            atk: 4,
+                            spd: 4,
+                            def: 4,
+                            res: 4
+                        }, this.entity);
+                    }
+                }
+
+                const allyAllies = getAllies(battleState, ally).filter((al) => !targetedEntities.has(al));
+                for (let validAlly of allyAllies) {
+                    if (HeroSystem.getDistance(validAlly, this.entity) <= 2) {
+                        targetedEntities.add(validAlly);
+                        applyMapComponent(validAlly, "MapBuff", {
+                            atk: 4,
+                            spd: 4,
+                            def: 4,
+                            res: 4
+                        }, ally);
+                    }
+                }
+            }
+        },
+        onAllyAssistAfter(battleState, sourceAlly, assistSkill) {
+            const targetedEntities = new Set<Entity>().add(sourceAlly);
+            const assistData = ASSISTS[assistSkill.name];
+            if (assistData.type.includes("movement")) {
+                const allies = getAllies(battleState, this.entity);
+                for (let validAlly of allies) {
+                    if (HeroSystem.getDistance(validAlly, this.entity) <= 2) {
+                        targetedEntities.add(validAlly);
+                        applyMapComponent(validAlly, "MapBuff", {
+                            atk: 4,
+                            spd: 4,
+                            def: 4,
+                            res: 4
+                        }, this.entity);
+                    }
+                }
+
+                const allyAllies = getAllies(battleState, sourceAlly).filter((al) => !targetedEntities.has(al));
+                for (let validAlly of allyAllies) {
+                    if (HeroSystem.getDistance(validAlly, this.entity) <= 2) {
+                        targetedEntities.add(validAlly);
+                        applyMapComponent(validAlly, "MapBuff", {
+                            atk: 4,
+                            spd: 4,
+                            def: 4,
+                            res: 4
+                        }, sourceAlly);
+                    }
+                }
+            }
+        },
+    },
+    "Lightning Breath": {
+        description: "Slows Special trigger (cooldown count+1).&lt;br>Unit can counterattack regardless of foe's range.",
+        might: 7,
+        type: "breath",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: 1
+            });
+        },
+        onCombatDefense() {
+            this.entity.addComponent({
+                type: "Counterattack"
+            })
+        },
+    },
+    "Lightning Breath+": {
+        description: "Slows Special trigger (cooldown count+1).&lt;br>Unit can counterattack regardless of foe's range.",
+        might: 11,
+        type: "breath",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: 1
+            });
+        },
+        onCombatDefense() {
+            this.entity.addComponent({
+                type: "Counterattack"
+            })
+        },
     },
     "Lordly Lance": {
         description: "Effective against armored foes.",
@@ -2299,7 +2457,8 @@ const WEAPONS: WeaponDict = {
         might: 16,
         onCombatStart() {
             this.entity.addComponent({
-                type: "ApplyAffinity"
+                type: "ApplyAffinity",
+                value: 20
             });
         }
     },
@@ -2323,7 +2482,22 @@ const WEAPONS: WeaponDict = {
         exclusiveTo: ["Kagero: Honorable Ninja"],
         effectiveAgainst: ["infantry"],
         onCombatAfter(battleState, target) {
-            if (this.entity.getOne("DealDamage")) {
+            if (this.entity.getOne("DealDamage") && target.getOne("MovementType").value === "infantry") {
+                Effects.dagger(this, battleState, target, {
+                    def: -4,
+                    res: -4
+                });
+            }
+        },
+    },
+    "Poison Dagger+": {
+        description: "Effective against infantry foes.&lt;br>After combat, if unit attacked, inflicts Def/Res-4 on infantry foe through its next action.",
+        might: 5,
+        type: "dagger",
+        exclusiveTo: ["Kagero: Honorable Ninja"],
+        effectiveAgainst: ["infantry"],
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage") && target.getOne("MovementType").value === "infantry") {
                 Effects.dagger(this, battleState, target, {
                     def: -4,
                     res: -4
@@ -2542,6 +2716,42 @@ const WEAPONS: WeaponDict = {
         might: 14,
         type: "lance"
     },
+    "Rogue Dagger": {
+        description: "After combat, if unit attacked, inflicts Def/Res-3 on foe through its next action. Grants unit Def/Res+3 for 1 turn.",
+        might: 4,
+        type: "dagger",
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
+                applyMapComponent(target, "MapDebuff", {
+                    def: -3,
+                    res: -3,
+                }, this.entity);
+
+                applyMapComponent(this.entity, "MapBuff", {
+                    def: 3,
+                    res: 3,
+                }, this.entity);
+            }
+        },
+    },
+    "Rogue Dagger+": {
+        description: "After combat, if unit attacked, inflicts Def/Res-5 on foe through its next action. Grants unit Def/Res+5 for 1 turn.",
+        might: 7,
+        type: "dagger",
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
+                applyMapComponent(target, "MapDebuff", {
+                    def: -5,
+                    res: -5,
+                }, this.entity);
+
+                applyMapComponent(this.entity, "MapBuff", {
+                    def: 5,
+                    res: 5,
+                }, this.entity);
+            }
+        },
+    },
     "Rowdy Sword": {
         might: 11,
         type: "sword",
@@ -2612,7 +2822,8 @@ const WEAPONS: WeaponDict = {
         might: 8,
         onCombatStart() {
             this.entity.addComponent({
-                type: "ApplyAffinity"
+                type: "ApplyAffinity",
+                value: 20
             });
         }
     },
@@ -2622,7 +2833,8 @@ const WEAPONS: WeaponDict = {
         might: 12,
         onCombatStart() {
             this.entity.addComponent({
-                type: "ApplyAffinity"
+                type: "ApplyAffinity",
+                value: 20
             });
         }
     },
@@ -2708,7 +2920,8 @@ const WEAPONS: WeaponDict = {
         description: "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
         onCombatStart() {
             this.entity.addComponent({
-                type: "ApplyAffinity"
+                type: "ApplyAffinity",
+                value: 20
             });
         }
     },
@@ -2801,6 +3014,11 @@ const WEAPONS: WeaponDict = {
                 value: -1
             });
         },
+    },
+    "Slow": {
+        description: "After combat, if unit attacked, inflicts Spd-6 on foe through its next action.",
+        type: "staff",
+        might: 5,
     },
     "Sniper's Bow": {
         description: "Effective against flying foes. After combat, if unit attacked, deals 7 damage to target and foes within 2 spaces of target, and inflicts Atk/Spd-7 on them through their next actions.",
@@ -3181,7 +3399,8 @@ const WEAPONS: WeaponDict = {
         description: "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
         onCombatStart() {
             this.entity.addComponent({
-                type: "ApplyAffinity"
+                type: "ApplyAffinity",
+                value: 20
             });
         },
         exclusiveTo: ["Palla: Eldest Whitewing"]

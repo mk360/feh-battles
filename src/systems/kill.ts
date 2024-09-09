@@ -23,6 +23,7 @@ class KillSystem extends System {
             const position = deadUnit.getOne(Position);
             const mapTile = this.state.map[position.y][position.x];
             this.state.occupiedTilesMap.delete(mapTile);
+            this.state.skillMap.delete(deadUnit);
             clearTile(mapTile);
             this.state.teams[castTeam].delete(deadUnit);
             this.state.teamsByMovementTypes[castTeam][movementType]--;

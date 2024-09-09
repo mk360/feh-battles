@@ -6,6 +6,8 @@ import Characters from "./characters.json";
 import getCombatStats from "../systems/get-combat-stats";
 import getTargetedDefenseStat from "../systems/get-targeted-defense-stat";
 import GameState from "../systems/state";
+import getSurroundings from "../systems/get-surroundings";
+import getMapStats from "../systems/get-map-stats";
 
 const exceptStaves: WeaponType[] = ["axe", "beast", "bow", "breath", "dagger", "lance", "sword", "tome"];
 
@@ -19,7 +21,8 @@ interface SpecialsDict {
         onCombatRoundAttack?(this: Skill, target: Entity): void;
         onCombatRoundDefense?(this: Skill, target: Entity): void;
         type?: "aoe";
-        getAoETargets?(state: GameState, target: Entity): Set<Entity>;
+        getAoETargets?(this: Skill, state: GameState, target: Entity): Set<Entity>;
+        getAoEDamage?(this: Skill, state: GameState, target: Entity): number;
     }
 }
 
@@ -27,7 +30,6 @@ const SPECIALS: SpecialsDict = {
     "Black Luna": {
         description: "Treats foe's Def/Res as if reduced by 80% during combat. (Skill cannot be inherited.)",
         exclusiveTo: ["Black Knight: Sinister General"],
-        allowedWeaponTypes: exceptStaves,
         onCombatRoundAttack(target) {
             const combatStats = getCombatStats(target);
             const defStat = getTargetedDefenseStat(this.entity, target, combatStats);
@@ -79,6 +81,58 @@ const SPECIALS: SpecialsDict = {
                 type: "CombatHeal",
                 percentage: 50
             });
+        },
+    },
+    "Blazing Wind": {
+        type: "aoe",
+        cooldown: 4,
+        allowedWeaponTypes: exceptStaves,
+        description: "Before combat this unit initiates, foes in an area near target take damage equal to 1.5 x (unit's Atk minus foe's Def or Res).",
+        getAoETargets(state, target) {
+            const targets = new Set<Entity>().add(target);
+            const { x, y } = target.getOne("Position");
+            const tiles = getSurroundings(state.map, y, x, new Set<Uint16Array>(state.map[y][x]));
+            for (let tile of tiles) {
+                const occupier = state.occupiedTilesMap.get(tile);
+                if (occupier && occupier.getOne("Side").value !== this.entity.getOne("Side").value) {
+                    targets.add(occupier);
+                }
+            }
+
+            return targets;
+        },
+        getAoEDamage(state, target) {
+            const { atk } = getMapStats(this.entity);
+            const targetedDefense = getTargetedDefenseStat(this.entity, target, getCombatStats(target));
+            const { [targetedDefense]: defense } = getMapStats(target);
+
+            return Math.floor(atk * 1.5) - defense;
+        },
+    },
+    "Rising Wind": {
+        type: "aoe",
+        cooldown: 4,
+        allowedWeaponTypes: exceptStaves,
+        description: "Before combat this unit initiates, foes in an area near target take damage equal to (unit's Atk minus foe's Def or Res).",
+        getAoETargets(state, target) {
+            const targets = new Set<Entity>().add(target);
+            const { x, y } = target.getOne("Position");
+            const tiles = getSurroundings(state.map, y, x, new Set<Uint16Array>(state.map[y][x]));
+            for (let tile of tiles) {
+                const occupier = state.occupiedTilesMap.get(tile);
+                if (occupier && occupier.getOne("Side").value !== this.entity.getOne("Side").value) {
+                    targets.add(occupier);
+                }
+            }
+
+            return targets;
+        },
+        getAoEDamage(state, target) {
+            const { atk } = getMapStats(this.entity);
+            const targetedDefense = getTargetedDefenseStat(this.entity, target, getCombatStats(target));
+            const { [targetedDefense]: defense } = getMapStats(target);
+
+            return atk - defense;
         },
     }
 };

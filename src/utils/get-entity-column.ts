@@ -1,0 +1,3 @@
+function getEntityColumn(columnIndex: number) {
+
+}

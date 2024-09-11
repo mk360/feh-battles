@@ -12,6 +12,7 @@ interface MapComponentsDict {
     Guidance: WithSource<"Guidance">;
     IncreasedMovement: WithSource<"Increased Movement">;
     Guard: WithSource<"Guard">;
+    PreventCounterattack: WithSource<"Prevent Counterattack">;
 }
 
 const StatusesDict: {
@@ -23,7 +24,8 @@ const StatusesDict: {
     MapDebuff: "Penalty",
     IncreasedMovement: "Increased Movement",
     Guidance: "Guidance",
-    Panic: "Panic"
+    Panic: "Panic",
+    "PreventCounterattack": "Prevent Counterattack"
 }
 
 export default function applyMapComponent<K extends keyof MapComponentsDict>(target: Entity, component: K, extraValues: Omit<MapComponentsDict[K], "status">, source?: Entity) {

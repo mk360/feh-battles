@@ -5,7 +5,7 @@ import GameState from "../systems/state";
 import { MovementType, Stat, Stats, PassiveSlot, WeaponType, WeaponColor } from "../interfaces/types";
 import getAllies from "../utils/get-allies";
 import getEnemies from "../utils/get-enemies";
-import { mapBuffByMovementType, honeStat, combatBuffByRange, defiant, breaker, elementalBoost, renewal, threaten, bond, counterattack } from "./effects";
+import { mapBuffByMovementType, honeStat, combatBuffByRange, defiant, breaker, elementalBoost, renewal, threaten, bond, counterattack, guidance } from "./effects";
 import Characters from "./characters.json";
 import getCombatStats from "../systems/get-combat-stats";
 import CombatTurnOutcome from "../interfaces/combat-turn-outcome";
@@ -13,6 +13,7 @@ import getSurroundings from "../systems/get-surroundings";
 import getTileCoordinates from "../systems/get-tile-coordinates";
 import canReachTile from "../systems/can-reach-tile";
 import SPECIALS from "./specials";
+import applyMapComponent from "../systems/apply-map-effect";
 
 interface PassivesDict {
     [k: string]: {
@@ -135,10 +136,7 @@ function movementBasedCombatBuff(buff: Stats, range: number) {
     return function (movementType: MovementType) {
         return function (this: Skill, state: GameState, ally: Entity) {
             if (ally.getOne("MovementType").value === movementType && HeroSystem.getDistance(ally, this.entity) <= range) {
-                ally.addComponent({
-                    type: "CombatBuff",
-                    ...buff
-                });
+                applyMapComponent(ally, "MapBuff", buff, this.entity);
             }
         }
     }
@@ -1747,22 +1745,8 @@ const PASSIVES: PassivesDict = {
         description: "If unit's HP = 100%, infantry and armored allies within 2 spaces can move to a space adjacent to unit.",
         onTurnAllyCheckRange(state, ally) {
             const { hp, maxHP } = this.entity.getOne("Stats");
-            if (hp === maxHP) {
-                if (["armored", "infantry"].includes(ally.getOne("MovementType").value) && HeroSystem.getDistance(ally, this.entity) <= 2) {
-                    const { x, y } = this.entity.getOne("Position");
-                    const tile = state.map[y][x];
-                    const surroundings = getSurroundings(state.map, y, x);
-                    surroundings.splice(surroundings.indexOf(tile), 1);
-                    const validAllyTiles = surroundings.filter((tile) => canReachTile(ally, tile));
-                    for (let tile of validAllyTiles) {
-                        const { x: tileX, y: tileY } = getTileCoordinates(tile);
-                        ally.addComponent({
-                            type: "WarpTile",
-                            x: tileX,
-                            y: tileY
-                        });
-                    }
-                }
+            if (hp === maxHP && ["armored", "infantry"].includes(ally.getOne("MovementType").value) && HeroSystem.getDistance(ally, this.entity) <= 2) {
+                guidance(this.entity, state, ally);
             }
         },
         allowedMovementTypes: ["flier"]
@@ -1770,86 +1754,37 @@ const PASSIVES: PassivesDict = {
     "Guidance 2": {
         slot: "C",
         description: "If unit's HP ≥ 50%, infantry and armored allies within 2 spaces can move to a space adjacent to unit. ",
-        onTurnStart(state) {
-            const { hp, maxHP } = this.entity.getOne("Stats");
-            if (hp / maxHP >= 0.5) {
-                const allies = getAllies(state, this.entity);
-                for (let ally of allies) {
-                    if (["armored", "infantry"].includes(ally.getOne("MovementType").value) && HeroSystem.getDistance(ally, this.entity) <= 2) {
-                        ally.addComponent({
-                            type: "Status",
-                            value: "Guidance"
-                        });
-                    }
-                }
-            }
-        },
         allowedMovementTypes: ["flier"],
         onTurnAllyCheckRange(state, ally) {
             const { hp, maxHP } = this.entity.getOne("Stats");
-            if (hp / maxHP >= 0.5) {
-                if (["armored", "infantry"].includes(ally.getOne("MovementType").value) && HeroSystem.getDistance(ally, this.entity) <= 2) {
-                    const { x, y } = this.entity.getOne("Position");
-                    const tile = state.map[y][x];
-                    const surroundings = getSurroundings(state.map, y, x);
-                    surroundings.splice(surroundings.indexOf(tile), 1);
-                    const validAllyTiles = surroundings.filter((tile) => canReachTile(ally, tile));
-                    for (let tile of validAllyTiles) {
-                        const { x: tileX, y: tileY } = getTileCoordinates(tile);
-                        ally.addComponent({
-                            type: "WarpTile",
-                            x: tileX,
-                            y: tileY
-                        });
-                    }
-                }
+            if (hp / maxHP >= 0.5 && ["armored", "infantry"].includes(ally.getOne("MovementType").value) && HeroSystem.getDistance(ally, this.entity) <= 2) {
+                guidance(this.entity, state, ally);
             }
         }
     },
     "Guidance 3": {
         slot: "C",
         allowedMovementTypes: ["flier"],
-        description: "Infantry and armored allies within 2 spaces can move to a space adjacent to unit. ",
-        // onTurnStart(state) {
-        //     // const allies = getAllies(state, this.entity);
-        //     // for (let ally of allies) {
-        //     //     if (["armored", "infantry"].includes(ally.getOne("MovementType").value) && HeroSystem.getDistance(ally, this.entity) <= 2) {
-        //     //         ally.addComponent({
-        //     //             type: "Status",
-        //     //             value: "Guidance"
-        //     //         });
-        //     //     }
-        //     // }
-        // },
+        description: "Infantry and armored allies within 2 spaces can move to a space adjacent to unit.",
         onTurnAllyCheckRange(state, ally) {
             if (["armored", "infantry"].includes(ally.getOne("MovementType").value) && HeroSystem.getDistance(ally, this.entity) <= 2) {
-                const { x, y } = this.entity.getOne("Position");
-                const tile = state.map[y][x];
-                const surroundings = getSurroundings(state.map, y, x);
-                surroundings.splice(surroundings.indexOf(tile), 1);
-                const validAllyTiles = surroundings.filter((tile) => canReachTile(ally, tile));
-                for (let tile of validAllyTiles) {
-                    const { x: tileX, y: tileY } = getTileCoordinates(tile);
-                    ally.addComponent({
-                        type: "WarpTile",
-                        x: tileX,
-                        y: tileY
-                    });
-                }
+                guidance(this.entity, state, ally);
             }
         }
     },
     "Savage Blow 1": {
         description: "If unit initiates combat, deals 3 damage to foes within 2 spaces of target after combat.",
         slot: "C",
-        onCombatInitiate(state, target) {
-            const enemies = getAllies(state, target);
-            for (let enemy of enemies) {
-                if (HeroSystem.getDistance(enemy, target) <= 2) {
-                    enemy.addComponent({
-                        type: "AfterCombatDamage",
-                        value: 3
-                    });
+        onCombatAfter(state, target) {
+            if (this.entity.getOne("DealDamage")) {
+                const enemies = getAllies(state, target);
+                for (let enemy of enemies) {
+                    if (HeroSystem.getDistance(enemy, target) <= 2) {
+                        enemy.addComponent({
+                            type: "AfterCombatDamage",
+                            value: 3
+                        });
+                    }
                 }
             }
         }
@@ -1857,14 +1792,16 @@ const PASSIVES: PassivesDict = {
     "Savage Blow 2": {
         description: "If unit initiates combat, deals 5 damage to foes within 2 spaces of target after combat.",
         slot: "C",
-        onCombatInitiate(state, target) {
-            const enemies = getAllies(state, target);
-            for (let enemy of enemies) {
-                if (HeroSystem.getDistance(enemy, target) <= 2) {
-                    enemy.addComponent({
-                        type: "AfterCombatDamage",
-                        value: 5
-                    });
+        onCombatAfter(state, target) {
+            if (this.entity.getOne("DealDamage")) {
+                const enemies = getAllies(state, target);
+                for (let enemy of enemies) {
+                    if (HeroSystem.getDistance(enemy, target) <= 2) {
+                        enemy.addComponent({
+                            type: "AfterCombatDamage",
+                            value: 5
+                        });
+                    }
                 }
             }
         }
@@ -1872,14 +1809,16 @@ const PASSIVES: PassivesDict = {
     "Savage Blow 3": {
         description: "If unit initiates combat, deals 7 damage to foes within 2 spaces of target after combat.",
         slot: "C",
-        onCombatInitiate(state, target) {
-            const enemies = getAllies(state, target);
-            for (let enemy of enemies) {
-                if (HeroSystem.getDistance(enemy, target) <= 2) {
-                    enemy.addComponent({
-                        type: "AfterCombatDamage",
-                        value: 7
-                    });
+        onCombatAfter(state, target) {
+            if (this.entity.getOne("DealDamage")) {
+                const enemies = getAllies(state, target);
+                for (let enemy of enemies) {
+                    if (HeroSystem.getDistance(enemy, target) <= 2) {
+                        enemy.addComponent({
+                            type: "AfterCombatDamage",
+                            value: 7
+                        });
+                    }
                 }
             }
         }
@@ -1992,10 +1931,9 @@ const PASSIVES: PassivesDict = {
             const allies = getAllies(battleState, this.entity);
             for (let ally of allies) {
                 if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                    ally.addComponent({
-                        type: "MapBuff",
+                    applyMapComponent(ally, "MapBuff", {
                         def: 3
-                    });
+                    }, this.entity);
                 }
             }
         },
@@ -2007,10 +1945,9 @@ const PASSIVES: PassivesDict = {
             const allies = getAllies(battleState, this.entity);
             for (let ally of allies) {
                 if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                    ally.addComponent({
-                        type: "MapBuff",
+                    applyMapComponent(ally, "MapBuff", {
                         res: 2
-                    });
+                    }, this.entity);
                 }
             }
         },
@@ -2022,10 +1959,9 @@ const PASSIVES: PassivesDict = {
             const allies = getAllies(battleState, this.entity);
             for (let ally of allies) {
                 if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                    ally.addComponent({
-                        type: "MapBuff",
+                    applyMapComponent(ally, "MapBuff", {
                         res: 3
-                    });
+                    }, this.entity);
                 }
             }
         },
@@ -2037,10 +1973,9 @@ const PASSIVES: PassivesDict = {
             const allies = getAllies(battleState, this.entity);
             for (let ally of allies) {
                 if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                    ally.addComponent({
-                        type: "MapBuff",
+                    applyMapComponent(ally, "MapBuff", {
                         res: 4
-                    });
+                    }, this.entity);
                 }
             }
         },
@@ -2070,11 +2005,10 @@ const PASSIVES: PassivesDict = {
             const allies = getAllies(state, this.entity);
             for (let ally of allies) {
                 if (ally.getOne("MovementType").value === "cavalry" && HeroSystem.getDistance(ally, this.entity) === 1) {
-                    ally.addComponent({
-                        type: "MapBuff",
+                    applyMapComponent(ally, "MapBuff", {
                         def: 6,
-                        res: 6
-                    });
+                        res: 6,
+                    }, this.entity);
                 }
             }
         },
@@ -2087,11 +2021,10 @@ const PASSIVES: PassivesDict = {
             const allies = getAllies(state, this.entity);
             for (let ally of allies) {
                 if (ally.getOne("WeaponType").value === "breath" && HeroSystem.getDistance(ally, this.entity) === 1) {
-                    ally.addComponent({
-                        type: "MapBuff",
+                    applyMapComponent(ally, "MapBuff", {
                         def: 6,
-                        res: 6
-                    });
+                        res: 6,
+                    }, this.entity);
                 }
             }
         },
@@ -2104,11 +2037,10 @@ const PASSIVES: PassivesDict = {
             const allies = getAllies(state, this.entity);
             for (let ally of allies) {
                 if (ally.getOne("MovementType").value === "flier" && HeroSystem.getDistance(ally, this.entity) === 1) {
-                    ally.addComponent({
-                        type: "MapBuff",
+                    applyMapComponent(ally, "MapBuff", {
                         def: 6,
-                        res: 6
-                    });
+                        res: 6,
+                    }, this.entity);
                 }
             }
         },

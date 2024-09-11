@@ -75,6 +75,13 @@ declare class GameWorld extends World {
     }): string[];
     endAction(id: string): string[];
     generateMap(): void;
+    previewAssist(sourceId: string, targetCoordinates: {
+        x: number;
+        y: number;
+    }, temporaryCoordinates: {
+        x: number;
+        y: number;
+    }): void;
     previewAttack(attackerId: string, targetCoordinates: {
         x: number;
         y: number;

@@ -7,6 +7,29 @@ import getAllies from "../utils/get-allies";
 import getEnemies from "../utils/get-enemies";
 import getCombatStats from "../systems/get-combat-stats";
 import applyMapComponent from "../systems/apply-map-effect";
+import getSurroundings from "../systems/get-surroundings";
+import canReachTile from "../systems/can-reach-tile";
+import getTileCoordinates from "../systems/get-tile-coordinates";
+
+/**
+ * Specified target can move to any tile adjacent to calling ally within 2 spaces
+ * for ex. if Hinoka calls this effect, allies can move to one space near Hinoka
+ */
+export function guidance(sourceEntity: Entity, state: GameState, target: Entity) {
+    const { x, y } = sourceEntity.getOne("Position");
+    const tile = state.map[y][x];
+    const surroundings = getSurroundings(state.map, y, x);
+    surroundings.splice(surroundings.indexOf(tile), 1);
+    const validAllyTiles = surroundings.filter((tile) => canReachTile(target, tile));
+    for (let tile of validAllyTiles) {
+        const { x: tileX, y: tileY } = getTileCoordinates(tile);
+        target.addComponent({
+            type: "WarpTile",
+            x: tileX,
+            y: tileY
+        });
+    }
+};
 
 /**
  * Apply specified map buff to adjacent allies

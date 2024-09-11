@@ -134,7 +134,30 @@ const SPECIALS: SpecialsDict = {
 
             return atk - defense;
         },
-    }
+    },
+    "Regnal Astra": {
+        description: "Boosts damage by 40% of unit's Spd. (Skill cannot be inherited.)",
+        cooldown: 2,
+        onCombatRoundAttack() {
+            const { spd } = getCombatStats(this.entity);
+            this.entity.addComponent({
+                type: "RoundDamageIncrease",
+                value: Math.floor(spd * 0.4)
+            });
+        }
+    },
+    "Luna": {
+        description: "Treats foe's Def/Res as if reduced by 50% during combat.",
+        cooldown: 3,
+        onCombatRoundAttack(target) {
+            const defStat = getTargetedDefenseStat(this.entity, target, getCombatStats(target));
+            const { [defStat]: def } = getCombatStats(target);
+            this.entity.addComponent({
+                type: "RoundDamageIncrease",
+                value: Math.floor(def * 0.5)
+            });
+        },
+    },
 };
 
 export default SPECIALS;

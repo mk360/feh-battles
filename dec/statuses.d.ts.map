@@ -1,1 +1,1 @@
-{"version":3,"file":"statuses.d.ts","sourceRoot":"","sources":["../src/statuses.ts"],"names":[],"mappings":"AAAA,eAAO,MAAM,iBAAiB,sDAAuD,CAAC;AACtF,eAAO,MAAM,iBAAiB,mDAAoD,CAAC;AAEnF,eAAO,MAAM,QAAQ,8FAAwD,CAAC"}
+{"version":3,"file":"statuses.d.ts","sourceRoot":"","sources":["../src/statuses.ts"],"names":[],"mappings":"AAAA,eAAO,MAAM,iBAAiB,sDAAuD,CAAC;AACtF,eAAO,MAAM,iBAAiB,4EAA6E,CAAC;AAE5G,eAAO,MAAM,QAAQ,uHAAwD,CAAC"}

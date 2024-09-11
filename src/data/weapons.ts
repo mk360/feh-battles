@@ -16,6 +16,7 @@ import getMapStats from "../systems/get-map-stats";
 import { getUnitsLowerThanOrEqualingValue, getUnitsWithHighestValue, getUnitsWithLowestValue } from "../systems/value-matchers";
 import ASSISTS from "./assists";
 import applyMapComponent from "../systems/apply-map-effect";
+import SPECIALS from "./specials";
 
 interface WeaponDict {
     [k: string]: {
@@ -645,6 +646,44 @@ const WEAPONS: WeaponDict = {
         effectiveAgainst: ["cavalry"],
         might: 10
     },
+    "Blessed Bouquet": {
+        type: "tome",
+        color: "blue",
+        description: "If unit initiates combat, grants Def/Res+2 to allies within 2 spaces for 1 turn after combat.",
+        might: 8,
+        onCombatAfter(battleState) {
+            if (this.entity.getOne("InitiateCombat")) {
+                const allies = getAllies(battleState, this.entity);
+                for (let ally of allies) {
+                    if (HeroSystem.getDistance(ally, this.entity) <= 2) {
+                        applyMapComponent(ally, "MapBuff", {
+                            def: 2,
+                            res: 2
+                        }, this.entity);
+                    }
+                }
+            }
+        },
+    },
+    "Blessed Bouquet+": {
+        type: "tome",
+        color: "blue",
+        description: "If unit initiates combat, grants Def/Res+2 to allies within 2 spaces for 1 turn after combat.",
+        might: 12,
+        onCombatAfter(battleState) {
+            if (this.entity.getOne("InitiateCombat")) {
+                const allies = getAllies(battleState, this.entity);
+                for (let ally of allies) {
+                    if (HeroSystem.getDistance(ally, this.entity) <= 2) {
+                        applyMapComponent(ally, "MapBuff", {
+                            def: 2,
+                            res: 2
+                        }, this.entity);
+                    }
+                }
+            }
+        },
+    },
     "Book of Orchids": {
         description: "If unit initiates combat, grants Atk+6 during combat.",
         exclusiveTo: ["Mae: Bundle of Energy"],
@@ -889,6 +928,31 @@ const WEAPONS: WeaponDict = {
             }
         },
     },
+    "Candlelight": {
+        description: "After combat, if unit attacked, inflicts status on foe preventing counterattacks through its next action.",
+        type: "staff",
+        might: 7,
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
+                applyMapComponent(target, "PreventCounterattack", {}, this.entity);
+            }
+        },
+    },
+    "Candlelight+": {
+        description: "After combat, if unit attacked, inflicts status on target and foes within 2 spaces of target preventing counterattacks through their next actions.",
+        type: "staff",
+        might: 11,
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
+                const allies = getAllies(battleState, target);
+                for (let ally of allies) {
+                    if (HeroSystem.getDistance(ally, target) <= 2) {
+                        applyMapComponent(target, "PreventCounterattack", {}, this.entity);
+                    }
+                }
+            }
+        },
+    },
     "Cherche's Axe": {
         type: "axe",
         might: 11,
@@ -902,6 +966,44 @@ const WEAPONS: WeaponDict = {
                 type: "BraveWeapon"
             });
         }
+    },
+    "Clarisse's Bow": {
+        description: "Effective against flying foes. &lt;br/>If unit initiates combat, inflicts Atk/Spd-5 on foes within 2 spaces of target through their next actions after combat.",
+        type: "bow",
+        might: 7,
+        effectiveAgainst: ["flier"],
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("InitiateCombat")) {
+                const allies = getAllies(battleState, target);
+                for (let ally of allies) {
+                    if (HeroSystem.getDistance(ally, target) <= 2) {
+                        applyMapComponent(ally, "MapDebuff", {
+                            atk: -5,
+                            spd: -5
+                        }, this.entity);
+                    }
+                }
+            }
+        },
+    },
+    "Clarisse's Bow+": {
+        description: "Effective against flying foes. &lt;br/>If unit initiates combat, inflicts Atk/Spd-5 on foes within 2 spaces of target through their next actions after combat.",
+        type: "bow",
+        might: 11,
+        effectiveAgainst: ["flier"],
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("InitiateCombat")) {
+                const allies = getAllies(battleState, target);
+                for (let ally of allies) {
+                    if (HeroSystem.getDistance(ally, target) <= 2) {
+                        applyMapComponent(ally, "MapDebuff", {
+                            atk: -5,
+                            spd: -5
+                        }, this.entity);
+                    }
+                }
+            }
+        },
     },
     "Cordelia's Lance": {
         type: "lance",
@@ -927,6 +1029,24 @@ const WEAPONS: WeaponDict = {
         },
         exclusiveTo: ["Henry: Twisted Mind"]
     },
+    "Concealed Blade": {
+        might: 16,
+        type: "sword",
+        description: "Deals +10 damage when Special triggers.",
+        exclusiveTo: ["Athena: Borderland Sword"],
+        onSpecialTrigger() {
+            const special = this.entity.getOne("Special");
+            if (special) {
+                const specialData = SPECIALS[special.name];
+                if (specialData.onCombatRoundAttack) {
+                    this.entity.addComponent({
+                        type: "RoundDamageIncrease",
+                        value: 10
+                    });
+                }
+            }
+        }
+    },
     "Crimson Axe": {
         description: "Accelerates Special trigger (cooldown count-1).",
         type: "axe",
@@ -938,6 +1058,44 @@ const WEAPONS: WeaponDict = {
         },
         might: 16,
         exclusiveTo: ["Sheena: Princess of Gra"]
+    },
+    "Cupid Arrow": {
+        type: "bow",
+        effectiveAgainst: ["flier"],
+        description: "Effective against flying foes.&lt;br>If unit initiates combat, grants Def/Res+2 to allies within 2 spaces for 1 turn after combat.",
+        might: 8,
+        onCombatAfter(battleState) {
+            if (this.entity.getOne("InitiateCombat")) {
+                const allies = getAllies(battleState, this.entity);
+                for (let ally of allies) {
+                    if (HeroSystem.getDistance(ally, this.entity) <= 2) {
+                        applyMapComponent(ally, "MapBuff", {
+                            def: 2,
+                            res: 2
+                        }, this.entity);
+                    }
+                }
+            }
+        },
+    },
+    "Cupid Arrow+": {
+        type: "bow",
+        effectiveAgainst: ["flier"],
+        description: "Effective against flying foes.&lt;br>If unit initiates combat, grants Def/Res+2 to allies within 2 spaces for 1 turn after combat.",
+        might: 12,
+        onCombatAfter(battleState) {
+            if (this.entity.getOne("InitiateCombat")) {
+                const allies = getAllies(battleState, this.entity);
+                for (let ally of allies) {
+                    if (HeroSystem.getDistance(ally, this.entity) <= 2) {
+                        applyMapComponent(ally, "MapBuff", {
+                            def: 2,
+                            res: 2
+                        }, this.entity);
+                    }
+                }
+            }
+        },
     },
     "Cursed Lance": {
         description: "Accelerates Special trigger (cooldown count-1). Grants Atk/Spd+2. Deals 4 damage to unit after combat.",
@@ -1026,6 +1184,74 @@ const WEAPONS: WeaponDict = {
                         });
                     }
                 }
+            }
+        },
+    },
+    "Dark Excalibur": {
+        might: 14,
+        type: "tome",
+        description: "Deals +10 damage when Special triggers.",
+        exclusiveTo: ["Sonya: Vengeful Mage"],
+        onSpecialTrigger() {
+            const special = this.entity.getOne("Special");
+            if (special) {
+                const specialData = SPECIALS[special.name];
+                if (specialData.onCombatRoundAttack) {
+                    this.entity.addComponent({
+                        type: "RoundDamageIncrease",
+                        value: 10
+                    });
+                }
+            }
+        }
+    },
+    "Dancer's Fan": {
+        description: "If unit initiates combat, restores 7 HP to adjacent allies after combat. After combat, if unit attacked, inflicts Def/Res-5 on foe through its next action.",
+        might: 7,
+        type: "dagger",
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("InitiateCombat")) {
+                const allies = getAllies(battleState, this.entity);
+                for (let ally of allies) {
+                    if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                        ally.addComponent({
+                            type: "Heal",
+                            value: 7
+                        });
+                    }
+                }
+            }
+
+            if (this.entity.getOne("DealDamage")) {
+                applyMapComponent(target, "MapDebuff", {
+                    def: -5,
+                    res: -5
+                }, this.entity);
+            }
+        },
+    },
+    "Dancer's Fan+": {
+        description: "If unit initiates combat, restores 7 HP to adjacent allies after combat. After combat, if unit attacked, inflicts Def/Res-7 on foe through its next action.",
+        might: 10,
+        type: "dagger",
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("InitiateCombat")) {
+                const allies = getAllies(battleState, this.entity);
+                for (let ally of allies) {
+                    if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                        ally.addComponent({
+                            type: "Heal",
+                            value: 7
+                        });
+                    }
+                }
+            }
+
+            if (this.entity.getOne("DealDamage")) {
+                applyMapComponent(target, "MapDebuff", {
+                    def: -7,
+                    res: -7
+                }, this.entity);
             }
         },
     },
@@ -1171,6 +1397,27 @@ const WEAPONS: WeaponDict = {
                 type: "ModifySpecialCooldown",
                 value: -1
             });
+        },
+    },
+    "Deathly Dagger": {
+        description: "After combat, if unit attacked, inflicts Def/Res-7 on foe through its next action.&lt;br>If unit initiates combat, deals 7 damage to foe after combat.",
+        type: "dagger",
+        might: 11,
+        exclusiveTo: ["Jaffar: Angel of Death"],
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
+                Effects.dagger(this, battleState, target, {
+                    def: -7,
+                    res: -7
+                });
+            }
+
+            if (this.entity.getOne("InitiateCombat")) {
+                target.addComponent({
+                    type: "AfterCombatDamage",
+                    value: 7
+                });
+            }
         },
     },
     "Devil's Axe": {
@@ -1586,6 +1833,42 @@ const WEAPONS: WeaponDict = {
             });
         },
     },
+    "First Bite": {
+        type: "lance",
+        description: "If unit initiates combat, grants Def/Res+2 to allies within 2 spaces for 1 turn after combat.",
+        might: 10,
+        onCombatAfter(battleState) {
+            if (this.entity.getOne("InitiateCombat")) {
+                const allies = getAllies(battleState, this.entity);
+                for (let ally of allies) {
+                    if (HeroSystem.getDistance(ally, this.entity) <= 2) {
+                        applyMapComponent(ally, "MapBuff", {
+                            def: 2,
+                            res: 2
+                        }, this.entity);
+                    }
+                }
+            }
+        },
+    },
+    "First Bite+": {
+        type: "lance",
+        description: "If unit initiates combat, grants Def/Res+2 to allies within 2 spaces for 1 turn after combat.",
+        might: 14,
+        onCombatAfter(battleState) {
+            if (this.entity.getOne("InitiateCombat")) {
+                const allies = getAllies(battleState, this.entity);
+                for (let ally of allies) {
+                    if (HeroSystem.getDistance(ally, this.entity) <= 2) {
+                        applyMapComponent(ally, "MapBuff", {
+                            def: 2,
+                            res: 2
+                        }, this.entity);
+                    }
+                }
+            }
+        },
+    },
     "Florina's Lance": {
         description: "Effective against armored foes.",
         might: 16,
@@ -1690,6 +1973,21 @@ const WEAPONS: WeaponDict = {
                     atk: -7,
                     spd: -7
                 });
+            }
+        },
+    },
+    "Grimoire": {
+        description: "If unit's HP ≥ 50%, unit can move to a space adjacent to an ally within 2 spaces.",
+        type: "tome",
+        exclusiveTo: ["Nowi: Eternal Witch"],
+        might: 14,
+        onTurnCheckRange(state) {
+            const allies = getAllies(state, this.entity);
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP >= 0.5) {
+                for (let ally of allies) {
+                    Effects.guidance(ally, state, this.entity);
+                }
             }
         },
     },
@@ -1964,6 +2262,36 @@ const WEAPONS: WeaponDict = {
             });
         }
     },
+    "Hibiscus Tome": {
+        description: "Grants Atk/Spd+1 to allies within 2 spaces during combat.",
+        type: "tome",
+        color: "green",
+        might: 8,
+        onCombatAllyStart(state, ally) {
+            if (HeroSystem.getDistance(ally, this.entity) <= 2) {
+                ally.addComponent({
+                    type: "CombatBuff",
+                    atk: 1,
+                    spd: 1
+                });
+            }
+        },
+    },
+    "Hibiscus Tome+": {
+        description: "Grants Atk/Spd+1 to allies within 2 spaces during combat.",
+        type: "tome",
+        color: "green",
+        might: 12,
+        onCombatAllyStart(state, ally) {
+            if (HeroSystem.getDistance(ally, this.entity) <= 2) {
+                ally.addComponent({
+                    type: "CombatBuff",
+                    atk: 1,
+                    spd: 1
+                });
+            }
+        },
+    },
     "Hinata's Katana": {
         description: "If foe initiates combat, grants Atk/Def+4 during combat.",
         might: 16,
@@ -2192,6 +2520,34 @@ const WEAPONS: WeaponDict = {
         },
         might: 11,
     },
+    "Kitty Paddle": {
+        description: "Effective against magic foes.&lt;br />After combat, if unit attacked and if foe uses magic, inflicts Def/Res-5 on foe through its next action.",
+        might: 5,
+        type: "dagger",
+        effectiveAgainst: ["tome"],
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage") && target.getOne("Weapon").weaponType === "tome") {
+                applyMapComponent(target, "MapDebuff", {
+                    def: -5,
+                    res: -5,
+                }, this.entity);
+            }
+        },
+    },
+    "Kitty Paddle+": {
+        description: "Effective against magic foes.&lt;br />After combat, if unit attacked and if foe uses magic, inflicts Def/Res-7 on foe through its next action.",
+        might: 8,
+        type: "dagger",
+        effectiveAgainst: ["tome"],
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage") && target.getOne("Weapon").weaponType === "tome") {
+                applyMapComponent(target, "MapDebuff", {
+                    def: -7,
+                    res: -7,
+                }, this.entity);
+            }
+        },
+    },
     "Knightly Lance": {
         description: "Accelerates Special trigger (cooldown count-1).",
         might: 16,
@@ -2291,6 +2647,26 @@ const WEAPONS: WeaponDict = {
             }
         },
     },
+    "Legion's Axe": {
+        type: "axe",
+        might: 10,
+        description: "After combat, if unit attacked, converts bonuses on foe into penalties through its next action.",
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
+                applyMapComponent(target, "Panic", {}, this.entity);
+            }
+        },
+    },
+    "Legion's Axe+": {
+        type: "axe",
+        might: 14,
+        description: "After combat, if unit attacked, converts bonuses on foe into penalties through its next action.",
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
+                applyMapComponent(target, "Panic", {}, this.entity);
+            }
+        },
+    },
     "Lightning Breath": {
         description: "Slows Special trigger (cooldown count+1).&lt;br>Unit can counterattack regardless of foe's range.",
         might: 7,
@@ -2323,6 +2699,34 @@ const WEAPONS: WeaponDict = {
             })
         },
     },
+    "Lilith Floatie": {
+        description: "Grants Atk/Spd+1 to allies within 2 spaces during combat.",
+        type: "axe",
+        might: 10,
+        onCombatAllyStart(state, ally) {
+            if (HeroSystem.getDistance(ally, this.entity) <= 2) {
+                ally.addComponent({
+                    type: "CombatBuff",
+                    atk: 1,
+                    spd: 1
+                });
+            }
+        },
+    },
+    "Lilith Floatie+": {
+        description: "Grants Atk/Spd+1 to allies within 2 spaces during combat.",
+        type: "axe",
+        might: 14,
+        onCombatAllyStart(state, ally) {
+            if (HeroSystem.getDistance(ally, this.entity) <= 2) {
+                ally.addComponent({
+                    type: "CombatBuff",
+                    atk: 1,
+                    spd: 1
+                });
+            }
+        },
+    },
     "Lordly Lance": {
         description: "Effective against armored foes.",
         effectiveAgainst: ["armored"],
@@ -2340,6 +2744,38 @@ const WEAPONS: WeaponDict = {
                 type: "ModifySpecialCooldown",
                 value: -1
             });
+        },
+    },
+    "Monstrous Bow": {
+        type: "bow",
+        effectiveAgainst: ["flier"],
+        might: 8,
+        description: "Effective against flying foes.&lt;br>After combat, if unit attacked, converts bonuses on foes within 2 spaces of target into penalties through their next actions.",
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
+                const allies = getAllies(battleState, target);
+                for (let ally of allies) {
+                    if (HeroSystem.getDistance(ally, target) <= 2) {
+                        applyMapComponent(ally, "Panic", {}, this.entity);
+                    }
+                }
+            }
+        },
+    },
+    "Monstrous Bow+": {
+        type: "bow",
+        effectiveAgainst: ["flier"],
+        might: 12,
+        description: "Effective against flying foes.&lt;br>After combat, if unit attacked, converts bonuses on foes within 2 spaces of target into penalties through their next actions.",
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
+                const allies = getAllies(battleState, target);
+                for (let ally of allies) {
+                    if (HeroSystem.getDistance(ally, target) <= 2) {
+                        applyMapComponent(ally, "Panic", {}, this.entity);
+                    }
+                }
+            }
         },
     },
     "Mulagir": {
@@ -2426,6 +2862,67 @@ const WEAPONS: WeaponDict = {
         onCombatStart() {
             Effects.blade(this);
         }
+    },
+    "Pain": {
+        description: "After combat, if unit attacked, deals 10 damage to foe.",
+        type: "staff",
+        might: 3,
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
+                target.addComponent({
+                    type: "AfterCombatDamage",
+                    value: 10
+                });
+            }
+        },
+    },
+    "Pain+": {
+        description: "Deals 10 damage to target and foes within 2 spaces of target after combat.",
+        type: "staff",
+        might: 10,
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
+                target.addComponent({
+                    type: "AfterCombatDamage",
+                    value: 10
+                });
+                const allies = getAllies(battleState, target);
+                for (let ally of allies) {
+                    if (HeroSystem.getDistance(ally, target) <= 2) {
+                        ally.addComponent({
+                            type: "AfterCombatDamage",
+                            value: 10
+                        });
+                    }
+                }
+            }
+        },
+    },
+    "Panic": {
+        type: "staff",
+        might: 7,
+        description: "After combat, if unit attacked, converts bonuses on foe into penalties through its next action.",
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
+                applyMapComponent(target, "Panic", {}, this.entity);
+            }
+        },
+    },
+    "Panic+": {
+        type: "staff",
+        might: 11,
+        description: "After combat, if unit attacked, converts bonuses on target and foes within 2 spaces of target into penalties through their next actions.",
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
+                applyMapComponent(target, "Panic", {}, this.entity);
+                const allies = getAllies(battleState, target);
+                for (let ally of allies) {
+                    if (HeroSystem.getDistance(ally, target) <= 2) {
+                        applyMapComponent(ally, "Panic", {}, this.entity);
+                    }
+                }
+            }
+        },
     },
     "Panther Lance": {
         description: "During combat, boosts unit's Atk/Def by number of allies within 2 spaces × 2. (Maximum bonus of +6 to each stat.)",
@@ -2697,6 +3194,27 @@ const WEAPONS: WeaponDict = {
         exclusiveTo: ["Gordin: Altean Archer"],
         type: "bow"
     },
+    "Resolute Blade": {
+        exclusiveTo: ["Mia: Lady of Blades"],
+        might: 16,
+        type: "sword",
+        description: "Grants Atk+3. Deals +10 damage when Special triggers.",
+        onEquip() {
+            this.entity.getOne("Stats").atk += 3;
+        },
+        onSpecialTrigger() {
+            const special = this.entity.getOne("Special");
+            if (special) {
+                const specialData = SPECIALS[special.name];
+                if (specialData.onCombatRoundAttack) {
+                    this.entity.addComponent({
+                        type: "RoundDamageIncrease",
+                        value: 10
+                    });
+                }
+            }
+        }
+    },
     "Rhomphaia": {
         effectiveAgainst: ["armored", "cavalry"],
         description: "Effective against armored and cavalry foes.",
@@ -2837,6 +3355,48 @@ const WEAPONS: WeaponDict = {
                 value: 20
             });
         }
+    },
+    "Scarlet Sword": {
+        description: "Accelerates Special trigger (cooldown count-1).",
+        might: 16,
+        type: "sword",
+        exclusiveTo: ["Navarre: Scarlet Sword"],
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        },
+    },
+    "Sealife Tome": {
+        description: "Grants Atk/Spd+1 to allies within 2 spaces during combat.",
+        type: "tome",
+        color: "blue",
+        might: 8,
+        onCombatAllyStart(state, ally) {
+            if (HeroSystem.getDistance(ally, this.entity) <= 2) {
+                ally.addComponent({
+                    type: "CombatBuff",
+                    atk: 1,
+                    spd: 1
+                });
+            }
+        },
+    },
+    "Sealife Tome+": {
+        description: "Grants Atk/Spd+1 to allies within 2 spaces during combat.",
+        type: "tome",
+        color: "blue",
+        might: 12,
+        onCombatAllyStart(state, ally) {
+            if (HeroSystem.getDistance(ally, this.entity) <= 2) {
+                ally.addComponent({
+                    type: "CombatBuff",
+                    atk: 1,
+                    spd: 1
+                });
+            }
+        },
     },
     "Selena's Blade": {
         type: "sword",
@@ -3019,6 +3579,51 @@ const WEAPONS: WeaponDict = {
         description: "After combat, if unit attacked, inflicts Spd-6 on foe through its next action.",
         type: "staff",
         might: 5,
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
+                applyMapComponent(target, "MapDebuff", {
+                    spd: -6
+                }, this.entity);
+            }
+        },
+    },
+    "Slow+": {
+        description: "After combat, if unit attacked, inflicts Spd-7 on target and foes within 2 spaces of target through their next actions.",
+        type: "staff",
+        might: 12,
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
+                Effects.dagger(this, battleState, target, {
+                    spd: -7
+                });
+            }
+        },
+    },
+    "Smoke Dagger": {
+        description: "After combat, if unit attacked, inflicts Def/Res-4 on foes within 2 spaces of target through their next actions.",
+        type: "dagger",
+        might: 6,
+        onCombatAfter(state, target) {
+            if (this.entity.getOne("DealDamage")) {
+                Effects.dagger(this, state, target, {
+                    def: -4,
+                    res: -4
+                });
+            }
+        }
+    },
+    "Smoke Dagger+": {
+        description: "After combat, if unit attacked, inflicts Def/Res-6 on foes within 2 spaces of target through their next actions.",
+        type: "dagger",
+        might: 9,
+        onCombatAfter(state, target) {
+            if (this.entity.getOne("DealDamage")) {
+                Effects.dagger(this, state, target, {
+                    def: -6,
+                    res: -6
+                });
+            }
+        }
     },
     "Sniper's Bow": {
         description: "Effective against flying foes. After combat, if unit attacked, deals 7 damage to target and foes within 2 spaces of target, and inflicts Atk/Spd-7 on them through their next actions.",
@@ -3046,6 +3651,38 @@ const WEAPONS: WeaponDict = {
         },
         might: 16,
         exclusiveTo: ["Lon'qu: Solitary Blade"]
+    },
+    "Spectral Tome": {
+        type: "tome",
+        color: "green",
+        might: 8,
+        description: "After combat, if unit attacked, converts bonuses on foes within 2 spaces of target into penalties through their next actions.",
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
+                const allies = getAllies(battleState, target);
+                for (let ally of allies) {
+                    if (HeroSystem.getDistance(ally, target) <= 2) {
+                        applyMapComponent(ally, "Panic", {}, this.entity);
+                    }
+                }
+            }
+        },
+    },
+    "Spectral Tome+": {
+        type: "tome",
+        color: "green",
+        might: 12,
+        description: "After combat, if unit attacked, converts bonuses on foes within 2 spaces of target into penalties through their next actions.",
+        onCombatAfter(battleState, target) {
+            if (this.entity.getOne("DealDamage")) {
+                const allies = getAllies(battleState, target);
+                for (let ally of allies) {
+                    if (HeroSystem.getDistance(ally, target) <= 2) {
+                        applyMapComponent(ally, "Panic", {}, this.entity);
+                    }
+                }
+            }
+        },
     },
     "Springtime Staff": {
         exclusiveTo: ["Genny: Endearing Ally"],
@@ -3202,6 +3839,68 @@ const WEAPONS: WeaponDict = {
         onCombatStart() {
             Effects.blade(this);
         }
+    },
+    "Tomato Tome": {
+        description: "Grants Atk/Spd+1 to allies within 2 spaces during combat.",
+        type: "tome",
+        color: "red",
+        might: 8,
+        onCombatAllyStart(state, ally) {
+            if (HeroSystem.getDistance(ally, this.entity) <= 2) {
+                ally.addComponent({
+                    type: "CombatBuff",
+                    atk: 1,
+                    spd: 1
+                });
+            }
+        },
+    },
+    "Tomato Tome+": {
+        description: "Grants Atk/Spd+1 to allies within 2 spaces during combat.",
+        type: "tome",
+        color: "red",
+        might: 12,
+        onCombatAllyStart(state, ally) {
+            if (HeroSystem.getDistance(ally, this.entity) <= 2) {
+                ally.addComponent({
+                    type: "CombatBuff",
+                    atk: 1,
+                    spd: 1
+                });
+            }
+        },
+    },
+    "Tome of Thoron": {
+        description: "At start of turn, if unit's HP ≤ 75% and unit's attack can trigger their Special, grants Special cooldown count-1, and deals +10 damage when Special triggers.",
+        exclusiveTo: ["Tailtiu: Thunder Noble"],
+        type: "tome",
+        might: 14,
+        onTurnStart() {
+            const special = this.entity.getOne("Special");
+
+            if (special) {
+                const specialData = SPECIALS[special.name];
+                const { hp, maxHP } = this.entity.getOne("Stats");
+                if (specialData.onCombatRoundAttack && hp / maxHP <= 0.75) {
+                    this.entity.addComponent({
+                        type: "AccelerateSpecial"
+                    });
+                }
+            }
+        },
+        onCombatStart() {
+            const special = this.entity.getOne("Special");
+
+            if (special) {
+                const specialData = SPECIALS[special.name];
+                const { hp, maxHP } = this.entity.getOne("Stats");
+                if (specialData.onCombatRoundAttack && hp / maxHP <= 0.75) {
+                    this.entity.addComponent({
+                        type: "AccelerateSpecial"
+                    });
+                }
+            }
+        },
     },
     "Tyrfing": {
         description: "If unit's HP ≤ 50%, grants Def+4 during combat.",
@@ -3363,6 +4062,40 @@ const WEAPONS: WeaponDict = {
             }
         },
     },
+    "Wo Dao": {
+        might: 9,
+        type: "sword",
+        description: "Deals +10 damage when Special triggers.",
+        onSpecialTrigger() {
+            const special = this.entity.getOne("Special");
+            if (special) {
+                const specialData = SPECIALS[special.name];
+                if (specialData.onCombatRoundAttack) {
+                    this.entity.addComponent({
+                        type: "RoundDamageIncrease",
+                        value: 10
+                    });
+                }
+            }
+        }
+    },
+    "Wo Dao+": {
+        might: 13,
+        type: "sword",
+        description: "Deals +10 damage when Special triggers.",
+        onSpecialTrigger() {
+            const special = this.entity.getOne("Special");
+            if (special) {
+                const specialData = SPECIALS[special.name];
+                if (specialData.onCombatRoundAttack) {
+                    this.entity.addComponent({
+                        type: "RoundDamageIncrease",
+                        value: 10
+                    });
+                }
+            }
+        }
+    },
     "Wind's Brand": {
         description: "At start of turn, inflicts Atk-7 on foe on the enemy team with the highest Atk through its next action.",
         might: 14,
@@ -3437,5 +4170,7 @@ const WEAPONS: WeaponDict = {
         type: "sword",
     },
 };
+
+console.log(Object.keys(WEAPONS).length);
 
 export default WEAPONS;

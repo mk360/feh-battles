@@ -4,7 +4,6 @@ import Skill from "../components/skill";
 import Characters from "./characters.json";
 import { Entity } from "ape-ecs";
 import CombatTurnOutcome from "../interfaces/combat-turn-outcome";
-import CombatOutcome from "../interfaces/combat-outcome";
 interface WeaponDict {
     [k: string]: {
         description: string;
@@ -17,7 +16,7 @@ interface WeaponDict {
         protects?: (MovementType | WeaponType)[];
         onSpecialTrigger?(this: Skill, battleState: GameState, target: Entity): void;
         onCombatStart?(this: Skill, battleState: GameState, target: Entity): void;
-        onCombatAfter?(this: Skill, battleState: GameState, target: Entity, combat: CombatOutcome): void;
+        onCombatAfter?(this: Skill, battleState: GameState, target: Entity): void;
         onCombatInitiate?(this: Skill, state: GameState, target: Entity): void;
         onCombatAllyStart?(this: Skill, state: GameState, ally: Entity): void;
         onCombatDefense?(this: Skill, state: GameState, attacker: Entity): void;
@@ -28,6 +27,8 @@ interface WeaponDict {
         onTurnStart?(this: Skill, battleState: GameState): void;
         onTurnStartBefore?(this: Skill, battleState: GameState): void;
         onTurnStartAfter?(this: Skill, battleState: GameState): void;
+        onAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: Skill): void;
+        onAllyAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: Skill): void;
     };
 }
 declare const WEAPONS: WeaponDict;

@@ -495,6 +495,25 @@ const WEAPONS: WeaponDict = {
             });
         },
     },
+    "Aura": {
+        description: "If unit initiates combat, restores 5 HP to adjacent allies after combat.",
+        type: "tome",
+        exclusiveTo: ["Linde: Light Mage"],
+        might: 14,
+        onCombatAfter(state) {
+            if (this.entity.getOne("InitiateCombat")) {
+                const allies = getAllies(state, this.entity);
+                for (let ally of allies) {
+                    if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                        ally.addComponent({
+                            type: "Heal",
+                            value: 5
+                        });
+                    }
+                }
+            }
+        }
+    },
     "Axe of Virility": {
         description: "Effective against armored foes.",
         might: 16,

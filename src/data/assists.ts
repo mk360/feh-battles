@@ -7,6 +7,7 @@ import tileBitmasks from "./tile-bitmasks";
 import { WeaponType } from "../interfaces/types";
 import MovementType from "../components/movement-type";
 import Characters from "./characters.json";
+import { swap } from "./effects";
 
 type AssistKind = "refresh" | "movement" | "buff" | "healing";
 
@@ -138,26 +139,10 @@ const ASSISTS: AssistsDict = {
         description: "Unit and target ally swap spaces.",
         type: ["movement"],
         canApply(state, ally) {
-            const firstPosition = this.entity.getOne("TemporaryPosition");
-            const secondPosition = ally.getOne("Position");
-            const firstMapSlot = state.map[firstPosition.y][firstPosition.x];
-            const secondMapSlot = state.map[secondPosition.y][secondPosition.x];
-
-            return canReachTile(ally, firstMapSlot) && canReachTile(this.entity, secondMapSlot);
+            return swap(state, this.entity, ally).checker();
         },
         onApply(state, ally) {
-            const firstPosition = this.entity.getOne("TemporaryPosition");
-            const secondPosition = ally.getOne("Position");
-            this.entity.addComponent({
-                type: "Move",
-                x: secondPosition.x,
-                y: secondPosition.y
-            });
-            ally.addComponent({
-                type: "Move",
-                x: firstPosition.x,
-                y: firstPosition.y
-            });
+            return swap(state, this.entity, ally).runner();
         }
     },
     "Mend": {

@@ -5,7 +5,7 @@ import GameState from "../systems/state";
 import { MovementType, Stat, Stats, PassiveSlot, WeaponType, WeaponColor } from "../interfaces/types";
 import getAllies from "../utils/get-allies";
 import getEnemies from "../utils/get-enemies";
-import { mapBuffByMovementType, honeStat, combatBuffByRange, defiant, breaker, elementalBoost, renewal, threaten, bond, counterattack, guidance } from "./effects";
+import { mapBuffByMovementType, honeStat, combatBuffByRange, defiant, breaker, elementalBoost, renewal, threaten, bond, counterattack, guidance, swap } from "./effects";
 import Characters from "./characters.json";
 import getCombatStats from "../systems/get-combat-stats";
 import CombatTurnOutcome from "../interfaces/combat-turn-outcome";
@@ -14,6 +14,9 @@ import getTileCoordinates from "../systems/get-tile-coordinates";
 import canReachTile from "../systems/can-reach-tile";
 import SPECIALS from "./specials";
 import applyMapComponent from "../systems/apply-map-effect";
+import ASSISTS from "./assists";
+
+const exceptStaves: WeaponType[] = ["axe", "beast", "bow", "breath", "dagger", "lance", "sword", "tome"];
 
 interface PassivesDict {
     [k: string]: {
@@ -40,6 +43,7 @@ interface PassivesDict {
         onTurnCheckRange?(this: Skill, state: GameState): void;
         onTurnAllyCheckRange?(this: Skill, state: GameState, ally: Entity): void;
         onTurnEnemyCheckRange?(this: Skill, state: GameState, enemy: Entity): void;
+        onAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: Skill): void;
     }
 }
 
@@ -1363,6 +1367,396 @@ const PASSIVES: PassivesDict = {
             stats.def -= 5;
             stats.res -= 5;
         }
+    },
+    "Gale Dance 1": {
+        description: "If Sing or Dance is used, grants Spd+2 to target.",
+        onAssistAfter(battleState, ally, assistSkill) {
+            const assist = ASSISTS[assistSkill.name];
+            if (assist.type.includes("refresh")) {
+                applyMapComponent(ally, "MapBuff", {
+                    spd: 2
+                });
+            }
+        },
+        slot: "B"
+    },
+    "Gale Dance 2": {
+        description: "If Sing or Dance is used, grants Spd+3 to target.",
+        onAssistAfter(battleState, ally, assistSkill) {
+            const assist = ASSISTS[assistSkill.name];
+            if (assist.type.includes("refresh")) {
+                applyMapComponent(ally, "MapBuff", {
+                    spd: 3
+                });
+            }
+        },
+        slot: "B"
+    },
+    "Gale Dance 3": {
+        description: "If Sing or Dance is used, grants Spd+4 to target.",
+        onAssistAfter(battleState, ally, assistSkill) {
+            const assist = ASSISTS[assistSkill.name];
+            if (assist.type.includes("refresh")) {
+                applyMapComponent(ally, "MapBuff", {
+                    spd: 4
+                });
+            }
+        },
+        slot: "B"
+    },
+    "Blaze Dance 1": {
+        description: "If Sing or Dance is used, grants Atk+2 to target.",
+        onAssistAfter(battleState, ally, assistSkill) {
+            const assist = ASSISTS[assistSkill.name];
+            if (assist.type.includes("refresh")) {
+                applyMapComponent(ally, "MapBuff", {
+                    atk: 2
+                });
+            }
+        },
+        slot: "B"
+    },
+    "Blaze Dance 2": {
+        description: "If Sing or Dance is used, grants Atk+3 to target.",
+        onAssistAfter(battleState, ally, assistSkill) {
+            const assist = ASSISTS[assistSkill.name];
+            if (assist.type.includes("refresh")) {
+                applyMapComponent(ally, "MapBuff", {
+                    atk: 3
+                });
+            }
+        },
+        slot: "B"
+    },
+    "Blaze Dance 3": {
+        description: "If Sing or Dance is used, grants Atk+4 to target.",
+        onAssistAfter(battleState, ally, assistSkill) {
+            const assist = ASSISTS[assistSkill.name];
+            if (assist.type.includes("refresh")) {
+                applyMapComponent(ally, "MapBuff", {
+                    atk: 4
+                });
+            }
+        },
+        slot: "B"
+    },
+    "Torrent Dance 1": {
+        description: "If Sing or Dance is used, grants Res+3 to target.",
+        onAssistAfter(battleState, ally, assistSkill) {
+            const assist = ASSISTS[assistSkill.name];
+            if (assist.type.includes("refresh")) {
+                applyMapComponent(ally, "MapBuff", {
+                    res: 3
+                });
+            }
+        },
+        slot: "B"
+    },
+    "Geyser Dance 2": {
+        description: "If Sing or Dance is used, grants Def/Res+3 to target.",
+        onAssistAfter(battleState, ally, assistSkill) {
+            const assist = ASSISTS[assistSkill.name];
+            if (assist.type.includes("refresh")) {
+                applyMapComponent(ally, "MapBuff", {
+                    def: 3,
+                    res: 3
+                });
+            }
+        },
+        slot: "B"
+    },
+    "Geyser Dance 3": {
+        description: "If Sing or Dance is used, grants Def/Res+4 to target.",
+        onAssistAfter(battleState, ally, assistSkill) {
+            const assist = ASSISTS[assistSkill.name];
+            if (assist.type.includes("refresh")) {
+                applyMapComponent(ally, "MapBuff", {
+                    def: 4,
+                    res: 4
+                });
+            }
+        },
+        slot: "B"
+    },
+    "Seal Def 1": {
+        description: "Inflicts Def-3 on foe through its next action after combat.",
+        slot: "B",
+        onCombatAfter(state, target) {
+            applyMapComponent(target, "MapDebuff", {
+                def: -3
+            }, this.entity);
+        },
+        allowedWeaponTypes: exceptStaves,
+    },
+    "Seal Def 2": {
+        description: "Inflicts Def-5 on foe through its next action after combat.",
+        slot: "B",
+        onCombatAfter(state, target) {
+            applyMapComponent(target, "MapDebuff", {
+                def: -5
+            }, this.entity);
+        },
+        allowedWeaponTypes: exceptStaves,
+    },
+    "Seal Def 3": {
+        description: "Inflicts Def-7 on foe through its next action after combat.",
+        slot: "B",
+        onCombatAfter(state, target) {
+            applyMapComponent(target, "MapDebuff", {
+                def: -7
+            }, this.entity);
+        },
+        allowedWeaponTypes: exceptStaves,
+    },
+    "Seal Res 1": {
+        description: "Inflicts Res-3 on foe through its next action after combat.",
+        slot: "B",
+        onCombatAfter(state, target) {
+            applyMapComponent(target, "MapDebuff", {
+                res: -3
+            }, this.entity);
+        },
+        allowedWeaponTypes: exceptStaves,
+    },
+    "Seal Res 2": {
+        description: "Inflicts Res-5 on foe through its next action after combat.",
+        slot: "B",
+        onCombatAfter(state, target) {
+            applyMapComponent(target, "MapDebuff", {
+                res: -5
+            }, this.entity);
+        },
+        allowedWeaponTypes: exceptStaves,
+    },
+    "Seal Res 3": {
+        description: "Inflicts Res-7 on foe through its next action after combat.",
+        slot: "B",
+        onCombatAfter(state, target) {
+            applyMapComponent(target, "MapDebuff", {
+                res: -7
+            }, this.entity);
+        },
+        allowedWeaponTypes: exceptStaves,
+    },
+    "Seal Spd 1": {
+        description: "Inflicts Spd-3 on foe through its next action after combat.",
+        slot: "B",
+        onCombatAfter(state, target) {
+            applyMapComponent(target, "MapDebuff", {
+                spd: -3
+            }, this.entity);
+        },
+        allowedWeaponTypes: exceptStaves,
+    },
+    "Seal Spd 2": {
+        description: "Inflicts Spd-5 on foe through its next action after combat.",
+        slot: "B",
+        onCombatAfter(state, target) {
+            applyMapComponent(target, "MapDebuff", {
+                spd: -5
+            }, this.entity);
+        },
+        allowedWeaponTypes: exceptStaves,
+    },
+    "Seal Spd 3": {
+        description: "Inflicts Spd-7 on foe through its next action after combat.",
+        slot: "B",
+        onCombatAfter(state, target) {
+            applyMapComponent(target, "MapDebuff", {
+                spd: -7
+            }, this.entity);
+        },
+        allowedWeaponTypes: exceptStaves,
+    },
+    "Seal Atk/Def 1": {
+        description: "Inflicts Atk/Def-3 on foe through its next action after combat.",
+        slot: "B",
+        onCombatAfter(state, target) {
+            applyMapComponent(target, "MapDebuff", {
+                atk: -3,
+                def: -3
+            }, this.entity);
+        },
+        allowedWeaponTypes: exceptStaves,
+    },
+    "Seal Atk/Def 2": {
+        description: "Inflicts Atk/Def-5 on foe through its next action after combat.",
+        slot: "B",
+        onCombatAfter(state, target) {
+            applyMapComponent(target, "MapDebuff", {
+                atk: -5,
+                def: -5
+            }, this.entity);
+        },
+        allowedWeaponTypes: exceptStaves,
+    },
+    "Seal Atk/Spd 1": {
+        description: "Inflicts Atk/Spd-3 on foe through its next action after combat.",
+        slot: "B",
+        onCombatAfter(state, target) {
+            applyMapComponent(target, "MapDebuff", {
+                atk: -3,
+                spd: -3
+            }, this.entity);
+        },
+        allowedWeaponTypes: exceptStaves,
+    },
+    "Seal Atk/Spd 2": {
+        description: "Inflicts Atk/Spd-5 on foe through its next action after combat.",
+        slot: "B",
+        onCombatAfter(state, target) {
+            applyMapComponent(target, "MapDebuff", {
+                atk: -5,
+                spd: -5
+            }, this.entity);
+        },
+        allowedWeaponTypes: exceptStaves,
+    },
+    "Live to Serve 1": {
+        description: "When healing an ally with a staff, restores HP to unit = 50% of HP restored to target.",
+        onAssistAfter(battleState, ally, assistSkill) {
+            const assist = ASSISTS[assistSkill.name];
+            let totalHealing = 0;
+            if (assist.type.includes("healing")) {
+                ally.getComponents("Heal").forEach((component) => {
+                    totalHealing += component.value;
+                });
+
+                this.entity.addComponent({
+                    type: "Heal",
+                    value: Math.floor(totalHealing / 2)
+                });
+            }
+        },
+        slot: "B",
+        allowedWeaponTypes: ["staff"]
+    },
+    "Live to Serve 2": {
+        description: "When healing an ally with a staff, restores HP to unit = 75% of HP restored to target.",
+        onAssistAfter(battleState, ally, assistSkill) {
+            const assist = ASSISTS[assistSkill.name];
+            let totalHealing = 0;
+            if (assist.type.includes("healing")) {
+                ally.getComponents("Heal").forEach((component) => {
+                    totalHealing += component.value;
+                });
+
+                this.entity.addComponent({
+                    type: "Heal",
+                    value: Math.floor(totalHealing * 3 / 4)
+                });
+            }
+        },
+        slot: "B",
+        allowedWeaponTypes: ["staff"]
+    },
+    "Live to Serve 3": {
+        description: "When healing an ally with a staff, restores HP to unit = HP restored to target.",
+        onAssistAfter(battleState, ally, assistSkill) {
+            const assist = ASSISTS[assistSkill.name];
+            let totalHealing = 0;
+            if (assist.type.includes("healing")) {
+                ally.getComponents("Heal").forEach((component) => {
+                    totalHealing += component.value;
+                });
+
+                this.entity.addComponent({
+                    type: "Heal",
+                    value: totalHealing
+                });
+            }
+        },
+        slot: "B",
+        allowedWeaponTypes: ["staff"]
+    },
+    "Flier Formation 1": {
+        description: "If unit's HP = 100%, unit can move to a space adjacent to a flying ally within 2 spaces.",
+        slot: "B",
+        onTurnCheckRange(state) {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp === maxHP) {
+                const allies = getAllies(state, this.entity).filter((ally) => ally.getOne("MovementType").value === "flier");
+                for (let ally of allies) {
+                    guidance(ally, state, this.entity);
+                }
+            }
+        },
+        allowedMovementTypes: ["flier"],
+    },
+    "Flier Formation 2": {
+        description: "If unit's HP ≥ 50%, unit can move to a space adjacent to a flying ally within 2 spaces.",
+        slot: "B",
+        onTurnCheckRange(state) {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP >= 0.5) {
+                const allies = getAllies(state, this.entity).filter((ally) => ally.getOne("MovementType").value === "flier");
+                for (let ally of allies) {
+                    guidance(ally, state, this.entity);
+                }
+            }
+        },
+        allowedMovementTypes: ["flier"],
+    },
+    "Flier Formation 3": {
+        description: "Unit can move to a space adjacent to a flying ally within 2 spaces.",
+        slot: "B",
+        onTurnCheckRange(state) {
+            const allies = getAllies(state, this.entity).filter((ally) => ally.getOne("MovementType").value === "flier");
+            for (let ally of allies) {
+                guidance(ally, state, this.entity);
+            }
+        },
+        allowedMovementTypes: ["flier"],
+    },
+    "Wings of Mercy 1": {
+        slot: "B",
+        description: "If an ally's HP ≤ 30%, unit can move to a space adjacent to that ally.",
+        onTurnCheckRange(state) {
+            const allies = getAllies(state, this.entity);
+            for (let ally of allies) {
+                const { hp, maxHP } = ally.getOne("Stats");
+                if (hp / maxHP <= 0.3) {
+                    guidance(ally, state, this.entity);
+                }
+            }
+        },
+    },
+    "Wings of Mercy 2": {
+        slot: "B",
+        description: "If an ally's HP ≤ 40%, unit can move to a space adjacent to that ally.",
+        onTurnCheckRange(state) {
+            const allies = getAllies(state, this.entity);
+            for (let ally of allies) {
+                const { hp, maxHP } = ally.getOne("Stats");
+                if (hp / maxHP <= 0.4) {
+                    guidance(ally, state, this.entity);
+                }
+            }
+        },
+    },
+    "Wings of Mercy 3": {
+        slot: "B",
+        description: "If an ally's HP ≤ 50%, unit can move to a space adjacent to that ally.",
+        onTurnCheckRange(state) {
+            const allies = getAllies(state, this.entity);
+            for (let ally of allies) {
+                const { hp, maxHP } = ally.getOne("Stats");
+                if (hp / maxHP <= 0.5) {
+                    guidance(ally, state, this.entity);
+                }
+            }
+        },
+    },
+    "Lunge": {
+        description: "If unit initiates combat, unit and target foe swap spaces after combat.",
+        slot: "B",
+        allowedWeaponTypes: ["axe", "sword", "breath", "lance"],
+        onCombatAfter(state, target) {
+            const boundSwap = swap(state, this.entity, target);
+            if (this.entity.getOne("CombatInitiate") && boundSwap.checker()) {
+                boundSwap.runner();
+            }
+        },
     },
     "Axebreaker 1": {
         onCombatStart(state, target) {
@@ -2793,6 +3187,150 @@ const PASSIVES: PassivesDict = {
         onTurnStart(state) {
             threaten(this, state, { res: -7 });
         }
+    },
+    "Triangle Adept 1": {
+        description: "If unit has weapon-triangle advantage, boosts Atk by 10%. If unit has weapon-triangle disadvantage, reduces Atk by 10%.",
+        onCombatStart() {
+            this.entity.addComponent({
+                type: "ApplyAffinity",
+                value: 10
+            });
+        },
+        slot: "A",
+    },
+    "Triangle Adept 2": {
+        description: "If unit has weapon-triangle advantage, boosts Atk by 15%. If unit has weapon-triangle disadvantage, reduces Atk by 15%.",
+        onCombatStart() {
+            this.entity.addComponent({
+                type: "ApplyAffinity",
+                value: 15
+            });
+        },
+        slot: "A",
+    },
+    "Triangle Adept 3": {
+        description: "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
+        onCombatStart() {
+            this.entity.addComponent({
+                type: "ApplyAffinity",
+                value: 20
+            });
+        },
+        slot: "A",
+    },
+    "Fortress Def 1": {
+        description: "Grants Def+3. Inflicts Atk-3.",
+        onEquip() {
+            const stats = this.entity.getOne("Stats");
+            stats.def += 3;
+            stats.atk -= 3;
+        },
+        slot: "A"
+    },
+    "Fortress Def 2": {
+        description: "Grants Def+4. Inflicts Atk-3.",
+        onEquip() {
+            const stats = this.entity.getOne("Stats");
+            stats.def += 4;
+            stats.atk -= 3;
+        },
+        slot: "A"
+    },
+    "Fortress Def 3": {
+        description: "Grants Def+5. Inflicts Atk-3.",
+        onEquip() {
+            const stats = this.entity.getOne("Stats");
+            stats.def += 5;
+            stats.atk -= 3;
+        },
+        slot: "A"
+    },
+    "Fortress Res 1": {
+        description: "Grants Res+3. Inflicts Atk-3.",
+        onEquip() {
+            const stats = this.entity.getOne("Stats");
+            stats.res += 3;
+            stats.atk -= 3;
+        },
+        slot: "A"
+    },
+    "Fortress Res 2": {
+        description: "Grants Res+4. Inflicts Atk-3.",
+        onEquip() {
+            const stats = this.entity.getOne("Stats");
+            stats.res += 4;
+            stats.atk -= 3;
+        },
+        slot: "A"
+    },
+    "Fortress Res 3": {
+        description: "Grants Res+5. Inflicts Atk-3.",
+        onEquip() {
+            const stats = this.entity.getOne("Stats");
+            stats.res += 5;
+            stats.atk -= 3;
+        },
+        slot: "A"
+    },
+    "HP/Spd 1": {
+        slot: "A",
+        description: "Grants HP+3, Spd+1.",
+        onEquip() {
+            const stats = this.entity.getOne("Stats");
+            stats.hp += 3;
+            stats.maxHP += 3;
+            stats.spd++;
+        },
+    },
+    "HP/Spd 2": {
+        slot: "A",
+        description: "Grants HP+4, Spd+2.",
+        onEquip() {
+            const stats = this.entity.getOne("Stats");
+            stats.hp += 4;
+            stats.maxHP += 4;
+            stats.spd += 2;
+        },
+    },
+    "HP/Def 1": {
+        slot: "A",
+        description: "Grants HP+3, Def+1.",
+        onEquip() {
+            const stats = this.entity.getOne("Stats");
+            stats.hp += 3;
+            stats.maxHP += 3;
+            stats.def++;
+        },
+    },
+    "HP/Def 2": {
+        slot: "A",
+        description: "Grants HP+4, Def+2.",
+        onEquip() {
+            const stats = this.entity.getOne("Stats");
+            stats.hp += 4;
+            stats.maxHP += 4;
+            stats.def += 2;
+        },
+    },
+    "HP/Res 1": {
+        slot: "A",
+        description: "Grants HP+3, Res+1.",
+        onEquip() {
+            const stats = this.entity.getOne("Stats");
+            stats.hp += 3;
+            stats.maxHP += 3;
+            stats.res++;
+        },
+    },
+    "HP/Res 2": {
+        slot: "A",
+        description: "Grants HP+4, Res+2.",
+        onEquip() {
+            const stats = this.entity.getOne("Stats");
+            stats.hp += 4;
+            stats.maxHP += 4;
+            stats.res += 2;
+        },
     },
     "Atk Smoke 1": {
         description: "Inflicts Atk-3 on foes within 2 spaces of target through their next actions after combat.",

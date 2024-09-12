@@ -17,7 +17,7 @@ import SPECIALS from "../data/specials";
 import getPosition from "./get-position";
 import battlingEntitiesQuery from "./battling-entities-query";
 
-const SUBSCRIBED_COMPONENTS = ["DealDamage", "CombatBuff", "BraveWeapon", "CombatDebuff", "RoundDamageIncrease", "RoundDamageReduction", "DamageIncrease", "Kill", "Special"];
+const SUBSCRIBED_COMPONENTS = ["DealDamage", "CombatBuff", "BraveWeapon", "CombatDebuff", "RoundDamageIncrease", "RoundDamageReduction", "DamageIncrease", "Kill", "AccelerateSpecial"];
 
 class CombatSystem extends System {
     private state: GameState;
@@ -104,6 +104,7 @@ class CombatSystem extends System {
             const turns = generateTurns(attacker, target, combatMap.get(attacker).stats, combatMap.get(target).stats);
 
             let lastAttacker: Entity;
+
             for (let round = 0; round < turns.length; round++) {
                 const turn = turns[round];
                 const defender = turn === attacker ? target : attacker;
@@ -170,7 +171,7 @@ class CombatSystem extends System {
                             dexData.onSpecialTrigger.call(skill, defender, turnData);
                         });
                         defenderSpecialData.onCombatRoundDefense?.call(defenderSpecial, defender);
-                        turnData.attackerTriggeredSpecial = true;
+                        turnData.defenderTriggeredSpecial = true;
                         defenderSpecial.update({
                             cooldown: defenderSpecial.maxCooldown
                         });

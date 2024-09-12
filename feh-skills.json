@@ -46,16 +46,6 @@
         "Might": 13
     },
     {
-        "WeaponName": "Aura",
-        "CanUseWeapon": [
-            "Blue Tome"
-        ],
-        "Exclusive": 1,
-        "Hero": "Linde: Light Mage",
-        "Description": "If unit initiates combat, restores 5 HP to adjacent allies after combat.",
-        "Might": 14
-    },
-    {
         "WeaponName": "Gladiator's Blade",
         "CanUseWeapon": [
             "Red Sword"

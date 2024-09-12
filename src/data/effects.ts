@@ -10,6 +10,7 @@ import applyMapComponent from "../systems/apply-map-effect";
 import getSurroundings from "../systems/get-surroundings";
 import canReachTile from "../systems/can-reach-tile";
 import getTileCoordinates from "../systems/get-tile-coordinates";
+import getPosition from "../systems/get-position";
 
 /**
  * Specified target can move to any tile adjacent to calling ally within 2 spaces
@@ -244,3 +245,43 @@ export function blade(skill: Skill) {
         atk: statsSum
     });
 };
+
+/**
+ * Make two entities swap spaces. Make sure the `checker` function returns true before calling the runner.
+ */
+export function swap(state: GameState, entity1: Entity, entity2: Entity) {
+    const pos1 = getPosition(entity1);
+    const pos2 = getPosition(entity2);
+
+    return {
+        checker() {
+            const tile1 = state.map[pos1.y][pos1.x];
+            const tile2 = state.map[pos2.y][pos2.x];
+
+            return canReachTile(entity1, tile2) && canReachTile(entity2, tile1);
+        },
+        runner() {
+            const firstPosition = getPosition(entity1);
+            const secondPosition = getPosition(entity2);
+
+            entity1.addComponent({
+                type: "Move",
+                x: secondPosition.x,
+                y: secondPosition.y
+            });
+            entity2.addComponent({
+                type: "Move",
+                x: firstPosition.x,
+                y: firstPosition.y
+            });
+        }
+    }
+};
+
+/**
+ * Push an entity in the opposite direction of the effect caller, within the defined range, and to a valid tile. The target entity cannot bypass entities that are in the Shove path, but
+ * may cross unpassable terrain.
+ */
+export function shove(state: GameState, entity1: Entity, entity2: Entity, range: number) {
+
+}

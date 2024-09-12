@@ -29,6 +29,7 @@ interface PassivesDict {
         onTurnCheckRange?(this: Skill, state: GameState): void;
         onTurnAllyCheckRange?(this: Skill, state: GameState, ally: Entity): void;
         onTurnEnemyCheckRange?(this: Skill, state: GameState, enemy: Entity): void;
+        onAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: Skill): void;
     };
 }
 declare const PASSIVES: PassivesDict;

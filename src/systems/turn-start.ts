@@ -2,7 +2,7 @@ import { Query, System } from "ape-ecs";
 import GameState from "./state";
 import SKILLS from "../data/skill-dex";
 
-const MAP_STATUSES = ["MapBuff", "MapDebuff", "FinishedAction", "ModifySpecialCooldown", "Status"];
+const MAP_STATUSES = ["MapBuff", "MapDebuff", "FinishedAction", "Special", "Status"];
 
 class TurnStartSystem extends System {
     private state: GameState;

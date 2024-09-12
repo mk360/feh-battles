@@ -57,4 +57,16 @@ export declare function owl(skill: Skill, state: GameState): void;
  * Add Combat Buffs to Atk = total map buffs on unit. Ignores Penalties.
  */
 export declare function blade(skill: Skill): void;
+/**
+ * Make two entities swap spaces. Make sure the `checker` function returns true before calling the runner.
+ */
+export declare function swap(state: GameState, entity1: Entity, entity2: Entity): {
+    checker(): boolean;
+    runner(): void;
+};
+/**
+ * Push an entity in the opposite direction of the effect caller, within the defined range, and to a valid tile. The target entity cannot bypass entities that are in the Shove path, but
+ * may cross unpassable terrain.
+ */
+export declare function shove(state: GameState, entity1: Entity, entity2: Entity, range: number): void;
 //# sourceMappingURL=effects.d.ts.map

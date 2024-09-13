@@ -21,7 +21,7 @@ export declare function combatBuffByMovementType(skill: Skill, ally: Entity, mov
  */
 export declare function defiant(skill: Skill, stat: Stat, buff: number): void;
 /**
- * If enemy has specified weapon and unit has specified % of HP, prevents enemy from doing a followup, and guarantees unit followup on them.
+ * If enemy has specified weapon and unit has at least specified % of HP, prevents enemy from doing a followup, and guarantees unit followup on them.
  */
 export declare function breaker(skill: Skill, enemy: Entity, targetWeaponType: WeaponType, hpPercentage: number): void;
 /**

@@ -673,6 +673,12 @@ class GameWorld extends World {
                 };
 
                 entity.addComponent(assistComponent);
+
+                if (skillData.type.includes("refresh")) {
+                    entity.addComponent({
+                        type: "Refresher"
+                    });
+                }
             }
         }
 

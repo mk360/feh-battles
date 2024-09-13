@@ -366,6 +366,41 @@ const WEAPONS: WeaponDict = {
         description: "",
         might: 10
     },
+    "Absorb": {
+        type: "staff",
+        might: 4,
+        description: "Restores HP = 50% of damage dealt.",
+        onCombatRoundAttack() {
+            this.entity.addComponent({
+                type: "CombatHeal",
+                percentage: 0.5
+            });
+        }
+    },
+    "Absorb+": {
+        type: "staff",
+        might: 7,
+        description: "Restores HP = 50% of damage dealt.&lt;br>After combat, if unit attacked, restores 7 HP to allies within 2 spaces of unit.",
+        onCombatRoundAttack() {
+            this.entity.addComponent({
+                type: "CombatHeal",
+                percentage: 0.5
+            });
+        },
+        onCombatAfter(state) {
+            if (this.entity.getOne("DealDamage")) {
+                const allies = getAllies(state, this.entity);
+                for (let ally of allies) {
+                    if (HeroSystem.getDistance(ally, this.entity) <= 2) {
+                        ally.addComponent({
+                            type: "Heal",
+                            value: 7
+                        });
+                    }
+                }
+            }
+        }
+    },
     "Alondite": {
         description: "Unit can counterattack regardless of enemy range.",
         might: 16,
@@ -585,6 +620,24 @@ const WEAPONS: WeaponDict = {
         },
         exclusiveTo: ["Beruka: Quiet Assassin"]
     },
+    "Blazing Durandal": {
+        description: "Grants Atk+3. If unit's Atk > foe's Atk, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)",
+        exclusiveTo: ["Roy: Brave Lion"],
+        type: "sword",
+        might: 16,
+        onEquip() {
+            this.entity.getOne("Stats").atk += 3;
+        },
+        onCombatRoundAttack(enemy) {
+            const { atk } = getCombatStats(enemy);
+            const { atk: selfAtk } = getCombatStats(this.entity);
+            if (selfAtk > atk) {
+                this.entity.addComponent({
+                    type: "AccelerateSpecial"
+                });
+            }
+        },
+    },
     "Blárblade": {
         description: "Slows Special trigger (cooldown count+1). Grants bonus to unit's Atk = total bonuses on unit during combat.",
         type: "tome",
@@ -597,7 +650,7 @@ const WEAPONS: WeaponDict = {
             });
         },
         onCombatStart() {
-            Effects.blade(this);
+            Effects.bladeTome(this);
         }
     },
     "Blárblade+": {
@@ -612,7 +665,7 @@ const WEAPONS: WeaponDict = {
             });
         },
         onCombatStart() {
-            Effects.blade(this);
+            Effects.bladeTome(this);
         }
     },
     "Blárowl": {
@@ -702,6 +755,34 @@ const WEAPONS: WeaponDict = {
                 }
             }
         },
+    },
+    "Blue Egg": {
+        description: "If unit initiates combat, restores 4 HP after combat.",
+        type: "tome",
+        color: "blue",
+        might: 7,
+        onCombatAfter() {
+            if (this.entity.getOne("InitiateCombat")) {
+                this.entity.addComponent({
+                    type: "Heal",
+                    value: 4
+                });
+            }
+        }
+    },
+    "Blue Egg+": {
+        description: "If unit initiates combat, restores 4 HP after combat.",
+        type: "tome",
+        color: "blue",
+        might: 11,
+        onCombatAfter() {
+            if (this.entity.getOne("InitiateCombat")) {
+                this.entity.addComponent({
+                    type: "Heal",
+                    value: 4
+                });
+            }
+        }
     },
     "Book of Orchids": {
         description: "If unit initiates combat, grants Atk+6 during combat.",
@@ -972,6 +1053,58 @@ const WEAPONS: WeaponDict = {
             }
         },
     },
+    "Carrot Axe": {
+        description: "If unit initiates combat, restores 4 HP after combat.",
+        type: "axe",
+        might: 9,
+        onCombatAfter() {
+            if (this.entity.getOne("InitiateCombat")) {
+                this.entity.addComponent({
+                    type: "Heal",
+                    value: 4
+                });
+            }
+        }
+    },
+    "Carrot Axe+": {
+        description: "If unit initiates combat, restores 4 HP after combat.",
+        type: "axe",
+        might: 13,
+        onCombatAfter() {
+            if (this.entity.getOne("InitiateCombat")) {
+                this.entity.addComponent({
+                    type: "Heal",
+                    value: 4
+                });
+            }
+        }
+    },
+    "Carrot Lance": {
+        description: "If unit initiates combat, restores 4 HP after combat.",
+        type: "lance",
+        might: 9,
+        onCombatAfter() {
+            if (this.entity.getOne("InitiateCombat")) {
+                this.entity.addComponent({
+                    type: "Heal",
+                    value: 4
+                });
+            }
+        }
+    },
+    "Carrot Lance+": {
+        description: "If unit initiates combat, restores 4 HP after combat.",
+        type: "lance",
+        might: 13,
+        onCombatAfter() {
+            if (this.entity.getOne("InitiateCombat")) {
+                this.entity.addComponent({
+                    type: "Heal",
+                    value: 4
+                });
+            }
+        }
+    },
     "Cherche's Axe": {
         type: "axe",
         might: 11,
@@ -1129,7 +1262,12 @@ const WEAPONS: WeaponDict = {
             this.entity.getOne("Stats").atk += 2;
             this.entity.getOne("Stats").spd += 2;
         },
-
+        onCombatAfter() {
+            this.entity.addComponent({
+                type: "AfterCombatDamage",
+                value: 4
+            });
+        },
     },
     "Cymbeline": {
         exclusiveTo: ["Sanaki: Begnion's Apostle"],
@@ -1438,6 +1576,62 @@ const WEAPONS: WeaponDict = {
                 });
             }
         },
+    },
+    "Deft Harpoon": {
+        description: "At start of combat, if unit's HP = 100%, grants Atk/Spd/Def/Res+2, but after combat, if unit attacked, deals 2 damage to unit.",
+        type: "lance",
+        might: 10,
+        onCombatStart() {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+
+            if (hp === maxHP) {
+                this.entity.addComponent({
+                    type: "CombatBuff",
+                    atk: 2,
+                    spd: 2,
+                    def: 2,
+                    res: 2
+                });
+            }
+        },
+        onCombatAfter() {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            const { value: startingHP } = this.entity.getOne("StartingHP");
+            if (hp === startingHP && hp === maxHP) {
+                this.entity.addComponent({
+                    type: "AfterCombatDamage",
+                    value: 2
+                });
+            }
+        }
+    },
+    "Deft Harpoon+": {
+        description: "At start of combat, if unit's HP = 100%, grants Atk/Spd/Def/Res+2, but after combat, if unit attacked, deals 2 damage to unit.",
+        type: "lance",
+        might: 14,
+        onCombatStart() {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+
+            if (hp === maxHP) {
+                this.entity.addComponent({
+                    type: "CombatBuff",
+                    atk: 2,
+                    spd: 2,
+                    def: 2,
+                    res: 2
+                });
+            }
+        },
+        onCombatAfter() {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            const { value: startingHP } = this.entity.getOne("StartingHP");
+            if (hp === startingHP && hp === maxHP) {
+                this.entity.addComponent({
+                    type: "AfterCombatDamage",
+                    value: 2
+                });
+            }
+        }
     },
     "Devil's Axe": {
         type: "axe",
@@ -1953,8 +2147,21 @@ const WEAPONS: WeaponDict = {
     },
     "Gladiator's Blade": {
         description: "If unit's Atk > foe's Atk, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)",
-        might: 16,
+        exclusiveTo: ["Ogma: Loyal Blade"],
         type: "sword",
+        might: 16,
+        onEquip() {
+            this.entity.getOne("Stats").atk += 3;
+        },
+        onCombatRoundAttack(enemy) {
+            const { atk } = getCombatStats(enemy);
+            const { atk: selfAtk } = getCombatStats(this.entity);
+            if (selfAtk > atk) {
+                this.entity.addComponent({
+                    type: "AccelerateSpecial"
+                });
+            }
+        },
     },
     "Gloom Breath": {
         might: 16,
@@ -1994,6 +2201,34 @@ const WEAPONS: WeaponDict = {
                 });
             }
         },
+    },
+    "Green Egg": {
+        description: "If unit initiates combat, restores 4 HP after combat.",
+        type: "tome",
+        color: "green",
+        might: 7,
+        onCombatAfter() {
+            if (this.entity.getOne("InitiateCombat")) {
+                this.entity.addComponent({
+                    type: "Heal",
+                    value: 4
+                });
+            }
+        }
+    },
+    "Green Egg+": {
+        description: "If unit initiates combat, restores 4 HP after combat.",
+        type: "tome",
+        color: "green",
+        might: 11,
+        onCombatAfter() {
+            if (this.entity.getOne("InitiateCombat")) {
+                this.entity.addComponent({
+                    type: "Heal",
+                    value: 4
+                });
+            }
+        }
     },
     "Grimoire": {
         description: "If unit's HP ≥ 50%, unit can move to a space adjacent to an ally within 2 spaces.",
@@ -2129,7 +2364,7 @@ const WEAPONS: WeaponDict = {
             });
         },
         onCombatStart() {
-            Effects.blade(this);
+            Effects.bladeTome(this);
         },
         might: 9,
     },
@@ -2142,7 +2377,7 @@ const WEAPONS: WeaponDict = {
             });
         },
         onCombatStart() {
-            Effects.blade(this);
+            Effects.bladeTome(this);
         },
         type: "tome",
         color: "green",
@@ -2391,7 +2626,7 @@ const WEAPONS: WeaponDict = {
         might: 14,
         description: "Grants bonus to unit's Atk = total bonuses on unit during combat.",
         onCombatStart() {
-            Effects.blade(this);
+            Effects.bladeTome(this);
         }
     },
     "Jakob's Tray": {
@@ -2686,6 +2921,42 @@ const WEAPONS: WeaponDict = {
             }
         },
     },
+    "Light Breath": {
+        description: "If unit initiates combat, grants Def/Res+4 to adjacent allies for 1 turn after combat.",
+        type: "breath",
+        might: 9,
+        onCombatAfter(battleState) {
+            if (this.entity.getOne("InitiateCombat")) {
+                const allies = getAllies(battleState, this.entity);
+                for (let ally of allies) {
+                    if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                        applyMapComponent(ally, "MapBuff", {
+                            def: 4,
+                            res: 4
+                        }, this.entity);
+                    }
+                }
+            }
+        },
+    },
+    "Light Breath+": {
+        description: "If unit initiates combat, grants Def/Res+4 to adjacent allies for 1 turn after combat.",
+        type: "breath",
+        might: 13,
+        onCombatAfter(battleState) {
+            if (this.entity.getOne("InitiateCombat")) {
+                const allies = getAllies(battleState, this.entity);
+                for (let ally of allies) {
+                    if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                        applyMapComponent(ally, "MapBuff", {
+                            def: 4,
+                            res: 4
+                        }, this.entity);
+                    }
+                }
+            }
+        },
+    },
     "Lightning Breath": {
         description: "Slows Special trigger (cooldown count+1).&lt;br>Unit can counterattack regardless of foe's range.",
         might: 7,
@@ -2764,6 +3035,76 @@ const WEAPONS: WeaponDict = {
                 value: -1
             });
         },
+    },
+    "Melon Crusher": {
+        description: "At start of combat, if unit's HP = 100%, grants Atk/Spd/Def/Res+2, but after combat, if unit attacked, deals 2 damage to unit.",
+        type: "axe",
+        might: 10,
+        onCombatStart() {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+
+            if (hp === maxHP) {
+                this.entity.addComponent({
+                    type: "CombatBuff",
+                    atk: 2,
+                    spd: 2,
+                    def: 2,
+                    res: 2
+                });
+            }
+        },
+        onCombatAfter(state, target) {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            const { value: startingHP } = this.entity.getOne("StartingHP");
+            if (hp === startingHP && hp === maxHP) {
+                this.entity.addComponent({
+                    type: "AfterCombatDamage",
+                    value: 2
+                });
+            }
+
+            if (this.entity.getOne("DealDamage")) {
+                applyMapComponent(target, "MapDebuff", {
+                    def: -5,
+                    res: -5
+                }, this.entity);
+            }
+        }
+    },
+    "Melon Crusher+": {
+        description: "At start of combat, if unit's HP = 100%, grants Atk/Spd/Def/Res+2, but after combat, if unit attacked, deals 2 damage to unit.",
+        type: "axe",
+        might: 14,
+        onCombatStart() {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+
+            if (hp === maxHP) {
+                this.entity.addComponent({
+                    type: "CombatBuff",
+                    atk: 2,
+                    spd: 2,
+                    def: 2,
+                    res: 2
+                });
+            }
+        },
+        onCombatAfter(state, target) {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            const { value: startingHP } = this.entity.getOne("StartingHP");
+            if (hp === startingHP && hp === maxHP) {
+                this.entity.addComponent({
+                    type: "AfterCombatDamage",
+                    value: 2
+                });
+            }
+
+            if (this.entity.getOne("DealDamage")) {
+                applyMapComponent(target, "MapDebuff", {
+                    def: -5,
+                    res: -5
+                }, this.entity);
+            }
+        }
     },
     "Monstrous Bow": {
         type: "bow",
@@ -2879,7 +3220,7 @@ const WEAPONS: WeaponDict = {
         type: "tome",
         exclusiveTo: ["Odin: Potent Force"],
         onCombatStart() {
-            Effects.blade(this);
+            Effects.bladeTome(this);
         }
     },
     "Pain": {
@@ -3089,7 +3430,7 @@ const WEAPONS: WeaponDict = {
             });
         },
         onCombatStart() {
-            Effects.blade(this);
+            Effects.bladeTome(this);
         },
         type: "tome",
         color: "red",
@@ -3104,7 +3445,7 @@ const WEAPONS: WeaponDict = {
             });
         },
         onCombatStart() {
-            Effects.blade(this);
+            Effects.bladeTome(this);
         },
         type: "tome",
         color: "red",
@@ -3416,6 +3757,76 @@ const WEAPONS: WeaponDict = {
                 });
             }
         },
+    },
+    "Seashell": {
+        description: "At start of combat, if unit's HP = 100%, grants Atk/Spd/Def/Res+2, but after combat, if unit attacked, deals 2 damage to unit. After combat, if unit attacked, inflicts Def/Res-5 on foe through its next action.",
+        type: "dagger",
+        might: 7,
+        onCombatStart() {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+
+            if (hp === maxHP) {
+                this.entity.addComponent({
+                    type: "CombatBuff",
+                    atk: 2,
+                    spd: 2,
+                    def: 2,
+                    res: 2
+                });
+            }
+        },
+        onCombatAfter(state, target) {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            const { value: startingHP } = this.entity.getOne("StartingHP");
+            if (hp === startingHP && hp === maxHP) {
+                this.entity.addComponent({
+                    type: "AfterCombatDamage",
+                    value: 2
+                });
+            }
+
+            if (this.entity.getOne("DealDamage")) {
+                applyMapComponent(target, "MapDebuff", {
+                    def: -5,
+                    res: -5
+                }, this.entity);
+            }
+        }
+    },
+    "Seashell+": {
+        description: "At start of combat, if unit's HP = 100%, grants Atk/Spd/Def/Res+2, but after combat, if unit attacked, deals 2 damage to unit. After combat, if unit attacked, inflicts Def/Res-7 on foe through its next action.",
+        type: "dagger",
+        might: 10,
+        onCombatStart() {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+
+            if (hp === maxHP) {
+                this.entity.addComponent({
+                    type: "CombatBuff",
+                    atk: 2,
+                    spd: 2,
+                    def: 2,
+                    res: 2
+                });
+            }
+        },
+        onCombatAfter(state, target) {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            const { value: startingHP } = this.entity.getOne("StartingHP");
+            if (hp === startingHP && hp === maxHP) {
+                this.entity.addComponent({
+                    type: "AfterCombatDamage",
+                    value: 2
+                });
+            }
+
+            if (this.entity.getOne("DealDamage")) {
+                applyMapComponent(target, "MapDebuff", {
+                    def: -7,
+                    res: -7
+                }, this.entity);
+            }
+        }
     },
     "Selena's Blade": {
         type: "sword",
@@ -3856,7 +4267,7 @@ const WEAPONS: WeaponDict = {
         type: "tome",
         color: "red",
         onCombatStart() {
-            Effects.blade(this);
+            Effects.bladeTome(this);
         }
     },
     "Tomato Tome": {

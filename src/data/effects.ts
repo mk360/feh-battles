@@ -11,6 +11,7 @@ import getSurroundings from "../systems/get-surroundings";
 import canReachTile from "../systems/can-reach-tile";
 import getTileCoordinates from "../systems/get-tile-coordinates";
 import getPosition from "../systems/get-position";
+import Direction from "../systems/directions";
 
 /**
  * Specified target can move to any tile adjacent to calling ally within 2 spaces
@@ -106,7 +107,7 @@ export function defiant(skill: Skill, stat: Stat, buff: number) {
 }
 
 /**
- * If enemy has specified weapon and unit has specified % of HP, prevents enemy from doing a followup, and guarantees unit followup on them.
+ * If enemy has specified weapon and unit has at least specified % of HP, prevents enemy from doing a followup, and guarantees unit followup on them.
  */
 export function breaker(skill: Skill, enemy: Entity, targetWeaponType: WeaponType, hpPercentage: number) {
     const { value } = enemy.getOne("WeaponType");
@@ -232,7 +233,7 @@ export function owl(skill: Skill, state: GameState) {
 /**
  * Add Combat Buffs to Atk = total map buffs on unit. Ignores Penalties.
  */
-export function blade(skill: Skill) {
+export function bladeTome(skill: Skill) {
     const mapBuffs = skill.entity.getComponents("MapBuff");
     let statsSum = 0;
     mapBuffs.forEach((buff) => {
@@ -280,8 +281,29 @@ export function swap(state: GameState, entity1: Entity, entity2: Entity) {
 
 /**
  * Push an entity in the opposite direction of the effect caller, within the defined range, and to a valid tile. The target entity cannot bypass entities that are in the Shove path, but
- * may cross unpassable terrain.
+ * may cross unpassable terrain if they will land on a valid tile. Make sure the `checker` function returns true before calling the runner.
  */
-export function shove(state: GameState, entity1: Entity, entity2: Entity, range: number) {
+export function shove(state: GameState, caller: Entity, shoved: Entity, range: number) {
 
 }
+
+/**
+ * Unit moves 1 tile behind. In order to generate the "behind" tile, a second unit should be specified in order to create the "behind" vector.
+ * Before running the `runner` function, check if `checker` returns true.
+ */
+export function retreat(state: GameState, target: Entity, referencePoint: Entity, referenceShouldRetreat: boolean) {
+    const pos1 = getPosition(target);
+    const pos2 = getPosition(referencePoint);
+
+    const direction = new Direction(pos1.x - pos2.x, pos1.y - pos2.y);
+
+    return {
+        checker() {
+
+        }
+    }
+}
+
+export function bladeWeapon(skill: Skill) {
+
+};

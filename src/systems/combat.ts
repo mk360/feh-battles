@@ -1,4 +1,4 @@
-import { Entity, Query, System } from "ape-ecs";
+import { Entity, System } from "ape-ecs";
 import GameState from "./state";
 import getAllies from "../utils/get-allies";
 import { Stats } from "../interfaces/types";
@@ -30,11 +30,6 @@ class CombatSystem extends System {
             this.subscribe(comp);
         }
     }
-
-    // Ike vs. Corrin
-    // Round 1: Ike attaque, Corrin défend
-    // Round 2: Corrin attaque, Ike défend
-    // Round 3 ou 4 ou 5, bis repetita en alternant
 
     update() {
         const { attacker, defender: target } = this.battlingQuery();
@@ -87,6 +82,16 @@ class CombatSystem extends System {
                 consecutiveTurns: 1,
                 defensiveTile: Boolean(attackerTile[0] >> TileBitshifts.defensiveTile),
                 cooldown: attacker.getOne("Special")?.cooldown
+            });
+
+            attacker.addComponent({
+                type: "StartingHP",
+                value: attacker.getOne("Stats").hp,
+            });
+
+            target.addComponent({
+                type: "StartingHP",
+                value: target.getOne("Stats").hp,
             });
 
             const defenderPosition = target.getOne("Position");

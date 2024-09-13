@@ -17,7 +17,7 @@ import SPECIALS from "../data/specials";
 import getPosition from "./get-position";
 import battlingEntitiesQuery from "./battling-entities-query";
 
-const SUBSCRIBED_COMPONENTS = ["DealDamage", "CombatBuff", "BraveWeapon", "CombatDebuff", "RoundDamageIncrease", "RoundDamageReduction", "DamageIncrease", "Kill", "AccelerateSpecial"];
+const SUBSCRIBED_COMPONENTS = ["DealDamage", "CombatBuff", "BraveWeapon", "CombatDebuff", "RoundDamageIncrease", "RoundDamageReduction", "DamageIncrease", "Kill", "AccelerateSpecial", "Guard"];
 
 class CombatSystem extends System {
     private state: GameState;
@@ -223,6 +223,11 @@ class CombatSystem extends System {
                 const maxHP = turn.getOne("Stats").maxHP;
                 let healingAmount = 0;
 
+                if (defender.getOne("ForceSurvival") && damage >= combatMap.get(defender).hp) {
+                    defender.removeComponent(defender.getOne("ForceSurvival"));
+                    combatMap.get(defender).hp = 1;
+                }
+
                 combatMap.get(defender).hp -= damage;
 
                 if (heal) {
@@ -259,7 +264,7 @@ class CombatSystem extends System {
                     const { type, ...stats } = defenderStatsComponent.getObject(false);
                     defenderStatsComponent.update({
                         ...stats,
-                        hp: combatMap.get(defender).hp
+                        hp: Math.max(combatMap.get(defender).hp, 0)
                     });
                 }
 

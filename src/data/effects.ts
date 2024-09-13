@@ -304,6 +304,9 @@ export function retreat(state: GameState, target: Entity, referencePoint: Entity
     }
 }
 
-export function bladeWeapon(skill: Skill) {
+/**
+ * Heavy, Flashing, etc. Blade
+ */
+export function bladeWeapon(skill: Skill, comparedStat: Stat, margin: number) {
 
 };

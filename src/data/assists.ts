@@ -11,7 +11,7 @@ import { swap } from "./effects";
 
 type AssistKind = "refresh" | "movement" | "buff" | "healing";
 
-function entityCanBeHealed(state: GameState, ally: Entity) {
+function allyCanBeHealed(state: GameState, ally: Entity) {
     const { hp, maxHP } = ally.getOne("Stats");
     return hp < maxHP;
 };
@@ -20,6 +20,7 @@ interface AssistsDict {
     [k: string]: {
         canApply(this: Assist, state: GameState, ally: Entity, position: { x: number, y: number }): boolean;
         onApply(this: Assist, state: GameState, ally: Entity): void;
+        onEquip?(this: Assist): void;
         description: string;
         range: number;
         allowedWeaponTypes?: WeaponType[];
@@ -30,6 +31,71 @@ interface AssistsDict {
 }
 
 const ASSISTS: AssistsDict = {
+    "Heal": {
+        range: 1,
+        type: ["healing"],
+        description: "Restores 5 HP to target ally.",
+        canApply: allyCanBeHealed,
+        onApply(state, ally) {
+            ally.addComponent({
+                type: "Heal",
+                value: 5
+            });
+        },
+        allowedWeaponTypes: ["staff"]
+    },
+    "Martyr": {
+        type: ["healing"],
+        range: 1,
+        description: "Slows Special trigger (cooldown count+1). Restores X HP to target (X = damage dealt to unit + 7). Restores Y HP to unit (Y = half damage dealt to unit).",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: 1
+            });
+        },
+        canApply: allyCanBeHealed,
+        allowedWeaponTypes: ["staff"],
+        onApply(state, ally) {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            const diff = maxHP - hp;
+            const restoredToAlly = diff + 7;
+            const restoredToUnit = Math.floor(diff / 2);
+
+            ally.addComponent({
+                type: "Heal",
+                value: restoredToAlly,
+            });
+
+            this.entity.addComponent({
+                type: "Heal",
+                value: restoredToUnit
+            });
+        }
+    },
+    "Martyr+": {
+        type: ["healing"],
+        range: 1,
+        description: "Restores HP = damage dealt to unit +50% of Atk. (Minimum of 7 HP.) Restores HP to unit = half damage dealt to unit.",
+        canApply: allyCanBeHealed,
+        allowedWeaponTypes: ["staff"],
+        onApply(state, ally) {
+            const { hp, maxHP, atk } = this.entity.getOne("Stats");
+            const diff = maxHP - hp;
+            const restoredToAlly = Math.min(diff + Math.floor(atk / 2), 7);
+            const restoredToUnit = Math.floor(diff / 2);
+
+            ally.addComponent({
+                type: "Heal",
+                value: restoredToAlly,
+            });
+
+            this.entity.addComponent({
+                type: "Heal",
+                value: restoredToUnit
+            });
+        }
+    },
     "Pivot": {
         range: 1,
         description: "Unit moves to opposite side of target ally.",
@@ -147,7 +213,7 @@ const ASSISTS: AssistsDict = {
     },
     "Mend": {
         type: ["healing"],
-        canApply: entityCanBeHealed,
+        canApply: allyCanBeHealed,
         onApply(state, ally) {
             ally.addComponent({
                 type: "Heal",

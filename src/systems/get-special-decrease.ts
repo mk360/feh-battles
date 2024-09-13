@@ -1,8 +1,8 @@
 import { Entity } from "ape-ecs";
 
-function getSpecialDecrease(unit: Entity, enemy: Entity) {
+function getSpecialDecrease(unit: Entity) {
     let specialDecrease = 1;
-    if (unit.getOne("AccelerateSpecial") && !enemy.getOne("NeutralizeAccelerateSpecial")) {
+    if (unit.getOne("AccelerateSpecial")) {
         specialDecrease++;
     }
 

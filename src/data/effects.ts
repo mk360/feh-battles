@@ -281,7 +281,7 @@ export function swap(state: GameState, entity1: Entity, entity2: Entity) {
 
 /**
  * Push an entity in the opposite direction of the effect caller, within the defined range, and to a valid tile. The target entity cannot bypass entities that are in the Shove path, but
- * may cross unpassable terrain if they will land on a valid tile. Make sure the `checker` function returns true before calling the runner.
+ * may cross unpassable terrain (except walls) if they will land on a valid tile. Make sure the `checker` function returns true before calling the runner.
  */
 export function shove(state: GameState, caller: Entity, shoved: Entity, range: number) {
 
@@ -310,3 +310,13 @@ export function retreat(state: GameState, target: Entity, referencePoint: Entity
 export function bladeWeapon(skill: Skill, comparedStat: Stat, margin: number) {
 
 };
+
+/**
+ * Balm Specials for staff users
+ */
+export function balm(skill: Skill, state: GameState, buffs: Stats) {
+    const allies = getAllies(state, skill.entity);
+    for (let ally of allies) {
+        applyMapComponent(ally, "MapBuff", buffs, skill.entity);
+    }
+}

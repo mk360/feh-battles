@@ -7,7 +7,7 @@ import tileBitmasks from "./tile-bitmasks";
 import { WeaponType } from "../interfaces/types";
 import MovementType from "../components/movement-type";
 import Characters from "./characters.json";
-import { swap } from "./effects";
+import { shove, swap } from "./effects";
 
 type AssistKind = "refresh" | "movement" | "buff" | "healing";
 
@@ -31,6 +31,17 @@ interface AssistsDict {
 }
 
 const ASSISTS: AssistsDict = {
+    "Dance": {
+        range: 1,
+        description: "Grants another action to target ally. (Cannot target an ally with Sing or Dance.)",
+        type: ["refresh"],
+        canApply(state, ally) {
+            return ally.getOne("FinishedAction") && !ally.getOne("Refresher");
+        },
+        onApply(state, ally) {
+            ally.removeComponent("FinishedAction");
+        }
+    },
     "Heal": {
         range: 1,
         type: ["healing"],
@@ -122,6 +133,22 @@ const ASSISTS: AssistsDict = {
             });
         },
     },
+    "Reconcile": {
+        description: "Restores 7 HP to unit and target ally.",
+        type: ["healing"],
+        range: 1,
+        canApply: allyCanBeHealed,
+        onApply(state, ally) {
+            this.entity.addComponent({
+                type: "Heal",
+                value: 7
+            });
+            ally.addComponent({
+                type: "Heal",
+                value: 7
+            });
+        },
+    },
     "Reposition": {
         description: "Target ally moves to opposite side of unit.",
         range: 1,
@@ -178,17 +205,6 @@ const ASSISTS: AssistsDict = {
             });
         }
     },
-    "Dance": {
-        range: 1,
-        description: "Grants another action to target ally. (Cannot target an ally with Sing or Dance.)",
-        type: ["refresh"],
-        canApply(state, ally) {
-            return ally.getOne("FinishedAction") && !ally.getOne("Refresher");
-        },
-        onApply(state, ally) {
-            ally.removeComponent("FinishedAction");
-        }
-    },
     "Sing": {
         range: 1,
         type: ["refresh"],
@@ -198,6 +214,12 @@ const ASSISTS: AssistsDict = {
         },
         onApply(state, ally) {
             ally.removeComponent("FinishedAction");
+        }
+    },
+    "Smite": {
+        description: "Pushes target ally 2 spaces away.",
+        canApply(state, ally) {
+            return shove(state, this.entity, ally, 2)
         }
     },
     "Swap": {

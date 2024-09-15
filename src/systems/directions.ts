@@ -14,6 +14,10 @@ class Direction {
     add(x: number, y: number) {
         return new Direction(this.x + x, this.y + y);
     }
+
+    subtract(x: number, y: number) {
+        return new Direction(this.x - x, this.y - y);
+    }
 };
 
 export default Direction;

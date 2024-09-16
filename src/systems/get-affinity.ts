@@ -23,7 +23,7 @@ function getAffinity(unit1: Entity, unit2: Entity) {
     return colorRelationship === "advantage" ? maxAffinity / 100 : colorRelationship === "disadvantage" ? -maxAffinity / 100 : 0;
 };
 
-function getColorRelationship(color1: WeaponColor, color2: WeaponColor) {
+export function getColorRelationship(color1: WeaponColor, color2: WeaponColor) {
     if ((color1 === "red" && color2 === "blue") || (color1 === "blue" && color2 === "green") || (color1 === "green" && color2 === "red")) return "disadvantage";
     if ((color1 === "red" && color2 === "green") || (color1 === "blue" && color2 === "red") || (color1 === "green" && color2 === "blue")) return "advantage";
     return "neutral";

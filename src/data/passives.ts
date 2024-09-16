@@ -5,7 +5,7 @@ import GameState from "../systems/state";
 import { MovementType, Stat, Stats, PassiveSlot, WeaponType, WeaponColor } from "../interfaces/types";
 import getAllies from "../utils/get-allies";
 import getEnemies from "../utils/get-enemies";
-import { mapBuffByMovementType, honeStat, combatBuffByRange, defiant, breaker, elementalBoost, renewal, threaten, bond, counterattack, guidance, swap } from "./effects";
+import { mapBuffByMovementType, honeStat, combatBuffByRange, defiant, breaker, elementalBoost, renewal, threaten, bond, counterattack, guidance, swap, retreat, shove } from "./effects";
 import Characters from "./characters.json";
 import getCombatStats from "../systems/get-combat-stats";
 import CombatTurnOutcome from "../interfaces/combat-turn-outcome";
@@ -15,6 +15,10 @@ import canReachTile from "../systems/can-reach-tile";
 import SPECIALS from "./specials";
 import applyMapComponent from "../systems/apply-map-effect";
 import ASSISTS from "./assists";
+import { defenderCanDefend } from "../systems/generate-turns";
+import getAffinity from "../systems/get-affinity";
+import getPosition from "../systems/get-position";
+import tileBitmasks from "./tile-bitmasks";
 
 const exceptStaves: WeaponType[] = ["axe", "beast", "bow", "breath", "dagger", "lance", "sword", "tome"];
 
@@ -1669,13 +1673,231 @@ const PASSIVES: PassivesDict = {
         slot: "B",
         allowedWeaponTypes: ["staff"]
     },
+    "Flashing Blade 1": {
+        slot: "A",
+        allowedMovementTypes: ["armored", "infantry"],
+        allowedWeaponTypes: exceptStaves,
+        description: "If unit's Spd ≥ foe's Spd+5, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)",
+        onCombatRoundAttack(target) {
+            const { spd } = getCombatStats(this.entity);
+            const { spd: enemySpd } = getCombatStats(target);
+            if (spd >= enemySpd + 5) {
+                this.entity.addComponent({
+                    type: "AccelerateSpecial"
+                });
+            }
+        },
+    },
+    "Flashing Blade 2": {
+        slot: "A",
+        allowedMovementTypes: ["armored", "infantry"],
+        allowedWeaponTypes: exceptStaves,
+        description: "If unit's Spd ≥ foe's Spd+3, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)",
+        onCombatRoundAttack(target) {
+            const { spd } = getCombatStats(this.entity);
+            const { spd: enemySpd } = getCombatStats(target);
+            if (spd >= enemySpd + 3) {
+                this.entity.addComponent({
+                    type: "AccelerateSpecial"
+                });
+            }
+        },
+    },
+    "Flashing Blade 3": {
+        slot: "A",
+        allowedMovementTypes: ["armored", "infantry"],
+        allowedWeaponTypes: exceptStaves,
+        description: "If unit's Spd > foe's Spd, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)",
+        onCombatRoundAttack(target) {
+            const { spd } = getCombatStats(this.entity);
+            const { spd: enemySpd } = getCombatStats(target);
+            if (spd > enemySpd) {
+                this.entity.addComponent({
+                    type: "AccelerateSpecial"
+                });
+            }
+        },
+    },
+    "Heavy Blade 1": {
+        slot: "A",
+        allowedMovementTypes: ["armored", "infantry"],
+        allowedWeaponTypes: exceptStaves,
+        description: "If unit's Atk ≥ foe's Atk+5, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)",
+        onCombatRoundAttack(target) {
+            const { atk } = getCombatStats(this.entity);
+            const { atk: enemyAtk } = getCombatStats(target);
+            if (atk >= enemyAtk + 5) {
+                this.entity.addComponent({
+                    type: "AccelerateSpecial"
+                });
+            }
+        },
+    },
+    "Heavy Blade 2": {
+        slot: "A",
+        allowedMovementTypes: ["armored", "infantry"],
+        allowedWeaponTypes: exceptStaves,
+        description: "If unit's Atk ≥ foe's Atk+3, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)",
+        onCombatRoundAttack(target) {
+            const { atk } = getCombatStats(this.entity);
+            const { atk: enemyAtk } = getCombatStats(target);
+            if (atk >= enemyAtk + 3) {
+                this.entity.addComponent({
+                    type: "AccelerateSpecial"
+                });
+            }
+        },
+    },
+    "Heavy Blade 3": {
+        slot: "A",
+        allowedMovementTypes: ["armored", "infantry"],
+        allowedWeaponTypes: exceptStaves,
+        description: "If unit's Atk > foe's Atk, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)",
+        onCombatRoundAttack(target) {
+            const { atk } = getCombatStats(this.entity);
+            const { atk: enemyAtk } = getCombatStats(target);
+            if (atk > enemyAtk) {
+                this.entity.addComponent({
+                    type: "AccelerateSpecial"
+                });
+            }
+        },
+    },
+    "Steady Breath": {
+        slot: "A",
+        description: "If foe initiates combat, grants Def+4 during combat and Special cooldown charge +1 per attack. (Only highest value applied. Does not stack.)",
+        onCombatDefense() {
+            this.entity.addComponent({
+                type: "CombatBuff",
+                def: 4
+            });
+        },
+        onCombatRoundDefense() {
+            this.entity.addComponent({
+                type: "AccelerateSpecial"
+            });
+        },
+        allowedMovementTypes: ["armored", "infantry"],
+        allowedWeaponTypes: ["sword", "axe", "lance", "breath", "beast"]
+    },
+    "Desperation 1": {
+        slot: "B",
+        description: "If unit's HP ≤ 25% and unit initiates combat, unit can make a follow-up attack before foe can counterattack.",
+        onCombatInitiate() {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP <= 0.25) {
+                this.entity.addComponent({
+                    type: "Desperation"
+                });
+            }
+        }
+    },
+    "Desperation 2": {
+        slot: "B",
+        description: "If unit's HP ≤ 50% and unit initiates combat, unit can make a follow-up attack before foe can counterattack.",
+        onCombatInitiate() {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP <= 0.5) {
+                this.entity.addComponent({
+                    type: "Desperation"
+                });
+            }
+        }
+    },
+    "Desperation 3": {
+        slot: "B",
+        description: "If unit's HP ≤ 75% and unit initiates combat, unit can make a follow-up attack before foe can counterattack.",
+        onCombatInitiate() {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP <= 0.75) {
+                this.entity.addComponent({
+                    type: "Desperation"
+                });
+            }
+        }
+    },
+    "Brash Assault 1": {
+        slot: "B",
+        description: "If unit initiates combat against a foe that can counter and unit's HP ≤ 30%, unit makes a guaranteed follow-up attack.",
+        onCombatInitiate(state, target) {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (defenderCanDefend(this.entity, target) && hp / maxHP <= 0.3) {
+                this.entity.addComponent({
+                    type: "GuaranteedFollowup"
+                });
+            }
+        },
+    },
+    "Brash Assault 2": {
+        slot: "B",
+        description: "If unit initiates combat against a foe that can counter and unit's HP ≤ 40%, unit makes a guaranteed follow-up attack.",
+        onCombatInitiate(state, target) {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (defenderCanDefend(this.entity, target) && hp / maxHP <= 0.4) {
+                this.entity.addComponent({
+                    type: "GuaranteedFollowup"
+                });
+            }
+        },
+    },
+    "Brash Assault 3": {
+        slot: "B",
+        description: "If unit initiates combat against a foe that can counter and unit's HP ≤ 50%, unit makes a guaranteed follow-up attack.",
+        onCombatInitiate(state, target) {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (defenderCanDefend(this.entity, target) && hp / maxHP <= 0.5) {
+                this.entity.addComponent({
+                    type: "GuaranteedFollowup"
+                });
+            }
+        },
+    },
+    "Escape Route 1": {
+        slot: "B",
+        description: "If unit's HP ≤ 30%, unit can move to a space adjacent to any ally.",
+        onTurnCheckRange(state) {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP <= 0.3) {
+                const allies = getAllies(state, this.entity);
+                for (let ally of allies) {
+                    guidance(ally, state, this.entity);
+                }
+            }
+        },
+    },
+    "Escape Route 2": {
+        slot: "B",
+        description: "If unit's HP ≤ 40%, unit can move to a space adjacent to any ally.",
+        onTurnCheckRange(state) {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP <= 0.4) {
+                const allies = getAllies(state, this.entity);
+                for (let ally of allies) {
+                    guidance(ally, state, this.entity);
+                }
+            }
+        },
+    },
+    "Escape Route 3": {
+        slot: "B",
+        description: "If unit's HP ≤ 50%, unit can move to a space adjacent to any ally.",
+        onTurnCheckRange(state) {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP <= 0.5) {
+                const allies = getAllies(state, this.entity);
+                for (let ally of allies) {
+                    guidance(ally, state, this.entity);
+                }
+            }
+        },
+    },
     "Flier Formation 1": {
         description: "If unit's HP = 100%, unit can move to a space adjacent to a flying ally within 2 spaces.",
         slot: "B",
         onTurnCheckRange(state) {
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp === maxHP) {
-                const allies = getAllies(state, this.entity).filter((ally) => ally.getOne("MovementType").value === "flier");
+                const allies = getAllies(state, this.entity).filter((ally) => ally.getOne("MovementType").value === "flier" && HeroSystem.getDistance(ally, this.entity) <= 2);
                 for (let ally of allies) {
                     guidance(ally, state, this.entity);
                 }
@@ -1689,7 +1911,7 @@ const PASSIVES: PassivesDict = {
         onTurnCheckRange(state) {
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp / maxHP >= 0.5) {
-                const allies = getAllies(state, this.entity).filter((ally) => ally.getOne("MovementType").value === "flier");
+                const allies = getAllies(state, this.entity).filter((ally) => ally.getOne("MovementType").value === "flier" && HeroSystem.getDistance(ally, this.entity) <= 2);
                 for (let ally of allies) {
                     guidance(ally, state, this.entity);
                 }
@@ -1701,7 +1923,7 @@ const PASSIVES: PassivesDict = {
         description: "Unit can move to a space adjacent to a flying ally within 2 spaces.",
         slot: "B",
         onTurnCheckRange(state) {
-            const allies = getAllies(state, this.entity).filter((ally) => ally.getOne("MovementType").value === "flier");
+            const allies = getAllies(state, this.entity).filter((ally) => ally.getOne("MovementType").value === "flier" && HeroSystem.getDistance(ally, this.entity) <= 2);
             for (let ally of allies) {
                 guidance(ally, state, this.entity);
             }
@@ -1744,6 +1966,202 @@ const PASSIVES: PassivesDict = {
                 if (hp / maxHP <= 0.5) {
                     guidance(ally, state, this.entity);
                 }
+            }
+        },
+    },
+    "Pass 1": {
+        description: "If unit's HP ≥ 75%, unit can move through foes' spaces.",
+        slot: "B",
+        onTurnCheckRange() {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP >= 0.75) {
+                this.entity.addComponent({
+                    type: "Pass"
+                });
+            }
+        }
+    },
+    "Pass 2": {
+        description: "If unit's HP ≥ 50%, unit can move through foes' spaces.",
+        slot: "B",
+        onTurnCheckRange() {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP >= 0.5) {
+                this.entity.addComponent({
+                    type: "Pass"
+                });
+            }
+        }
+    },
+    "Pass 3": {
+        description: "If unit's HP ≥ 25%, unit can move through foes' spaces.",
+        slot: "B",
+        onTurnCheckRange() {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            if (hp / maxHP >= 0.25) {
+                this.entity.addComponent({
+                    type: "Pass"
+                });
+            }
+        }
+    },
+    "Shield Pulse 1": {
+        allowedMovementTypes: ["infantry", "armored"],
+        allowedWeaponTypes: ["sword", "lance", "axe", "breath", "beast"],
+        description: "At the start of turn 1, if foe's attack can trigger unit's Special, grants Special cooldown count-1.",
+        slot: "B",
+        onTurnStart(state) {
+            const special = this.entity.getOne("Special");
+            if (state.turn === 1 && special) {
+                const specialData = SPECIALS[special.name];
+                if (specialData.onCombatRoundDefense) {
+                    this.entity.addComponent({
+                        type: "ModifySpecialCooldown",
+                        value: -1
+                    });
+                }
+            }
+        },
+    },
+    "Shield Pulse 2": {
+        allowedMovementTypes: ["infantry", "armored"],
+        allowedWeaponTypes: ["sword", "lance", "axe", "breath", "beast"],
+        description: "At the start of turn 1, if foe's attack can trigger unit's Special, grants Special cooldown count-1. Reduces damage dealt to unit by 5 when Special triggers.",
+        slot: "B",
+        onTurnStart(state) {
+            const special = this.entity.getOne("Special");
+            if (state.turn === 1 && special) {
+                const specialData = SPECIALS[special.name];
+                if (specialData.onCombatRoundDefense) {
+                    this.entity.addComponent({
+                        type: "ModifySpecialCooldown",
+                        value: -1
+                    });
+                }
+            }
+        },
+        onSpecialTrigger() {
+            const special = this.entity.getOne("Special");
+            const specialData = SPECIALS[special.name];
+            if (specialData.onCombatRoundDefense) {
+                this.entity.addComponent({
+                    type: "RoundDamageReduction",
+                    value: 5
+                });
+            }
+        }
+    },
+    "Shield Pulse 3": {
+        allowedMovementTypes: ["infantry", "armored"],
+        allowedWeaponTypes: ["sword", "lance", "axe", "breath", "beast"],
+        description: "At the start of turn 1, if foe's attack can trigger unit's Special, grants Special cooldown count-2. Reduces damage dealt to unit by 5 when Special triggers.",
+        slot: "B",
+        onTurnStart(state) {
+            const special = this.entity.getOne("Special");
+            if (state.turn === 1 && special) {
+                const specialData = SPECIALS[special.name];
+                if (specialData.onCombatRoundDefense) {
+                    this.entity.addComponent({
+                        type: "ModifySpecialCooldown",
+                        value: -2
+                    });
+                }
+            }
+        },
+        onSpecialTrigger() {
+            const special = this.entity.getOne("Special");
+            const specialData = SPECIALS[special.name];
+            if (specialData.onCombatRoundDefense) {
+                this.entity.addComponent({
+                    type: "RoundDamageReduction",
+                    value: 5
+                });
+            }
+        }
+    },
+    "Cancel Affinity 1": {
+        slot: "B",
+        allowedWeaponTypes: ["sword", "breath", "axe", "lance"],
+        description: "Neutralizes all weapon-triangle advantage granted by unit's and foe's skills.",
+        onCombatStart(state, target) {
+            this.entity.addComponent({
+                type: "NeutralizeAffinity",
+            });
+
+            target.addComponent({
+                type: "NeutralizeAffinity",
+            });
+        }
+    },
+    "Cancel Affinity 2": {
+        slot: "B",
+        allowedWeaponTypes: ["sword", "breath", "axe", "lance"],
+        description: "Neutralizes weapon-triangle advantage granted by unit's skills. If unit has weapon-triangle disadvantage, neutralizes weapon-triangle advantage granted by foe's skills.",
+        onCombatStart(state, target) {
+            target.addComponent({
+                type: "NeutralizeAffinity",
+            });
+
+            if (getAffinity(target, this.entity) === 0.2) {
+                this.entity.addComponent({
+                    type: "NeutralizeAffinity"
+                });
+            }
+        }
+    },
+    "Cancel Affinity 3": {
+        slot: "B",
+        allowedWeaponTypes: ["sword", "breath", "axe", "lance"],
+        description: "Neutralizes weapon-triangle advantage granted by unit's skills. If unit has weapon-triangle disadvantage, neutralizes weapon-triangle advantage granted by foe's skills.",
+        onCombatStart(state, target) {
+            target.addComponent({
+                type: "NeutralizeAffinity",
+            });
+
+            if (getAffinity(target, this.entity) === 0.2) {
+                this.entity.addComponent({
+                    type: "GuaranteedAffinity"
+                });
+            }
+        }
+    },
+    "Drag Back": {
+        slot: "B",
+        description: "If unit initiates combat, unit moves 1 space away after combat. Target foe moves to unit's previous space.",
+        allowedWeaponTypes: ["sword", "breath", "axe", "lance"],
+        onCombatAfter(state, target) {
+            const retreatChecker = retreat(state, this.entity, target);
+            const { x, y } = getPosition(this.entity);
+            if (retreatChecker.checker()) {
+                retreatChecker.runner();
+                if (canReachTile(target, state.map[y][x], true)) {
+                    target.addComponent({
+                        type: "Move",
+                        x,
+                        y
+                    });
+                }
+            }
+        },
+    },
+    "Hit and Run": {
+        slot: "B",
+        description: "If unit initiates combat, unit moves 1 space away after combat.",
+        allowedWeaponTypes: ["sword", "breath", "axe", "lance"],
+        onCombatAfter(state, target) {
+            const retreatChecker = retreat(state, this.entity, target);
+            if (retreatChecker.checker()) {
+                retreatChecker.runner();
+            }
+        },
+    },
+    "Knock Back": {
+        description: "If unit initiates combat, target foe moves 1 space away after combat.",
+        slot: "B",
+        onCombatAfter(state, target) {
+            const shoveChecker = shove(state, this.entity, target, 1);
+            if (shoveChecker.checker()) {
+                shoveChecker.runner();
             }
         },
     },
@@ -3065,7 +3483,8 @@ const PASSIVES: PassivesDict = {
                 for (let ally of allies) {
                     if (ally.getOne("MovementType").value === "infantry" && ally.getOne("Stats").hp <= this.entity.getOne("Stats").hp - 5) {
                         ally.addComponent({
-                            type: "AccelerateSpecial"
+                            type: "ModifySpecialCooldown",
+                            value: -1
                         });
                     }
                 }
@@ -3081,7 +3500,8 @@ const PASSIVES: PassivesDict = {
                 for (let ally of allies) {
                     if (ally.getOne("MovementType").value === "infantry" && ally.getOne("Stats").hp <= this.entity.getOne("Stats").hp - 3) {
                         ally.addComponent({
-                            type: "AccelerateSpecial"
+                            type: "ModifySpecialCooldown",
+                            value: -1
                         });
                     }
                 }
@@ -3097,7 +3517,8 @@ const PASSIVES: PassivesDict = {
                 for (let ally of allies) {
                     if (ally.getOne("MovementType").value === "infantry" && ally.getOne("Stats").hp <= this.entity.getOne("Stats").hp - 5) {
                         ally.addComponent({
-                            type: "AccelerateSpecial"
+                            type: "ModifySpecialCooldown",
+                            value: -1
                         });
                     }
                 }

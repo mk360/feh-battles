@@ -7,7 +7,10 @@ import tileBitmasks from "./tile-bitmasks";
 import { WeaponType } from "../interfaces/types";
 import MovementType from "../components/movement-type";
 import Characters from "./characters.json";
-import { shove, swap } from "./effects";
+import { retreat, shove, swap } from "./effects";
+import getPosition from "../systems/get-position";
+
+const exceptStaves: WeaponType[] = ["axe", "beast", "bow", "breath", "dagger", "lance", "sword", "tome"];
 
 type AssistKind = "refresh" | "movement" | "buff" | "healing";
 
@@ -40,7 +43,29 @@ const ASSISTS: AssistsDict = {
         },
         onApply(state, ally) {
             ally.removeComponent("FinishedAction");
-        }
+        },
+        exclusiveTo: ["Inigo: Indigo Dancer", "Ninian: Oracle of Destiny", "Olivia: Blushing Beauty", "Olivia: Festival Dancer"]
+    },
+    "Draw Back": {
+        type: ["movement"],
+        range: 1,
+        description: "Unit moves 1 space away from target ally. Ally moves to unit's previous space.",
+        allowedWeaponTypes: exceptStaves,
+        canApply(state, ally, position) {
+            const { x, y } = position;
+            const currentMapTile = state.map[y][x];
+            const allyCanMove = canReachTile(ally, currentMapTile, true);
+            return retreat(state, this.entity, ally).checker() && allyCanMove;
+        },
+        onApply(state, ally) {
+            const { x, y } = getPosition(this.entity);
+            retreat(state, this.entity, ally);
+            ally.addComponent({
+                type: "Move",
+                x,
+                y
+            });
+        },
     },
     "Heal": {
         range: 1,
@@ -111,6 +136,7 @@ const ASSISTS: AssistsDict = {
         range: 1,
         description: "Unit moves to opposite side of target ally.",
         type: ["movement"],
+        allowedWeaponTypes: exceptStaves,
         canApply(state, ally, position: { x: number, y: number }) {
             const secondPosition = ally.getOne("Position");
             const vector = new Direction(secondPosition.x - position.x, secondPosition.y - position.y);
@@ -148,11 +174,13 @@ const ASSISTS: AssistsDict = {
                 value: 7
             });
         },
+        allowedWeaponTypes: ["staff"]
     },
     "Reposition": {
         description: "Target ally moves to opposite side of unit.",
         range: 1,
         type: ["movement"],
+        allowedWeaponTypes: exceptStaves,
         canApply(state, ally) {
             const firstPosition = this.entity.getOne("TemporaryPosition");
             const secondPosition = ally.getOne("Position");
@@ -185,25 +213,12 @@ const ASSISTS: AssistsDict = {
         description: "Pushes target ally 1 space away.",
         type: ["movement"],
         canApply(state, ally) {
-            const firstPosition = this.entity.getOne("TemporaryPosition");
-            const secondPosition = ally.getOne("Position");
-            const vector = new Direction(secondPosition.x - firstPosition.x, secondPosition.y - secondPosition.y);
-            const newAllyPosition = vector.add(vector.x, vector.y);
-            const mapSlot = state.map[newAllyPosition.y][newAllyPosition.x] as Uint16Array;
-
-            return canReachTile(ally, mapSlot);
+            return shove(state, this.entity, ally, 1).checker()
         },
         onApply(state, ally) {
-            const firstPosition = this.entity.getOne("TemporaryPosition");
-            const secondPosition = ally.getOne("Position");
-            const vector = new Direction(secondPosition.x - firstPosition.x, secondPosition.y - secondPosition.y);
-            const newAllyPosition = vector.add(vector.x, vector.y);
-            ally.addComponent({
-                type: "Move",
-                x: newAllyPosition.x,
-                y: newAllyPosition.y,
-            });
-        }
+            shove(state, this.entity, ally, 1).runner();
+        },
+        allowedWeaponTypes: exceptStaves
     },
     "Sing": {
         range: 1,
@@ -214,13 +229,20 @@ const ASSISTS: AssistsDict = {
         },
         onApply(state, ally) {
             ally.removeComponent("FinishedAction");
-        }
+        },
+        exclusiveTo: ["Azura: Lady of Ballads", "Azura: Lady of the Lake", "Shigure: Dark Sky Singer"],
     },
     "Smite": {
         description: "Pushes target ally 2 spaces away.",
         canApply(state, ally) {
-            return shove(state, this.entity, ally, 2)
-        }
+            return shove(state, this.entity, ally, 2).checker()
+        },
+        type: ["movement"],
+        onApply(state, ally) {
+            shove(state, this.entity, ally, 2).runner();
+        },
+        allowedWeaponTypes: exceptStaves,
+        range: 1,
     },
     "Swap": {
         range: 1,
@@ -231,7 +253,8 @@ const ASSISTS: AssistsDict = {
         },
         onApply(state, ally) {
             return swap(state, this.entity, ally).runner();
-        }
+        },
+        allowedWeaponTypes: exceptStaves
     },
     "Mend": {
         type: ["healing"],

@@ -12,6 +12,7 @@ import canReachTile from "../systems/can-reach-tile";
 import getTileCoordinates from "../systems/get-tile-coordinates";
 import getPosition from "../systems/get-position";
 import Direction from "../systems/directions";
+import tileBitmasks from "./tile-bitmasks";
 
 /**
  * Specified target can move to any tile adjacent to calling ally within 2 spaces
@@ -69,6 +70,9 @@ export function mapBuffByRange(skill: Skill, state: GameState, range: number, bu
     }
 }
 
+/**
+ * If specified combat stat > enemy's combat stat, reduce damage by 4x difference (max. 40%)
+ */
 export function dodgeStat(skill: Skill, enemy: Entity, comparedStat: Stat) {
     const heroStats = getCombatStats(skill.entity);
     const enemyStats = getCombatStats(enemy);
@@ -284,14 +288,51 @@ export function swap(state: GameState, entity1: Entity, entity2: Entity) {
  * may cross unpassable terrain (except walls) if they will land on a valid tile. Make sure the `checker` function returns true before calling the runner.
  */
 export function shove(state: GameState, caller: Entity, shoved: Entity, range: number) {
+    const pos1 = getPosition(caller);
+    const pos2 = getPosition(shoved);
 
+    const direction = new Direction(pos2.x - pos1.x, pos2.y - pos1.y);
+
+    let atLeastOneTile = false;
+
+    for (let i = 0; i < range; i++) {
+        const cumulatedDirection = direction.add(pos2.x - pos1.x, pos2.y - pos1.y);
+        const newTile = state.map[pos2.y + cumulatedDirection.y]?.[pos2.x + cumulatedDirection.x];
+        if (!newTile) {
+            atLeastOneTile = (i - 1) > 0; // if out of bounds, then surely last valid tile is correct?
+            break;
+        };
+        const isValid = canReachTile(shoved, newTile);
+        atLeastOneTile = isValid;
+        if (atLeastOneTile && i < range) continue;
+        if (!atLeastOneTile) {
+            atLeastOneTile = i > 0;
+            break;
+        }
+    }
+
+    return {
+        checker() {
+            return atLeastOneTile;
+        },
+        runner() {
+            const newTile = state.map[pos2.y + direction.y]?.[pos2.x + direction.x];
+            const { x, y } = getTileCoordinates(newTile);
+
+            shoved.addComponent({
+                type: "Move",
+                x,
+                y
+            });
+        }
+    }
 }
 
 /**
  * Unit moves 1 tile behind. In order to generate the "behind" tile, a second unit should be specified in order to create the "behind" vector.
  * Before running the `runner` function, check if `checker` returns true.
  */
-export function retreat(state: GameState, target: Entity, referencePoint: Entity, referenceShouldRetreat: boolean) {
+export function retreat(state: GameState, target: Entity, referencePoint: Entity) {
     const pos1 = getPosition(target);
     const pos2 = getPosition(referencePoint);
 
@@ -299,7 +340,17 @@ export function retreat(state: GameState, target: Entity, referencePoint: Entity
 
     return {
         checker() {
+            const newTile = state.map[direction.y]?.[direction.x];
+            if (!newTile) return false;
+            const isValid = canReachTile(target, newTile) && ((newTile[0] & tileBitmasks.occupation) === 0)
 
+            return isValid;
+        },
+        runner() {
+            target.addComponent({
+                type: "Move",
+                ...direction
+            });
         }
     }
 }

@@ -13,6 +13,7 @@ import { balm } from "./effects";
 import getAllies from "../utils/get-allies";
 import HeroSystem from "../systems/hero";
 import Direction from "../systems/directions";
+import CombatTurnOutcome from "../interfaces/combat-turn-outcome";
 
 const exceptStaves: WeaponType[] = ["axe", "beast", "bow", "breath", "dagger", "lance", "sword", "tome"];
 
@@ -26,11 +27,26 @@ interface SpecialsDict {
         exclusiveTo?: (keyof typeof Characters)[];
         allowedMovementTypes?: MovementType[];
         onCombatRoundAttack?(this: Skill, target: Entity): void;
-        onCombatRoundDefense?(this: Skill, target: Entity, predictedDamage?: number): void;
         type?: "aoe";
         getAoETargets?(this: Skill, state: GameState, target: Entity): Set<Entity>;
         getAoEDamage?(this: Skill, state: GameState, target: Entity): number;
         onAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: Skill): void;
+        onSpecialTrigger?(this: Skill, battleState: GameState, target: Entity): void;
+        onCombatStart?(this: Skill, battleState: GameState, target: Entity): void;
+        onCombatAfter?(this: Skill, battleState: GameState, target: Entity): void;
+        onCombatInitiate?(this: Skill, state: GameState, target: Entity): void;
+        onCombatAllyStart?(this: Skill, state: GameState, ally: Entity): void;
+        onCombatDefense?(this: Skill, state: GameState, attacker: Entity): void;
+        onCombatRoundAttack?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): void;
+        onCombatRoundDefense?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): void;
+        onEquip?(this: Skill): any;
+        onTurnCheckRange?(this: Skill, state: GameState): void;
+        onTurnStart?(this: Skill, battleState: GameState): void;
+        onTurnStartBefore?(this: Skill, battleState: GameState): void;
+        onTurnStartAfter?(this: Skill, battleState: GameState): void;
+        onAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: Skill): void;
+        onAllyAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: Skill): void;
+        shouldActivate?(this: Skill, damage: number): boolean;
     }
 }
 
@@ -276,6 +292,24 @@ const SPECIALS: SpecialsDict = {
             }
         }
     },
+    "Galeforce": {
+        description: "If unit initiates combat, grants unit another action after combat. (Once per turn.)",
+        cooldown: 5,
+        onTurnStart() {
+            const galeforced = this.entity.getOne("Galeforce");
+            if (galeforced) {
+                this.entity.removeComponent(galeforced)
+            }
+        },
+        onCombatAfter() {
+            if (this.entity.getOne("InitiateCombat") && !this.entity.getOne("Galeforce")) {
+                this.entity.addComponent({
+                    type: "Galeforce"
+                });
+            }
+        },
+        allowedWeaponTypes: melee,
+    },
     "Glacies": {
         description: "Boosts damage by 80% of unit's Res.",
         allowedWeaponTypes: exceptStaves,
@@ -510,6 +544,37 @@ const SPECIALS: SpecialsDict = {
                 });
             }
         }
+    },
+    "Miracle": {
+        allowedWeaponTypes: exceptStaves.concat("staff"),
+        description: "If unit's HP > 1 and foe would reduce unit's HP to 0, unit survives with 1 HP.",
+        shouldActivate(damage) {
+            const { hp } = this.entity.getOne("Stats");
+            let shouldSurvive = true;
+            const survivals = this.entity.getComponents("ForcedSurvival");
+            survivals.forEach((survival) => {
+                if (!shouldSurvive) return;
+                if (survival.source === "Miracle") {
+                    shouldSurvive = false;
+                }
+            });
+            return hp - damage <= 0 && shouldSurvive;
+        },
+        onCombatRoundDefense(target, round) {
+            if (this.entity.getOne("ForcedSurvival")) return;
+            const { hp } = this.entity.getOne("Stats");
+            if (hp > 1) {
+                this.entity.addComponent({
+                    type: "ForceSurvival",
+                    source: "Miracle"
+                });
+                this.entity.addComponent({
+                    type: "ForcedSurvival",
+                    source: "Miracle"
+                });
+            }
+        },
+        cooldown: 5,
     },
     "Moonbow": {
         description: "Treats foe's Def/Res as if reduced by 30% during combat.",
@@ -771,23 +836,6 @@ const SPECIALS: SpecialsDict = {
                 value: Math.floor(diff * 0.5)
             });
         }
-    },
-    // TODO: intégrer dans le combat loop
-    "Miracle": {
-        description: "If unit's HP > 1 and foe would reduce unit's HP to 0, unit survives with 1 HP.",
-        onCombatRoundDefense(target) {
-            if (this.entity.getOne("ForcedSurvival")) return;
-            const { hp } = this.entity.getOne("Stats");
-            if (hp > 1) {
-                this.entity.addComponent({
-                    type: "ForceSurvival"
-                });
-                this.entity.addComponent({
-                    type: "ForcedSurvival"
-                });
-            }
-        },
-        cooldown: 5,
     },
 };
 

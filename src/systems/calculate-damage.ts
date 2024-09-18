@@ -4,8 +4,6 @@ interface DamageCalc {
     advantage: 0.2 | 0 | -0.2;
     affinity: number;
     defenseStat: number;
-    flatReduction: number;
-    damagePercentage: number;
     defensiveTerrain: boolean;
     specialIncreasePercentage: number;
     flatIncrease: number;
@@ -14,28 +12,33 @@ interface DamageCalc {
 
 // to reverse-engineer dmg: lookup "rawDmg" in https://arcticsilverfox.com/feh_sim/
 
-function calculateDamage({ atkStat, effectiveness, advantage, affinity, defenseStat, flatReduction, damagePercentage, defensiveTerrain, flatIncrease, specialIncreasePercentage, staffPenalty }: DamageCalc) {
+export function calculateDamageBeforeReductions({ atkStat, effectiveness, advantage, affinity, defenseStat, defensiveTerrain, flatIncrease, specialIncreasePercentage, staffPenalty }: DamageCalc) {
     const damageWithAdvantage = Math.trunc(atkStat * (advantage + (1 + affinity)));
     const damageWithEffectiveness = Math.trunc(damageWithAdvantage * effectiveness);
     const defensiveTerrainBonus = defensiveTerrain ? Math.trunc(defenseStat * 0.3) : 0;
     const netDefense = defenseStat + defensiveTerrainBonus;
-    let netDamage = damageWithEffectiveness - netDefense;
+    let damageWithoutReduction = damageWithEffectiveness - netDefense;
 
     if (specialIncreasePercentage) {
-        netDamage = Math.trunc(netDamage * specialIncreasePercentage);
+        damageWithoutReduction = Math.trunc(damageWithoutReduction * specialIncreasePercentage);
     }
 
     if (flatIncrease) {
-        netDamage = Math.max(0, netDamage + flatIncrease);
+        damageWithoutReduction = Math.max(0, damageWithoutReduction + flatIncrease);
     }
 
     if (staffPenalty) {
-        netDamage = Math.trunc(netDamage * 0.5);
+        damageWithoutReduction = Math.trunc(damageWithoutReduction * 0.5);
     }
+
+    return damageWithoutReduction;
+}
+
+export function calculateFinalDamage({ netDamage, flatReduction, damagePercentage }: { netDamage: number, flatReduction: number, damagePercentage: number }) {
+
 
     netDamage = Math.ceil(netDamage * damagePercentage / 100);
 
     return Math.max(0, netDamage - Math.floor(flatReduction));
 }
 
-export default calculateDamage;

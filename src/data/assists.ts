@@ -4,11 +4,14 @@ import Direction from "../systems/directions";
 import Assist from "../components/assist";
 import canReachTile from "../systems/can-reach-tile";
 import tileBitmasks from "./tile-bitmasks";
-import { WeaponType } from "../interfaces/types";
+import { Stats, WeaponType } from "../interfaces/types";
 import MovementType from "../components/movement-type";
 import Characters from "./characters.json";
 import { retreat, shove, swap } from "./effects";
 import getPosition from "../systems/get-position";
+import applyMapComponent from "../systems/apply-map-effect";
+import getMapStats from "../systems/get-map-stats";
+import CombatTurnOutcome from "../interfaces/combat-turn-outcome";
 
 const exceptStaves: WeaponType[] = ["axe", "beast", "bow", "breath", "dagger", "lance", "sword", "tome"];
 
@@ -30,10 +33,51 @@ interface AssistsDict {
         allowedMovementTypes?: MovementType[];
         exclusiveTo?: (keyof typeof Characters)[];
         type: AssistKind[];
+        onSpecialTrigger?(this: Assist, battleState: GameState, target: Entity): void;
+        onCombatStart?(this: Assist, battleState: GameState, target: Entity): void;
+        onCombatAfter?(this: Assist, battleState: GameState, target: Entity): void;
+        onCombatInitiate?(this: Assist, state: GameState, target: Entity): void;
+        onCombatAllyStart?(this: Assist, state: GameState, ally: Entity): void;
+        onCombatDefense?(this: Assist, state: GameState, attacker: Entity): void;
+        onCombatRoundAttack?(this: Assist, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): void;
+        onCombatRoundDefense?(this: Assist, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): void;
+        onEquip?(this: Assist): any;
+        onTurnCheckRange?(this: Assist, state: GameState): void;
+        onTurnStart?(this: Assist, battleState: GameState): void;
+        onTurnStartBefore?(this: Assist, battleState: GameState): void;
+        onTurnStartAfter?(this: Assist, battleState: GameState): void;
+        onAssistAfter?(this: Assist, battleState: GameState, ally: Entity, assistSkill: Assist): void;
+        onAllyAssistAfter?(this: Assist, battleState: GameState, ally: Entity, assistSkill: Assist): void;
     }
 }
 
 const ASSISTS: AssistsDict = {
+    "Ardent Sacrifice": {
+        description: "Restores 10 HP to target ally. Unit loses 10 HP but cannot go below 1.",
+        type: ["healing"],
+        allowedWeaponTypes: exceptStaves,
+        canApply(state, ally) {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+
+            return allyCanBeHealed(state, ally) || hp < maxHP;
+        },
+        onApply(state, ally) {
+            const { hp } = this.entity.getOne("Stats");
+            const { hp: allyHP, maxHP } = ally.getOne("Stats");
+            const newUnitHP = Math.max(1, hp - 10);
+            const newAllyHP = Math.min(allyHP + 10, maxHP);
+            this.entity.addComponent({
+                type: "SacrificeHP",
+                value: newUnitHP - hp,
+            });
+
+            ally.addComponent({
+                type: "SacrificeHP",
+                value: newAllyHP - allyHP
+            });
+        },
+        range: 1
+    },
     "Dance": {
         range: 1,
         description: "Grants another action to target ally. (Cannot target an ally with Sing or Dance.)",
@@ -65,6 +109,38 @@ const ASSISTS: AssistsDict = {
                 x,
                 y
             });
+        },
+    },
+    "Harsh Command": {
+        description: "Converts penalties on target into bonuses.",
+        range: 1,
+        allowedWeaponTypes: exceptStaves,
+        type: ["buff"],
+        canApply(state, ally) {
+            return !!ally.getOne("MapDebuff");
+        },
+        onApply(state, ally) {
+            const mapDebuffs = ally.getComponents("MapDebuff");
+            const newBuffs: Stats = {
+                atk: 0,
+                spd: 0,
+                def: 0,
+                res: 0
+            };
+
+            mapDebuffs.forEach((component) => {
+                const { type, ...stats } = component.getObject(false);
+                for (let stat in stats) {
+                    newBuffs[stat] = Math.max(-stats[stat], newBuffs[stat]);
+                }
+                ally.removeComponent(component);
+            });
+
+            ally.tags.delete("Penalty");
+            ally.getComponents("Status").forEach((status) => {
+                if (status.value === "Penalty") ally.removeComponent(status);
+            });
+            applyMapComponent(ally, "MapBuff", newBuffs, this.entity);
         },
     },
     "Heal": {
@@ -132,6 +208,19 @@ const ASSISTS: AssistsDict = {
             });
         }
     },
+    "Mend": {
+        description: "Restores 10 HP to target ally.",
+        type: ["healing"],
+        range: 1,
+        canApply: allyCanBeHealed,
+        onApply(state, ally) {
+            ally.addComponent({
+                type: "Heal",
+                value: 10
+            });
+        },
+        allowedWeaponTypes: exceptStaves
+    },
     "Pivot": {
         range: 1,
         description: "Unit moves to opposite side of target ally.",
@@ -159,6 +248,160 @@ const ASSISTS: AssistsDict = {
             });
         },
     },
+    "Physic": {
+        description: "Restores 8 HP to target ally. Range = 2.",
+        range: 2,
+        allowedWeaponTypes: ["staff"],
+        type: ["healing"],
+        canApply: allyCanBeHealed,
+        onApply(state, ally) {
+            ally.addComponent({
+                type: "Heal",
+                value: 8
+            });
+        },
+    },
+    "Physic+": {
+        description: "Restores HP = 50% of Atk. (Minimum of 8 HP.) Range = 2.",
+        range: 2,
+        type: ["healing"],
+        onApply(state, ally) {
+            const { atk } = getMapStats(this.entity);
+            const recovered = Math.max(8, Math.floor(atk / 2));
+
+            ally.addComponent({
+                type: "Heal",
+                value: recovered
+            });
+        },
+        canApply: allyCanBeHealed
+    },
+    "Rally Attack": {
+        description: "Grants Atk+4 to target ally for 1 turn.",
+        canApply() { return true },
+        onApply(state, ally) {
+            applyMapComponent(ally, "MapBuff", {
+                atk: 4
+            }, this.entity);
+        },
+        range: 1,
+        allowedWeaponTypes: exceptStaves,
+        type: ["buff"]
+    },
+    "Rally Atk/Def": {
+        description: "Grants Atk/Def+3 to target ally for 1 turn.",
+        canApply() { return true },
+        onApply(state, ally) {
+            applyMapComponent(ally, "MapBuff", {
+                atk: 3,
+                def: 3
+            }, this.entity);
+        },
+        range: 1,
+        allowedWeaponTypes: exceptStaves,
+        type: ["buff"]
+    },
+    "Rally Atk/Res": {
+        description: "Grants Atk/Res+3 to target ally for 1 turn.",
+        canApply() { return true },
+        onApply(state, ally) {
+            applyMapComponent(ally, "MapBuff", {
+                atk: 3,
+                res: 3
+            }, this.entity);
+        },
+        range: 1,
+        allowedWeaponTypes: exceptStaves,
+        type: ["buff"]
+    },
+    "Rally Atk/Spd": {
+        description: "Grants Atk/Spd+3 to target ally for 1 turn.",
+        canApply() { return true },
+        onApply(state, ally) {
+            applyMapComponent(ally, "MapBuff", {
+                atk: 3,
+                spd: 3
+            }, this.entity);
+        },
+        range: 1,
+        allowedWeaponTypes: exceptStaves,
+        type: ["buff"]
+    },
+    "Rally Defense": {
+        description: "Grants Def+4 to target ally for 1 turn.",
+        canApply() { return true },
+        onApply(state, ally) {
+            applyMapComponent(ally, "MapBuff", {
+                def: 4
+            }, this.entity);
+        },
+        range: 1,
+        allowedWeaponTypes: exceptStaves,
+        type: ["buff"]
+    },
+    "Rally Def/Res": {
+        description: "Grants Def/Res+3 to target ally for 1 turn.",
+        canApply() { return true },
+        onApply(state, ally) {
+            applyMapComponent(ally, "MapBuff", {
+                def: 3,
+                res: 3
+            }, this.entity);
+        },
+        range: 1,
+        allowedWeaponTypes: exceptStaves,
+        type: ["buff"]
+    },
+    "Rally Resistance": {
+        description: "Grants Res+4 to target ally for 1 turn.",
+        canApply() { return true },
+        onApply(state, ally) {
+            applyMapComponent(ally, "MapBuff", {
+                res: 4
+            }, this.entity);
+        },
+        range: 1,
+        allowedWeaponTypes: exceptStaves,
+        type: ["buff"]
+    },
+    "Rally Spd/Def": {
+        description: "Grants Spd/Def+3 to target ally for 1 turn.",
+        canApply() { return true },
+        onApply(state, ally) {
+            applyMapComponent(ally, "MapBuff", {
+                def: 3,
+                spd: 3
+            }, this.entity);
+        },
+        range: 1,
+        allowedWeaponTypes: exceptStaves,
+        type: ["buff"]
+    },
+    "Rally Spd/Res": {
+        description: "Grants Spd/Res+3 to target ally for 1 turn.",
+        canApply() { return true },
+        onApply(state, ally) {
+            applyMapComponent(ally, "MapBuff", {
+                res: 3,
+                spd: 3
+            }, this.entity);
+        },
+        range: 1,
+        allowedWeaponTypes: exceptStaves,
+        type: ["buff"]
+    },
+    "Rally Speed": {
+        description: "Grants Spd+4 to target ally for 1 turn.",
+        canApply() { return true },
+        onApply(state, ally) {
+            applyMapComponent(ally, "MapBuff", {
+                spd: 4
+            }, this.entity);
+        },
+        range: 1,
+        allowedWeaponTypes: exceptStaves,
+        type: ["buff"]
+    },
     "Reconcile": {
         description: "Restores 7 HP to unit and target ally.",
         type: ["healing"],
@@ -175,6 +418,111 @@ const ASSISTS: AssistsDict = {
             });
         },
         allowedWeaponTypes: ["staff"]
+    },
+    "Recover": {
+        description: "Slows Special trigger (cooldown count+1). Restores 15 HP to target ally.",
+        type: ["healing"],
+        range: 1,
+        allowedWeaponTypes: ["staff"],
+        canApply: allyCanBeHealed,
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: 1
+            });
+        },
+        onApply(state, ally) {
+            ally.addComponent({
+                type: "Heal",
+                value: 15
+            });
+        },
+    },
+    "Recover+": {
+        description: "Restores HP = 50% of Atk +10. (Minimum of 15 HP.)",
+        type: ["healing"],
+        range: 1,
+        allowedWeaponTypes: ["staff"],
+        canApply: allyCanBeHealed,
+        onApply(state, ally) {
+            const { atk } = getMapStats(this.entity);
+            const recovered = Math.max(15, Math.floor(atk / 2) + 10);
+
+            ally.addComponent({
+                type: "Heal",
+                value: recovered
+            });
+        },
+    },
+    "Rehabilitate": {
+        description: "Slows Special trigger (cooldown count+1). If target's HP is ≤ 50%, the lower the target's HP, the more HP is restored. (Minimum of 7 HP.)",
+        type: ["healing"],
+        allowedWeaponTypes: ["staff"],
+        canApply: allyCanBeHealed,
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: 1
+            });
+        },
+        onApply(state, ally) {
+            const { hp, maxHP } = ally.getOne("Stats");
+            let amount = 7;
+            if (hp / maxHP <= 0.5) {
+                amount += Math.max(maxHP - 2 * hp, 0);
+            }
+            ally.addComponent({
+                type: "Heal",
+                value: amount
+            });
+        },
+        range: 1,
+    },
+    "Rehabilitate+": {
+        description: "Restores HP = 50% of Atk -10. (Minimum of 7 HP.) If target's HP is ≤ 50%, the lower the target's HP, the more HP is restored.",
+        type: ["healing"],
+        allowedWeaponTypes: ["staff"],
+        canApply: allyCanBeHealed,
+        onApply(state, ally) {
+            const { atk } = getMapStats(this.entity);
+            const { hp, maxHP } = ally.getOne("Stats");
+            let amount = Math.max(Math.floor(atk / 2) - 10, 7);
+            if (hp / maxHP <= 0.5) {
+                amount += Math.max(0, maxHP - 2 * hp);
+            }
+            ally.addComponent({
+                type: "Heal",
+                value: amount
+            });
+        },
+        range: 1,
+    },
+    "Reciprocal Aid": {
+        description: "Unit and target ally swap HP. (Neither can go above their max HP.)",
+        type: ["healing"],
+        allowedWeaponTypes: exceptStaves,
+        range: 1,
+        canApply(state, ally) {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+
+            return allyCanBeHealed(state, ally) || hp < maxHP;
+        },
+        onApply(state, ally) {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            const { hp: allyHP, maxHP: allyMaxHP } = ally.getOne("Stats");
+            const newSelfHP = Math.min(allyHP, maxHP);
+            const newAllyHP = Math.min(allyMaxHP, hp);
+
+            this.entity.addComponent({
+                type: "Heal",
+                value: newSelfHP - hp,
+            });
+
+            ally.addComponent({
+                type: "Heal",
+                value: newAllyHP - allyHP,
+            });
+        },
     },
     "Reposition": {
         description: "Target ally moves to opposite side of unit.",
@@ -255,19 +603,6 @@ const ASSISTS: AssistsDict = {
             return swap(state, this.entity, ally).runner();
         },
         allowedWeaponTypes: exceptStaves
-    },
-    "Mend": {
-        type: ["healing"],
-        canApply: allyCanBeHealed,
-        onApply(state, ally) {
-            ally.addComponent({
-                type: "Heal",
-                value: 10
-            })
-        },
-        range: 1,
-        allowedWeaponTypes: ["staff"],
-        description: "Restores 10 HP to target ally."
     },
 } as const;
 

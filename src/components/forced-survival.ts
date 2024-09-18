@@ -1,9 +1,9 @@
 import { Component } from "ape-ecs";
 
-class ForceSurvival extends Component {
+class ForcedSurvival extends Component {
     static properties = {
         source: ""
     };
 };
 
-export default ForceSurvival;
+export default ForcedSurvival;

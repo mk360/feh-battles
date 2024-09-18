@@ -1264,7 +1264,7 @@ const WEAPONS: WeaponDict = {
         },
         onCombatAfter() {
             this.entity.addComponent({
-                type: "AfterCombatDamage",
+                type: "MapDamage",
                 value: 4
             });
         },
@@ -1571,7 +1571,7 @@ const WEAPONS: WeaponDict = {
 
             if (this.entity.getOne("InitiateCombat")) {
                 target.addComponent({
-                    type: "AfterCombatDamage",
+                    type: "MapDamage",
                     value: 7
                 });
             }
@@ -1599,7 +1599,7 @@ const WEAPONS: WeaponDict = {
             const { value: startingHP } = this.entity.getOne("StartingHP");
             if (hp === startingHP && hp === maxHP) {
                 this.entity.addComponent({
-                    type: "AfterCombatDamage",
+                    type: "MapDamage",
                     value: 2
                 });
             }
@@ -1627,7 +1627,7 @@ const WEAPONS: WeaponDict = {
             const { value: startingHP } = this.entity.getOne("StartingHP");
             if (hp === startingHP && hp === maxHP) {
                 this.entity.addComponent({
-                    type: "AfterCombatDamage",
+                    type: "MapDamage",
                     value: 2
                 });
             }
@@ -3058,7 +3058,7 @@ const WEAPONS: WeaponDict = {
             const { value: startingHP } = this.entity.getOne("StartingHP");
             if (hp === startingHP && hp === maxHP) {
                 this.entity.addComponent({
-                    type: "AfterCombatDamage",
+                    type: "MapDamage",
                     value: 2
                 });
             }
@@ -3093,7 +3093,7 @@ const WEAPONS: WeaponDict = {
             const { value: startingHP } = this.entity.getOne("StartingHP");
             if (hp === startingHP && hp === maxHP) {
                 this.entity.addComponent({
-                    type: "AfterCombatDamage",
+                    type: "MapDamage",
                     value: 2
                 });
             }
@@ -3230,7 +3230,7 @@ const WEAPONS: WeaponDict = {
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
                 target.addComponent({
-                    type: "AfterCombatDamage",
+                    type: "MapDamage",
                     value: 10
                 });
             }
@@ -3243,14 +3243,14 @@ const WEAPONS: WeaponDict = {
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
                 target.addComponent({
-                    type: "AfterCombatDamage",
+                    type: "MapDamage",
                     value: 10
                 });
                 const allies = getAllies(battleState, target);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, target) <= 2) {
                         ally.addComponent({
-                            type: "AfterCombatDamage",
+                            type: "MapDamage",
                             value: 10
                         });
                     }
@@ -3780,7 +3780,7 @@ const WEAPONS: WeaponDict = {
             const { value: startingHP } = this.entity.getOne("StartingHP");
             if (hp === startingHP && hp === maxHP) {
                 this.entity.addComponent({
-                    type: "AfterCombatDamage",
+                    type: "MapDamage",
                     value: 2
                 });
             }
@@ -3815,7 +3815,7 @@ const WEAPONS: WeaponDict = {
             const { value: startingHP } = this.entity.getOne("StartingHP");
             if (hp === startingHP && hp === maxHP) {
                 this.entity.addComponent({
-                    type: "AfterCombatDamage",
+                    type: "MapDamage",
                     value: 2
                 });
             }

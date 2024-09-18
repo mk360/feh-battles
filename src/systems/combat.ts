@@ -11,7 +11,7 @@ import SKILLS from "../data/skill-dex";
 import getAttackerAdvantage from "./get-attacker-advantage";
 import getAffinity from "./get-affinity";
 import getCombatStats from "./get-combat-stats";
-import calculateDamage from "./calculate-damage";
+import { calculateDamageBeforeReductions, calculateFinalDamage } from "./calculate-damage";
 import TileBitshifts from "../data/tile-bitshifts";
 import SPECIALS from "../data/specials";
 import getPosition from "./get-position";
@@ -137,6 +137,9 @@ class CombatSystem extends System {
                         attackerSkills.onSpecialTrigger?.forEach((skill) => {
                             const dexData = SKILLS[skill.name];
                             dexData.onSpecialTrigger.call(skill, turn, turnData);
+                            attackerSpecial.update({
+                                cooldown: attackerSpecial.maxCooldown
+                            });
                         });
                         attackerSpecialData.onCombatRoundAttack?.call(attackerSpecial, defender);
                         turnData.attackerTriggeredSpecial = true;
@@ -167,22 +170,6 @@ class CombatSystem extends System {
                     dexData.onCombatRoundDefense.call(skill, turn, turnData);
                 });
 
-                const defenderSpecial = defender.getOne("Special");
-                if (defenderSpecial && combatMap.get(defender).cooldown === 0) {
-                    const defenderSpecialData = SPECIALS[defenderSpecial.name];
-                    if (defenderSpecialData.onCombatRoundDefense) {
-                        defenderSkills.onSpecialTrigger?.forEach((skill) => {
-                            const dexData = SKILLS[skill.name];
-                            dexData.onSpecialTrigger.call(skill, defender, turnData);
-                        });
-                        defenderSpecialData.onCombatRoundDefense?.call(defenderSpecial, defender);
-                        turnData.defenderTriggeredSpecial = true;
-                        defenderSpecial.update({
-                            cooldown: defenderSpecial.maxCooldown
-                        });
-                    }
-                }
-
                 const defenderStats = combatMap.get(defender).stats;
                 const defenseStat = defenderStats[getTargetedDefenseStat(turn, defender, defenderStats)];
                 const effectivenessMultiplier = combatMap.get(turn).effective ? 1.5 : 1;
@@ -205,35 +192,66 @@ class CombatSystem extends System {
                     affinity = getAffinity(turn, defender);
                 }
 
-                const damage = calculateDamage({
+                const damageBeforeReduction = calculateDamageBeforeReductions({
                     advantage,
                     affinity,
                     atkStat,
                     effectiveness: effectivenessMultiplier,
                     defenseStat,
                     defensiveTerrain: combatMap.get(defender).defensiveTile,
-                    flatReduction,
-                    damagePercentage,
                     specialIncreasePercentage: 0,
                     flatIncrease: flatExtraDamage,
                     staffPenalty: turn.getOne("Weapon").weaponType === "staff" && !turn.getOne("NormalizeStaffDamage")
                 });
 
+                const defenderSpecial = defender.getOne("Special");
+                if (defenderSpecial && combatMap.get(defender).cooldown === 0) {
+                    const defenderSpecialData = SPECIALS[defenderSpecial.name];
+                    const shouldTrigger = defenderSpecialData.shouldActivate?.call(defenderSpecial, damageBeforeReduction) ?? true;
+                    if (defenderSpecialData.onCombatRoundDefense && shouldTrigger) {
+                        defenderSkills.onSpecialTrigger?.forEach((skill) => {
+                            const dexData = SKILLS[skill.name];
+                            dexData.onSpecialTrigger.call(skill, defender, turnData);
+                        });
+                        defenderSpecialData.onCombatRoundDefense?.call(defenderSpecial, defender);
+                        turnData.defenderTriggeredSpecial = true;
+                        defenderSpecial.update({
+                            cooldown: defenderSpecial.maxCooldown
+                        });
+                    }
+                }
+
+                const damageAfterReduction = calculateFinalDamage({
+                    netDamage: damageBeforeReduction,
+                    flatReduction: flatExtraDamage,
+                    damagePercentage
+                });
+
+                if (defender.getOne("ForceSurvival") && damageAfterReduction >= combatMap.get(defender).hp) {
+                    defender.removeComponent(defender.getOne("ForceSurvival"));
+                    combatMap.get(defender).hp = 1;
+                } else {
+                    combatMap.get(defender).hp -= damageAfterReduction;
+                }
+
                 const heal = turn.getOne("CombatHeal");
                 const maxHP = turn.getOne("Stats").maxHP;
                 let healingAmount = 0;
-
-                if (defender.getOne("ForceSurvival") && damage >= combatMap.get(defender).hp) {
-                    defender.removeComponent(defender.getOne("ForceSurvival"));
-                    combatMap.get(defender).hp = 1;
-                }
-
-                combatMap.get(defender).hp -= damage;
 
                 if (heal) {
                     healingAmount += heal.value;
                     combatMap.get(turn).hp = Math.min(maxHP, combatMap.get(turn).hp + heal.value);
                     turn.removeComponent(heal);
+                }
+
+                const defenderHeal = defender.getOne("CombatHeal");
+                const defenderMaxHP = defender.getOne("Stats").maxHP;
+                let defenderHealingAmount = 0;
+
+                if (defenderHeal) {
+                    defenderHealingAmount += heal.value;
+                    combatMap.get(turn).hp = Math.min(defenderMaxHP, combatMap.get(defender).hp + heal.value);
+                    defender.removeComponent(heal);
                 }
 
                 turn.addComponent({
@@ -242,7 +260,7 @@ class CombatSystem extends System {
                     attacker: {
                         hp: combatMap.get(turn).hp,
                         entity: turn,
-                        damage: 0,
+                        damage: damageAfterReduction,
                         heal: healingAmount,
                         triggerSpecial: !!turnData.attackerTriggeredSpecial,
                         specialCooldown: turnData.attackerSpecialCooldown,
@@ -251,8 +269,8 @@ class CombatSystem extends System {
                     target: {
                         hp: combatMap.get(target).hp,
                         entity: target,
-                        damage,
-                        heal: 0,
+                        damage: 0,
+                        heal: defenderHealingAmount,
                         triggerSpecial: !!turnData.defenderTriggeredSpecial,
                         specialCooldown: turnData.defenderSpecialCooldown,
                         turn: 0

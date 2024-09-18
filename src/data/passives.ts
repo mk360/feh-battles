@@ -48,6 +48,7 @@ interface PassivesDict {
         onTurnAllyCheckRange?(this: Skill, state: GameState, ally: Entity): void;
         onTurnEnemyCheckRange?(this: Skill, state: GameState, enemy: Entity): void;
         onAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: Skill): void;
+        onAllyAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: Skill): void;
     }
 }
 
@@ -252,7 +253,7 @@ const PASSIVES: PassivesDict = {
         },
         onCombatAfter() {
             this.entity.addComponent({
-                type: "AfterCombatDamage",
+                type: "MapDamage",
                 value: 2
             });
         }
@@ -269,7 +270,7 @@ const PASSIVES: PassivesDict = {
         },
         onCombatAfter() {
             this.entity.addComponent({
-                type: "AfterCombatDamage",
+                type: "MapDamage",
                 value: 4
             });
         }
@@ -286,7 +287,7 @@ const PASSIVES: PassivesDict = {
         },
         onCombatAfter() {
             this.entity.addComponent({
-                type: "AfterCombatDamage",
+                type: "MapDamage",
                 value: 6
             });
         }
@@ -613,10 +614,11 @@ const PASSIVES: PassivesDict = {
         },
         onSpecialTrigger() {
             const special = this.entity.getOne("Special");
+            const { hp, maxHP } = this.entity.getOne("Stats");
             const specialData = SPECIALS[special.name];
-            if (specialData.onCombatRoundAttack) {
+            if (hp / maxHP <= 0.25 && specialData.onCombatRoundAttack) {
                 this.entity.addComponent({
-                    type: "DamageIncrease",
+                    type: "RoundDamageIncrease",
                     value: 10
                 });
             }
@@ -635,11 +637,12 @@ const PASSIVES: PassivesDict = {
             }
         },
         onSpecialTrigger() {
+            const { hp, maxHP } = this.entity.getOne("Stats");
             const special = this.entity.getOne("Special");
             const specialData = SPECIALS[special.name];
-            if (specialData.onCombatRoundAttack) {
+            if (hp / maxHP <= 0.5 && specialData.onCombatRoundAttack) {
                 this.entity.addComponent({
-                    type: "DamageIncrease",
+                    type: "RoundDamageIncrease",
                     value: 10
                 });
             }
@@ -660,9 +663,11 @@ const PASSIVES: PassivesDict = {
         onSpecialTrigger() {
             const special = this.entity.getOne("Special");
             const specialData = SPECIALS[special.name];
-            if (specialData.onCombatRoundAttack) {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+
+            if (hp / maxHP <= 0.75 && specialData.onCombatRoundAttack) {
                 this.entity.addComponent({
-                    type: "DamageIncrease",
+                    type: "RoundDamageIncrease",
                     value: 10
                 });
             }
@@ -2005,6 +2010,45 @@ const PASSIVES: PassivesDict = {
             }
         }
     },
+    "Poison Strike 1": {
+        description: "If unit initiates combat, deals 4 damage to foe after combat.",
+        allowedWeaponTypes: exceptStaves,
+        slot: "B",
+        onCombatAfter(state, target) {
+            if (this.entity.getOne("InitiateCombat")) {
+                target.addComponent({
+                    type: "MapDamage",
+                    value: 4
+                });
+            }
+        },
+    },
+    "Poison Strike 2": {
+        description: "If unit initiates combat, deals 7 damage to foe after combat.",
+        allowedWeaponTypes: exceptStaves,
+        slot: "B",
+        onCombatAfter(state, target) {
+            if (this.entity.getOne("InitiateCombat")) {
+                target.addComponent({
+                    type: "MapDamage",
+                    value: 7
+                });
+            }
+        },
+    },
+    "Poison Strike 3": {
+        description: "If unit initiates combat, deals 10 damage to foe after combat.",
+        allowedWeaponTypes: exceptStaves,
+        slot: "B",
+        onCombatAfter(state, target) {
+            if (this.entity.getOne("InitiateCombat")) {
+                target.addComponent({
+                    type: "MapDamage",
+                    value: 10
+                });
+            }
+        },
+    },
     "Shield Pulse 1": {
         allowedMovementTypes: ["infantry", "armored"],
         allowedWeaponTypes: ["sword", "lance", "axe", "breath", "beast"],
@@ -2593,7 +2637,7 @@ const PASSIVES: PassivesDict = {
                 for (let enemy of enemies) {
                     if (HeroSystem.getDistance(enemy, target) <= 2) {
                         enemy.addComponent({
-                            type: "AfterCombatDamage",
+                            type: "MapDamage",
                             value: 3
                         });
                     }
@@ -2610,7 +2654,7 @@ const PASSIVES: PassivesDict = {
                 for (let enemy of enemies) {
                     if (HeroSystem.getDistance(enemy, target) <= 2) {
                         enemy.addComponent({
-                            type: "AfterCombatDamage",
+                            type: "MapDamage",
                             value: 5
                         });
                     }
@@ -2627,7 +2671,7 @@ const PASSIVES: PassivesDict = {
                 for (let enemy of enemies) {
                     if (HeroSystem.getDistance(enemy, target) <= 2) {
                         enemy.addComponent({
-                            type: "AfterCombatDamage",
+                            type: "MapDamage",
                             value: 7
                         });
                     }

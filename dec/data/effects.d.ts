@@ -13,6 +13,9 @@ export declare function guidance(sourceEntity: Entity, state: GameState, target:
 export declare function honeStat(skill: Skill, state: GameState, stat: Stat, buff: number): void;
 export declare function mapBuffByMovementType(skill: Skill, state: GameState, movementType: MovementType, buffs: Stats): void;
 export declare function mapBuffByRange(skill: Skill, state: GameState, range: number, buffs: Stats): void;
+/**
+ * If specified combat stat > enemy's combat stat, reduce damage by 4x difference (max. 40%)
+ */
 export declare function dodgeStat(skill: Skill, enemy: Entity, comparedStat: Stat): void;
 export declare function combatBuffByRange(skill: Skill, ally: Entity, range: number, buffs: Stats): void;
 export declare function combatBuffByMovementType(skill: Skill, ally: Entity, movementType: MovementType, buffs: Stats): void;
@@ -56,7 +59,7 @@ export declare function owl(skill: Skill, state: GameState): void;
 /**
  * Add Combat Buffs to Atk = total map buffs on unit. Ignores Penalties.
  */
-export declare function blade(skill: Skill): void;
+export declare function bladeTome(skill: Skill): void;
 /**
  * Make two entities swap spaces. Make sure the `checker` function returns true before calling the runner.
  */
@@ -66,7 +69,26 @@ export declare function swap(state: GameState, entity1: Entity, entity2: Entity)
 };
 /**
  * Push an entity in the opposite direction of the effect caller, within the defined range, and to a valid tile. The target entity cannot bypass entities that are in the Shove path, but
- * may cross unpassable terrain.
+ * may cross unpassable terrain (except walls) if they will land on a valid tile. Make sure the `checker` function returns true before calling the runner.
  */
-export declare function shove(state: GameState, entity1: Entity, entity2: Entity, range: number): void;
+export declare function shove(state: GameState, caller: Entity, shoved: Entity, range: number): {
+    checker(): boolean;
+    runner(): void;
+};
+/**
+ * Unit moves 1 tile behind. In order to generate the "behind" tile, a second unit should be specified in order to create the "behind" vector.
+ * Before running the `runner` function, check if `checker` returns true.
+ */
+export declare function retreat(state: GameState, target: Entity, referencePoint: Entity): {
+    checker(): boolean;
+    runner(): void;
+};
+/**
+ * Heavy, Flashing, etc. Blade
+ */
+export declare function bladeWeapon(skill: Skill, comparedStat: Stat, margin: number): void;
+/**
+ * Balm Specials for staff users
+ */
+export declare function balm(skill: Skill, state: GameState, buffs: Stats): void;
 //# sourceMappingURL=effects.d.ts.map

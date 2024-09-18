@@ -4,13 +4,16 @@ interface DamageCalc {
     advantage: 0.2 | 0 | -0.2;
     affinity: number;
     defenseStat: number;
-    flatReduction: number;
-    damagePercentage: number;
     defensiveTerrain: boolean;
     specialIncreasePercentage: number;
     flatIncrease: number;
     staffPenalty: boolean;
 }
-declare function calculateDamage({ atkStat, effectiveness, advantage, affinity, defenseStat, flatReduction, damagePercentage, defensiveTerrain, flatIncrease, specialIncreasePercentage, staffPenalty }: DamageCalc): number;
-export default calculateDamage;
+export declare function calculateDamageBeforeReductions({ atkStat, effectiveness, advantage, affinity, defenseStat, defensiveTerrain, flatIncrease, specialIncreasePercentage, staffPenalty }: DamageCalc): number;
+export declare function calculateFinalDamage({ netDamage, flatReduction, damagePercentage }: {
+    netDamage: number;
+    flatReduction: number;
+    damagePercentage: number;
+}): number;
+export {};
 //# sourceMappingURL=calculate-damage.d.ts.map

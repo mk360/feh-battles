@@ -1,1 +1,1 @@
-{"version":3,"file":"battling-entities-query.d.ts","sourceRoot":"","sources":["../../src/systems/battling-entities-query.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAE,MAAM,SAAS,CAAC;AAEjC,iBAAS,qBAAqB,CAAC,MAAM,EAAE,MAAM;;;EAe5C;AAED,eAAe,qBAAqB,CAAC"}
+{"version":3,"file":"battling-entities-query.d.ts","sourceRoot":"","sources":["../../src/systems/battling-entities-query.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAE,MAAM,SAAS,CAAC;AAEjC,iBAAS,qBAAqB,CAAC,MAAM,EAAE,MAAM;;;EAgB5C;AAED,eAAe,qBAAqB,CAAC"}

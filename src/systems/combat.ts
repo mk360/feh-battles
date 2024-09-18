@@ -17,7 +17,7 @@ import SPECIALS from "../data/specials";
 import getPosition from "./get-position";
 import battlingEntitiesQuery from "./battling-entities-query";
 
-const SUBSCRIBED_COMPONENTS = ["DealDamage", "CombatBuff", "BraveWeapon", "CombatDebuff", "RoundDamageIncrease", "RoundDamageReduction", "DamageIncrease", "Kill", "AccelerateSpecial", "Guard"];
+const SUBSCRIBED_COMPONENTS = ["DealDamage", "CombatBuff", "BraveWeapon", "CombatDebuff", "RoundDamageIncrease", "RoundDamageReduction", "DamageIncrease", "DamageReduction", "Kill", "AccelerateSpecial", "SlowSpecial"];
 
 class CombatSystem extends System {
     private state: GameState;

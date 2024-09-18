@@ -7,6 +7,7 @@ function battlingEntitiesQuery(system: System) {
     return () => {
         let [attacker, defender] = previewQuery.refresh().execute();
         if (!attacker && !defender) {
+            console.log(battlingQuery.refresh().execute());
             [attacker, defender] = battlingQuery.refresh().execute();
         }
 

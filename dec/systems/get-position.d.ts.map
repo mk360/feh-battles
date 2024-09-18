@@ -1,1 +1,1 @@
-{"version":3,"file":"get-position.d.ts","sourceRoot":"","sources":["../../src/systems/get-position.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAE,MAAM,SAAS,CAAC;AAEjC,iBAAS,WAAW,CAAC,MAAM,EAAE,MAAM,+BAElC;AAED,eAAe,WAAW,CAAC"}
+{"version":3,"file":"get-position.d.ts","sourceRoot":"","sources":["../../src/systems/get-position.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAE,MAAM,SAAS,CAAC;AAEjC;;GAEG;AACH,iBAAS,WAAW,CAAC,MAAM,EAAE,MAAM,+BAElC;AAED,eAAe,WAAW,CAAC"}

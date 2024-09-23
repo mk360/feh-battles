@@ -567,10 +567,10 @@ const PASSIVES: PassivesDict = {
     "Guard 1": {
         slot: "B",
         description: "At start of combat, if unit's HP = 100%, inflicts Special cooldown charge -1 on foe per attack. (Only highest value applied. Does not stack.)",
-        onCombatStart() {
+        onCombatStart(state, target) {
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp === maxHP) {
-                this.entity.addComponent({
+                target.addComponent({
                     type: "SlowSpecial"
                 });
             }
@@ -579,10 +579,10 @@ const PASSIVES: PassivesDict = {
     "Guard 2": {
         slot: "B",
         description: "At start of combat, if unit's HP ≥ 90%, inflicts Special cooldown charge -1 on foe per attack. (Only highest value applied. Does not stack.)",
-        onCombatStart() {
+        onCombatStart(state, target) {
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp / maxHP >= 0.9) {
-                this.entity.addComponent({
+                target.addComponent({
                     type: "SlowSpecial"
                 });
             }
@@ -591,10 +591,10 @@ const PASSIVES: PassivesDict = {
     "Guard 3": {
         slot: "B",
         description: "At start of combat, if unit's HP ≥ 80%, inflicts Special cooldown charge -1 on foe per attack. (Only highest value applied. Does not stack.)",
-        onCombatStart() {
+        onCombatStart(state, target) {
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp / maxHP >= 0.8) {
-                this.entity.addComponent({
+                target.addComponent({
                     type: "SlowSpecial"
                 });
             }

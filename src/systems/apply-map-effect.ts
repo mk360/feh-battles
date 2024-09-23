@@ -28,6 +28,13 @@ const StatusesDict: {
     "PreventCounterattack": "Prevent Counterattack"
 }
 
+/**
+ * On target, adds:
+ * - A `Status` component. This is required in order to specify the source (who created this status).
+ * - A status tag, which will be parsed by the UI to display the correct Status.
+ * - A component whose type is the status (ex. `type: MapBuff`), which allows for more targeted 
+ * statuses (with extra values where needed)
+ */
 export default function applyMapComponent<K extends keyof MapComponentsDict>(target: Entity, component: K, extraValues: Omit<MapComponentsDict[K], "status">, source?: Entity) {
     const componentCreationPayload: IComponentConfig = {
         type: "Status",

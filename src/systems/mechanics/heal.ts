@@ -1,12 +1,11 @@
 import { Query, System } from "ape-ecs";
-import GameState from "../state";
 
 const SUBSCRIBED_COMPONENTS = ["Stats"];
 
 class HealSystem extends System {
     private healableQuery: Query;
 
-    init(state: GameState): void {
+    init(): void {
         this.healableQuery = this.createQuery().fromAll("Heal", "MapDamage");
         for (let component of SUBSCRIBED_COMPONENTS) {
             this.subscribe(component);

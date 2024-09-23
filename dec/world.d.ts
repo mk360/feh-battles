@@ -82,7 +82,7 @@ declare class GameWorld extends World {
         x: number;
         y: number;
     }): void;
-    previewAttack(attackerId: string, targetCoordinates: {
+    previewCombat(attackerId: string, targetCoordinates: {
         x: number;
         y: number;
     }, temporaryCoordinates: {

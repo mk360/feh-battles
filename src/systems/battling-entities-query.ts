@@ -1,19 +1,17 @@
 import { System } from "ape-ecs";
 
 function battlingEntitiesQuery(system: System) {
-    const previewQuery = system.createQuery().fromAll("PreviewingBattle");
-    const battlingQuery = system.createQuery().fromAll("Battling");
+    const attackerQuery = system.createQuery().fromAll("InitiateCombat");
+    const defenderQuery = system.createQuery().not("InitiateCombat").fromAny("Battling", "PreviewingBattle");
 
-    return () => {
-        let [attacker, defender] = previewQuery.refresh().execute();
-        if (!attacker && !defender) {
-            console.log(battlingQuery.refresh().execute());
-            [attacker, defender] = battlingQuery.refresh().execute();
-        }
+
+    return function () {
+        const attackerSet = attackerQuery.refresh().execute();
+        const defenderSet = defenderQuery.refresh().execute();
 
         return {
-            attacker,
-            defender
+            attacker: Array.from(attackerSet)[0],
+            defender: Array.from(defenderSet)[0]
         }
     }
 };

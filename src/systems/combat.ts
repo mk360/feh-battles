@@ -16,8 +16,9 @@ import TileBitshifts from "../data/tile-bitshifts";
 import SPECIALS from "../data/specials";
 import getPosition from "./get-position";
 import battlingEntitiesQuery from "./battling-entities-query";
+import getSpecialDecrease from "./get-special-decrease";
+import COMBAT_COMPONENTS from "./combat-components";
 
-const SUBSCRIBED_COMPONENTS = ["DealDamage", "CombatBuff", "BraveWeapon", "CombatDebuff", "RoundDamageIncrease", "RoundDamageReduction", "DamageIncrease", "DamageReduction", "Kill", "AccelerateSpecial", "SlowSpecial"];
 
 class CombatSystem extends System {
     private state: GameState;
@@ -26,7 +27,7 @@ class CombatSystem extends System {
     init(state: GameState) {
         this.state = state;
 
-        for (let comp of SUBSCRIBED_COMPONENTS) {
+        for (let comp of COMBAT_COMPONENTS.concat(["DealDamage"])) {
             this.subscribe(comp);
         }
     }
@@ -108,6 +109,8 @@ class CombatSystem extends System {
 
             const turns = generateTurns(attacker, target, combatMap.get(attacker).stats, combatMap.get(target).stats);
 
+            console.log(turns.map((i) => i.getOne("Name").value));
+
             let lastAttacker: Entity;
 
             for (let round = 0; round < turns.length; round++) {
@@ -118,11 +121,15 @@ class CombatSystem extends System {
                 } else {
                     combatMap.get(defender).consecutiveTurns = 0;
                 }
+
                 combatMap.get(turn).turns++;
+
                 const turnData: Partial<CombatTurnOutcome> = {
                     attacker: turn,
                     defender,
                     consecutiveTurnNumber: combatMap.get(turn).consecutiveTurns,
+                    attackerSpecialCooldown: turn.getOne("Special")?.cooldown || 0,
+                    defenderSpecialCooldown: defender.getOne("Special")?.cooldown || 0,
                 };
                 const attackerSkills = this.state.skillMap.get(turn);
                 attackerSkills.onCombatRoundAttack?.forEach((skill) => {
@@ -221,6 +228,20 @@ class CombatSystem extends System {
                     }
                 }
 
+                if (turn.getOne("Special")) {
+                    const decrease = getSpecialDecrease(turn);
+                    const currentCooldown = combatMap.get(turn).cooldown;
+                    combatMap.get(turn).cooldown = Math.max(0, currentCooldown - decrease);
+                    turnData.attackerSpecialCooldown = combatMap.get(turn).cooldown;
+                }
+
+                if (defender.getOne("Special")) {
+                    const decrease = getSpecialDecrease(defender);
+                    const currentCooldown = combatMap.get(defender).cooldown;
+                    combatMap.get(defender).cooldown = Math.max(0, currentCooldown - decrease);
+                    turnData.defenderSpecialCooldown = combatMap.get(defender).cooldown;
+                }
+
                 const damageAfterReduction = calculateFinalDamage({
                     netDamage: damageBeforeReduction,
                     flatReduction: flatExtraDamage,
@@ -258,7 +279,7 @@ class CombatSystem extends System {
                     type: "DealDamage",
                     round,
                     attacker: {
-                        hp: combatMap.get(turn).hp,
+                        hp: Math.min(combatMap.get(turn).hp + healingAmount, turn.getOne("Stats").maxHP),
                         entity: turn,
                         damage: damageAfterReduction,
                         heal: healingAmount,
@@ -267,8 +288,8 @@ class CombatSystem extends System {
                         turn: turnData.consecutiveTurnNumber,
                     },
                     target: {
-                        hp: combatMap.get(target).hp,
-                        entity: target,
+                        hp: Math.min(Math.max(combatMap.get(target).hp + defenderHealingAmount, 0), defender.getOne("Stats").maxHP),
+                        entity: defender,
                         damage: 0,
                         heal: defenderHealingAmount,
                         triggerSpecial: !!turnData.defenderTriggeredSpecial,

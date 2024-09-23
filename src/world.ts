@@ -187,7 +187,7 @@ class GameWorld extends World {
         if (dealDamageActions.length) {
             const attackActions = dealDamageActions.map((damageAction) => {
                 const comp = this.getComponent(damageAction.component).getObject(false);
-                return `attack ${comp.attacker.entity.id} ${comp.attacker.hp} ${comp.attacker.specialCooldown} ${+comp.attacker.triggerSpecial} ${comp.target.damage} ${comp.attacker.heal} ${comp.target.entity.id} ${comp.target.hp} ${comp.target.specialCooldown} ${+comp.target.triggerSpecial} ${comp.target.damage} ${comp.target.heal}`;
+                return `attack ${comp.attacker.entity.id} ${comp.attacker.hp} ${comp.attacker.specialCooldown} ${comp.attacker.triggerSpecial} ${comp.attacker.damage} ${comp.attacker.heal} ${comp.target.entity.id} ${comp.target.hp} ${comp.target.specialCooldown} ${+comp.target.triggerSpecial} ${comp.target.damage} ${comp.target.heal}`;
             }).join("|");
 
             actions.push(attackActions);
@@ -475,12 +475,16 @@ class GameWorld extends World {
         this.runSystems("assist");
     }
 
-    previewAttack(attackerId: string, targetCoordinates: { x: number, y: number }, temporaryCoordinates: { x: number, y: number }) {
+    previewCombat(attackerId: string, targetCoordinates: { x: number, y: number }, temporaryCoordinates: { x: number, y: number }) {
         const mapTile = this.state.map[targetCoordinates.y][targetCoordinates.x];
         const attacker = this.getEntity(attackerId);
         const defender = this.state.occupiedTilesMap.get(mapTile);
         const b1 = attacker.addComponent({
             type: "PreviewingBattle"
+        });
+
+        const i1 = attacker.addComponent({
+            type: "InitiateCombat"
         });
 
         const b2 = defender.addComponent({
@@ -494,6 +498,7 @@ class GameWorld extends World {
         this.runSystems("combat");
 
         attacker.removeComponent(b1);
+        attacker.removeComponent(i1);
         defender.removeComponent(b2);
         const producedPreview = this.produceCombatPreview(attacker, defender);
 
@@ -509,34 +514,29 @@ class GameWorld extends World {
         const attackerCombatBuffs = collectCombatMods(attacker);
         const defenderCombatBuffs = collectCombatMods(defender);
 
-        attacker.removeComponent("Battling");
-        defender.removeComponent("Battling");
-
         const attackerDamage = attacker.getComponents("DealDamage");
         const defenderDamage = defender.getComponents("DealDamage");
 
         let totalAttackerDamage = 0;
         let attackerDamagePerTurn = 0;
-        let attackerTurns = 0;
+        let attackerTurns = attackerDamage.size;
         const attackerEffectiveness = checkBattleEffectiveness(attacker, defender);
         attackerDamage.forEach((comp) => {
-            attackerTurns++;
-            if (!comp.special) {
-                attackerDamagePerTurn = comp.target.damage;
+            if ((!comp.special && attackerTurns > 1) || (comp.special && attackerTurns === 1)) {
+                attackerDamagePerTurn = comp.attacker.damage;
             }
-            totalAttackerDamage += comp.target.damage;
+            totalAttackerDamage += comp.attacker.damage;
         });
 
         let totalDefenderDamage = 0;
         let defenderDamagePerTurn = 0;
-        let defenderTurns = 0;
+        let defenderTurns = defenderDamage.size;
         const defenderEffectiveness = checkBattleEffectiveness(defender, attacker);
         defenderDamage.forEach((comp) => {
-            defenderTurns++;
-            if (!comp.special) {
-                defenderDamagePerTurn = comp.target.damage;
+            if ((!comp.special && defenderTurns > 1) || (comp.special && defenderTurns === 1)) {
+                defenderDamagePerTurn = comp.attacker.damage;
             }
-            totalDefenderDamage += comp.target.damage;
+            totalDefenderDamage += comp.attacker.damage;
         });
 
         const attackerNewHP = Math.max(0, attacker.getOne("Stats").hp - totalDefenderDamage);
@@ -824,19 +824,17 @@ class GameWorld extends World {
 
     private undoComponentChange(change: IComponentChange) {
         const targetEntity = this.getEntity(change.entity);
-        if (!targetEntity) return;
-
         const targetComponent = this.getComponent(change.component);
+        if (!targetEntity || !targetComponent) return;
+        console.log(change);
+
         switch (change.op) {
             case "add": {
-                if (targetEntity) {
-                    targetEntity.removeComponent(targetComponent);
-                }
+                targetEntity.removeComponent(targetComponent);
             }
                 break;
             case "remove": {
-                const component = this.getComponent(change.component);
-                const { type, ...properties } = component;
+                const { type, ...properties } = targetComponent;
                 targetEntity.addComponent({
                     type,
                     ...properties

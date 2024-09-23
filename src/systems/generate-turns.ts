@@ -4,6 +4,7 @@ import { Stats } from "../interfaces/types";
 function generateTurns(attacker: Entity, defender: Entity, attackerCombatStats: Stats, defenderCombatStats: Stats) {
     const turns: Entity[] = [];
     const defenderIsAllowed = defenderCanDefend(attacker, defender);
+    console.log(defenderIsAllowed);
     if (defender.getOne("Vantage") && defenderIsAllowed) {
         turns.push(defender);
     }
@@ -35,7 +36,7 @@ function generateTurns(attacker: Entity, defender: Entity, attackerCombatStats: 
 
 export function defenderCanDefend(attacker: Entity, defender: Entity) {
     const attackerPreventedCounterattacks = attacker.getOne("PreventCounterattack");
-    const isCounterattackAllowed = defender.getOne("Counterattack") && !attackerPreventedCounterattacks;
+    const isCounterattackAllowed = Boolean(defender.getOne("Counterattack")) && !attackerPreventedCounterattacks;
     const rangeIsTheSame = attacker.getOne("Weapon").range === defender.getOne("Weapon").range;
 
     if (rangeIsTheSame) {

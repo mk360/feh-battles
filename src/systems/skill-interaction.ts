@@ -13,7 +13,6 @@ import PreventDamageReduction from "../components/prevent-damage-reduction";
 import PreventFollowUp from "../components/prevent-followup";
 import PreventTargetLowestDefense from "../components/prevent-target-lowest-defense";
 import TargetLowestDefense from "../components/target-lowest-defense";
-import GameState from "./state";
 import ApplyAffinity from "../components/apply-affinity";
 import SlowSpecial from "../components/slow-special";
 import NeutralizeSlowSpecial from "../components/neutralize-slow-special";
@@ -40,11 +39,9 @@ MultipleNeutralizationsMap.set(PreventDamageReduction, DamageReduction);
 MultipleNeutralizationsMap.set(NeutralizeMapBuffs, MapBuff);
 
 class SkillInteractionSystem extends System {
-    private state: GameState;
     private battlingQuery = battlingEntitiesQuery(this);
 
-    init(state: GameState): void {
-        this.state = state;
+    init(): void {
         for (let component of ["Counterattack", "PreventCounterattack", "TargetLowestDefense", "PreventTargetLowestDefense", "GuaranteedFollowup", "PreventFollowup", "NormalizeStaffDamage", "NeutralizeNormalizeStaffDamage", "GuaranteedAffinity", "NeutralizeAffinity", "ApplyAffinity", "SlowSpecial", "NeutralizeSlowSpecial", "AccelerateSpecial", "NeutralizeAccelerateSpecial", "PreventDamageReduction", "DamageReduction", "NeutralizeMapBuffs", "MapBuff"]) {
             this.subscribe(component);
         }
@@ -52,6 +49,7 @@ class SkillInteractionSystem extends System {
 
     update() {
         const { attacker, defender } = this.battlingQuery();
+        console.log(attacker?.getOne("Name").value, defender?.getOne("Name").value);
 
         NeutralizationMap.forEach((neutralizingComponent, neutralizedComponent) => {
             defender.getComponents(neutralizingComponent).forEach((comp) => {

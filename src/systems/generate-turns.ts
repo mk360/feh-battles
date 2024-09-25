@@ -4,7 +4,7 @@ import { Stats } from "../interfaces/types";
 function generateTurns(attacker: Entity, defender: Entity, attackerCombatStats: Stats, defenderCombatStats: Stats) {
     const turns: Entity[] = [];
     const defenderIsAllowed = defenderCanDefend(attacker, defender);
-    console.log(defenderIsAllowed);
+
     if (defender.getOne("Vantage") && defenderIsAllowed) {
         turns.push(defender);
     }
@@ -17,17 +17,17 @@ function generateTurns(attacker: Entity, defender: Entity, attackerCombatStats: 
 
     if (defenderIsAllowed) {
         turns.push(defender);
-    }
 
-    if (defender.getOne("BraveWeapon")) {
-        turns.push(defender);
+        if (defender.getOne("BraveWeapon")) {
+            turns.push(defender);
+        }
     }
 
     if (attackerCombatStats.spd >= defenderCombatStats.spd + 5) {
         turns.push(attacker);
     }
 
-    if (attackerCombatStats.spd + 5 <= defenderCombatStats.spd && defenderIsAllowed) {
+    if (defenderIsAllowed && attackerCombatStats.spd + 5 <= defenderCombatStats.spd) {
         turns.push(defender);
     }
 

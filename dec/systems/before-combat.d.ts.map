@@ -1,0 +1,1 @@
+{"version":3,"file":"before-combat.d.ts","sourceRoot":"","sources":["../../src/systems/before-combat.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAE,MAAM,SAAS,CAAC;AAEjC,OAAO,SAAS,MAAM,SAAS,CAAC;AAKhC,cAAM,YAAa,SAAQ,MAAM;IAC7B,OAAO,CAAC,KAAK,CAAY;IACzB,OAAO,CAAC,aAAa,CAA+B;IAEpD,IAAI,CAAC,KAAK,EAAE,SAAS;IAQrB,MAAM;CA6CT;AAED,eAAe,YAAY,CAAC"}

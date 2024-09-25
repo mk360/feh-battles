@@ -18,7 +18,6 @@ import ASSISTS from "./assists";
 import { defenderCanDefend } from "../systems/generate-turns";
 import getAffinity from "../systems/get-affinity";
 import getPosition from "../systems/get-position";
-import tileBitmasks from "./tile-bitmasks";
 
 const exceptStaves: WeaponType[] = ["axe", "beast", "bow", "breath", "dagger", "lance", "sword", "tome"];
 
@@ -49,6 +48,7 @@ interface PassivesDict {
         onTurnEnemyCheckRange?(this: Skill, state: GameState, enemy: Entity): void;
         onAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: Skill): void;
         onAllyAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: Skill): void;
+        isSacredSeal?: true;
     }
 }
 
@@ -169,15 +169,11 @@ const PASSIVES: PassivesDict = {
         description: "If unit receives consecutive attacks and foe's Range = 2, reduces damage from foe's second attack onward by 80%. (Skill cannot be inherited.)",
         exclusiveTo: ["Sigurd: Holy Knight"],
         onCombatRoundDefense(enemy, combatRound) {
-            let comp: Component;
             if (combatRound.consecutiveTurnNumber > 1 && enemy.getOne("Weapon").range === 2) {
-                comp = this.entity.addComponent({
-                    type: "DamageReduction",
+                this.entity.addComponent({
+                    type: "RoundDamageReduction",
                     percentage: 0.8
                 });
-            } else if (comp) {
-                this.entity.removeComponent(comp);
-                comp = null;
             }
         },
         slot: "B",
@@ -244,6 +240,7 @@ const PASSIVES: PassivesDict = {
     "Fury 1": {
         description: "Grants Atk/Spd/Def/Res+1. After combat, deals 2 damage to unit.",
         slot: "A",
+        isSacredSeal: true,
         onEquip() {
             const stats = this.entity.getOne("Stats");
             stats.atk++;
@@ -261,6 +258,7 @@ const PASSIVES: PassivesDict = {
     "Fury 2": {
         description: "Grants Atk/Spd/Def/Res+2. After combat, deals 4 damage to unit.",
         slot: "A",
+        isSacredSeal: true,
         onEquip() {
             const stats = this.entity.getOne("Stats");
             stats.atk += 2;
@@ -278,6 +276,7 @@ const PASSIVES: PassivesDict = {
     "Fury 3": {
         description: "Grants Atk/Spd/Def/Res+3. After combat, deals 6 damage to unit.",
         slot: "A",
+        isSacredSeal: true,
         onEquip() {
             const stats = this.entity.getOne("Stats");
             stats.atk += 3;
@@ -295,6 +294,7 @@ const PASSIVES: PassivesDict = {
     "HP +3": {
         description: "Grants HP +3.",
         slot: "A",
+        isSacredSeal: true,
         onEquip() {
             this.entity.getOne("Stats").maxHP += 3;
             this.entity.getOne("Stats").hp += 3;
@@ -303,6 +303,7 @@ const PASSIVES: PassivesDict = {
     "HP +4": {
         description: "Grants HP +4.",
         slot: "A",
+        isSacredSeal: true,
         onEquip() {
             this.entity.getOne("Stats").maxHP += 4;
             this.entity.getOne("Stats").hp += 4;
@@ -311,6 +312,7 @@ const PASSIVES: PassivesDict = {
     "HP +5": {
         description: "Grants HP +5.",
         slot: "A",
+        isSacredSeal: true,
         onEquip() {
             this.entity.getOne("Stats").maxHP += 5;
             this.entity.getOne("Stats").hp += 5;
@@ -319,6 +321,7 @@ const PASSIVES: PassivesDict = {
     "Attack +1": {
         description: "Grants Attack +1.",
         slot: "A",
+        isSacredSeal: true,
         onEquip() {
             this.entity.getOne("Stats").atk++;
         },
@@ -326,6 +329,7 @@ const PASSIVES: PassivesDict = {
     "Attack +2": {
         description: "Grants Attack +2.",
         slot: "A",
+        isSacredSeal: true,
         onEquip() {
             this.entity.getOne("Stats").atk += 2;
         },
@@ -333,6 +337,7 @@ const PASSIVES: PassivesDict = {
     "Attack +3": {
         description: "Grants Attack +3.",
         slot: "A",
+        isSacredSeal: true,
         onEquip() {
             this.entity.getOne("Stats").atk += 3;
         },
@@ -340,6 +345,7 @@ const PASSIVES: PassivesDict = {
     "Defense +1": {
         description: "Grants Defense +1.",
         slot: "A",
+        isSacredSeal: true,
         onEquip() {
             this.entity.getOne("Stats").def++;
         },
@@ -347,6 +353,7 @@ const PASSIVES: PassivesDict = {
     "Defense +2": {
         description: "Grants Defense +2.",
         slot: "A",
+        isSacredSeal: true,
         onEquip() {
             this.entity.getOne("Stats").def += 2;
         },
@@ -354,12 +361,14 @@ const PASSIVES: PassivesDict = {
     "Defense +3": {
         description: "Grants Defense +3.",
         slot: "A",
+        isSacredSeal: true,
         onEquip() {
             this.entity.getOne("Stats").def += 3;
         },
     },
     "Resistance +1": {
         description: "Grants Resistance +1.",
+        isSacredSeal: true,
         slot: "A",
         onEquip() {
             this.entity.getOne("Stats").res++;
@@ -367,6 +376,7 @@ const PASSIVES: PassivesDict = {
     },
     "Resistance +2": {
         description: "Grants Resistance +2.",
+        isSacredSeal: true,
         slot: "A",
         onEquip() {
             this.entity.getOne("Stats").res += 2;
@@ -374,6 +384,7 @@ const PASSIVES: PassivesDict = {
     },
     "Resistance +3": {
         description: "Grants Resistance +3.",
+        isSacredSeal: true,
         slot: "A",
         onEquip() {
             this.entity.getOne("Stats").res += 3;
@@ -381,6 +392,7 @@ const PASSIVES: PassivesDict = {
     },
     "Speed +1": {
         description: "Grants Speed +1.",
+        isSacredSeal: true,
         slot: "A",
         onEquip() {
             this.entity.getOne("Stats").spd++;
@@ -388,6 +400,7 @@ const PASSIVES: PassivesDict = {
     },
     "Speed +2": {
         description: "Grants Speed +2.",
+        isSacredSeal: true,
         slot: "A",
         onEquip() {
             this.entity.getOne("Stats").spd += 2;
@@ -395,6 +408,7 @@ const PASSIVES: PassivesDict = {
     },
     "Speed +3": {
         description: "Grants Speed +3.",
+        isSacredSeal: true,
         slot: "A",
         onEquip() {
             this.entity.getOne("Stats").spd += 3;
@@ -403,6 +417,7 @@ const PASSIVES: PassivesDict = {
     "Attack/Res 1": {
         description: "Grants Atk/Res+1.",
         slot: "A",
+        isSacredSeal: true,
         onEquip() {
             this.entity.getOne("Stats").atk++;
             this.entity.getOne("Stats").res++;
@@ -411,6 +426,7 @@ const PASSIVES: PassivesDict = {
     "Attack/Res 2": {
         description: "Grants Atk/Res+2.",
         slot: "A",
+        isSacredSeal: true,
         onEquip() {
             this.entity.getOne("Stats").atk += 2;
             this.entity.getOne("Stats").res += 2;
@@ -419,6 +435,7 @@ const PASSIVES: PassivesDict = {
     "Attack/Def 1": {
         description: "Grants Atk/Def+1.",
         slot: "A",
+        isSacredSeal: true,
         onEquip() {
             this.entity.getOne("Stats").atk++;
             this.entity.getOne("Stats").def++;
@@ -427,6 +444,7 @@ const PASSIVES: PassivesDict = {
     "Attack/Def 2": {
         description: "Grants Atk/Def+2.",
         slot: "A",
+        isSacredSeal: true,
         onEquip() {
             this.entity.getOne("Stats").atk += 2;
             this.entity.getOne("Stats").def += 2;
@@ -435,6 +453,7 @@ const PASSIVES: PassivesDict = {
     "Spd/Def 1": {
         description: "Grants Spd/Def+1.",
         slot: "A",
+        isSacredSeal: true,
         onEquip() {
             this.entity.getOne("Stats").spd++;
             this.entity.getOne("Stats").def++;
@@ -450,6 +469,7 @@ const PASSIVES: PassivesDict = {
     },
     "Spd/Res 1": {
         description: "Grants Spd/Res+1.",
+        isSacredSeal: true,
         slot: "A",
         onEquip() {
             this.entity.getOne("Stats").spd++;
@@ -458,6 +478,7 @@ const PASSIVES: PassivesDict = {
     },
     "Spd/Res 2": {
         description: "Grants Spd/Res+2.",
+        isSacredSeal: true,
         slot: "A",
         onEquip() {
             this.entity.getOne("Stats").spd += 2;
@@ -467,6 +488,7 @@ const PASSIVES: PassivesDict = {
     "Atk/Spd 1": {
         description: "Grants Atk/Spd+1.",
         slot: "A",
+        isSacredSeal: true,
         onEquip() {
             this.entity.getOne("Stats").atk++;
             this.entity.getOne("Stats").res++;
@@ -475,6 +497,7 @@ const PASSIVES: PassivesDict = {
     "Atk/Spd 2": {
         description: "Grants Atk/Spd+2.",
         slot: "A",
+        isSacredSeal: true,
         onEquip() {
             this.entity.getOne("Stats").atk += 2;
             this.entity.getOne("Stats").res += 2;
@@ -525,6 +548,7 @@ const PASSIVES: PassivesDict = {
     "Distant Def 1": {
         description: "If foe initiates combat and uses bow, dagger, magic, or staff, grants Def/Res+2 during combat.",
         slot: "A",
+        isSacredSeal: true,
         onCombatDefense(state, attacker) {
             const { range } = attacker.getOne("Weapon");
             if (range === 2) {
@@ -539,6 +563,7 @@ const PASSIVES: PassivesDict = {
     "Distant Def 2": {
         description: "If foe initiates combat and uses bow, dagger, magic, or staff, grants Def/Res+4 during combat.",
         slot: "A",
+        isSacredSeal: true,
         onCombatDefense(state, attacker) {
             const { range } = attacker.getOne("Weapon");
             if (range === 2) {
@@ -553,6 +578,7 @@ const PASSIVES: PassivesDict = {
     "Distant Def 3": {
         description: "If foe initiates combat and uses bow, dagger, magic, or staff, grants Def/Res+6 during combat.",
         slot: "A",
+        isSacredSeal: true,
         onCombatDefense(state, attacker) {
             const { range } = attacker.getOne("Weapon");
             if (range === 2) {
@@ -567,8 +593,10 @@ const PASSIVES: PassivesDict = {
     "Guard 1": {
         slot: "B",
         description: "At start of combat, if unit's HP = 100%, inflicts Special cooldown charge -1 on foe per attack. (Only highest value applied. Does not stack.)",
-        onCombatStart(state, target) {
-            const { hp, maxHP } = this.entity.getOne("Stats");
+        onCombatRoundDefense(target) {
+            const { maxHP } = this.entity.getOne("Stats");
+            const { value: hp } = this.entity.getOne("StartingHP");
+
             if (hp === maxHP) {
                 target.addComponent({
                     type: "SlowSpecial"
@@ -579,8 +607,10 @@ const PASSIVES: PassivesDict = {
     "Guard 2": {
         slot: "B",
         description: "At start of combat, if unit's HP ≥ 90%, inflicts Special cooldown charge -1 on foe per attack. (Only highest value applied. Does not stack.)",
-        onCombatStart(state, target) {
-            const { hp, maxHP } = this.entity.getOne("Stats");
+        onCombatRoundDefense(target) {
+            const { maxHP } = this.entity.getOne("Stats");
+            const { value: hp } = this.entity.getOne("StartingHP");
+
             if (hp / maxHP >= 0.9) {
                 target.addComponent({
                     type: "SlowSpecial"
@@ -591,8 +621,10 @@ const PASSIVES: PassivesDict = {
     "Guard 3": {
         slot: "B",
         description: "At start of combat, if unit's HP ≥ 80%, inflicts Special cooldown charge -1 on foe per attack. (Only highest value applied. Does not stack.)",
-        onCombatStart(state, target) {
-            const { hp, maxHP } = this.entity.getOne("Stats");
+        onCombatRoundDefense(target) {
+            const { maxHP } = this.entity.getOne("Stats");
+            const { value: hp } = this.entity.getOne("StartingHP");
+
             if (hp / maxHP >= 0.8) {
                 target.addComponent({
                     type: "SlowSpecial"
@@ -677,6 +709,7 @@ const PASSIVES: PassivesDict = {
     "Obstruct 1": {
         description: "If unit's HP ≥ 90%, foes cannot move through spaces adjacent to unit. (Does not affect foes with Pass skills.)",
         slot: "B",
+        isSacredSeal: true,
         onTurnEnemyCheckRange(state, enemy) {
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp / maxHP >= 0.9) {
@@ -696,6 +729,7 @@ const PASSIVES: PassivesDict = {
     "Obstruct 2": {
         description: "If unit's HP ≥ 70%, foes cannot move through spaces adjacent to unit. (Does not affect foes with Pass skills.)",
         slot: "B",
+        isSacredSeal: true,
         onTurnEnemyCheckRange(state, enemy) {
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp / maxHP >= 0.7) {
@@ -715,6 +749,7 @@ const PASSIVES: PassivesDict = {
     "Obstruct 3": {
         description: "If unit's HP ≥ 50%, foes cannot move through spaces adjacent to unit. (Does not affect foes with Pass skills.)",
         slot: "B",
+        isSacredSeal: true,
         onTurnEnemyCheckRange(state, enemy) {
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp / maxHP >= 0.5) {
@@ -845,6 +880,7 @@ const PASSIVES: PassivesDict = {
     "Atk/Def Bond 1": {
         description: "If unit is adjacent to an ally, grants Atk/Def+3 during combat.",
         slot: "A",
+        isSacredSeal: true,
         onCombatStart(state) {
             bond(this, state, {
                 atk: 3,
@@ -855,6 +891,7 @@ const PASSIVES: PassivesDict = {
     "Atk/Def Bond 2": {
         description: "If unit is adjacent to an ally, grants Atk/Def+4 during combat.",
         slot: "A",
+        isSacredSeal: true,
         onCombatStart(state) {
             bond(this, state, {
                 atk: 4,
@@ -865,6 +902,7 @@ const PASSIVES: PassivesDict = {
     "Atk/Def Bond 3": {
         description: "If unit is adjacent to an ally, grants Atk/Def+5 during combat.",
         slot: "A",
+        isSacredSeal: true,
         onCombatStart(state) {
             bond(this, state, {
                 atk: 5,
@@ -875,6 +913,7 @@ const PASSIVES: PassivesDict = {
     "Atk/Res Bond 1": {
         description: "If unit is adjacent to an ally, grants Atk/Res+3 during combat.",
         slot: "A",
+        isSacredSeal: true,
         onCombatStart(state) {
             bond(this, state, {
                 atk: 3,
@@ -885,6 +924,7 @@ const PASSIVES: PassivesDict = {
     "Atk/Res Bond 2": {
         description: "If unit is adjacent to an ally, grants Atk/Res+4 during combat.",
         slot: "A",
+        isSacredSeal: true,
         onCombatStart(state) {
             bond(this, state, {
                 atk: 4,
@@ -895,6 +935,7 @@ const PASSIVES: PassivesDict = {
     "Atk/Res Bond 3": {
         description: "If unit is adjacent to an ally, grants Atk/Res+5 during combat.",
         slot: "A",
+        isSacredSeal: true,
         onCombatStart(state) {
             bond(this, state, {
                 atk: 5,
@@ -904,6 +945,7 @@ const PASSIVES: PassivesDict = {
     },
     "Death Blow 1": {
         slot: "A",
+        isSacredSeal: true,
         description: "If unit initiates combat, grants Atk+2 during combat.",
         onCombatInitiate() {
             this.entity.addComponent({
@@ -914,6 +956,7 @@ const PASSIVES: PassivesDict = {
     },
     "Death Blow 2": {
         slot: "A",
+        isSacredSeal: true,
         description: "If unit initiates combat, grants Atk+4 during combat.",
         onCombatInitiate() {
             this.entity.addComponent({
@@ -924,6 +967,7 @@ const PASSIVES: PassivesDict = {
     },
     "Death Blow 3": {
         slot: "A",
+        isSacredSeal: true,
         description: "If unit initiates combat, grants Atk+6 during combat.",
         onCombatInitiate() {
             this.entity.addComponent({
@@ -934,6 +978,7 @@ const PASSIVES: PassivesDict = {
     },
     "Darting Blow 1": {
         slot: "A",
+        isSacredSeal: true,
         description: "If unit initiates combat, grants Spd+2 during combat.",
         onCombatInitiate() {
             this.entity.addComponent({
@@ -944,6 +989,7 @@ const PASSIVES: PassivesDict = {
     },
     "Darting Blow 2": {
         slot: "A",
+        isSacredSeal: true,
         description: "If unit initiates combat, grants Spd+4 during combat.",
         onCombatInitiate() {
             this.entity.addComponent({
@@ -954,6 +1000,7 @@ const PASSIVES: PassivesDict = {
     },
     "Darting Blow 3": {
         slot: "A",
+        isSacredSeal: true,
         description: "If unit initiates combat, grants Spd+6 during combat.",
         onCombatInitiate() {
             this.entity.addComponent({
@@ -970,7 +1017,8 @@ const PASSIVES: PassivesDict = {
                 type: "CombatBuff",
                 def: 2
             });
-        }
+        },
+        isSacredSeal: true,
     },
     "Armored Blow 2": {
         slot: "A",
@@ -980,10 +1028,12 @@ const PASSIVES: PassivesDict = {
                 type: "CombatBuff",
                 def: 4
             });
-        }
+        },
+        isSacredSeal: true,
     },
     "Armored Blow 3": {
         slot: "A",
+        isSacredSeal: true,
         description: "If unit initiates combat, grants Def+6 during combat.",
         onCombatInitiate() {
             this.entity.addComponent({
@@ -995,6 +1045,7 @@ const PASSIVES: PassivesDict = {
     "Warding Blow 1": {
         description: "If unit initiates combat, grants Res+2 during combat.",
         slot: "A",
+        isSacredSeal: true,
         onCombatInitiate() {
             this.entity.addComponent({
                 type: "CombatBuff",
@@ -1024,6 +1075,7 @@ const PASSIVES: PassivesDict = {
     },
     "Fierce Stance 1": {
         slot: "A",
+        isSacredSeal: true,
         description: "If foe initiates combat, grants Atk+2 during combat.",
         onCombatDefense() {
             this.entity.addComponent({
@@ -1034,6 +1086,7 @@ const PASSIVES: PassivesDict = {
     },
     "Fierce Stance 2": {
         slot: "A",
+        isSacredSeal: true,
         description: "If foe initiates combat, grants Atk+4 during combat.",
         onCombatDefense() {
             this.entity.addComponent({
@@ -1044,6 +1097,7 @@ const PASSIVES: PassivesDict = {
     },
     "Fierce Stance 3": {
         slot: "A",
+        isSacredSeal: true,
         description: "If foe initiates combat, grants Atk+6 during combat.",
         onCombatDefense() {
             this.entity.addComponent({
@@ -1054,6 +1108,7 @@ const PASSIVES: PassivesDict = {
     },
     "Steady Stance 1": {
         slot: "A",
+        isSacredSeal: true,
         description: "If foe initiates combat, grants Def+2 during combat.",
         onCombatDefense() {
             this.entity.addComponent({
@@ -1064,6 +1119,7 @@ const PASSIVES: PassivesDict = {
     },
     "Steady Stance 2": {
         slot: "A",
+        isSacredSeal: true,
         description: "If foe initiates combat, grants Def+4 during combat.",
         onCombatDefense() {
             this.entity.addComponent({
@@ -1074,6 +1130,7 @@ const PASSIVES: PassivesDict = {
     },
     "Steady Stance 3": {
         slot: "A",
+        isSacredSeal: true,
         description: "If foe initiates combat, grants Def+6 during combat.",
         onCombatDefense() {
             this.entity.addComponent({
@@ -1085,6 +1142,7 @@ const PASSIVES: PassivesDict = {
     "Bracing Blow 1": {
         description: "If unit initiates combat, grants Def/Res+2 during combat.",
         slot: "A",
+        isSacredSeal: true,
         onCombatInitiate() {
             this.entity.addComponent({
                 type: "CombatBuff",
@@ -1096,6 +1154,7 @@ const PASSIVES: PassivesDict = {
     "Bracing Blow 2": {
         description: "If unit initiates combat, grants Def/Res+4 during combat.",
         slot: "A",
+        isSacredSeal: true,
         onCombatInitiate() {
             this.entity.addComponent({
                 type: "CombatBuff",
@@ -1107,6 +1166,7 @@ const PASSIVES: PassivesDict = {
     "Steady Blow 1": {
         description: "If unit initiates combat, grants Spd/Def+2 during combat.",
         slot: "A",
+        isSacredSeal: true,
         onCombatInitiate() {
             this.entity.addComponent({
                 type: "CombatBuff",
@@ -1118,6 +1178,7 @@ const PASSIVES: PassivesDict = {
     "Steady Blow 2": {
         description: "If unit initiates combat, grants Spd/Def+4 during combat.",
         slot: "A",
+        isSacredSeal: true,
         onCombatInitiate() {
             this.entity.addComponent({
                 type: "CombatBuff",
@@ -1129,6 +1190,7 @@ const PASSIVES: PassivesDict = {
     "Sturdy Blow 1": {
         description: "If unit initiates combat, grants Atk/Def+2 during combat.",
         slot: "A",
+        isSacredSeal: true,
         onCombatInitiate() {
             this.entity.addComponent({
                 atk: 2,
@@ -1139,6 +1201,7 @@ const PASSIVES: PassivesDict = {
     "Sturdy Blow 2": {
         description: "If unit initiates combat, grants Atk/Def+4 during combat.",
         slot: "A",
+        isSacredSeal: true,
         onCombatInitiate() {
             this.entity.addComponent({
                 atk: 4,
@@ -1149,6 +1212,7 @@ const PASSIVES: PassivesDict = {
     "Swift Strike 1": {
         description: "If unit initiates combat, grants Spd/Res+2 during combat.",
         slot: "A",
+        isSacredSeal: true,
         onCombatInitiate() {
             this.entity.addComponent({
                 spd: 2,
@@ -1159,6 +1223,7 @@ const PASSIVES: PassivesDict = {
     "Swift Strike 2": {
         description: "If unit initiates combat, grants Spd/Res+4 during combat.",
         slot: "A",
+        isSacredSeal: true,
         onCombatInitiate() {
             this.entity.addComponent({
                 spd: 4,
@@ -1168,6 +1233,7 @@ const PASSIVES: PassivesDict = {
     },
     "Mirror Strike 1": {
         description: "If unit initiates combat, grants Atk/Res+2 during combat.",
+        isSacredSeal: true,
         slot: "A",
         onCombatInitiate() {
             this.entity.addComponent({
@@ -1178,6 +1244,7 @@ const PASSIVES: PassivesDict = {
     },
     "Mirror Strike 2": {
         description: "If unit initiates combat, grants Atk/Res+4 during combat.",
+        isSacredSeal: true,
         slot: "A",
         onCombatInitiate() {
             this.entity.addComponent({
@@ -1188,6 +1255,7 @@ const PASSIVES: PassivesDict = {
     },
     "Swift Sparrow 1": {
         slot: "A",
+        isSacredSeal: true,
         description: "If unit initiates combat, grants Atk/Spd+2 during combat.",
         onCombatInitiate() {
             this.entity.addComponent({
@@ -1199,6 +1267,7 @@ const PASSIVES: PassivesDict = {
     },
     "Swift Sparrow 2": {
         slot: "A",
+        isSacredSeal: true,
         description: "If unit initiates combat, grants Atk/Spd+3 during combat.",
         onCombatInitiate() {
             this.entity.addComponent({
@@ -1210,6 +1279,7 @@ const PASSIVES: PassivesDict = {
     },
     "Mirror Stance 1": {
         description: "If foe initiates combat, grants Atk/Res+2 during combat.",
+        isSacredSeal: true,
         onCombatDefense() {
             this.entity.addComponent({
                 type: "CombatBuff",
@@ -1221,6 +1291,7 @@ const PASSIVES: PassivesDict = {
     },
     "Mirror Stance 2": {
         description: "If foe initiates combat, grants Atk/Res+4 during combat.",
+        isSacredSeal: true,
         onCombatDefense() {
             this.entity.addComponent({
                 type: "CombatBuff",
@@ -1232,6 +1303,7 @@ const PASSIVES: PassivesDict = {
     },
     "Water Boost 1": {
         slot: "A",
+        isSacredSeal: true,
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Res+2 during combat.",
         onCombatStart(state, target) {
             elementalBoost(this, target, {
@@ -1241,6 +1313,7 @@ const PASSIVES: PassivesDict = {
     },
     "Water Boost 2": {
         slot: "A",
+        isSacredSeal: true,
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Res+4 during combat.",
         onCombatStart(state, target) {
             elementalBoost(this, target, {
@@ -1250,6 +1323,7 @@ const PASSIVES: PassivesDict = {
     },
     "Water Boost 3": {
         slot: "A",
+        isSacredSeal: true,
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Res+6 during combat.",
         onCombatStart(state, target) {
             elementalBoost(this, target, {
@@ -1259,6 +1333,7 @@ const PASSIVES: PassivesDict = {
     },
     "Wind Boost 1": {
         slot: "A",
+        isSacredSeal: true,
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Spd+2 during combat.",
         onCombatStart(state, target) {
             elementalBoost(this, target, {
@@ -1268,6 +1343,7 @@ const PASSIVES: PassivesDict = {
     },
     "Wind Boost 2": {
         slot: "A",
+        isSacredSeal: true,
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Spd+4 during combat.",
         onCombatStart(state, target) {
             elementalBoost(this, target, {
@@ -1277,6 +1353,7 @@ const PASSIVES: PassivesDict = {
     },
     "Wind Boost 3": {
         slot: "A",
+        isSacredSeal: true,
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Spd+6 during combat.",
         onCombatStart(state, target) {
             elementalBoost(this, target, {
@@ -1286,6 +1363,7 @@ const PASSIVES: PassivesDict = {
     },
     "Earth Boost 1": {
         slot: "A",
+        isSacredSeal: true,
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Def+2 during combat.",
         onCombatStart(state, target) {
             elementalBoost(this, target, {
@@ -1295,6 +1373,7 @@ const PASSIVES: PassivesDict = {
     },
     "Earth Boost 2": {
         slot: "A",
+        isSacredSeal: true,
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Def+4 during combat.",
         onCombatStart(state, target) {
             elementalBoost(this, target, {
@@ -1304,6 +1383,7 @@ const PASSIVES: PassivesDict = {
     },
     "Earth Boost 3": {
         slot: "A",
+        isSacredSeal: true,
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Def+6 during combat.",
         onCombatStart(state, target) {
             elementalBoost(this, target, {
@@ -1347,6 +1427,7 @@ const PASSIVES: PassivesDict = {
     "Life and Death 1": {
         description: "Grants Atk/Spd+3. Inflicts Def/Res-3.",
         slot: "A",
+        isSacredSeal: true,
         onEquip() {
             const stats = this.entity.getOne("Stats");
             stats.atk += 3;
@@ -1358,6 +1439,7 @@ const PASSIVES: PassivesDict = {
     "Life and Death 2": {
         description: "Grants Atk/Spd+4. Inflicts Def/Res-4.",
         slot: "A",
+        isSacredSeal: true,
         onEquip() {
             const stats = this.entity.getOne("Stats");
             stats.atk += 4;
@@ -1369,6 +1451,7 @@ const PASSIVES: PassivesDict = {
     "Life and Death 3": {
         description: "Grants Atk/Spd+5. Inflicts Def/Res-5.",
         slot: "A",
+        isSacredSeal: true,
         onEquip() {
             const stats = this.entity.getOne("Stats");
             stats.atk += 5;
@@ -1379,6 +1462,7 @@ const PASSIVES: PassivesDict = {
     },
     "Gale Dance 1": {
         description: "If Sing or Dance is used, grants Spd+2 to target.",
+        isSacredSeal: true,
         onAssistAfter(battleState, ally, assistSkill) {
             const assist = ASSISTS[assistSkill.name];
             if (assist.type.includes("refresh")) {
@@ -1391,6 +1475,7 @@ const PASSIVES: PassivesDict = {
     },
     "Gale Dance 2": {
         description: "If Sing or Dance is used, grants Spd+3 to target.",
+        isSacredSeal: true,
         onAssistAfter(battleState, ally, assistSkill) {
             const assist = ASSISTS[assistSkill.name];
             if (assist.type.includes("refresh")) {
@@ -1403,6 +1488,7 @@ const PASSIVES: PassivesDict = {
     },
     "Gale Dance 3": {
         description: "If Sing or Dance is used, grants Spd+4 to target.",
+        isSacredSeal: true,
         onAssistAfter(battleState, ally, assistSkill) {
             const assist = ASSISTS[assistSkill.name];
             if (assist.type.includes("refresh")) {
@@ -1423,10 +1509,12 @@ const PASSIVES: PassivesDict = {
                 });
             }
         },
+        isSacredSeal: true,
         slot: "B"
     },
     "Blaze Dance 2": {
         description: "If Sing or Dance is used, grants Atk+3 to target.",
+        isSacredSeal: true,
         onAssistAfter(battleState, ally, assistSkill) {
             const assist = ASSISTS[assistSkill.name];
             if (assist.type.includes("refresh")) {
@@ -1439,6 +1527,7 @@ const PASSIVES: PassivesDict = {
     },
     "Blaze Dance 3": {
         description: "If Sing or Dance is used, grants Atk+4 to target.",
+        isSacredSeal: true,
         onAssistAfter(battleState, ally, assistSkill) {
             const assist = ASSISTS[assistSkill.name];
             if (assist.type.includes("refresh")) {
@@ -1623,6 +1712,7 @@ const PASSIVES: PassivesDict = {
     },
     "Live to Serve 1": {
         description: "When healing an ally with a staff, restores HP to unit = 50% of HP restored to target.",
+        isSacredSeal: true,
         onAssistAfter(battleState, ally, assistSkill) {
             const assist = ASSISTS[assistSkill.name];
             let totalHealing = 0;
@@ -1642,6 +1732,7 @@ const PASSIVES: PassivesDict = {
     },
     "Live to Serve 2": {
         description: "When healing an ally with a staff, restores HP to unit = 75% of HP restored to target.",
+        isSacredSeal: true,
         onAssistAfter(battleState, ally, assistSkill) {
             const assist = ASSISTS[assistSkill.name];
             let totalHealing = 0;
@@ -1661,6 +1752,7 @@ const PASSIVES: PassivesDict = {
     },
     "Live to Serve 3": {
         description: "When healing an ally with a staff, restores HP to unit = HP restored to target.",
+        isSacredSeal: true,
         onAssistAfter(battleState, ally, assistSkill) {
             const assist = ASSISTS[assistSkill.name];
             let totalHealing = 0;
@@ -1680,6 +1772,7 @@ const PASSIVES: PassivesDict = {
     },
     "Flashing Blade 1": {
         slot: "A",
+        isSacredSeal: true,
         allowedMovementTypes: ["armored", "infantry"],
         allowedWeaponTypes: exceptStaves,
         description: "If unit's Spd ≥ foe's Spd+5, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)",
@@ -1695,6 +1788,7 @@ const PASSIVES: PassivesDict = {
     },
     "Flashing Blade 2": {
         slot: "A",
+        isSacredSeal: true,
         allowedMovementTypes: ["armored", "infantry"],
         allowedWeaponTypes: exceptStaves,
         description: "If unit's Spd ≥ foe's Spd+3, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)",
@@ -1710,6 +1804,7 @@ const PASSIVES: PassivesDict = {
     },
     "Flashing Blade 3": {
         slot: "A",
+        isSacredSeal: true,
         allowedMovementTypes: ["armored", "infantry"],
         allowedWeaponTypes: exceptStaves,
         description: "If unit's Spd > foe's Spd, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)",
@@ -1725,6 +1820,7 @@ const PASSIVES: PassivesDict = {
     },
     "Heavy Blade 1": {
         slot: "A",
+        isSacredSeal: true,
         allowedMovementTypes: ["armored", "infantry"],
         allowedWeaponTypes: exceptStaves,
         description: "If unit's Atk ≥ foe's Atk+5, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)",
@@ -1740,6 +1836,7 @@ const PASSIVES: PassivesDict = {
     },
     "Heavy Blade 2": {
         slot: "A",
+        isSacredSeal: true,
         allowedMovementTypes: ["armored", "infantry"],
         allowedWeaponTypes: exceptStaves,
         description: "If unit's Atk ≥ foe's Atk+3, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)",
@@ -1755,6 +1852,7 @@ const PASSIVES: PassivesDict = {
     },
     "Heavy Blade 3": {
         slot: "A",
+        isSacredSeal: true,
         allowedMovementTypes: ["armored", "infantry"],
         allowedWeaponTypes: exceptStaves,
         description: "If unit's Atk > foe's Atk, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)",
@@ -1770,6 +1868,7 @@ const PASSIVES: PassivesDict = {
     },
     "Steady Breath": {
         slot: "A",
+        isSacredSeal: true,
         description: "If foe initiates combat, grants Def+4 during combat and Special cooldown charge +1 per attack. (Only highest value applied. Does not stack.)",
         onCombatDefense() {
             this.entity.addComponent({
@@ -1778,15 +1877,18 @@ const PASSIVES: PassivesDict = {
             });
         },
         onCombatRoundDefense() {
-            this.entity.addComponent({
-                type: "AccelerateSpecial"
-            });
+            if (!this.entity.getOne("InitiateCombat")) {
+                this.entity.addComponent({
+                    type: "AccelerateSpecial"
+                });
+            }
         },
         allowedMovementTypes: ["armored", "infantry"],
         allowedWeaponTypes: ["sword", "axe", "lance", "breath", "beast"]
     },
     "Desperation 1": {
         slot: "B",
+        isSacredSeal: true,
         description: "If unit's HP ≤ 25% and unit initiates combat, unit can make a follow-up attack before foe can counterattack.",
         onCombatInitiate() {
             const { hp, maxHP } = this.entity.getOne("Stats");
@@ -1799,6 +1901,7 @@ const PASSIVES: PassivesDict = {
     },
     "Desperation 2": {
         slot: "B",
+        isSacredSeal: true,
         description: "If unit's HP ≤ 50% and unit initiates combat, unit can make a follow-up attack before foe can counterattack.",
         onCombatInitiate() {
             const { hp, maxHP } = this.entity.getOne("Stats");
@@ -1811,6 +1914,7 @@ const PASSIVES: PassivesDict = {
     },
     "Desperation 3": {
         slot: "B",
+        isSacredSeal: true,
         description: "If unit's HP ≤ 75% and unit initiates combat, unit can make a follow-up attack before foe can counterattack.",
         onCombatInitiate() {
             const { hp, maxHP } = this.entity.getOne("Stats");
@@ -1823,6 +1927,7 @@ const PASSIVES: PassivesDict = {
     },
     "Brash Assault 1": {
         slot: "B",
+        isSacredSeal: true,
         description: "If unit initiates combat against a foe that can counter and unit's HP ≤ 30%, unit makes a guaranteed follow-up attack.",
         onCombatInitiate(state, target) {
             const { hp, maxHP } = this.entity.getOne("Stats");
@@ -1835,6 +1940,7 @@ const PASSIVES: PassivesDict = {
     },
     "Brash Assault 2": {
         slot: "B",
+        isSacredSeal: true,
         description: "If unit initiates combat against a foe that can counter and unit's HP ≤ 40%, unit makes a guaranteed follow-up attack.",
         onCombatInitiate(state, target) {
             const { hp, maxHP } = this.entity.getOne("Stats");
@@ -1847,6 +1953,7 @@ const PASSIVES: PassivesDict = {
     },
     "Brash Assault 3": {
         slot: "B",
+        isSacredSeal: true,
         description: "If unit initiates combat against a foe that can counter and unit's HP ≤ 50%, unit makes a guaranteed follow-up attack.",
         onCombatInitiate(state, target) {
             const { hp, maxHP } = this.entity.getOne("Stats");
@@ -1899,6 +2006,7 @@ const PASSIVES: PassivesDict = {
     "Flier Formation 1": {
         description: "If unit's HP = 100%, unit can move to a space adjacent to a flying ally within 2 spaces.",
         slot: "B",
+        isSacredSeal: true,
         onTurnCheckRange(state) {
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp === maxHP) {
@@ -1913,6 +2021,7 @@ const PASSIVES: PassivesDict = {
     "Flier Formation 2": {
         description: "If unit's HP ≥ 50%, unit can move to a space adjacent to a flying ally within 2 spaces.",
         slot: "B",
+        isSacredSeal: true,
         onTurnCheckRange(state) {
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp / maxHP >= 0.5) {
@@ -1927,6 +2036,7 @@ const PASSIVES: PassivesDict = {
     "Flier Formation 3": {
         description: "Unit can move to a space adjacent to a flying ally within 2 spaces.",
         slot: "B",
+        isSacredSeal: true,
         onTurnCheckRange(state) {
             const allies = getAllies(state, this.entity).filter((ally) => ally.getOne("MovementType").value === "flier" && HeroSystem.getDistance(ally, this.entity) <= 2);
             for (let ally of allies) {
@@ -2014,6 +2124,7 @@ const PASSIVES: PassivesDict = {
         description: "If unit initiates combat, deals 4 damage to foe after combat.",
         allowedWeaponTypes: exceptStaves,
         slot: "B",
+        isSacredSeal: true,
         onCombatAfter(state, target) {
             if (this.entity.getOne("InitiateCombat")) {
                 target.addComponent({
@@ -2027,6 +2138,7 @@ const PASSIVES: PassivesDict = {
         description: "If unit initiates combat, deals 7 damage to foe after combat.",
         allowedWeaponTypes: exceptStaves,
         slot: "B",
+        isSacredSeal: true,
         onCombatAfter(state, target) {
             if (this.entity.getOne("InitiateCombat")) {
                 target.addComponent({
@@ -2040,6 +2152,7 @@ const PASSIVES: PassivesDict = {
         description: "If unit initiates combat, deals 10 damage to foe after combat.",
         allowedWeaponTypes: exceptStaves,
         slot: "B",
+        isSacredSeal: true,
         onCombatAfter(state, target) {
             if (this.entity.getOne("InitiateCombat")) {
                 target.addComponent({
@@ -2240,6 +2353,7 @@ const PASSIVES: PassivesDict = {
     },
     "Renewal 1": {
         description: "At the start of every fourth turn, restores 10 HP.",
+        isSacredSeal: true,
         onTurnStart(state) {
             renewal(this, state.turn % 4 === 0, 10);
         },
@@ -2247,6 +2361,7 @@ const PASSIVES: PassivesDict = {
     },
     "Renewal 2": {
         description: "At the start of every third turn, restores 10 HP.",
+        isSacredSeal: true,
         onTurnStart(state) {
             renewal(this, state.turn % 3 === 0, 10);
         },
@@ -2254,6 +2369,7 @@ const PASSIVES: PassivesDict = {
     },
     "Renewal 3": {
         description: "At start of odd-numbered turns, restores 10 HP.",
+        isSacredSeal: true,
         onTurnStart(state) {
             renewal(this, state.turn % 2 === 1, 10);
         },
@@ -2469,6 +2585,7 @@ const PASSIVES: PassivesDict = {
     },
     "Defiant Atk 1": {
         slot: "A",
+        isSacredSeal: true,
         description: "At start of turn, if unit's HP ≤ 50%, grants Atk+3 for 1 turn.",
         onTurnStart() {
             defiant(this, "atk", 3);
@@ -2476,6 +2593,7 @@ const PASSIVES: PassivesDict = {
     },
     "Defiant Atk 2": {
         slot: "A",
+        isSacredSeal: true,
         description: "At start of turn, if unit's HP ≤ 50%, grants Atk+5 for 1 turn.",
         onTurnStart() {
             defiant(this, "atk", 5);
@@ -2483,6 +2601,7 @@ const PASSIVES: PassivesDict = {
     },
     "Defiant Atk 3": {
         slot: "A",
+        isSacredSeal: true,
         description: "At start of turn, if unit's HP ≤ 50%, grants Atk+7 for 1 turn.",
         onTurnStart() {
             defiant(this, "atk", 7);
@@ -2490,6 +2609,7 @@ const PASSIVES: PassivesDict = {
     },
     "Defiant Def 1": {
         slot: "A",
+        isSacredSeal: true,
         description: "At start of turn, if unit's HP ≤ 50%, grants Def+3 for 1 turn.",
         onTurnStart() {
             defiant(this, "def", 3);
@@ -2497,6 +2617,7 @@ const PASSIVES: PassivesDict = {
     },
     "Defiant Def 2": {
         slot: "A",
+        isSacredSeal: true,
         description: "At start of turn, if unit's HP ≤ 50%, grants Def+5 for 1 turn.",
         onTurnStart() {
             defiant(this, "def", 5);
@@ -2504,6 +2625,7 @@ const PASSIVES: PassivesDict = {
     },
     "Defiant Def 3": {
         slot: "A",
+        isSacredSeal: true,
         description: "At start of turn, if unit's HP ≤ 50%, grants Def+7 for 1 turn.",
         onTurnStart() {
             defiant(this, "def", 7);
@@ -2511,6 +2633,7 @@ const PASSIVES: PassivesDict = {
     },
     "Defiant Spd 1": {
         slot: "A",
+        isSacredSeal: true,
         description: "At start of turn, if unit's HP ≤ 50%, grants Spd+3 for 1 turn.",
         onTurnStart() {
             defiant(this, "spd", 3);
@@ -2518,6 +2641,7 @@ const PASSIVES: PassivesDict = {
     },
     "Defiant Spd 2": {
         slot: "A",
+        isSacredSeal: true,
         description: "At start of turn, if unit's HP ≤ 50%, grants Spd+5 for 1 turn.",
         onTurnStart() {
             defiant(this, "spd", 5);
@@ -2525,6 +2649,7 @@ const PASSIVES: PassivesDict = {
     },
     "Defiant Spd 3": {
         slot: "A",
+        isSacredSeal: true,
         description: "At start of turn, if unit's HP ≤ 50%, grants Spd+7 for 1 turn.",
         onTurnStart() {
             defiant(this, "spd", 7);
@@ -2553,6 +2678,7 @@ const PASSIVES: PassivesDict = {
     },
     "Breath of Life 1": {
         slot: "C",
+        isSacredSeal: true,
         description: "If unit initiates combat, restores 3 HP to adjacent allies after combat.",
         onCombatInitiate(state) {
             const allies = getAllies(state, this.entity);
@@ -2568,6 +2694,7 @@ const PASSIVES: PassivesDict = {
     },
     "Breath of Life 2": {
         slot: "C",
+        isSacredSeal: true,
         description: "If unit initiates combat, restores 5 HP to adjacent allies after combat.",
         onCombatInitiate(state) {
             const allies = getAllies(state, this.entity);
@@ -2583,6 +2710,7 @@ const PASSIVES: PassivesDict = {
     },
     "Breath of Life 3": {
         slot: "C",
+        isSacredSeal: true,
         description: "If unit initiates combat, restores 7 HP to adjacent allies after combat.",
         onCombatInitiate(state) {
             const allies = getAllies(state, this.entity);
@@ -2598,6 +2726,7 @@ const PASSIVES: PassivesDict = {
     },
     "Guidance 1": {
         slot: "C",
+        isSacredSeal: true,
         description: "If unit's HP = 100%, infantry and armored allies within 2 spaces can move to a space adjacent to unit.",
         onTurnAllyCheckRange(state, ally) {
             const { hp, maxHP } = this.entity.getOne("Stats");
@@ -2609,6 +2738,7 @@ const PASSIVES: PassivesDict = {
     },
     "Guidance 2": {
         slot: "C",
+        isSacredSeal: true,
         description: "If unit's HP ≥ 50%, infantry and armored allies within 2 spaces can move to a space adjacent to unit. ",
         allowedMovementTypes: ["flier"],
         onTurnAllyCheckRange(state, ally) {
@@ -2620,6 +2750,7 @@ const PASSIVES: PassivesDict = {
     },
     "Guidance 3": {
         slot: "C",
+        isSacredSeal: true,
         allowedMovementTypes: ["flier"],
         description: "Infantry and armored allies within 2 spaces can move to a space adjacent to unit.",
         onTurnAllyCheckRange(state, ally) {
@@ -2630,6 +2761,7 @@ const PASSIVES: PassivesDict = {
     },
     "Savage Blow 1": {
         description: "If unit initiates combat, deals 3 damage to foes within 2 spaces of target after combat.",
+        isSacredSeal: true,
         slot: "C",
         onCombatAfter(state, target) {
             if (this.entity.getOne("DealDamage")) {
@@ -2648,6 +2780,7 @@ const PASSIVES: PassivesDict = {
     "Savage Blow 2": {
         description: "If unit initiates combat, deals 5 damage to foes within 2 spaces of target after combat.",
         slot: "C",
+        isSacredSeal: true,
         onCombatAfter(state, target) {
             if (this.entity.getOne("DealDamage")) {
                 const enemies = getAllies(state, target);
@@ -2665,6 +2798,7 @@ const PASSIVES: PassivesDict = {
     "Savage Blow 3": {
         description: "If unit initiates combat, deals 7 damage to foes within 2 spaces of target after combat.",
         slot: "C",
+        isSacredSeal: true,
         onCombatAfter(state, target) {
             if (this.entity.getOne("DealDamage")) {
                 const enemies = getAllies(state, target);
@@ -2681,6 +2815,7 @@ const PASSIVES: PassivesDict = {
     },
     "Hone Atk 1": {
         description: "At start of turn, grants Atk+2 to adjacent allies for 1 turn.",
+        isSacredSeal: true,
         slot: "C",
         onTurnStart(state) {
             honeStat(this, state, "atk", 2);
@@ -2688,6 +2823,7 @@ const PASSIVES: PassivesDict = {
     },
     "Hone Atk 2": {
         description: "At start of turn, grants Atk+3 to adjacent allies for 1 turn.",
+        isSacredSeal: true,
         slot: "C",
         onTurnStart(state) {
             honeStat(this, state, "atk", 3)
@@ -2695,6 +2831,7 @@ const PASSIVES: PassivesDict = {
     },
     "Hone Atk 3": {
         description: "At start of turn, grants Atk+4 to adjacent allies for 1 turn.",
+        isSacredSeal: true,
         slot: "C",
         onTurnStart(state) {
             honeStat(this, state, "atk", 4);
@@ -2753,6 +2890,7 @@ const PASSIVES: PassivesDict = {
     "Fortify Def 1": {
         description: "At start of turn, grants Def+2 to adjacent allies for 1 turn.",
         slot: "C",
+        isSacredSeal: true,
         onTurnStart(battleState) {
             const allies = getAllies(battleState, this.entity);
             for (let ally of allies) {
@@ -2768,6 +2906,7 @@ const PASSIVES: PassivesDict = {
     "Fortify Def 2": {
         description: "At start of turn, grants Def+3 to adjacent allies for 1 turn.",
         slot: "C",
+        isSacredSeal: true,
         onTurnStart(battleState) {
             const allies = getAllies(battleState, this.entity);
             for (let ally of allies) {
@@ -2783,6 +2922,7 @@ const PASSIVES: PassivesDict = {
     "Fortify Def 3": {
         description: "At start of turn, grants Def+3 to adjacent allies for 1 turn.",
         slot: "C",
+        isSacredSeal: true,
         onTurnStart(battleState) {
             const allies = getAllies(battleState, this.entity);
             for (let ally of allies) {
@@ -2797,6 +2937,7 @@ const PASSIVES: PassivesDict = {
     "Fortify Res 1": {
         description: "At start of turn, grants Res+2 to adjacent allies for 1 turn.",
         slot: "C",
+        isSacredSeal: true,
         onTurnStart(battleState) {
             const allies = getAllies(battleState, this.entity);
             for (let ally of allies) {
@@ -2811,6 +2952,7 @@ const PASSIVES: PassivesDict = {
     "Fortify Res 2": {
         description: "At start of turn, grants Res+3 to adjacent allies for 1 turn.",
         slot: "C",
+        isSacredSeal: true,
         onTurnStart(battleState) {
             const allies = getAllies(battleState, this.entity);
             for (let ally of allies) {
@@ -2825,6 +2967,7 @@ const PASSIVES: PassivesDict = {
     "Fortify Res 3": {
         description: "At start of turn, grants Res+4 to adjacent allies for 1 turn.",
         slot: "C",
+        isSacredSeal: true,
         onTurnStart(battleState) {
             const allies = getAllies(battleState, this.entity);
             for (let ally of allies) {
@@ -2872,6 +3015,7 @@ const PASSIVES: PassivesDict = {
     "Fortify Dragons": {
         description: "At start of turn, grants Def/Res+6 to adjacent dragon allies for 1 turn.",
         slot: "C",
+        isSacredSeal: true,
         allowedWeaponTypes: ["breath"],
         onTurnStart(state) {
             const allies = getAllies(state, this.entity);
@@ -2940,6 +3084,7 @@ const PASSIVES: PassivesDict = {
     "Panic Ploy 1": {
         description: "At start of turn, converts bonuses on foes in cardinal directions with HP ≤ unit's HP-5 into penalties through their next actions.",
         slot: "C",
+        isSacredSeal: true,
         onTurnStart(state) {
             const otherTeam = getEnemies(state, this.entity);
             const { x, y } = this.entity.getOne("Position");
@@ -2959,6 +3104,7 @@ const PASSIVES: PassivesDict = {
     "Panic Ploy 2": {
         description: "At start of turn, converts bonuses on foes in cardinal directions with HP ≤ unit's HP-3 into penalties through their next actions.",
         slot: "C",
+        isSacredSeal: true,
         onTurnStart(state) {
             const otherTeam = getEnemies(state, this.entity);
             const { x, y } = this.entity.getOne("Position");
@@ -2978,6 +3124,7 @@ const PASSIVES: PassivesDict = {
     "Panic Ploy 3": {
         description: "At start of turn, converts bonuses on foes in cardinal directions with HP < unit's HP into penalties through their next actions.",
         slot: "C",
+        isSacredSeal: true,
         onTurnStart(state) {
             const otherTeam = getEnemies(state, this.entity);
             const { x, y } = this.entity.getOne("Position");
@@ -2996,6 +3143,7 @@ const PASSIVES: PassivesDict = {
     },
     "Atk Ploy 1": {
         slot: "C",
+        isSacredSeal: true,
         description: "At start of turn, inflicts Atk-3 on foes in cardinal directions with Res < unit's Res through their next actions.",
         onTurnStart(state) {
             ploy(this, state, "atk", -3);
@@ -3003,6 +3151,7 @@ const PASSIVES: PassivesDict = {
     },
     "Atk Ploy 2": {
         slot: "C",
+        isSacredSeal: true,
         description: "At start of turn, inflicts Atk-4 on foes in cardinal directions with Res < unit's Res through their next actions.",
         onTurnStart(state) {
             ploy(this, state, "atk", -4);
@@ -3010,6 +3159,7 @@ const PASSIVES: PassivesDict = {
     },
     "Atk Ploy 3": {
         slot: "C",
+        isSacredSeal: true,
         description: "At start of turn, inflicts Atk-5 on foes in cardinal directions with Res < unit's Res through their next actions.",
         onTurnStart(state) {
             ploy(this, state, "atk", -5);
@@ -3017,6 +3167,7 @@ const PASSIVES: PassivesDict = {
     },
     "Spd Ploy 1": {
         slot: "C",
+        isSacredSeal: true,
         description: "At start of turn, inflicts Spd-3 on foes in cardinal directions with Res < unit's Res through their next actions.",
         onTurnStart(state) {
             ploy(this, state, "spd", -3);
@@ -3024,6 +3175,7 @@ const PASSIVES: PassivesDict = {
     },
     "Spd Ploy 2": {
         slot: "C",
+        isSacredSeal: true,
         description: "At start of turn, inflicts Spd-4 on foes in cardinal directions with Res < unit's Res through their next actions.",
         onTurnStart(state) {
             ploy(this, state, "spd", -4);
@@ -3031,6 +3183,7 @@ const PASSIVES: PassivesDict = {
     },
     "Spd Ploy 3": {
         slot: "C",
+        isSacredSeal: true,
         description: "At start of turn, inflicts Spd-5 on foes in cardinal directions with Res < unit's Res through their next actions.",
         onTurnStart(state) {
             ploy(this, state, "spd", -5);
@@ -3038,6 +3191,7 @@ const PASSIVES: PassivesDict = {
     },
     "Def Ploy 1": {
         slot: "C",
+        isSacredSeal: true,
         description: "At start of turn, inflicts Def-3 on foes in cardinal directions with Res < unit's Res through their next actions.",
         onTurnStart(state) {
             ploy(this, state, "def", -3);
@@ -3045,6 +3199,7 @@ const PASSIVES: PassivesDict = {
     },
     "Def Ploy 2": {
         slot: "C",
+        isSacredSeal: true,
         description: "At start of turn, inflicts Def-4 on foes in cardinal directions with Res < unit's Res through their next actions.",
         onTurnStart(state) {
             ploy(this, state, "def", -4);
@@ -3052,6 +3207,7 @@ const PASSIVES: PassivesDict = {
     },
     "Def Ploy 3": {
         slot: "C",
+        isSacredSeal: true,
         description: "At start of turn, inflicts Def-5 on foes in cardinal directions with Res < unit's Res through their next actions.",
         onTurnStart(state) {
             ploy(this, state, "def", -5);
@@ -3059,6 +3215,7 @@ const PASSIVES: PassivesDict = {
     },
     "Res Ploy 1": {
         slot: "C",
+        isSacredSeal: true,
         description: "At start of turn, inflicts Res-3 on foes in cardinal directions with Res < unit's Res through their next actions.",
         onTurnStart(state) {
             ploy(this, state, "res", -3);
@@ -3066,6 +3223,7 @@ const PASSIVES: PassivesDict = {
     },
     "Res Ploy 2": {
         slot: "C",
+        isSacredSeal: true,
         description: "At start of turn, inflicts Res-4 on foes in cardinal directions with Res < unit's Res through their next actions.",
         onTurnStart(state) {
             ploy(this, state, "res", -4);
@@ -3073,6 +3231,7 @@ const PASSIVES: PassivesDict = {
     },
     "Res Ploy 3": {
         slot: "C",
+        isSacredSeal: true,
         description: "At start of turn, inflicts Res-5 on foes in cardinal directions with Res < unit's Res through their next actions.",
         onTurnStart(state) {
             ploy(this, state, "res", -5);
@@ -3080,6 +3239,7 @@ const PASSIVES: PassivesDict = {
     },
     "Atk Tactic 1": {
         slot: "C",
+        isSacredSeal: true,
         description: "At start of turn, grants Atk+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
         onTurnStart(state) {
             tactic(this, state, "atk", 2);
@@ -3087,6 +3247,7 @@ const PASSIVES: PassivesDict = {
     },
     "Atk Tactic 2": {
         slot: "C",
+        isSacredSeal: true,
         description: "At start of turn, grants Atk+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
         onTurnStart(state) {
             tactic(this, state, "atk", 4);
@@ -3094,6 +3255,7 @@ const PASSIVES: PassivesDict = {
     },
     "Atk Tactic 3": {
         slot: "C",
+        isSacredSeal: true,
         description: "At start of turn, grants Atk+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
         onTurnStart(state) {
             tactic(this, state, "atk", 6);
@@ -3101,6 +3263,7 @@ const PASSIVES: PassivesDict = {
     },
     "Spd Tactic 1": {
         slot: "C",
+        isSacredSeal: true,
         description: "At start of turn, grants Spd+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
         onTurnStart(state) {
             tactic(this, state, "spd", 2);
@@ -3108,6 +3271,7 @@ const PASSIVES: PassivesDict = {
     },
     "Spd Tactic 2": {
         slot: "C",
+        isSacredSeal: true,
         description: "At start of turn, grants Spd+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
         onTurnStart(state) {
             tactic(this, state, "spd", 4);
@@ -3115,6 +3279,7 @@ const PASSIVES: PassivesDict = {
     },
     "Spd Tactic 3": {
         slot: "C",
+        isSacredSeal: true,
         description: "At start of turn, grants Spd+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
         onTurnStart(state) {
             tactic(this, state, "spd", 6);
@@ -3165,16 +3330,19 @@ const PASSIVES: PassivesDict = {
     "Odd Atk Wave 1": {
         description: "On odd turns, adds +2 Atk for unit and nearby allies for 1 turn.",
         slot: "C",
+        isSacredSeal: true,
         onTurnStart: wave("atk", turnIsOdd, 2)
     },
     "Odd Atk Wave 2": {
         description: "On odd turns, adds +4 Atk for unit and nearby allies for 1 turn.",
         slot: "C",
+        isSacredSeal: true,
         onTurnStart: wave("atk", turnIsOdd, 4)
     },
     "Odd Atk Wave 3": {
         description: "On odd turns, adds +6 Atk for unit and nearby allies for 1 turn.",
         slot: "C",
+        isSacredSeal: true,
         onTurnStart: wave("atk", turnIsOdd, 6)
     },
     "Wary Fighter 1": {
@@ -3225,6 +3393,7 @@ const PASSIVES: PassivesDict = {
     },
     "Quick Riposte 1": {
         description: "If unit's HP ≥ 90% and foe initiates combat, unit makes a guaranteed follow-up attack.",
+        isSacredSeal: true,
         onCombatDefense() {
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp / maxHP >= 0.9) {
@@ -3237,6 +3406,7 @@ const PASSIVES: PassivesDict = {
     },
     "Quick Riposte 2": {
         description: "If unit's HP ≥ 70% and foe initiates combat, unit makes a guaranteed follow-up attack.",
+        isSacredSeal: true,
         onCombatDefense() {
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp / maxHP >= 0.7) {
@@ -3249,6 +3419,7 @@ const PASSIVES: PassivesDict = {
     },
     "Quick Riposte 3": {
         description: "If unit's HP ≥ 50% and foe initiates combat, unit makes a guaranteed follow-up attack.",
+        isSacredSeal: true,
         onCombatDefense() {
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp / maxHP >= 0.5) {
@@ -3261,6 +3432,7 @@ const PASSIVES: PassivesDict = {
     },
     "Armor March 1": {
         slot: "C",
+        isSacredSeal: true,
         description: "At start of turn, if unit's HP = 100% and unit is adjacent to an armored ally, unit and adjacent armored allies can move 1 extra space. (That turn only. Does not stack.)",
         onTurnStart(state) {
             const allies = getAllies(state, this.entity);
@@ -3287,6 +3459,7 @@ const PASSIVES: PassivesDict = {
     },
     "Armor March 2": {
         slot: "C",
+        isSacredSeal: true,
         description: "At start of turn, if unit's HP ≥ 50% and unit is adjacent to an armored ally, unit and adjacent armored allies can move 1 extra space. (That turn only. Does not stack.) ",
         onTurnStart(state) {
             const allies = getAllies(state, this.entity);
@@ -3313,6 +3486,7 @@ const PASSIVES: PassivesDict = {
     },
     "Armor March 3": {
         slot: "C",
+        isSacredSeal: true,
         description: "At start of turn, if unit is adjacent to an armored ally, unit and adjacent armored allies can move 1 extra space. (That turn only. Does not stack.)",
         onTurnStart(state) {
             const allies = getAllies(state, this.entity);
@@ -3336,6 +3510,7 @@ const PASSIVES: PassivesDict = {
     "Drive Def 1": {
         slot: "C",
         description: "Grants Def+2 to allies within 2 spaces during combat.",
+        isSacredSeal: true,
         onCombatAllyStart(state, ally) {
             combatBuffByRange(this, ally, 2, {
                 def: 2,
@@ -3344,6 +3519,7 @@ const PASSIVES: PassivesDict = {
     },
     "Drive Def 2": {
         slot: "C",
+        isSacredSeal: true,
         description: "Grants Def+3 to allies within 2 spaces during combat.",
         onCombatAllyStart(state, ally) {
             combatBuffByRange(this, ally, 2, {
@@ -3353,6 +3529,7 @@ const PASSIVES: PassivesDict = {
     },
     "Drive Atk 1": {
         slot: "C",
+        isSacredSeal: true,
         description: "Grants Atk+2 to allies within 2 spaces during combat.",
         onCombatAllyStart(state, ally) {
             combatBuffByRange(this, ally, 2, {
@@ -3366,6 +3543,7 @@ const PASSIVES: PassivesDict = {
                 atk: 3
             });
         },
+        isSacredSeal: true,
         slot: "C",
         description: "Grants Atk+3 to allies within 2 spaces during combat.",
     },
@@ -3375,6 +3553,7 @@ const PASSIVES: PassivesDict = {
                 res: 2
             });
         },
+        isSacredSeal: true,
         slot: "C",
         description: "Grants Res+2 to allies within 2 spaces during combat."
     },
@@ -3384,11 +3563,13 @@ const PASSIVES: PassivesDict = {
                 res: 3
             });
         },
+        isSacredSeal: true,
         slot: "C",
         description: "Grants Res+3 to allies within 2 spaces during combat."
     },
     "Spur Atk 1": {
         slot: "C",
+        isSacredSeal: true,
         description: "Grants Atk+2 to adjacent allies during combat.",
         onCombatAllyStart(state, ally) {
             combatBuffByRange(this, ally, 1, {
@@ -3398,6 +3579,7 @@ const PASSIVES: PassivesDict = {
     },
     "Spur Atk 2": {
         slot: "C",
+        isSacredSeal: true,
         description: "Grants Atk+3 to adjacent allies during combat.",
         onCombatAllyStart(state, ally) {
             combatBuffByRange(this, ally, 1, {
@@ -3407,6 +3589,7 @@ const PASSIVES: PassivesDict = {
     },
     "Spur Atk 3": {
         slot: "C",
+        isSacredSeal: true,
         description: "Grants Atk+4 to adjacent allies during combat.",
         onCombatAllyStart(state, ally) {
             combatBuffByRange(this, ally, 1, {
@@ -3416,6 +3599,7 @@ const PASSIVES: PassivesDict = {
     },
     "Spur Res 1": {
         slot: "C",
+        isSacredSeal: true,
         description: "Grants Res+2 to adjacent allies during combat.",
         onCombatAllyStart(state, ally) {
             combatBuffByRange(this, ally, 1, {
@@ -3425,6 +3609,7 @@ const PASSIVES: PassivesDict = {
     },
     "Spur Res 2": {
         slot: "C",
+        isSacredSeal: true,
         description: "Grants Res+3 to adjacent allies during combat.",
         onCombatAllyStart(state, ally) {
             combatBuffByRange(this, ally, 1, {
@@ -3434,6 +3619,7 @@ const PASSIVES: PassivesDict = {
     },
     "Spur Res 3": {
         slot: "C",
+        isSacredSeal: true,
         description: "Grants Res+4 to adjacent allies during combat.",
         onCombatAllyStart(state, ally) {
             combatBuffByRange(this, ally, 1, {
@@ -3443,6 +3629,7 @@ const PASSIVES: PassivesDict = {
     },
     "Spur Def 1": {
         slot: "C",
+        isSacredSeal: true,
         description: "Grants Def+2 to adjacent allies during combat.",
         onCombatAllyStart(state, ally) {
             combatBuffByRange(this, ally, 1, {
@@ -3452,6 +3639,7 @@ const PASSIVES: PassivesDict = {
     },
     "Spur Def 2": {
         slot: "C",
+        isSacredSeal: true,
         description: "Grants Def+3 to adjacent allies during combat.",
         onCombatAllyStart(state, ally) {
             combatBuffByRange(this, ally, 1, {
@@ -3461,6 +3649,7 @@ const PASSIVES: PassivesDict = {
     },
     "Spur Def 3": {
         slot: "C",
+        isSacredSeal: true,
         description: "Grants Def+4 to adjacent allies during combat.",
         onCombatAllyStart(state, ally) {
             combatBuffByRange(this, ally, 1, {
@@ -3501,6 +3690,7 @@ const PASSIVES: PassivesDict = {
     "Spur Def/Res 1": {
         description: "Grants Def/Res +2 to adjacent allies during combat.",
         slot: "C",
+        isSacredSeal: true,
         onCombatAllyStart(state, ally) {
             combatBuffByRange(this, ally, 1, {
                 def: 2,
@@ -3511,6 +3701,7 @@ const PASSIVES: PassivesDict = {
     "Spur Def/Res 2": {
         description: "Grants Def/Res +3 to adjacent allies during combat.",
         slot: "C",
+        isSacredSeal: true,
         onCombatAllyStart(state, ally) {
             combatBuffByRange(this, ally, 1, {
                 def: 3,
@@ -3579,6 +3770,7 @@ const PASSIVES: PassivesDict = {
     "Threaten Atk 2": {
         description: "At start of turn, inflicts Atk-5 on foes within 2 spaces through their next actions.",
         slot: "C",
+        isSacredSeal: true,
         onTurnStart(state) {
             threaten(this, state, { atk: -5 });
         }
@@ -3586,6 +3778,7 @@ const PASSIVES: PassivesDict = {
     "Threaten Atk 3": {
         description: "At start of turn, inflicts Atk-7 on foes within 2 spaces through their next actions.",
         slot: "C",
+        isSacredSeal: true,
         onTurnStart(state) {
             threaten(this, state, { atk: -7 });
         }
@@ -3593,6 +3786,7 @@ const PASSIVES: PassivesDict = {
     "Threaten Def 1": {
         description: "At start of turn, inflicts Def-3 on foes within 2 spaces through their next actions.",
         slot: "C",
+        isSacredSeal: true,
         onTurnStart(state) {
             threaten(this, state, { def: -3 });
         }
@@ -3600,6 +3794,7 @@ const PASSIVES: PassivesDict = {
     "Threaten Def 2": {
         description: "At start of turn, inflicts Def-5 on foes within 2 spaces through their next actions.",
         slot: "C",
+        isSacredSeal: true,
         onTurnStart(state) {
             threaten(this, state, { def: -5 });
         }
@@ -3607,6 +3802,7 @@ const PASSIVES: PassivesDict = {
     "Threaten Def 3": {
         description: "At start of turn, inflicts Def-7 on foes within 2 spaces through their next actions.",
         slot: "C",
+        isSacredSeal: true,
         onTurnStart(state) {
             threaten(this, state, { def: -7 });
         }
@@ -3614,6 +3810,7 @@ const PASSIVES: PassivesDict = {
     "Threaten Spd 1": {
         description: "At start of turn, inflicts Spd-3 on foes within 2 spaces through their next actions.",
         slot: "C",
+        isSacredSeal: true,
         onTurnStart(state) {
             threaten(this, state, { spd: -3 });
         }
@@ -3621,6 +3818,7 @@ const PASSIVES: PassivesDict = {
     "Threaten Spd 2": {
         description: "At start of turn, inflicts Spd-5 on foes within 2 spaces through their next actions.",
         slot: "C",
+        isSacredSeal: true,
         onTurnStart(state) {
             threaten(this, state, { spd: -5 });
         }
@@ -3628,6 +3826,7 @@ const PASSIVES: PassivesDict = {
     "Threaten Spd 3": {
         description: "At start of turn, inflicts Spd-7 on foes within 2 spaces through their next actions.",
         slot: "C",
+        isSacredSeal: true,
         onTurnStart(state) {
             threaten(this, state, { spd: -7 });
         }
@@ -3635,6 +3834,7 @@ const PASSIVES: PassivesDict = {
     "Threaten Res 1": {
         description: "At start of turn, inflicts Res-3 on foes within 2 spaces through their next actions.",
         slot: "C",
+        isSacredSeal: true,
         onTurnStart(state) {
             threaten(this, state, { res: -3 });
         }
@@ -3642,6 +3842,7 @@ const PASSIVES: PassivesDict = {
     "Threaten Res 2": {
         description: "At start of turn, inflicts Res-5 on foes within 2 spaces through their next actions.",
         slot: "C",
+        isSacredSeal: true,
         onTurnStart(state) {
             threaten(this, state, { res: -5 });
         }
@@ -3649,6 +3850,7 @@ const PASSIVES: PassivesDict = {
     "Threaten Res 3": {
         description: "At start of turn, inflicts Res-7 on foes within 2 spaces through their next actions.",
         slot: "C",
+        isSacredSeal: true,
         onTurnStart(state) {
             threaten(this, state, { res: -7 });
         }
@@ -3685,6 +3887,7 @@ const PASSIVES: PassivesDict = {
     },
     "Fortress Def 1": {
         description: "Grants Def+3. Inflicts Atk-3.",
+        isSacredSeal: true,
         onEquip() {
             const stats = this.entity.getOne("Stats");
             stats.def += 3;
@@ -3694,6 +3897,7 @@ const PASSIVES: PassivesDict = {
     },
     "Fortress Def 2": {
         description: "Grants Def+4. Inflicts Atk-3.",
+        isSacredSeal: true,
         onEquip() {
             const stats = this.entity.getOne("Stats");
             stats.def += 4;
@@ -3703,6 +3907,7 @@ const PASSIVES: PassivesDict = {
     },
     "Fortress Def 3": {
         description: "Grants Def+5. Inflicts Atk-3.",
+        isSacredSeal: true,
         onEquip() {
             const stats = this.entity.getOne("Stats");
             stats.def += 5;
@@ -3712,6 +3917,7 @@ const PASSIVES: PassivesDict = {
     },
     "Fortress Res 1": {
         description: "Grants Res+3. Inflicts Atk-3.",
+        isSacredSeal: true,
         onEquip() {
             const stats = this.entity.getOne("Stats");
             stats.res += 3;
@@ -3721,6 +3927,7 @@ const PASSIVES: PassivesDict = {
     },
     "Fortress Res 2": {
         description: "Grants Res+4. Inflicts Atk-3.",
+        isSacredSeal: true,
         onEquip() {
             const stats = this.entity.getOne("Stats");
             stats.res += 4;
@@ -3730,6 +3937,7 @@ const PASSIVES: PassivesDict = {
     },
     "Fortress Res 3": {
         description: "Grants Res+5. Inflicts Atk-3.",
+        isSacredSeal: true,
         onEquip() {
             const stats = this.entity.getOne("Stats");
             stats.res += 5;
@@ -3800,6 +4008,7 @@ const PASSIVES: PassivesDict = {
     "Atk Smoke 1": {
         description: "Inflicts Atk-3 on foes within 2 spaces of target through their next actions after combat.",
         slot: "C",
+        isSacredSeal: true,
         onCombatAfter(state, target) {
             const enemies = getAllies(state, target);
             for (let enemy of enemies) {
@@ -3815,6 +4024,7 @@ const PASSIVES: PassivesDict = {
     "Atk Smoke 2": {
         description: "Inflicts Atk-5 on foes within 2 spaces of target through their next actions after combat.",
         slot: "C",
+        isSacredSeal: true,
         onCombatAfter(state, target) {
             const enemies = getAllies(state, target);
             for (let enemy of enemies) {
@@ -3830,6 +4040,7 @@ const PASSIVES: PassivesDict = {
     "Atk Smoke 3": {
         description: "Inflicts Atk-7 on foes within 2 spaces of target through their next actions after combat.",
         slot: "C",
+        isSacredSeal: true,
         onCombatAfter(state, target) {
             const enemies = getAllies(state, target);
             for (let enemy of enemies) {
@@ -3845,6 +4056,7 @@ const PASSIVES: PassivesDict = {
     "Spd Smoke 1": {
         description: "Inflicts Spd-3 on foes within 2 spaces of target through their next actions after combat.",
         slot: "C",
+        isSacredSeal: true,
         onCombatAfter(state, target) {
             const enemies = getAllies(state, target);
             for (let enemy of enemies) {
@@ -3860,6 +4072,7 @@ const PASSIVES: PassivesDict = {
     "Spd Smoke 2": {
         description: "Inflicts Spd-5 on foes within 2 spaces of target through their next actions after combat.",
         slot: "C",
+        isSacredSeal: true,
         onCombatAfter(state, target) {
             const enemies = getAllies(state, target);
             for (let enemy of enemies) {
@@ -3875,6 +4088,7 @@ const PASSIVES: PassivesDict = {
     "Spd Smoke 3": {
         description: "Inflicts Spd-7 on foes within 2 spaces of target through their next actions after combat.",
         slot: "C",
+        isSacredSeal: true,
         onCombatAfter(state, target) {
             const enemies = getAllies(state, target);
             for (let enemy of enemies) {
@@ -3889,6 +4103,7 @@ const PASSIVES: PassivesDict = {
     },
     "Spur Spd/Def 1": {
         slot: "C",
+        isSacredSeal: true,
         description: "Grants Spd/Def+2 to adjacent allies during combat.",
         onCombatAllyStart(state, ally) {
             if (HeroSystem.getDistance(ally, this.entity) === 1) {
@@ -3902,6 +4117,7 @@ const PASSIVES: PassivesDict = {
     },
     "Spur Spd/Def 2": {
         slot: "C",
+        isSacredSeal: true,
         description: "Grants Spd/Def+3 to adjacent allies during combat.",
         onCombatAllyStart(state, ally) {
             if (HeroSystem.getDistance(ally, this.entity) === 1) {

@@ -11,11 +11,12 @@ interface AllowedSkills {
     A: string[];
     B: string[];
     C: string[];
+    S: string[];
 }
 
 function generateMoveset(unit: keyof typeof Characters) {
     const unitData = Characters[unit];
-    const exclusiveSkills: AllowedSkills = {
+    const exclusiveSkills: Omit<AllowedSkills, "S"> = {
         weapons: [],
         assists: [],
         specials: [],
@@ -30,7 +31,8 @@ function generateMoveset(unit: keyof typeof Characters) {
         specials: [],
         A: [],
         B: [],
-        C: []
+        C: [],
+        S: [],
     };
 
     for (let weapon in WEAPONS) {
@@ -93,6 +95,10 @@ function generateMoveset(unit: keyof typeof Characters) {
         }
 
         commonSkills[passiveData.slot].push(passive);
+
+        if (passiveData.isSacredSeal) {
+            commonSkills.S.push(passive);
+        }
     }
 
     return { exclusiveSkills, commonSkills };

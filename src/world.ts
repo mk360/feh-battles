@@ -29,10 +29,10 @@ import clearTile from "./systems/clear-tile";
 // import shortid from "shortid";
 import AssistSystem from "./systems/assist";
 import getDistance from "./systems/get-distance";
+import BeforeCombat from "./systems/before-combat";
 
 /**
  * TODO:
- * implement basic combat preview
  * find a way to drop the js files
  */
 
@@ -118,6 +118,7 @@ class GameWorld extends World {
         };
         this.registerTags(...STATUSES);
         this.registerSystem("every-turn", TurnStart, [this.state]);
+        this.registerSystem("before-combat", BeforeCombat, [this.state]);
         this.registerSystem("before-combat", SkillInteractionSystem, [this.state]);
         this.registerSystem("combat", CombatSystem, [this.state]);
         this.registerSystem("movement", MovementSystem, [this.state]);
@@ -260,7 +261,10 @@ class GameWorld extends World {
         if (!attacker.destroyed) {
             attacker.removeComponent(b1);
             attacker.removeComponent(i1);
-            changes = changes.concat(this.endAction(attacker.id));
+            if (attacker.getOne("Galeforced")) {
+            } else {
+                changes = changes.concat(this.endAction(attacker.id));
+            }
         }
 
         if (!defender.destroyed) {
@@ -519,10 +523,10 @@ class GameWorld extends World {
 
         let totalAttackerDamage = 0;
         let attackerDamagePerTurn = 0;
-        let attackerTurns = attackerDamage.size;
+        const attackerTurns = attackerDamage.size;
         const attackerEffectiveness = checkBattleEffectiveness(attacker, defender);
         attackerDamage.forEach((comp) => {
-            if ((!comp.special && attackerTurns > 1) || (comp.special && attackerTurns === 1)) {
+            if (attackerTurns === 1 || (!comp.special && attackerTurns > 1) || (comp.special && attackerTurns === 1)) {
                 attackerDamagePerTurn = comp.attacker.damage;
             }
             totalAttackerDamage += comp.attacker.damage;
@@ -826,7 +830,6 @@ class GameWorld extends World {
         const targetEntity = this.getEntity(change.entity);
         const targetComponent = this.getComponent(change.component);
         if (!targetEntity || !targetComponent) return;
-        console.log(change);
 
         switch (change.op) {
             case "add": {

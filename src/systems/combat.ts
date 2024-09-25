@@ -27,7 +27,7 @@ class CombatSystem extends System {
     init(state: GameState) {
         this.state = state;
 
-        for (let comp of COMBAT_COMPONENTS.concat(["DealDamage"])) {
+        for (let comp of COMBAT_COMPONENTS.concat(["DealDamage", "Kill"])) {
             this.subscribe(comp);
         }
     }
@@ -72,6 +72,7 @@ class CombatSystem extends System {
                 defensiveTile: boolean;
                 cooldown: number;
             }>();
+
             const attackerPosition = getPosition(attacker);
             const attackerTile = this.state.map[attackerPosition.y][attackerPosition.x];
 
@@ -108,8 +109,6 @@ class CombatSystem extends System {
             });
 
             const turns = generateTurns(attacker, target, combatMap.get(attacker).stats, combatMap.get(target).stats);
-
-            console.log(turns.map((i) => i.getOne("Name").value));
 
             let lastAttacker: Entity;
 
@@ -248,6 +247,8 @@ class CombatSystem extends System {
                     damagePercentage
                 });
 
+                console.log({ damageAfterReduction });
+
                 if (defender.getOne("ForceSurvival") && damageAfterReduction >= combatMap.get(defender).hp) {
                     defender.removeComponent(defender.getOne("ForceSurvival"));
                     combatMap.get(defender).hp = 1;
@@ -306,6 +307,8 @@ class CombatSystem extends System {
                         hp: Math.max(combatMap.get(defender).hp, 0)
                     });
                 }
+
+                console.log(combatMap.get(defender).hp);
 
                 if (combatMap.get(defender).hp <= 0) {
                     defender.addComponent({

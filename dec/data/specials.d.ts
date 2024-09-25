@@ -12,7 +12,6 @@ interface SpecialsDict {
         allowedWeaponTypes: WeaponType[];
         exclusiveTo?: (keyof typeof Characters)[];
         allowedMovementTypes?: MovementType[];
-        onCombatRoundAttack?(this: Skill, target: Entity): void;
         type?: "aoe";
         getAoETargets?(this: Skill, state: GameState, target: Entity): Set<Entity>;
         getAoEDamage?(this: Skill, state: GameState, target: Entity): number;
@@ -30,7 +29,6 @@ interface SpecialsDict {
         onTurnStart?(this: Skill, battleState: GameState): void;
         onTurnStartBefore?(this: Skill, battleState: GameState): void;
         onTurnStartAfter?(this: Skill, battleState: GameState): void;
-        onAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: Skill): void;
         onAllyAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: Skill): void;
         shouldActivate?(this: Skill, damage: number): boolean;
     };

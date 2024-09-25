@@ -31,6 +31,7 @@ interface PassivesDict {
         onTurnEnemyCheckRange?(this: Skill, state: GameState, enemy: Entity): void;
         onAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: Skill): void;
         onAllyAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: Skill): void;
+        isSacredSeal?: true;
     };
 }
 declare const PASSIVES: PassivesDict;

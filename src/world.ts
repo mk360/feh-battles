@@ -36,7 +36,9 @@ import BeforeCombat from "./systems/before-combat";
  * find a way to drop the js files
  */
 
-const COMPONENTS_DIRECTORY = fs.readdirSync(path.join(__dirname, "./components"));
+const COMPONENTS = fs.readdirSync(path.join(__dirname, "./components")).map((componentFile) => {
+    return require(path.join(__dirname, "./components", componentFile)).default;
+});;
 
 interface HeroData {
     name: string;
@@ -99,9 +101,6 @@ class GameWorld extends World {
 
     constructor(config: Partial<IWorldConfig> & { team1: string; team2: string }) {
         super(config);
-        const COMPONENTS = COMPONENTS_DIRECTORY.map((componentFile) => {
-            return require(path.join(__dirname, "./components", componentFile)).default;
-        });
         this.state.teamIds = [config.team1, config.team2];
         for (let component of COMPONENTS) {
             this.registerComponent(component);
@@ -187,8 +186,10 @@ class GameWorld extends World {
         const dealDamageActions = events.filter((change) => change.type === "DealDamage" && change.op === "add");
         if (dealDamageActions.length) {
             const attackActions = dealDamageActions.map((damageAction) => {
-                const comp = this.getComponent(damageAction.component).getObject(false);
-                return `attack ${comp.attacker.entity.id} ${comp.attacker.hp} ${comp.attacker.specialCooldown} ${comp.attacker.triggerSpecial} ${comp.attacker.damage} ${comp.attacker.heal} ${comp.target.entity.id} ${comp.target.hp} ${comp.target.specialCooldown} ${+comp.target.triggerSpecial} ${comp.target.damage} ${comp.target.heal}`;
+                const comp = this.getComponent(damageAction.component);
+                this.getEntity(damageAction.entity).removeComponent(comp);
+                const parsed = comp.getObject(false);
+                return `attack ${parsed.attacker.entity.id} ${parsed.attacker.hp} ${parsed.attacker.specialCooldown} ${parsed.attacker.triggerSpecial} ${parsed.attacker.damage} ${parsed.attacker.heal} ${parsed.target.entity.id} ${parsed.target.hp} ${parsed.target.specialCooldown} ${+parsed.target.triggerSpecial} ${parsed.target.damage} ${parsed.target.heal}`;
             }).join("|");
 
             actions.push(attackActions);
@@ -261,6 +262,7 @@ class GameWorld extends World {
         if (!attacker.destroyed) {
             attacker.removeComponent(b1);
             attacker.removeComponent(i1);
+
             if (attacker.getOne("Galeforced")) {
             } else {
                 changes = changes.concat(this.endAction(attacker.id));
@@ -317,6 +319,10 @@ class GameWorld extends World {
                 this.undoComponentChange(change);
             }
         });
+    }
+
+    private outputMovementActions(actions: IComponentChange[]) {
+
     }
 
     previewUnitMovement(id: string, candidateTile: { x: number, y: number }) {
@@ -537,7 +543,7 @@ class GameWorld extends World {
         let defenderTurns = defenderDamage.size;
         const defenderEffectiveness = checkBattleEffectiveness(defender, attacker);
         defenderDamage.forEach((comp) => {
-            if ((!comp.special && defenderTurns > 1) || (comp.special && defenderTurns === 1)) {
+            if (defenderTurns === 1 || (!comp.special && defenderTurns > 1) || (comp.special && defenderTurns === 1)) {
                 defenderDamagePerTurn = comp.attacker.damage;
             }
             totalDefenderDamage += comp.attacker.damage;
@@ -627,6 +633,7 @@ class GameWorld extends World {
             const skillData = WEAPONS[member.weapon];
             const stats = entity.getOne("Stats");
             stats.atk += skillData.might;
+
             const weaponComponentData = {
                 type: "Skill",
                 description: skillData.description,

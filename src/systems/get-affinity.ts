@@ -6,8 +6,8 @@ function getAffinity(unit1: Entity, unit2: Entity) {
     if (unit2.getOne("NeutralizeAffinity")) return 0;
     if (unit1.getOne("GuaranteedAffinity")) return 0.2;
 
-    const { color: color1 } = unit1.getOne("WeaponType");
-    const { color: color2 } = unit2.getOne("WeaponType");
+    const { color: color1 } = unit1.getOne("Weapon");
+    const { color: color2 } = unit2.getOne("Weapon");
     let colorRelationship: "advantage" | "disadvantage" | "neutral" = getColorRelationship(color1, color2);
 
     if (unit1.getOne("ReverseAffinity") && colorRelationship === "disadvantage") {

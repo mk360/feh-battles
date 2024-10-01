@@ -49,7 +49,6 @@ class SkillInteractionSystem extends System {
 
     update() {
         const { attacker, defender } = this.battlingQuery();
-        console.log(attacker?.getOne("Name").value, defender?.getOne("Name").value);
 
         NeutralizationMap.forEach((neutralizingComponent, neutralizedComponent) => {
             defender.getComponents(neutralizingComponent).forEach((comp) => {

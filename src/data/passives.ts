@@ -85,21 +85,15 @@ function turnIsOdd(turnCount: number) {
 function wave(affectedStat: Stat, parity: (turnCount: number) => boolean, buff: number) {
     return function (this: Skill, state: GameState) {
         if (parity(state.turn)) {
-            this.entity.addComponent({
-                type: "MapBuff",
+            applyMapComponent(this.entity, "MapBuff", {
                 [affectedStat]: buff
-            });
-            this.entity.addComponent({ type: "Status", value: "Bonus", source: this.entity });
-            this.entity.addTag("Bonus");
+            }, this.entity);
             const allies = getAllies(state, this.entity);
             for (let ally of allies) {
                 if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                    ally.addComponent({ type: "Status", value: "Bonus", source: this.entity });
-                    ally.addComponent({
-                        type: "MapBuff",
+                    applyMapComponent(ally, "MapBuff", {
                         [affectedStat]: buff
-                    });
-                    ally.addTag("Bonus");
+                    }, this.entity);
                 }
             }
         }
@@ -3020,7 +3014,7 @@ const PASSIVES: PassivesDict = {
         onTurnStart(state) {
             const allies = getAllies(state, this.entity);
             for (let ally of allies) {
-                if (ally.getOne("WeaponType").value === "breath" && HeroSystem.getDistance(ally, this.entity) === 1) {
+                if (ally.getOne("Weapon").weaponType === "breath" && HeroSystem.getDistance(ally, this.entity) === 1) {
                     applyMapComponent(ally, "MapBuff", {
                         def: 6,
                         res: 6,
@@ -3539,6 +3533,7 @@ const PASSIVES: PassivesDict = {
     },
     "Drive Atk 2": {
         onCombatAllyStart(state, ally) {
+            console.log(ally.getOne("Name").value)
             combatBuffByRange(this, ally, 2, {
                 atk: 3
             });
@@ -4151,7 +4146,7 @@ const PASSIVES: PassivesDict = {
         slot: "B",
         onCombatInitiate(state, target) {
             target.addComponent({
-                type: "PreventFollowUp",
+                type: "PreventFollowup",
             });
             const { spd } = getCombatStats(this.entity);
             const { spd: enemySpd } = getCombatStats(target);
@@ -4168,7 +4163,7 @@ const PASSIVES: PassivesDict = {
         slot: "B",
         onCombatInitiate(state, target) {
             target.addComponent({
-                type: "PreventFollowUp",
+                type: "PreventFollowup",
             });
             const { spd } = getCombatStats(this.entity);
             const { spd: enemySpd } = getCombatStats(target);
@@ -4202,7 +4197,7 @@ const PASSIVES: PassivesDict = {
         slot: "B",
         onCombatInitiate(state, target) {
             target.addComponent({
-                type: "PreventFollowUp",
+                type: "PreventFollowup",
             });
             const { spd } = getCombatStats(this.entity);
             const { spd: enemySpd } = getCombatStats(target);
@@ -4219,7 +4214,7 @@ const PASSIVES: PassivesDict = {
         slot: "B",
         onCombatInitiate(state, target) {
             target.addComponent({
-                type: "PreventFollowUp",
+                type: "PreventFollowup",
             });
             const { spd } = getCombatStats(this.entity);
             const { spd: enemySpd } = getCombatStats(target);

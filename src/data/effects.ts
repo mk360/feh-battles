@@ -92,10 +92,6 @@ export function combatBuffByRange(skill: Skill, ally: Entity, range: number, buf
             ...buffs
         });
     }
-}
-
-export function combatBuffByMovementType(skill: Skill, ally: Entity, movementType: MovementType, buffs: Stats) {
-
 };
 
 /**
@@ -118,7 +114,7 @@ export function breaker(skill: Skill, enemy: Entity, targetWeaponType: WeaponTyp
     const { hp, maxHP } = skill.entity.getOne("Stats");
     if (value === targetWeaponType && hp / maxHP >= hpPercentage) {
         enemy.addComponent({
-            type: "PreventFollowUp"
+            type: "PreventFollowup"
         });
         skill.entity.addComponent({
             type: "GuaranteedFollowup"

@@ -939,11 +939,7 @@ const WEAPONS: WeaponDict = {
         might: 14,
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("InitiateCombat")) {
-                target.addComponent({
-                    type: "Status",
-                    value: "Gravity",
-                    source: this.entity
-                });
+                applyMapComponent(target, "GravityComponent", null, this.entity);
             }
         },
     },
@@ -1858,24 +1854,22 @@ const WEAPONS: WeaponDict = {
             for (let ally of allies) {
                 if (HeroSystem.getDistance(ally, this.entity) <= 2) {
                     affectWielder = true;
-                    ally.addComponent({
-                        type: "MapBuff",
+                    applyMapComponent(ally, "MapBuff", {
                         atk: 5,
                         spd: 5,
                         def: 5,
-                        res: 5,
-                    });
+                        res: 5
+                    }, this.entity);
                 }
             }
 
             if (affectWielder) {
-                this.entity.addComponent({
-                    type: "MapBuff",
+                applyMapComponent(this.entity, "MapBuff", {
                     atk: 5,
                     spd: 5,
                     def: 5,
-                    res: 5,
-                });
+                    res: 5
+                }, this.entity);
             }
         },
         onCombatStart(state, target) {
@@ -2172,17 +2166,10 @@ const WEAPONS: WeaponDict = {
             const enemies = getEnemies(battleState, this.entity);
             for (let enemy of enemies) {
                 if (HeroSystem.getDistance(enemy, this.entity) <= 2) {
-                    enemy.addComponent({
-                        type: "MapDebuff",
+                    applyMapComponent(enemy, "MapDebuff", {
                         atk: -7,
-                        spd: -7
-                    });
-
-                    enemy.addComponent({
-                        type: "Status",
-                        value: "Penalty",
-                        source: this.entity
-                    });
+                        spd: -7,
+                    }, this.entity);
                 }
             }
         },

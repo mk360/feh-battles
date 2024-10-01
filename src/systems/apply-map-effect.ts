@@ -8,7 +8,7 @@ interface MapComponentsDict {
     MapBuff: WithSource<"Bonus", Stats>;
     MapDebuff: WithSource<"Penalty", Stats>;
     Panic: WithSource<"Panic">;
-    Gravity: WithSource<"Gravity">;
+    GravityComponent: WithSource<"Gravity">;
     Guidance: WithSource<"Guidance">;
     IncreasedMovement: WithSource<"Increased Movement">;
     Guard: WithSource<"Guard">;
@@ -18,7 +18,7 @@ interface MapComponentsDict {
 const StatusesDict: {
     [k in keyof MapComponentsDict]: MapComponentsDict[k]["status"]
 } = {
-    "Gravity": "Gravity",
+    "GravityComponent": "Gravity",
     Guard: "Guard",
     MapBuff: "Bonus",
     MapDebuff: "Penalty",
@@ -38,7 +38,7 @@ const StatusesDict: {
 export default function applyMapComponent<K extends keyof MapComponentsDict>(target: Entity, component: K, extraValues: Omit<MapComponentsDict[K], "status">, source?: Entity) {
     const componentCreationPayload: IComponentConfig = {
         type: "Status",
-        value: component,
+        value: StatusesDict[component],
     };
 
     target.addComponent({

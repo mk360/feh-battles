@@ -530,8 +530,8 @@ const ASSISTS: AssistsDict = {
         type: ["movement"],
         allowedWeaponTypes: exceptStaves,
         canApply(state, ally) {
-            const firstPosition = this.entity.getOne("TemporaryPosition");
-            const secondPosition = ally.getOne("Position");
+            const firstPosition = getPosition(this.entity);
+            const secondPosition = getPosition(ally);
             const vector = new Direction(secondPosition.x - firstPosition.x, secondPosition.y - firstPosition.y);
             const reversed = vector.reverse();
             const newAllyPosition = reversed.add(reversed.x, reversed.y);

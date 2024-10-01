@@ -269,9 +269,9 @@ class MovementSystem extends System {
     }
 
     getFinalMovementRange(unit: Entity): number {
-        if (unit.getOne("Gravity")) return 1;
+        if (unit.tags.has("Gravity")) return 1;
 
-        if (unit.getOne("IncreasedMovement")) return unit.getOne("MovementType").range + 1;
+        if (unit.tags.has("Increased Movement")) return unit.getOne("MovementType").range + 1;
 
         return unit.getOne("MovementType").range;
     }

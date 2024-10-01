@@ -15,13 +15,18 @@ class AfterCombatSystem extends System {
     update() {
         const { attacker, defender } = this.query();
 
-        if (attacker) {
-            this.state.skillMap.get(attacker).onCombatAfter?.forEach((skill) => {
-                const skillData = SKILLS[skill.name];
-                skillData.onCombatAfter.call(skill, this.state, defender);
-            });
+        const tiles = COMBAT_COMPONENTS.concat(["AttackTile", "MovementTile", "TargetableTile", "StartingHP"]);
 
-            for (let component of COMBAT_COMPONENTS) {
+        if (attacker) {
+            if (defender) {
+                this.state.skillMap.get(attacker).onCombatAfter?.forEach((skill) => {
+                    const skillData = SKILLS[skill.name];
+                    skillData.onCombatAfter.call(skill, this.state, defender);
+                });
+            }
+
+
+            for (let component of tiles) {
                 attacker.getComponents(component).forEach(comp => { if (comp) attacker.removeComponent(comp); });
             }
         }
@@ -32,7 +37,7 @@ class AfterCombatSystem extends System {
                 skillData.onCombatAfter.call(skill, this.state, attacker);
             });
 
-            for (let component of COMBAT_COMPONENTS) {
+            for (let component of tiles) {
                 defender.getComponents(component).forEach(comp => { if (comp) defender.removeComponent(comp); });
             }
         }

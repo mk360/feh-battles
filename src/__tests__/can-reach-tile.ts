@@ -1,3 +1,5 @@
+import { describe, it } from "node:test";
+import assert from "node:assert";
 import Teams from "../data/teams";
 import tileBitmasks from "../data/tile-bitmasks";
 import canReachTile from "../systems/can-reach-tile";
@@ -23,24 +25,24 @@ describe("canReachTile", () => {
         const lava = new Uint16Array(1);
         plains[0] |= tileBitmasks.type.ground;
         lava[0] |= tileBitmasks.type.void;
-        expect(canReachTile(unit, plains)).toEqual(true);
-        expect(canReachTile(unit, lava)).toEqual(false);
+        assert.strictEqual(canReachTile(unit, plains), true);
+        assert.strictEqual(canReachTile(unit, lava), false);
     });
 
     it("can theoretically reach a tile if an ally is there", () => {
         const plains = new Uint16Array(1);
-        plains[0] |= (tileBitmasks.occupation & Teams.team1) | tileBitmasks.type.ground;
+        plains[0] |= (tileBitmasks.occupation & Teams[0]) | tileBitmasks.type.ground;
         const otherPlains = new Uint16Array(1);
-        otherPlains[0] |= (tileBitmasks.occupation & Teams.team2) | tileBitmasks.type.ground;
+        otherPlains[0] |= (tileBitmasks.occupation & Teams[1]) | tileBitmasks.type.ground;
 
-        expect(canReachTile(unit, plains)).toEqual(true);
-        expect(canReachTile(unit, otherPlains)).toEqual(false);
+        assert.strictEqual(canReachTile(unit, plains), true);
+        assert.strictEqual(canReachTile(unit, otherPlains), false);
     });
 
     it("can't cross a tile where movement type is incompatible", () => {
         const voidTile = new Uint16Array(1);
         voidTile[0] |= tileBitmasks.type.void;
 
-        expect(canReachTile(unit, voidTile)).toEqual(false);
+        assert.strictEqual(canReachTile(unit, voidTile), false);
     });
 });

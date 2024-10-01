@@ -61,6 +61,7 @@ declare class GameWorld extends World {
         assistTiles: Set<Component>;
     };
     private undoSystemChanges;
+    private outputMovementActions;
     previewUnitMovement(id: string, candidateTile: {
         x: number;
         y: number;

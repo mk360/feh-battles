@@ -1,108 +1,117 @@
-import calculateDamage from "../systems/calculate-damage";
+import { calculateDamageBeforeReductions } from "../systems/calculate-damage";
+import { describe, it } from "node:test";
+import assert from "node:assert";
 
 describe("calculateDamage", () => {
     it("should simply subtract def from atk if no special factor is in play", () => {
-        const damage = calculateDamage({
+        const damage = calculateDamageBeforeReductions({
             atkStat: 51,
             effectiveness: 1,
             advantage: 0,
-            flatReduction: 0,
-            damagePercentage: 100,
+            specialIncreasePercentage: 0,
+            flatIncrease: 0,
+            staffPenalty: false,
             affinity: 0,
             defenseStat: 19,
             defensiveTerrain: false
         });
 
-        expect(damage).toEqual(51 - 19);
+        assert.strictEqual(damage, 51 - 19);
     });
 
     it("should add 20% of atk if there's a color advantage", () => {
-        const damage = calculateDamage({
+        const damage = calculateDamageBeforeReductions({
             atkStat: 83,
             effectiveness: 1,
             advantage: 0.2,
-            flatReduction: 0,
-            damagePercentage: 100,
+            specialIncreasePercentage: 0,
+            flatIncrease: 0,
+            staffPenalty: false,
             affinity: 0,
             defenseStat: 17,
             defensiveTerrain: false
         });
 
-        expect(damage).toEqual(82);
+        assert.strictEqual(damage, 82);
     });
 
     it("should subtract 20% of atk if there's a color disadvantage", () => {
-        const damage = calculateDamage({
+        const damage = calculateDamageBeforeReductions({
             atkStat: 40,
             effectiveness: 1,
             advantage: -0.2,
-            flatReduction: 0,
-            damagePercentage: 100,
+            specialIncreasePercentage: 0,
+            flatIncrease: 0,
+            staffPenalty: false,
             affinity: 0,
             defenseStat: 9,
             defensiveTerrain: false
         });
 
-        expect(damage).toEqual(23);
+        assert.strictEqual(damage, 23);
     });
 
     it("should add 50% of atk if there's effectiveness", () => {
-        const damage = calculateDamage({
+        const damage = calculateDamageBeforeReductions({
             atkStat: 46,
             defenseStat: 5,
             effectiveness: 1.5,
-            flatReduction: 0,
             advantage: 0,
             defensiveTerrain: false,
             affinity: 0,
-            damagePercentage: 100
+            specialIncreasePercentage: 0,
+            flatIncrease: 0,
+            staffPenalty: false,
         });
 
-        expect(damage).toEqual(64);
+        assert.strictEqual(damage, 64);
     });
 
     it("should stack effectiveness with color advantage", () => {
-        const damage = calculateDamage({
+        const damage = calculateDamageBeforeReductions({
             atkStat: 44,
             defenseStat: 9,
             effectiveness: 1.5,
             advantage: 0.2,
             defensiveTerrain: false,
-            damagePercentage: 100,
+            specialIncreasePercentage: 0,
+            flatIncrease: 0,
+            staffPenalty: false,
             affinity: 0,
-            flatReduction: 0,
         });
 
-        expect(damage).toEqual(70);
+        assert.strictEqual(damage, 70);
     });
 
     it("should stack color advantage with affinity", () => {
-        const damage = calculateDamage({
+        const damage = calculateDamageBeforeReductions({
             atkStat: 38,
             advantage: 0.2,
             affinity: 0.2,
             defenseStat: 25,
             effectiveness: 1,
             defensiveTerrain: false,
-            flatReduction: 0,
-            damagePercentage: 100
+            specialIncreasePercentage: 0,
+            flatIncrease: 0,
+            staffPenalty: false,
         });
 
-        expect(damage).toEqual(28);
+        assert.strictEqual(damage, 28);
     });
 
     it("should should take defensive tile reduction", () => {
-        const damage = calculateDamage({
+        const damage = calculateDamageBeforeReductions({
             atkStat: 38,
             advantage: 0,
             affinity: 0,
             defenseStat: 25,
             effectiveness: 1,
             defensiveTerrain: true,
-            flatReduction: 0,
-            damagePercentage: 100
+            specialIncreasePercentage: 0,
+            flatIncrease: 0,
+            staffPenalty: false,
         });
 
-        expect(damage).toBeLessThan(38 - 25);
+        assert.strictEqual(damage, 38 - 25);
     });
 });

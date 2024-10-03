@@ -639,6 +639,7 @@ class GameWorld extends World {
                 description: skillData.description,
                 slot: "weapon",
                 name: member.weapon,
+                displayName: skillData.displayName,
                 might: skillData.might,
             };
 

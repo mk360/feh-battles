@@ -5,6 +5,8 @@ class Skill extends Component {
         name: "",
         description: "",
         slot: "",
+        might: 0,
+        displayName: "",
     }
 }
 

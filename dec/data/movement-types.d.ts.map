@@ -1,1 +1,0 @@
-{"version":3,"file":"movement-types.d.ts","sourceRoot":"","sources":["../../src/data/movement-types.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,YAAY,IAAI,QAAQ,EAAE,MAAM,qBAAqB,CAAC;AAE/D,UAAU,YAAY;IAClB,KAAK,EAAE,MAAM,CAAC;IACd,QAAQ,EAAE,MAAM,CAAC;CACpB;AAED,QAAA,MAAM,aAAa,EAAE;KAAG,CAAC,IAAI,QAAQ,GAAG,YAAY;CAiB1C,CAAC;AAEX,eAAe,aAAa,CAAC"}

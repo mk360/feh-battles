@@ -1,1 +1,0 @@
-{"version":3,"file":"after-combat.d.ts","sourceRoot":"","sources":["../../src/systems/after-combat.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAE,MAAM,SAAS,CAAC;AACjC,OAAO,SAAS,MAAM,SAAS,CAAC;AAKhC,cAAM,iBAAkB,SAAQ,MAAM;IAClC,OAAO,CAAC,KAAK,CAAY;IACzB,OAAO,CAAC,KAAK,CAA+B;IAE5C,IAAI,CAAC,KAAK,EAAE,SAAS,GAAG,IAAI;IAI5B,MAAM;CAyBT;AAED,eAAe,iBAAiB,CAAC"}

@@ -1,1 +1,0 @@
-{"version":3,"file":"heal.d.ts","sourceRoot":"","sources":["../../../src/systems/mechanics/heal.ts"],"names":[],"mappings":"AAAA,OAAO,EAAS,MAAM,EAAE,MAAM,SAAS,CAAC;AAIxC,cAAM,UAAW,SAAQ,MAAM;IAC3B,OAAO,CAAC,aAAa,CAAQ;IAE7B,IAAI,IAAI,IAAI;IAOZ,MAAM;CA4BT;AAED,eAAe,UAAU,CAAC"}

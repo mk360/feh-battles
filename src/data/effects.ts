@@ -284,10 +284,10 @@ export function swap(state: GameState, entity1: Entity, entity2: Entity) {
  * may cross unpassable terrain (except walls) if they will land on a valid tile. Make sure the `checker` function returns true before calling the runner.
  */
 export function shove(state: GameState, caller: Entity, shoved: Entity, range: number) {
-    const pos1 = getPosition(caller);
-    const pos2 = getPosition(shoved);
+    const pos1 = getPosition(caller).getObject(false);
+    const pos2 = getPosition(shoved).getObject(false);
 
-    const direction = new Direction(pos2.x - pos1.x, pos2.y - pos1.y);
+    const direction = new Direction(0, 0);
 
     let atLeastOneTile = false;
 
@@ -298,7 +298,7 @@ export function shove(state: GameState, caller: Entity, shoved: Entity, range: n
             atLeastOneTile = (i - 1) > 0; // if out of bounds, then surely last valid tile is correct?
             break;
         };
-        const isValid = canReachTile(shoved, newTile);
+        const isValid = canReachTile(shoved, newTile) && (newTile & tileBitmasks.occupation) === 0;
         atLeastOneTile = isValid;
         if (atLeastOneTile && i < range) continue;
         if (!atLeastOneTile) {

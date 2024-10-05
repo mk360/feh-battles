@@ -2,6 +2,8 @@ import { System } from "ape-ecs";
 import battlingEntitiesQuery from "./battling-entities-query";
 import GameState from "./state";
 import SPECIALS from "../data/specials";
+import collectMapMods from "./collect-map-mods";
+import { CombatStats } from "../interfaces/types";
 
 const STATUS_COMPONENTS = ["SlowSpecial", "AccelerateSpecial", "PreventCounterattack", "GuaranteedFollowup", "MapDamage", "Heal", "Special"];
 
@@ -59,6 +61,36 @@ class BeforeCombat extends System {
         if (defender.tags.has("Prevent Counterattack")) {
             attacker.addComponent({
                 type: "PreventCounterattack"
+            });
+        }
+
+        if (attacker.getOne("NeutralizeMapBuffs")) {
+            const defenderMapMods = collectMapMods(defender);
+            const debuffMap: Partial<CombatStats> = {};
+
+            for (let stat in defenderMapMods.buffs) {
+                const value = defenderMapMods.buffs[stat];
+                debuffMap[stat] = -value;
+            }
+
+            defender.addComponent({
+                type: "CombatDebuff",
+                ...debuffMap
+            });
+        }
+
+        if (defender.getOne("NeutralizeMapBuffs")) {
+            const attackerMapMods = collectMapMods(attacker);
+            const debuffMap: Partial<CombatStats> = {};
+
+            for (let stat in attackerMapMods.buffs) {
+                const value = attackerMapMods.buffs[stat];
+                debuffMap[stat] = -value;
+            }
+
+            attacker.addComponent({
+                type: "CombatDebuff",
+                ...debuffMap
             });
         }
     }

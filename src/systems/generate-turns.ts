@@ -23,11 +23,11 @@ function generateTurns(attacker: Entity, defender: Entity, attackerCombatStats: 
         }
     }
 
-    if (attackerCombatStats.spd >= defenderCombatStats.spd + 5) {
+    if (attackerCombatStats.spd >= defenderCombatStats.spd + 5 && !defender.getOne("PreventFollowup")) {
         turns.push(attacker);
     }
 
-    if (defenderIsAllowed && attackerCombatStats.spd + 5 <= defenderCombatStats.spd) {
+    if (defenderIsAllowed && attackerCombatStats.spd + 5 <= defenderCombatStats.spd && !attacker.getOne("PreventFollowup")) {
         turns.push(defender);
     }
 

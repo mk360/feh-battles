@@ -1,6 +1,8 @@
 import getCombatStats from "../systems/get-combat-stats";
 import getTargetedDefenseStat from "../systems/get-targeted-defense-stat";
 import TEST_GAME_WORLD from "./constants/world";
+import { describe, it } from "node:test";
+import assert from "node:assert";
 
 describe("get-targeted-defense-stat", () => {
     const magicUser = TEST_GAME_WORLD.createHero({
@@ -32,11 +34,11 @@ describe("get-targeted-defense-stat", () => {
     }, "team2", 1);
 
     it("should target Defense when using a physical weapon", () => {
-        expect(getTargetedDefenseStat(physicalWeaponUser, magicUser, getCombatStats(magicUser))).toEqual("def");
+        assert.strictEqual(getTargetedDefenseStat(physicalWeaponUser, magicUser, getCombatStats(magicUser)), "def");
     });
 
     it("should target Resistance when using a magic weapon", () => {
-        expect(getTargetedDefenseStat(magicUser, physicalWeaponUser, getCombatStats(physicalWeaponUser))).toEqual("res");
+        assert.strictEqual(getTargetedDefenseStat(magicUser, physicalWeaponUser, getCombatStats(physicalWeaponUser)), "res");
     });
 
     it("should target the lowest of two defenses if defender has appropriate component", () => {
@@ -44,6 +46,6 @@ describe("get-targeted-defense-stat", () => {
             type: "TargetLowestDefense"
         });
 
-        expect(getTargetedDefenseStat(physicalWeaponUser, physicalWeaponUser, getCombatStats(physicalWeaponUser))).toEqual("res");
+        assert.strictEqual(getTargetedDefenseStat(physicalWeaponUser, physicalWeaponUser, getCombatStats(physicalWeaponUser)), "res");
     });
 });

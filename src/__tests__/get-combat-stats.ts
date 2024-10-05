@@ -3,6 +3,8 @@ import CHARACTERS from "../data/characters";
 import getCombatStats from "../systems/get-combat-stats";
 import getLv40Stats from "../systems/unit-stats";
 import TEST_GAME_WORLD from "./constants/world";
+import { describe, it } from "node:test";
+import assert from "node:assert";
 
 describe("get-combat-stats", () => {
     const dexData = CHARACTERS["Ryoma: Peerless Samurai"];
@@ -24,7 +26,7 @@ describe("get-combat-stats", () => {
         const { hp, ...rest } = getLv40Stats(dexData.stats, dexData.growthRates, 5);
         const combatStats = getCombatStats(entity);
 
-        expect(rest).toEqual(combatStats);
+        assert.deepEqual(combatStats, rest);
     });
 
     it("should take weapons into account", () => {
@@ -46,7 +48,7 @@ describe("get-combat-stats", () => {
 
         const combatStats = getCombatStats(otherEntity);
 
-        expect(combatStats.atk).toEqual(stats.atk + 16);
+        assert.strictEqual(combatStats.atk, stats.atk + 16);
 
         TEST_GAME_WORLD.removeEntity(otherEntity);
         otherEntity.destroy();
@@ -65,8 +67,8 @@ describe("get-combat-stats", () => {
 
         const stats = getLv40Stats(dexData.stats, dexData.growthRates, 5);
         const combatStats = getCombatStats(entity);
-        expect(combatStats.atk).toEqual(stats.atk + 6);
-        expect(combatStats.def).toEqual(stats.def + 6);
+        assert.strictEqual(combatStats.atk, stats.atk + 6);
+        assert.strictEqual(combatStats.def, stats.def + 6);
 
         entity.removeComponent(otherBuff);
         entity.removeComponent(addedBuff);
@@ -87,7 +89,7 @@ describe("get-combat-stats", () => {
 
         const combatStats = getCombatStats(entity);
 
-        expect(combatStats.atk).toEqual(stats.atk + 5);
+        assert.strictEqual(combatStats.atk, stats.atk + 5);
 
         entity.removeComponent(firstBuff);
         entity.removeComponent(secondBuff);
@@ -108,7 +110,7 @@ describe("get-combat-stats", () => {
 
         const combatStats = getCombatStats(entity);
 
-        expect(combatStats.atk).toEqual(stats.atk - 5);
+        assert.strictEqual(combatStats.atk, stats.atk - 5);
 
         entity.removeComponent(firstDebuff);
         entity.removeComponent(secondDebuff);

@@ -85,4 +85,32 @@ describe("generate-turns", () => {
         assert.strictEqual(turns[2], hero2);
         hero1.removeComponent(cmp);
     });
+
+    it("should prevent a followup on a hero if the proper component is applied", () => {
+        const cmp = hero1.addComponent({
+            type: "PreventFollowup"
+        }) as Component;
+
+        hero2.getOne("Stats")!.spd += 10;
+
+        const turns = generateTurns(hero1, hero2, getCombatStats(hero1), getCombatStats(hero2));
+        assert.strictEqual(turns[0], hero1);
+        assert.strictEqual(turns[1], hero2);
+
+        hero1.removeComponent(cmp);
+        hero2.getOne("Stats")!.spd -= 10;
+
+        const cmp2 = hero2.addComponent({
+            type: "PreventFollowup"
+        }) as Component;
+
+        hero1.getOne("Stats")!.spd += 10;
+
+        const turns2 = generateTurns(hero1, hero2, getCombatStats(hero1), getCombatStats(hero2));
+        assert.strictEqual(turns2[0], hero1);
+        assert.strictEqual(turns2[1], hero2);
+
+        hero2.removeComponent(cmp);
+        hero1.getOne("Stats")!.spd -= 10;
+    });
 });

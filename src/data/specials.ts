@@ -27,8 +27,8 @@ interface SpecialsDict {
         exclusiveTo?: (keyof typeof Characters)[];
         allowedMovementTypes?: MovementType[];
         type?: "aoe";
-        getAoETargets?(this: Skill, state: GameState, target: Entity): Set<Entity>;
-        getAoEDamage?(this: Skill, state: GameState, target: Entity): number;
+        getAoETargets?(state: GameState, target: Entity): Set<Entity>;
+        getAoEDamage?(skill: Skill, state: GameState, target: Entity): number;
         onAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: Skill): void;
         onSpecialTrigger?(this: Skill, battleState: GameState, target: Entity): void;
         onCombatStart?(this: Skill, battleState: GameState, target: Entity): void;
@@ -49,9 +49,9 @@ interface SpecialsDict {
 }
 
 function calculateAoEDamage(multiplier: 1 | 1.5) {
-    return function (this: Skill, state: GameState, target: Entity) {
-        const { atk } = getMapStats(this.entity);
-        const targetedDefense = getTargetedDefenseStat(this.entity, target, getCombatStats(target));
+    return function (skill: Skill, state: GameState, target: Entity) {
+        const { atk } = getMapStats(skill.entity);
+        const targetedDefense = getTargetedDefenseStat(skill.entity, target, getCombatStats(target));
         const { [targetedDefense]: defense } = getMapStats(target);
 
         if (atk < defense) return 0;
@@ -637,7 +637,7 @@ const SPECIALS: SpecialsDict = {
     },
     "Rising Flame": {
         type: "aoe",
-        cooldown: 5,
+        cooldown: 0,
         description: "Before combat this unit initiates, foes in an area near target take damage equal to (unit's Atk minus foe's Def or Res).",
         getAoEDamage: calculateAoEDamage(1),
         allowedWeaponTypes: exceptStaves,

@@ -20,31 +20,9 @@ class BeforeCombat extends System {
     }
 
     update() {
+        this.world.runSystems("aoe");
+
         const { attacker, defender } = this.battlingQuery();
-
-        if (attacker.getOne("Special")) {
-            const equippedSpecial = attacker.getOne("Special");
-            const specialData = SPECIALS[equippedSpecial.name];
-
-            if (specialData.type === "aoe" && equippedSpecial.cooldown === 0) {
-                const targets = specialData.getAoETargets.call(equippedSpecial, this.state, defender);
-
-                targets.forEach((target) => {
-                    const damage = specialData.getAoEDamage.call(equippedSpecial, this.state, target);
-
-                    if (damage) {
-                        target.addComponent({
-                            type: "MapDamage",
-                            value: damage
-                        });
-                    }
-                });
-
-                equippedSpecial.update({
-                    cooldown: equippedSpecial.maxCooldown
-                });
-            }
-        }
 
         if (attacker.tags.has("Guard")) {
             attacker.addComponent({

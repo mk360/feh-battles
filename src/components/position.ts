@@ -7,6 +7,8 @@ class Position extends Component {
     };
 
     static serializeFields = ["x", "y"];
+
+    static changeEvents = true;
 };
 
 export default Position;

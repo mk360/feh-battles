@@ -8,7 +8,7 @@ class AfterCombatSystem extends System {
     private state: GameState;
     private query = battlingEntitiesQuery(this);
 
-    init(state: GameState): void {
+    init(state: GameState) {
         this.state = state;
     }
 

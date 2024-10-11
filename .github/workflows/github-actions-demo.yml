@@ -1,0 +1,10 @@
+name: Run a basic test
+run-name: This is a test
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Test action
+        uses: actions/checkout@v4
+        run: npm i

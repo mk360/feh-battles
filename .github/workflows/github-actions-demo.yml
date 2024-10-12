@@ -5,6 +5,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Test action
+      - name: Checkout repository
         uses: actions/checkout@v4
-      - run: npm i
+
+      - name: Install Node v22, dependencies
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm i -q
+
+      - name: Run tests
+        run: npx ts-node src/__tests__/calculate-damage.ts

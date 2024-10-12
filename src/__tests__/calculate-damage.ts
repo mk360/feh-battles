@@ -69,8 +69,8 @@ describe("calculateDamage", () => {
 
     it("should stack effectiveness with color advantage", () => {
         const damage = calculateDamageBeforeReductions({
-            atkStat: 44,
-            defenseStat: 9,
+            atkStat: 70,
+            defenseStat: 4,
             effectiveness: 1.5,
             advantage: 0.2,
             defensiveTerrain: false,
@@ -80,7 +80,7 @@ describe("calculateDamage", () => {
             affinity: 0,
         });
 
-        assert.strictEqual(damage, 70);
+        assert.strictEqual(damage, 122);
     });
 
     it("should stack color advantage with affinity", () => {
@@ -99,12 +99,12 @@ describe("calculateDamage", () => {
         assert.strictEqual(damage, 28);
     });
 
-    it("should should take defensive tile reduction", () => {
+    it("should take defensive tile reduction into account", () => {
         const damage = calculateDamageBeforeReductions({
-            atkStat: 38,
+            atkStat: 69,
             advantage: 0,
             affinity: 0,
-            defenseStat: 25,
+            defenseStat: 22,
             effectiveness: 1,
             defensiveTerrain: true,
             specialIncreasePercentage: 0,
@@ -112,6 +112,6 @@ describe("calculateDamage", () => {
             staffPenalty: false,
         });
 
-        assert.strictEqual(damage, 38 - 25);
+        assert.strictEqual(damage, 41);
     });
 });

@@ -29,6 +29,8 @@ import AssistSystem from "./systems/assist";
 import getDistance from "./systems/get-distance";
 import BeforeCombat from "./systems/before-combat";
 import AoESystem from "./systems/mechanics/aoe";
+import MoveSystem from "./systems/mechanics/move";
+import HPModSystem from "./systems/mechanics/hp-mod";
 
 /**
  * TODO:
@@ -120,8 +122,10 @@ class GameWorld extends World {
         this.registerSystem("before-combat", SkillInteractionSystem, [this.state]);
         this.registerSystem("combat", CombatSystem, [this.state]);
         this.registerSystem("movement", MovementSystem, [this.state]);
+        this.registerSystem("move", MoveSystem, [this.state]);
         this.registerSystem("kill", KillSystem, [this.state]);
         this.registerSystem("aoe", AoESystem, [this.state]);
+        this.registerSystem("hp-mod", HPModSystem);
         this.registerSystem("after-combat", AfterCombatSystem, [this.state]);
         this.registerSystem("assist", AssistSystem, [this.state]);
     }
@@ -135,7 +139,6 @@ class GameWorld extends World {
     }
 
     startTurn() {
-        this.switchSides();
         const team = this.state.teams[this.state.currentSide];
         team.forEach((hero) => {
             hero.tags = new Set();
@@ -159,16 +162,28 @@ class GameWorld extends World {
 
         const turnEvents = this.outputEngineActions(changes);
         const withTurnChange = [`turn ${this.state.currentSide} ${this.state.turn}`].concat(turnEvents);
+        this.switchSides();
         return withTurnChange;
     }
 
     private outputEngineActions(events: IComponentChange[]) {
         let actions: string[] = [];
-        const statuses = events.filter((change) => change.type === "Status" && change.op === "add");
 
         const statusDealingMap: { [k: string]: { target: string, status: string }[] } = {};
+
+
+        // for (let event of events) {
+        //     if (event.type === "Status" && event.op === "add") {
+
+        //         actions.push(`trigger ${source}`);
+        //     }
+        // }
+
+        const statuses = events.filter((change) => change.type === "Status" && change.op === "add");
+
         for (let status of statuses) {
             const comp = this.getComponent(status.component);
+            const source = comp.source.id;
             if (!statusDealingMap[comp.source.id]) statusDealingMap[comp.source.id] = [];
             statusDealingMap[comp.source.id].push({ target: comp.entity.id, status: comp.value });
         }
@@ -202,7 +217,6 @@ class GameWorld extends World {
         if (dealDamageActions.length) {
             const attackActions = dealDamageActions.map((damageAction) => {
                 const comp = this.getComponent(damageAction.component);
-                this.getEntity(damageAction.entity).removeComponent(comp);
                 const parsed = comp.getObject(false);
                 return `attack ${parsed.attacker.entity.id} ${parsed.attacker.hp} ${parsed.attacker.specialCooldown} ${parsed.attacker.triggerSpecial} ${parsed.attacker.damage} ${parsed.attacker.heal} ${parsed.target.entity.id} ${parsed.target.hp} ${parsed.target.specialCooldown} ${+parsed.target.triggerSpecial} ${parsed.target.damage} ${parsed.target.heal}`;
             }).join("|");
@@ -300,9 +314,10 @@ class GameWorld extends World {
         entity.getComponents("MovementTile").forEach((t) => { if (t) entity.removeComponent(t); });
         entity.getComponents("AttackTile").forEach((t) => { if (t) entity.removeComponent(t); });
         entity.getComponents("WarpTile").forEach((t) => { if (t) entity.removeComponent(t); });
-        entity.getComponents("TargetableTile").forEach((t) => { if (t) entity.removeComponent(t); });
+        entity.getComponents("WarpTile").forEach((t) => { if (t) entity.removeComponent(t); });
         entity.getComponents("Obstruct").forEach((t) => { if (t) entity.removeComponent(t); });
         entity.getComponents("AssistTile").forEach((t) => { if (t) entity.removeComponent(t); });
+
         this.runSystems("movement");
         const movementTiles = entity.getComponents("MovementTile");
         const attackTiles = entity.getComponents("AttackTile");
@@ -363,10 +378,12 @@ class GameWorld extends World {
     moveUnit(id: string, newTile: { x: number, y: number }, endAction: boolean) {
         const unit = this.getEntity(id);
         unit.addComponent({
-            type: "Movable",
+            type: "Move",
+            x: newTile.x,
+            y: newTile.y,
         });
 
-        this.runSystems("movement");
+        this.runSystems("move");
 
         const positionComponent = unit.getOne("Position");
         const change = [`move ${id} ${positionComponent.x} ${positionComponent.y}`];
@@ -526,7 +543,6 @@ class GameWorld extends World {
             ...temporaryCoordinates
         });
         this.runSystems("before-combat");
-        this.runSystems("aoe");
         this.runSystems("combat");
 
         attacker.removeComponent(b1);

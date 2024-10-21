@@ -218,6 +218,7 @@ class GameWorld extends World {
             const attackActions = dealDamageActions.map((damageAction) => {
                 const comp = this.getComponent(damageAction.component);
                 const parsed = comp.getObject(false);
+
                 return `attack ${parsed.attacker.entity.id} ${parsed.attacker.hp} ${parsed.attacker.specialCooldown} ${parsed.attacker.triggerSpecial} ${parsed.attacker.damage} ${parsed.attacker.heal} ${parsed.target.entity.id} ${parsed.target.hp} ${parsed.target.specialCooldown} ${+parsed.target.triggerSpecial} ${parsed.target.damage} ${parsed.target.heal}`;
             }).join("|");
 
@@ -240,6 +241,30 @@ class GameWorld extends World {
         return mapMods;
     }
 
+    outputBeforeCombatActions(changes: IComponentChange[]) {
+        const actions: string[] = [];
+        const aoeDamage = changes.filter(({ type, component, entity }) => type === "MapDamage" && this.getEntity(entity));
+
+        console.log(changes);
+        const heal = changes.filter(({ type, component }) => type === "Heal" && this.getEntity(component));
+
+        const aoeDamageStrings = aoeDamage.concat(heal).map((change) => {
+            const detailedComponent = this.getComponent(change.component);
+
+            if (change.type === "MapDamage") {
+                return `map-damage ${detailedComponent.entity.id} ${detailedComponent.value} ${detailedComponent.remainingHP}`;
+            }
+
+            return `heal ${detailedComponent.entity.id} ${detailedComponent.value} ${detailedComponent.newHP}`;
+        }).join("|");
+
+        if (aoeDamageStrings) {
+            actions.push(aoeDamageStrings)
+        }
+
+        return actions;
+    }
+
     runCombat(attackerId: string, movementCoordinates: { x: number, y: number }, targetCoordinates: { x: number, y: number }, path: { x: number, y: number }[]) {
         const attacker = this.getEntity(attackerId);
         const range = attacker.getOne("Weapon").range;
@@ -259,13 +284,13 @@ class GameWorld extends World {
         let changes: string[] = this.moveUnit(attackerId, bestTile, false);
 
         this.runSystems("before-combat");
+        this.runSystems("hp-mod");
         this.runSystems("combat");
-        this.runSystems("kill");
         this.runSystems("after-combat");
 
         this.systems.get("before-combat").forEach((system) => {
             // @ts-ignore
-            changes = changes.concat(this.outputEngineActions(system._stagedChanges));
+            changes = changes.concat(this.outputBeforeCombatActions(system._stagedChanges));
         });
 
         this.systems.get("combat").forEach((system) => {
@@ -278,12 +303,9 @@ class GameWorld extends World {
             changes = changes.concat(this.outputEngineActions(system._stagedChanges));
         });
 
-        this.systems.get("kill").forEach((system) => {
-            // @ts-ignore
-            changes = changes.concat(this.outputEngineActions(system._stagedChanges));
-        });
+        this.runSystems("kill");
 
-        this.systems.get("after-combat").forEach((system) => {
+        this.systems.get("kill").forEach((system) => {
             // @ts-ignore
             changes = changes.concat(this.outputEngineActions(system._stagedChanges));
         });

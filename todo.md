@@ -10,6 +10,7 @@
 - Optimize textbox functions (cache game objects)
 - Add Win and Loss screens
 - Design Debug tool UI
+- Add Sacred Seals
 
 ## Server
 
@@ -25,3 +26,5 @@
 - Design Debug tool
 - Properly output actions depending on game phases
 - Unit testing
+- Integrate Sacred Seals
+- Generate movesets

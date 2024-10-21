@@ -1,11 +1,10 @@
 import { System } from "ape-ecs";
 import battlingEntitiesQuery from "./battling-entities-query";
 import GameState from "./state";
-import SPECIALS from "../data/specials";
 import collectMapMods from "./collect-map-mods";
 import { CombatStats } from "../interfaces/types";
 
-const STATUS_COMPONENTS = ["SlowSpecial", "AccelerateSpecial", "PreventCounterattack", "GuaranteedFollowup", "MapDamage", "Heal", "Special"];
+const STATUS_COMPONENTS = ["SlowSpecial", "AccelerateSpecial", "MapDamage", "AoETarget", "PreventCounterattack", "GuaranteedFollowup", "MapDamage", "Heal", "Special"];
 
 class BeforeCombat extends System {
     private state: GameState;
@@ -21,6 +20,7 @@ class BeforeCombat extends System {
 
     update() {
         this.world.runSystems("aoe");
+        this.world.runSystems("hp-mod");
 
         const { attacker, defender } = this.battlingQuery();
 

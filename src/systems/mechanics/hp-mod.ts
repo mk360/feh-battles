@@ -2,11 +2,13 @@ import { Query, System } from "ape-ecs";
 
 const SUBSCRIBED_COMPONENTS = ["Stats"];
 
-class HealSystem extends System {
+class HPModSystem extends System {
     private healableQuery: Query;
 
-    init(): void {
+    init() {
         this.healableQuery = this.createQuery().fromAll("Heal", "MapDamage");
+        this.subscribe("MapDamage");
+        this.subscribe("Heal");
         for (let component of SUBSCRIBED_COMPONENTS) {
             this.subscribe(component);
         }
@@ -29,17 +31,29 @@ class HealSystem extends System {
                 entity.removeComponent(damageComp);
             });
 
-            const { hp, maxHP, ...rest } = entity.getOne("Stats").getObject(false);
+            const { hp, maxHP } = entity.getOne("Stats").getObject(false);
 
             const clamped = Math.max(1, Math.min(hp + healthDifference, maxHP));
 
             entity.getOne("Stats").update({
                 hp: clamped,
-                maxHP,
-                ...rest
             });
+
+            if (healthDifference > 0) {
+                entity.addComponent({
+                    type: "Heal",
+                    value: healthDifference,
+                    newHP: clamped
+                });
+            } else if (healthDifference < 0) {
+                entity.addComponent({
+                    type: "MapDamage",
+                    value: healthDifference,
+                    remainingHP: clamped
+                });
+            }
         });
     }
 };
 
-export default HealSystem;
+export default HPModSystem;

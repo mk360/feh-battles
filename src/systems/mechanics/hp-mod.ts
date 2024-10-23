@@ -6,7 +6,7 @@ class HPModSystem extends System {
     private healableQuery: Query;
 
     init() {
-        this.healableQuery = this.createQuery().fromAll("Heal", "MapDamage");
+        this.healableQuery = this.createQuery().fromAny("Heal", "MapDamage");
         this.subscribe("MapDamage");
         this.subscribe("Heal");
         for (let component of SUBSCRIBED_COMPONENTS) {
@@ -42,13 +42,13 @@ class HPModSystem extends System {
             if (healthDifference > 0) {
                 entity.addComponent({
                     type: "Heal",
-                    value: healthDifference,
+                    value: Math.abs(healthDifference),
                     newHP: clamped
                 });
             } else if (healthDifference < 0) {
                 entity.addComponent({
                     type: "MapDamage",
-                    value: healthDifference,
+                    value: Math.abs(healthDifference),
                     remainingHP: clamped
                 });
             }

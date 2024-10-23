@@ -24,12 +24,6 @@ class AoESystem extends System {
                 targets.forEach((target) => {
                     const damage = specialData.getAoEDamage(special, this.state, target);
                     if (attacker.getOne("Battling")) {
-                        const statsComponent = target.getOne("Stats");
-                        const { hp } = statsComponent;
-                        const futureHP = Math.max(1, hp - damage);
-                        statsComponent.update({
-                            hp: futureHP
-                        });
                         target.addComponent({
                             type: "MapDamage",
                             value: damage

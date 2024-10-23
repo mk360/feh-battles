@@ -243,14 +243,12 @@ class GameWorld extends World {
 
     outputBeforeCombatActions(changes: IComponentChange[]) {
         const actions: string[] = [];
-        const aoeDamage = changes.filter(({ type, component, entity }) => type === "MapDamage" && this.getEntity(entity));
+        const aoeDamage = changes.filter(({ type, component }) => type === "MapDamage" && this.getComponent(component));
 
-        console.log(changes);
         const heal = changes.filter(({ type, component }) => type === "Heal" && this.getEntity(component));
 
         const aoeDamageStrings = aoeDamage.concat(heal).map((change) => {
             const detailedComponent = this.getComponent(change.component);
-
             if (change.type === "MapDamage") {
                 return `map-damage ${detailedComponent.entity.id} ${detailedComponent.value} ${detailedComponent.remainingHP}`;
             }
@@ -259,7 +257,7 @@ class GameWorld extends World {
         }).join("|");
 
         if (aoeDamageStrings) {
-            actions.push(aoeDamageStrings)
+            actions.push(aoeDamageStrings);
         }
 
         return actions;
@@ -284,7 +282,6 @@ class GameWorld extends World {
         let changes: string[] = this.moveUnit(attackerId, bestTile, false);
 
         this.runSystems("before-combat");
-        this.runSystems("hp-mod");
         this.runSystems("combat");
         this.runSystems("after-combat");
 

@@ -3533,7 +3533,6 @@ const PASSIVES: PassivesDict = {
     },
     "Drive Atk 2": {
         onCombatAllyStart(state, ally) {
-            console.log(ally.getOne("Name").value)
             combatBuffByRange(this, ally, 2, {
                 atk: 3
             });

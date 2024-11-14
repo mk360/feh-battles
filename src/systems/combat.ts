@@ -298,9 +298,7 @@ class CombatSystem extends System {
 
             if (turn.getOne("Battling") && defender.getOne("Battling")) {
                 const defenderStatsComponent = defender.getOne("Stats");
-                const { type, ...stats } = defenderStatsComponent.getObject(false);
                 defenderStatsComponent.update({
-                    ...stats,
                     hp: Math.max(combatMap.get(defender).hp, 0)
                 });
             }

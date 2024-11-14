@@ -4305,6 +4305,18 @@ const WEAPONS: WeaponDict = {
                 }
             }
         },
+        onSpecialTrigger() {
+            const special = this.entity.getOne("Special");
+            const specialData = SPECIALS[special.name];
+            const { hp, maxHP } = this.entity.getOne("Stats");
+
+            if (specialData.onCombatRoundAttack && hp / maxHP <= 0.75) {
+                this.entity.addComponent({
+                    type: "RoundDamageIncrease",
+                    value: 10
+                });
+            }
+        },
         onCombatStart() {
             const special = this.entity.getOne("Special");
 

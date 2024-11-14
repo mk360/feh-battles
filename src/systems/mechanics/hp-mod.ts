@@ -17,39 +17,46 @@ class HPModSystem extends System {
     update() {
         const entities = this.healableQuery.refresh().execute();
         entities.forEach((entity) => {
-            let healthDifference = 0;
-            const healComponents = entity.getComponents("Heal");
+            let { hp: oldHP, maxHP } = entity.getOne("Stats").getObject(false);
+            let trackedHP = oldHP;
             const damageComponents = entity.getComponents("MapDamage");
-
-            healComponents.forEach((healComp) => {
-                healthDifference += healComp.value;
-                entity.removeComponent(healComp);
-            });
+            const sacrificeComponents = entity.getComponents("SacrificeHP");
 
             damageComponents.forEach((damageComp) => {
-                healthDifference -= damageComp.value;
+                const { value } = damageComp.getObject(false);
+                trackedHP = Math.max(1, trackedHP - value);
                 entity.removeComponent(damageComp);
             });
 
-            const { hp, maxHP } = entity.getOne("Stats").getObject(false);
+            sacrificeComponents.forEach((sacrificeComp) => {
+                const { value } = sacrificeComp.getObject(false);
+                trackedHP = Math.max(1, trackedHP - value);
+                entity.removeComponent(sacrificeComp);
+            });
+            const healComponents = entity.getComponents("Heal");
 
-            const clamped = Math.max(1, Math.min(hp + healthDifference, maxHP));
+            healComponents.forEach((healComp) => {
+                trackedHP = Math.min(maxHP, trackedHP + healComp.value);
+                entity.removeComponent(healComp);
+            });
+
+            let healthDifference = trackedHP - oldHP;
 
             entity.getOne("Stats").update({
-                hp: clamped,
+                hp: trackedHP,
             });
 
             if (healthDifference > 0) {
                 entity.addComponent({
                     type: "Heal",
                     value: Math.abs(healthDifference),
-                    newHP: clamped
+                    newHP: trackedHP
                 });
             } else if (healthDifference < 0) {
                 entity.addComponent({
                     type: "MapDamage",
                     value: Math.abs(healthDifference),
-                    remainingHP: clamped
+                    remainingHP: trackedHP
                 });
             }
         });

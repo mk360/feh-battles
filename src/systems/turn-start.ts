@@ -41,8 +41,8 @@ class TurnStartSystem extends System {
             }
 
             if (skillMap.onTurnStartAfter) {
-                for (let skill of skillMap.onTurnStartBefore) {
-                    SKILLS[skill.name].onTurnStartBefore.call(skill, this.state);
+                for (let skill of skillMap.onTurnStartAfter) {
+                    SKILLS[skill.name].onTurnStartAfter.call(skill, this.state);
                 }
             }
         }

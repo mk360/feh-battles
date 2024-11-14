@@ -530,12 +530,7 @@ class GameWorld extends World {
 
         this.runSystems("assist");
 
-        source.removeComponent(c1);
-        target.removeComponent(c2);
-
-        this.undoSystemChanges("assist");
-
-        return {
+        const payload = {
             assisting: {
                 id: source.id,
                 previousHP: source.getOne("Stats").hp,
@@ -548,6 +543,13 @@ class GameWorld extends World {
             },
             assist: assistSkill.name,
         };
+
+        this.undoSystemChanges("assist");
+
+        source.removeComponent(c1);
+        target.removeComponent(c2);
+
+        return payload;
     }
 
     previewCombat(attackerId: string, targetCoordinates: { x: number, y: number }, temporaryCoordinates: { x: number, y: number }) {

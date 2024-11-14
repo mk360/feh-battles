@@ -68,6 +68,7 @@ const ASSISTS: AssistsDict = {
             const newAllyHP = Math.min(allyHP + 10, maxHP);
             this.entity.addComponent({
                 type: "SacrificeHP",
+                // todo : réviser l'intérêt du composant
                 value: newUnitHP - hp,
             });
 

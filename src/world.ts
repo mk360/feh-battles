@@ -333,7 +333,6 @@ class GameWorld extends World {
         entity.getComponents("MovementTile").forEach((t) => { if (t) entity.removeComponent(t); });
         entity.getComponents("AttackTile").forEach((t) => { if (t) entity.removeComponent(t); });
         entity.getComponents("WarpTile").forEach((t) => { if (t) entity.removeComponent(t); });
-        entity.getComponents("WarpTile").forEach((t) => { if (t) entity.removeComponent(t); });
         entity.getComponents("Obstruct").forEach((t) => { if (t) entity.removeComponent(t); });
         entity.getComponents("AssistTile").forEach((t) => { if (t) entity.removeComponent(t); });
 
@@ -519,27 +518,36 @@ class GameWorld extends World {
     previewAssist(sourceId: string, targetCoordinates: { x: number, y: number }, temporaryCoordinates: { x: number, y: number }) {
         const mapTile = this.state.map[targetCoordinates.y][targetCoordinates.x];
         const source = this.getEntity(sourceId);
+        const assistSkill = source.getOne("Assist").name;
+
         const target = this.state.occupiedTilesMap.get(mapTile);
-        source.addComponent({
-            type: "Assisting",
+        const c1 = source.addComponent({
+            type: "PreviewAssist",
         });
-        target.addComponent({
-            type: "Assisting"
+        const c2 = target.addComponent({
+            type: "PreviewAssist"
         });
 
         this.runSystems("assist");
 
-        this.systems.get("assist").forEach((system) => {
-            // @ts-ignore
-            console.log(system._stagedChanges);
-            // @ts-ignore
-            system._stagedChanges.forEach((change) => {
-                if (change.op === "change") {
-                    var cmp = this.getComponent(change.component).getObject(false);
-                    console.log(cmp);
-                }
-            })
-        });
+        source.removeComponent(c1);
+        target.removeComponent(c2);
+
+        this.undoSystemChanges("assist");
+
+        return {
+            assisting: {
+                id: source.id,
+                previousHP: source.getOne("Stats").hp,
+                expectedHP: source.getOne("PreviewHP").value,
+            },
+            assisted: {
+                id: target.id,
+                previousHP: target.getOne("Stats").hp,
+                expectedHP: target.getOne("PreviewHP").value
+            },
+            assist: assistSkill.name,
+        };
     }
 
     previewCombat(attackerId: string, targetCoordinates: { x: number, y: number }, temporaryCoordinates: { x: number, y: number }) {

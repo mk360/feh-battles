@@ -184,8 +184,8 @@ class GameWorld extends World {
         for (let status of statuses) {
             const comp = this.getComponent(status.component);
             const source = comp.source.id;
-            if (!statusDealingMap[comp.source.id]) statusDealingMap[comp.source.id] = [];
-            statusDealingMap[comp.source.id].push({ target: comp.entity.id, status: comp.value });
+            if (!statusDealingMap[source]) statusDealingMap[source] = [];
+            statusDealingMap[source].push({ target: comp.entity.id, status: comp.value });
         }
 
         const line = Object.keys(statusDealingMap).map((dealer) => `trigger ${dealer}`).join(",");
@@ -369,8 +369,54 @@ class GameWorld extends World {
         });
     }
 
-    private outputMovementActions(actions: IComponentChange[]) {
+    private outputAssistActions(actions: IComponentChange[]) {
+        let actionStrings: string[] = [];
 
+        const refresh = actions.filter((action) => action.op === "delete" && action.type === "FinishedAction").map((action) => `refresh ${action.entity}`);
+
+        if (refresh.length) {
+            actionStrings = actionStrings.concat(refresh);
+        }
+
+        const movement = actions.filter((action) => action.type === "Move") as (IComponentChange & { x: number; y: number })[];
+        let movementString = "";
+        if (movement.length === 1) {
+            const { entity, x, y } = movement[0];
+            movementString = `move ${entity} ${x} ${y}`;
+        } else {
+
+        }
+
+        const statuses = actions.filter((change) => change.type === "Status" && change.op === "add");
+
+        const statusDealingMap: { [k: string]: { target: string, status: string }[] } = {};
+
+        for (let status of statuses) {
+            const comp = this.getComponent(status.component);
+            const source = comp.source.id;
+            if (!statusDealingMap[source]) statusDealingMap[source] = [];
+            statusDealingMap[source].push({ target: comp.entity.id, status: comp.value });
+        }
+
+        const line = Object.keys(statusDealingMap).map((dealer) => `trigger ${dealer}`).join(",");
+
+        if (line.length) {
+            actionStrings.push(line);
+        }
+
+        const appliedStatuses: string[] = [];
+
+        for (let dealer in statusDealingMap) {
+            const effect = statusDealingMap[dealer];
+            const line = effect.map((status) => `${status.status} ${status.target}`).join(",");
+            appliedStatuses.push(line);
+        }
+
+        if (appliedStatuses.length) {
+            actionStrings = actionStrings.concat(appliedStatuses.join(","));
+        }
+
+        return actionStrings;
     }
 
     previewUnitMovement(id: string, candidateTile: { x: number, y: number }) {
@@ -435,7 +481,7 @@ class GameWorld extends World {
 
             this.systems.get("assist").forEach((system) => {
                 // @ts-ignore
-                changes = changes.concat(this.outputEngineActions(system._stagedChanges));
+                changes = changes.concat(this.outputAssistActions(system._stagedChanges));
             });
 
             assistSource.removeComponent(c1);

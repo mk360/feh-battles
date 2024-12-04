@@ -9,7 +9,7 @@ class MoveSystem extends System {
 
     init(state: GameState) {
         this.state = state;
-        this.query = this.createQuery().fromAll("Move");
+        this.query = this.createQuery().fromAny("Move", "Swap");
 
         this.subscribe("Position");
     }
@@ -26,15 +26,17 @@ class MoveSystem extends System {
 
         unitsToMove.forEach((entity) => {
             const moveComponent = entity.getOne("Move");
-            const { bitfield } = entity.getOne("Side");
-            const positionComponent = entity.getOne("Position");
-            const { x, y } = moveComponent;
-            const mapTile = this.state.map[y][x] as Uint16Array;
-            this.state.occupiedTilesMap.set(mapTile, entity);
-            mapTile[0] |= bitfield;
-            positionComponent.update({ x, y });
+            if (moveComponent) {
+                const { bitfield } = entity.getOne("Side");
+                const positionComponent = entity.getOne("Position");
+                const { x, y } = moveComponent;
+                const mapTile = this.state.map[y][x] as Uint16Array;
+                this.state.occupiedTilesMap.set(mapTile, entity);
+                mapTile[0] |= bitfield;
+                positionComponent.update({ x, y });
 
-            entity.removeComponent(moveComponent);
+                entity.removeComponent(moveComponent);
+            }
         });
     }
 };

@@ -37,8 +37,7 @@ class MovementSystem extends System {
     }
 
     update() {
-        this.movableQuery.refresh();
-        const [unit] = this.movableQuery.execute();
+        const [unit] = this.movableQuery.refresh().execute();
         const { x, y } = unit.getOne("Position");
         const allies = getAllies(this.state, unit);
         const obstructors = getEnemies(this.state, unit);

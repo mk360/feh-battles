@@ -2321,9 +2321,9 @@ const PASSIVES: PassivesDict = {
         slot: "B",
         allowedWeaponTypes: ["axe", "sword", "breath", "lance"],
         onCombatAfter(state, target) {
-            const boundSwap = swap(state, this.entity, target);
-            if (this.entity.getOne("InitiateCombat") && boundSwap.checker()) {
-                boundSwap.runner();
+            const boundSwap = swap();
+            if (this.entity.getOne("InitiateCombat") && boundSwap.checker(state, this.entity, target)) {
+                boundSwap.runner(state, this.entity, target);
             }
         },
     },

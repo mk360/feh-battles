@@ -378,11 +378,14 @@ class GameWorld extends World {
             actionStrings = actionStrings.concat(refresh);
         }
 
-        const movement = actions.filter((action) => action.type === "Move") as (IComponentChange & { x: number; y: number })[];
-        let movementString = "";
-        if (movement.length === 1) {
-            const { entity, x, y } = movement[0];
-            movementString = `move ${entity} ${x} ${y}`;
+        const swap = actions.filter((action) => action.type === "Swap") as (IComponentChange & { x: number; y: number; assistTarget: { x: number; y: number } })[];
+        let assistString = "";
+        if (swap.length === 1) {
+            let en = this.getComponent(swap[0].component).getObject(false);
+            var sourceCoords = en.x * 10 + en.y;
+            var targetCoords = en.assistTarget.x * 10 + en.assistTarget.y;
+            assistString = `assist-movement Swap ${swap[0].entity} ${en.assistTarget.entity.id} ${sourceCoords} ${targetCoords}`;
+            actionStrings.push(assistString);
         } else {
 
         }
@@ -460,21 +463,22 @@ class GameWorld extends World {
         return change;
     };
 
-    runAssist(source: string, target: string, actionCoordinates: { x: number, y: number }) {
-        let changes = this.moveUnit(source, actionCoordinates, true);
+    runAssist(source: string, target: { x: number; y: number }, actionCoordinates: { x: number, y: number }) {
+        let changes: string[] = [];
 
         const assistSource = this.getEntity(source);
         if (!assistSource.has("Assist")) {
             // shouldn't be here
             return null;
         } else {
-            const assistTarget = this.getEntity(target);
+            const targetTile = this.state.map[target.y][target.x];
+            const assistTarget = this.state.occupiedTilesMap.get(targetTile);
             const c1 = assistSource.addComponent({
                 type: "Assisting"
             });
 
             const c2 = assistTarget.addComponent({
-                type: "Assisting"
+                type: "Assisted"
             });
 
             this.runSystems("assist");
@@ -488,7 +492,7 @@ class GameWorld extends World {
             assistTarget.removeComponent(c2);
         }
 
-        return changes;
+        return changes.concat(this.endAction(source));
     }
 
     endAction(id: string) {
@@ -500,8 +504,13 @@ class GameWorld extends World {
             type: "FinishedAction"
         });
 
+        const statusComponents = Array.from(unit.getComponents("Status"));
+
         const mapDebuffs = Array.from(unit.getComponents("MapDebuff"));
         mapDebuffs.forEach((comp) => {
+            const { value } = comp;
+            const matchingStatusComponent = statusComponents.find((status) => status.type === value);
+            if (matchingStatusComponent) unit.removeComponent(matchingStatusComponent);
             unit.removeComponent(comp);
         });
 

@@ -598,10 +598,10 @@ const ASSISTS: AssistsDict = {
         description: "Unit and target ally swap spaces.",
         type: ["movement"],
         canApply(state, ally) {
-            return swap(state, this.entity, ally).checker();
+            return swap().checker(state, this.entity, ally);
         },
         onApply(state, ally) {
-            return swap(state, this.entity, ally).runner();
+            return swap().runner(state, this.entity, ally);
         },
         allowedWeaponTypes: exceptStaves
     },

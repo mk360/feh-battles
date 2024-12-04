@@ -4600,6 +4600,4 @@ const WEAPONS: WeaponDict = {
     },
 };
 
-console.log(Object.keys(WEAPONS).length);
-
 export default WEAPONS;

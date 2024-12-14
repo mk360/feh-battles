@@ -28,6 +28,32 @@ const StatusesDict: {
     "PreventCounterattack": "Prevent Counterattack"
 }
 
+const ReverseStatusesDict = {
+    Gravity: "GravityComponent",
+    Guard: "Guard",
+    Bonus: "MapBuff",
+    Penalty: "MapDebuff",
+    "Increased Movement": "IncreasedMovement",
+    Guidance: "Guidance",
+    Panic: "Panic",
+    "Prevent Counterattack": "PreventCounterattack"
+};
+
+export function removeStatuses<T extends keyof typeof ReverseStatusesDict>(target: Entity, status: T) {
+    target.removeTag(status);
+    const componentsToFind = ReverseStatusesDict[status];
+    const matchingComponents = target.getComponents(componentsToFind);
+    matchingComponents.forEach((comp) => {
+        target.removeComponent(comp);
+    });
+    const statusComponents = target.getComponents("Status");
+    statusComponents.forEach((statusComponent) => {
+        if (statusComponent.value === status) {
+            target.removeComponent(statusComponent);
+        }
+    })
+}
+
 /**
  * On target, adds:
  * - A `Status` component. This is required in order to specify the source (who created this status).
@@ -35,7 +61,7 @@ const StatusesDict: {
  * - A component whose type is the status (ex. `type: MapBuff`), which allows for more targeted 
  * statuses (with extra values where needed)
  */
-export default function applyMapComponent<K extends keyof MapComponentsDict>(target: Entity, component: K, extraValues: Omit<MapComponentsDict[K], "status">, source?: Entity) {
+export function applyMapComponent<K extends keyof MapComponentsDict>(target: Entity, component: K, extraValues: Omit<MapComponentsDict[K], "status">, source?: Entity) {
     const componentCreationPayload: IComponentConfig = {
         type: "Status",
         value: StatusesDict[component],

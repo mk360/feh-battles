@@ -13,7 +13,7 @@ import getSurroundings from "../systems/get-surroundings";
 import getTileCoordinates from "../systems/get-tile-coordinates";
 import canReachTile from "../systems/can-reach-tile";
 import SPECIALS from "./specials";
-import applyMapComponent from "../systems/apply-map-effect";
+import { applyMapComponent } from "../systems/apply-map-effect";
 import ASSISTS from "./assists";
 import { defenderCanDefend } from "../systems/generate-turns";
 import getAffinity from "../systems/get-affinity";

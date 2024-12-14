@@ -15,7 +15,7 @@ import getCombatStats from "../systems/get-combat-stats";
 import getMapStats from "../systems/get-map-stats";
 import { getUnitsLowerThanOrEqualingValue, getUnitsWithHighestValue, getUnitsWithLowestValue } from "../systems/value-matchers";
 import ASSISTS from "./assists";
-import applyMapComponent from "../systems/apply-map-effect";
+import { applyMapComponent } from "../systems/apply-map-effect";
 import SPECIALS from "./specials";
 
 interface WeaponDict {

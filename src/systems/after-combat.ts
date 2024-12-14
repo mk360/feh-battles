@@ -14,6 +14,7 @@ class AfterCombatSystem extends System {
         this.subscribe("Heal");
         this.subscribe("MapBuff");
         this.subscribe("MapDebuff");
+        this.subscribe("Status");
     }
 
     update() {

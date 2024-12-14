@@ -9,7 +9,7 @@ import MovementType from "../components/movement-type";
 import Characters from "./characters.json";
 import { retreat, shove, swap } from "./effects";
 import getPosition from "../systems/get-position";
-import applyMapComponent from "../systems/apply-map-effect";
+import { applyMapComponent } from "../systems/apply-map-effect";
 import getMapStats from "../systems/get-map-stats";
 import CombatTurnOutcome from "../interfaces/combat-turn-outcome";
 

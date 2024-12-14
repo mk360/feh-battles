@@ -6,7 +6,7 @@ import { MovementType, Stat, Stats, WeaponType } from "../interfaces/types";
 import getAllies from "../utils/get-allies";
 import getEnemies from "../utils/get-enemies";
 import getCombatStats from "../systems/get-combat-stats";
-import applyMapComponent from "../systems/apply-map-effect";
+import { applyMapComponent } from "../systems/apply-map-effect";
 import getSurroundings from "../systems/get-surroundings";
 import canReachTile from "../systems/can-reach-tile";
 import getTileCoordinates from "../systems/get-tile-coordinates";

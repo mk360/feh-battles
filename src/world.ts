@@ -17,7 +17,7 @@ import TileBitshifts from "./data/tile-bitshifts";
 import { Stat } from "./interfaces/types";
 import getAllies from "./utils/get-allies";
 import AfterCombatSystem from "./systems/after-combat";
-import { NEGATIVE_STATUSES, STATUSES } from "./statuses";
+import { NEGATIVE_STATUSES, POSITIVE_STATUSES, STATUSES } from "./statuses";
 import checkBattleEffectiveness from "./systems/effectiveness";
 import getEnemies from "./utils/get-enemies";
 import ASSISTS from "./data/assists";
@@ -31,6 +31,7 @@ import BeforeCombat from "./systems/before-combat";
 import AoESystem from "./systems/mechanics/aoe";
 import MoveSystem from "./systems/mechanics/move";
 import HPModSystem from "./systems/mechanics/hp-mod";
+import { removeStatuses } from "./systems/apply-map-effect";
 
 /**
  * TODO:
@@ -141,17 +142,10 @@ class GameWorld extends World {
     startTurn() {
         const team = this.state.teams[this.state.currentSide];
         team.forEach((hero) => {
-            hero.tags = new Set();
-            const statuses = hero.getComponents("Status");
-            statuses.forEach((statusComponent) => {
-                const { value } = statusComponent;
-                const matchingComponents = hero.getComponents(value);
-                matchingComponents.forEach((s) => {
-                    hero.removeComponent(s);
-                });
-                hero.removeComponent(statusComponent);
-            });
-            hero.removeComponent(hero.getOne("FinishedAction"));
+            for (let status of POSITIVE_STATUSES) {
+                removeStatuses(hero, status);
+                hero.removeComponent(hero.getOne("FinishedAction"));
+            }
         });
         let changes: (IComponentChange & Partial<{ detailedComponent: IComponentObject }>)[] = [];
         this.runSystems("every-turn");
@@ -363,7 +357,6 @@ class GameWorld extends World {
         this.systems.get(systemTag).forEach((sys) => {
             // @ts-ignore
             for (let change of sys._stagedChanges) {
-                // if (systemTag === "combat") { console.log({ change }) };
                 this.undoComponentChange(change);
             }
         });
@@ -386,8 +379,15 @@ class GameWorld extends World {
             var targetCoords = en.assistTarget.x * 10 + en.assistTarget.y;
             assistString = `assist-movement Swap ${swap[0].entity} ${en.assistTarget.entity.id} ${sourceCoords} ${targetCoords}`;
             actionStrings.push(assistString);
-        } else {
+        }
 
+        const reposition = actions.find((action) => action.type === "Reposition") as (IComponentChange & { targetEntity: string, x: number, y: number });
+
+        if (reposition) {
+            const cmp = this.getComponent(reposition.component);
+            const targetCoords = cmp.x * 10 + cmp.y;
+            assistString = `assist-movement Reposition ${cmp.entity} ${cmp.targetEntity} ${targetCoords}`;
+            actionStrings.push(assistString);
         }
 
         const statuses = actions.filter((change) => change.type === "Status" && change.op === "add");
@@ -504,21 +504,9 @@ class GameWorld extends World {
             type: "FinishedAction"
         });
 
-        const statusComponents = Array.from(unit.getComponents("Status"));
-
-        const mapDebuffs = Array.from(unit.getComponents("MapDebuff"));
-        mapDebuffs.forEach((comp) => {
-            const { value } = comp;
-            const matchingStatusComponent = statusComponents.find((status) => status.type === value);
-            if (matchingStatusComponent) unit.removeComponent(matchingStatusComponent);
-            unit.removeComponent(comp);
-        });
-
-        unit.tags.forEach((tag) => {
-            if (NEGATIVE_STATUSES.includes(tag as typeof NEGATIVE_STATUSES[number])) {
-                unit.removeTag(tag);
-            }
-        });
+        for (let status of NEGATIVE_STATUSES) {
+            removeStatuses(unit, status);
+        }
 
         changes.push(`finish ${id}`);
 
@@ -526,6 +514,11 @@ class GameWorld extends World {
         const remainingUnits = Array.from(team).filter((e) => !e.getOne("FinishedAction"));
 
         if (remainingUnits.length === 0) {
+            for (let unit of remainingUnits) {
+                for (let status of NEGATIVE_STATUSES) {
+                    removeStatuses(unit, status);
+                }
+            }
             const turnChanges = this.startTurn();
             changes = changes.concat(turnChanges);
         }

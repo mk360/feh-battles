@@ -2,7 +2,7 @@ import { Entity, Query, System } from "ape-ecs";
 import GameState from "./state";
 import ASSISTS from "../data/assists";
 
-const SUBSCRIBED_COMPONENTS = ["MapBuff", "MapDebuff", "Stats", "PreviewHP", "Position", "SacrificeHP", "Swap"];
+const SUBSCRIBED_COMPONENTS = ["MapBuff", "MapDebuff", "Stats", "PreviewHP", "Position", "SacrificeHP", "Swap", "Reposition"];
 
 class AssistSystem extends System {
     private state: GameState;

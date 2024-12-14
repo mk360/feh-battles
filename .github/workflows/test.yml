@@ -1,5 +1,5 @@
-name: Run a basic test
-run-name: This is a test
+name: Run tests
+run-name: Run tests
 on: [push]
 jobs:
   build:
@@ -15,4 +15,4 @@ jobs:
       - run: npm i -q
 
       - name: Run tests
-        run: npx ts-node src/__tests__/calculate-damage.ts
+        run: node --test --require ts-node/register ./src/__tests__/*.ts

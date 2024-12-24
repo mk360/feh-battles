@@ -18,7 +18,7 @@ describe("canReachTile", () => {
             S: "Life and Death 1",
         },
         rarity: 5
-    }, "team1", 1);
+    }, TEST_GAME_WORLD.state.teamIds[0], 1);
 
     it("can cross a valid tile", () => {
         const plains = new Uint16Array(1);

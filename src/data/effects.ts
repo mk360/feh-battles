@@ -327,10 +327,16 @@ export function shove(state: GameState, caller: Entity, shoved: Entity, range: n
             const { x, y } = getTileCoordinates(newTile);
 
             shoved.addComponent({
-                type: "MoveAssist",
+                type: "Move",
                 x,
                 y,
-                source: "Shove"
+            });
+
+            caller.addComponent({
+                type: "Shove",
+                x,
+                y,
+                target: shoved,
             });
         }
     }
@@ -356,9 +362,8 @@ export function retreat(state: GameState, target: Entity, referencePoint: Entity
         },
         runner() {
             target.addComponent({
-                type: "MoveAssist",
+                type: "DrawBack",
                 ...direction,
-                source: "Draw Back"
             });
         }
     }

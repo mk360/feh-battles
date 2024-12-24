@@ -46,6 +46,8 @@ class TurnStartSystem extends System {
                 }
             }
         }
+
+        this.world.runSystems("special-cooldown");
     }
 };
 

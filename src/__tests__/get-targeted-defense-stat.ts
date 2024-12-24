@@ -17,7 +17,7 @@ describe("get-targeted-defense-stat", () => {
             A: ""
         },
         weapon: "",
-    }, "team1", 2);
+    }, TEST_GAME_WORLD.state.teamIds[0], 2);
 
     const physicalWeaponUser = TEST_GAME_WORLD.createHero({
         name: "Hector: General of Ostia",
@@ -31,7 +31,7 @@ describe("get-targeted-defense-stat", () => {
             A: ""
         },
         weapon: "",
-    }, "team2", 1);
+    }, TEST_GAME_WORLD.state.teamIds[1], 1);
 
     it("should target Defense when using a physical weapon", () => {
         assert.strictEqual(getTargetedDefenseStat(physicalWeaponUser, magicUser, getCombatStats(magicUser)), "def");

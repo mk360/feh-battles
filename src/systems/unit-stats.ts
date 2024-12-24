@@ -1,10 +1,8 @@
 import { MandatoryStats, Stat, Stats } from "../interfaces/types";
 
-function getLv40Stats(lv1Stats: MandatoryStats, growthRates: MandatoryStats, rarity: number, boon?: Stat, bane?: Stat, merges?: number, namae?: string) {
+function getLv40Stats(lv1Stats: MandatoryStats, growthRates: MandatoryStats, rarity: number, boon?: Stat, bane?: Stat, merges?: number) {
     const copy = { ...lv1Stats };
     const growthRateCopy = { ...growthRates };
-    if (namae === "Clarisse: Sniper in the Dark") {
-    }
 
     if (boon && bane) {
         growthRateCopy[boon] += 5;

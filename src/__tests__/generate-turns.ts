@@ -18,7 +18,7 @@ describe("generate-turns", () => {
             S: "",
             special: "",
         }
-    }, "team1", 1);
+    }, TEST_GAME_WORLD.state.teamIds[0], 1);
 
     const hero2 = TEST_GAME_WORLD.createHero({
         name: "Ryoma: Peerless Samurai",
@@ -32,7 +32,7 @@ describe("generate-turns", () => {
             S: "",
             special: "",
         }
-    }, "team2", 1);
+    }, TEST_GAME_WORLD.state.teamIds[1], 1);
 
     const hero3 = TEST_GAME_WORLD.createHero({
         rarity: 5,
@@ -46,7 +46,7 @@ describe("generate-turns", () => {
             C: "",
             S: "",
         }
-    }, "team2", 2);
+    }, TEST_GAME_WORLD.state.teamIds[1], 2);
 
     it("should generate a single turn for each in case of a mirror match", () => {
         const stats1 = getCombatStats(hero1);

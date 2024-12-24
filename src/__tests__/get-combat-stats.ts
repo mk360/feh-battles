@@ -20,7 +20,7 @@ describe("get-combat-stats", () => {
             C: "",
             S: ""
         }
-    }, "team1", 4);
+    }, TEST_GAME_WORLD.state.teamIds[0], 4);
 
     it("should match level 40 stats if no modifier is applied", () => {
         const { hp, ...rest } = getLv40Stats(dexData.stats, dexData.growthRates, 5);
@@ -42,7 +42,7 @@ describe("get-combat-stats", () => {
                 C: "",
                 S: ""
             }
-        }, "team1", 1);
+        }, TEST_GAME_WORLD.state.teamIds[0], 1);
 
         const stats = getLv40Stats(dexData.stats, dexData.growthRates, 5);
 

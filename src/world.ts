@@ -32,6 +32,7 @@ import AoESystem from "./systems/mechanics/aoe";
 import MoveSystem from "./systems/mechanics/move";
 import HPModSystem from "./systems/mechanics/hp-mod";
 import { removeStatuses } from "./systems/apply-map-effect";
+import SpecialCooldownSystem from "./systems/mechanics/special-cooldown";
 
 /**
  * TODO:
@@ -129,6 +130,7 @@ class GameWorld extends World {
         this.registerSystem("hp-mod", HPModSystem);
         this.registerSystem("after-combat", AfterCombatSystem, [this.state]);
         this.registerSystem("assist", AssistSystem, [this.state]);
+        this.registerSystem("special-cooldown", SpecialCooldownSystem);
     }
 
     switchSides() {
@@ -144,8 +146,8 @@ class GameWorld extends World {
         team.forEach((hero) => {
             for (let status of POSITIVE_STATUSES) {
                 removeStatuses(hero, status);
-                hero.removeComponent(hero.getOne("FinishedAction"));
             }
+            hero.removeComponent(hero.getOne("FinishedAction"));
         });
         let changes: (IComponentChange & Partial<{ detailedComponent: IComponentObject }>)[] = [];
         this.runSystems("every-turn");
@@ -305,7 +307,11 @@ class GameWorld extends World {
             attacker.removeComponent(b1);
             attacker.removeComponent(i1);
 
-            if (attacker.getOne("Galeforced")) {
+            if (attacker.getOne("Galeforce")) {
+                attacker.removeComponent(attacker.getOne("Galeforce"));
+                attacker.addComponent({
+                    type: "Galeforced"
+                });
             } else {
                 changes = changes.concat(this.endAction(attacker.id));
             }
@@ -314,7 +320,6 @@ class GameWorld extends World {
         if (!defender.destroyed) {
             defender.removeComponent(b2);
         }
-
 
         return changes;
     }
@@ -417,6 +422,15 @@ class GameWorld extends World {
 
         if (appliedStatuses.length) {
             actionStrings = actionStrings.concat(appliedStatuses.join(","));
+        }
+
+        const healing = actions.filter((change) => change.type === "Heal" && change.op === "add" && !!this.getComponent(change.component));
+
+        if (healing.length) {
+            actionStrings = actionStrings.concat(healing.map((i) => {
+                const comp = this.getComponent(i.component).getObject(false);
+                return `healing ${comp.entity} ${comp.value} ${comp.newHP}`;
+            }));
         }
 
         return actionStrings;
@@ -732,7 +746,6 @@ class GameWorld extends World {
             for (let component of components) {
                 entity.addComponent(component);
             }
-
             const tilePlacement = this.state.topology.spawnLocations[team][teamIndex - 1];
             const { x, y } = tilePlacement;
 
@@ -923,7 +936,7 @@ class GameWorld extends World {
 
         this.state.teamsByWeaponTypes[team][dexData.weaponType]++;
 
-        const lv40Stats = getLv40Stats(stats, growthRates, rarity, hero.getOne("Boon")?.value, hero.getOne("Bane")?.value, merges, hero.getOne("Name").value);
+        const lv40Stats = getLv40Stats(stats, growthRates, rarity, hero.getOne("Boon")?.value, hero.getOne("Bane")?.value, merges);
 
         const components: { type: string;[k: string]: any }[] = [
             {

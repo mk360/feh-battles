@@ -3,6 +3,7 @@ import WEAPONS from "../data/weapons";
 import PASSIVES from "../data/passives";
 import ASSISTS from "../data/assists";
 import SPECIALS from "../data/specials";
+import { writeFileSync } from "fs";
 
 interface AllowedSkills {
     weapons: string[];
@@ -46,7 +47,7 @@ function generateMoveset(unit: keyof typeof Characters) {
             continue;
         }
 
-        commonSkills.weapons.push(weapon)
+        commonSkills.weapons.push(weapon);
     }
 
     for (let assist in ASSISTS) {
@@ -104,6 +105,12 @@ function generateMoveset(unit: keyof typeof Characters) {
     return { exclusiveSkills, commonSkills };
 };
 
-console.log(generateMoveset("Ike: Brave Mercenary"));
+function outputMoveset(heroName: keyof typeof Characters) {
+    const moveset = generateMoveset(heroName);
+    writeFileSync(`src/data/movesets/${heroName.replace(":", "_")}.json`, JSON.stringify(moveset));
+}
 
-export default generateMoveset;
+for (let character in Characters) {
+    outputMoveset(character as keyof typeof Characters);
+    console.log("moveset generated for " + character)
+}

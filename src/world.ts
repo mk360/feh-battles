@@ -167,14 +167,6 @@ class GameWorld extends World {
 
         const statusDealingMap: { [k: string]: { target: string, status: string }[] } = {};
 
-
-        // for (let event of events) {
-        //     if (event.type === "Status" && event.op === "add") {
-
-        //         actions.push(`trigger ${source}`);
-        //     }
-        // }
-
         const statuses = events.filter((change) => change.type === "Status" && change.op === "add");
 
         for (let status of statuses) {
@@ -239,13 +231,15 @@ class GameWorld extends World {
 
     outputBeforeCombatActions(changes: IComponentChange[]) {
         const actions: string[] = [];
-        const aoeDamage = changes.filter(({ type, component }) => type === "MapDamage" && this.getComponent(component));
+        const aoeDamage = changes.filter(({ type }) => {
+            return type === "AoEDamage";
+        });
 
         const heal = changes.filter(({ type, component }) => type === "Heal" && this.getEntity(component));
 
         const aoeDamageStrings = aoeDamage.concat(heal).map((change) => {
             const detailedComponent = this.getComponent(change.component);
-            if (change.type === "MapDamage") {
+            if (change.type === "AoEDamage") {
                 return `map-damage ${detailedComponent.entity.id} ${detailedComponent.value} ${detailedComponent.remainingHP}`;
             }
 
@@ -315,10 +309,13 @@ class GameWorld extends World {
             } else {
                 changes = changes.concat(this.endAction(attacker.id));
             }
+
+            attacker.getComponents("DealDamage").forEach((comp) => attacker.removeComponent(comp));
         }
 
         if (!defender.destroyed) {
             defender.removeComponent(b2);
+            defender.getComponents("DealDamage").forEach((comp) => defender.removeComponent(comp));
         }
 
         return changes;

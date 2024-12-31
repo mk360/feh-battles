@@ -6,12 +6,10 @@
     "lib": [
       "ESNext"
     ],
-    "noEmit": true,
     "resolveJsonModule": true,
     "target": "ES6",
     "esModuleInterop": true,
     "declaration": true,
-    "declarationMap": true,
     "declarationDir": "./dec",
     "rootDir": "./src",
     "outDir": "./lib"

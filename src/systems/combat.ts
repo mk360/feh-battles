@@ -231,6 +231,11 @@ class CombatSystem extends System {
                 const currentCooldown = combatMap.get(turn).cooldown;
                 combatMap.get(turn).cooldown = Math.max(0, currentCooldown - decrease);
                 turnData.attackerSpecialCooldown = combatMap.get(turn).cooldown;
+                if (turn.getOne("Battling")) {
+                    turn.getOne("Special").update({
+                        cooldown: combatMap.get(turn).cooldown
+                    });
+                }
             }
 
             if (defender.getOne("Special")) {
@@ -238,6 +243,11 @@ class CombatSystem extends System {
                 const currentCooldown = combatMap.get(defender).cooldown;
                 combatMap.get(defender).cooldown = Math.max(0, currentCooldown - decrease);
                 turnData.defenderSpecialCooldown = combatMap.get(defender).cooldown;
+                if (defender.getOne("Battling")) {
+                    defender.getOne("Special").update({
+                        cooldown: combatMap.get(defender).cooldown
+                    });
+                }
             }
 
             const damageAfterReduction = calculateFinalDamage({

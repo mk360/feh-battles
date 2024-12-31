@@ -4,7 +4,7 @@ import GameState from "./state";
 import collectMapMods from "./collect-map-mods";
 import { CombatStats } from "../interfaces/types";
 
-const STATUS_COMPONENTS = ["SlowSpecial", "AccelerateSpecial", "MapDamage", "AoETarget", "PreventCounterattack", "GuaranteedFollowup", "MapDamage", "Heal", "Special"];
+const STATUS_COMPONENTS = ["SlowSpecial", "AccelerateSpecial", "AoEDamage", "AoETarget", "PreventCounterattack", "GuaranteedFollowup", "AoEDamage", "Heal", "Special"];
 
 class BeforeCombat extends System {
     private state: GameState;

@@ -10,7 +10,7 @@ class AfterCombatSystem extends System {
 
     init(state: GameState) {
         this.state = state;
-        this.subscribe("MapDamage");
+        this.subscribe("AoEDamage");
         this.subscribe("Heal");
         this.subscribe("MapBuff");
         this.subscribe("MapDebuff");

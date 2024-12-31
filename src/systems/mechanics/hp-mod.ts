@@ -1,17 +1,11 @@
 import { Query, System } from "ape-ecs";
 
-const SUBSCRIBED_COMPONENTS = ["Stats"];
-
 class HPModSystem extends System {
     private healableQuery: Query;
 
     init() {
         this.healableQuery = this.createQuery().fromAny("Heal", "MapDamage");
-        this.subscribe("MapDamage");
         this.subscribe("Heal");
-        for (let component of SUBSCRIBED_COMPONENTS) {
-            this.subscribe(component);
-        }
     }
 
     update() {
@@ -54,7 +48,7 @@ class HPModSystem extends System {
                 });
             } else if (healthDifference < 0) {
                 entity.addComponent({
-                    type: "MapDamage",
+                    type: "AoEDamage",
                     value: Math.abs(healthDifference),
                     remainingHP: trackedHP
                 });

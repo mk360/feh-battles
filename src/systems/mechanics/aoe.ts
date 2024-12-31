@@ -35,6 +35,12 @@ class AoESystem extends System {
                         });
                     }
                 });
+
+                if (attacker.getOne("Battling")) {
+                    special.update({
+                        cooldown: special.maxCooldown
+                    });
+                }
             }
         }
     }

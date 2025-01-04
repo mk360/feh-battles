@@ -258,7 +258,11 @@ class GameWorld extends World {
         const range = attacker.getOne("Weapon").range;
         const targetTile = this.state.map[targetCoordinates.y][targetCoordinates.x];
         const defender = this.state.occupiedTilesMap.get(targetTile);
-        const bestTile = path.find((tile) => getDistance(tile, targetCoordinates) === range);
+        let bestTile = path.reverse().find((tile) => getDistance(tile, targetCoordinates) === range);
+        if (!bestTile) {
+            const movementTiles = Array.from(attacker.getComponents("MovementTiles")).filter((tile) => getDistance(tile.getObject() as unknown as { x: number; y: number }, targetCoordinates) === range) as unknown as { x: number; y: number }[];
+            bestTile = movementTiles[0];
+        }
         const b1 = attacker.addComponent({
             type: "Battling"
         });
@@ -331,6 +335,7 @@ class GameWorld extends World {
         entity.getComponents("WarpTile").forEach((t) => { if (t) entity.removeComponent(t); });
         entity.getComponents("Obstruct").forEach((t) => { if (t) entity.removeComponent(t); });
         entity.getComponents("AssistTile").forEach((t) => { if (t) entity.removeComponent(t); });
+        entity.getComponents("TargetableTile").forEach((t) => { if (t) entity.removeComponent(t); });
 
         this.runSystems("movement");
         const movementTiles = entity.getComponents("MovementTile");
@@ -470,6 +475,22 @@ class GameWorld extends World {
             const endActionChanges = this.endAction(id);
             return change.concat(endActionChanges);
         }
+
+        unit.getComponents("MovementTile").forEach((tile) => {
+            unit.removeComponent(tile);
+        });
+
+        unit.getComponents("AssistTile").forEach((tile) => {
+            unit.removeComponent(tile);
+        });
+
+        unit.getComponents("AttackTile").forEach((tile) => {
+            unit.removeComponent(tile);
+        });
+
+        unit.getComponents("TargetableTile").forEach((tile) => {
+            unit.removeComponent(tile);
+        });
 
         return change;
     };
@@ -611,9 +632,15 @@ class GameWorld extends World {
         return payload;
     }
 
-    previewCombat(attackerId: string, targetCoordinates: { x: number, y: number }, temporaryCoordinates: { x: number, y: number }) {
-        const mapTile = this.state.map[targetCoordinates.y][targetCoordinates.x];
+    previewCombat(attackerId: string, targetCoordinates: { x: number, y: number }, temporaryCoordinates: { x: number, y: number }, path: { x: number, y: number }[]) {
         const attacker = this.getEntity(attackerId);
+        const range = attacker.getOne("Weapon").range;
+        const mapTile = this.state.map[targetCoordinates.y][targetCoordinates.x];
+        let bestTile = path.reverse().find((tile) => getDistance(tile, targetCoordinates) === range);
+        if (!bestTile) {
+            const movementTiles = Array.from(attacker.getComponents("MovementTiles")).filter((tile) => getDistance(tile.getObject() as unknown as { x: number; y: number }, targetCoordinates) === range) as unknown as { x: number; y: number }[];
+            bestTile = movementTiles[0];
+        }
         const defender = this.state.occupiedTilesMap.get(mapTile);
         const b1 = attacker.addComponent({
             type: "PreviewingBattle"
@@ -628,7 +655,7 @@ class GameWorld extends World {
         });
         const tempPos = attacker.addComponent({
             type: "TemporaryPosition",
-            ...temporaryCoordinates
+            ...bestTile
         });
         this.runSystems("before-combat");
         this.runSystems("combat");
@@ -636,7 +663,7 @@ class GameWorld extends World {
         attacker.removeComponent(b1);
         attacker.removeComponent(i1);
         defender.removeComponent(b2);
-        const producedPreview = this.produceCombatPreview(attacker, defender);
+        const producedPreview = this.produceCombatPreview(attacker, defender, bestTile);
 
         this.undoSystemChanges("before-combat");
         this.undoSystemChanges("combat");
@@ -646,7 +673,7 @@ class GameWorld extends World {
         return producedPreview;
     }
 
-    produceCombatPreview(attacker: Entity, defender: Entity) {
+    produceCombatPreview(attacker: Entity, defender: Entity, bestTile: { x: number; y: number }) {
         const attackerCombatBuffs = collectCombatMods(attacker);
         const defenderCombatBuffs = collectCombatMods(defender);
         const aoeTargets = Array.from(this.getEntities("AoETarget")).map((ent) => ent.id);
@@ -712,6 +739,7 @@ class GameWorld extends World {
                 combatBuffs: defenderCombatBuffs,
                 ...defenderDamageData
             },
+            attackerTile: bestTile,
             aoeTargets
         };
     }

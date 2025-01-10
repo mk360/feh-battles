@@ -33,6 +33,7 @@ import MoveSystem from "./systems/mechanics/move";
 import HPModSystem from "./systems/mechanics/hp-mod";
 import { removeStatuses } from "./systems/apply-map-effect";
 import SpecialCooldownSystem from "./systems/mechanics/special-cooldown";
+import shortid from "shortid";
 
 /**
  * TODO:
@@ -70,6 +71,7 @@ interface InitialLineup {
 }
 
 class GameWorld extends World {
+    id = shortid();
     state: GameState = {
         teamIds: ["", ""],
         lastChangeSequence: [],
@@ -159,6 +161,7 @@ class GameWorld extends World {
         const turnEvents = this.outputEngineActions(changes);
         const withTurnChange = [`turn ${this.state.currentSide} ${this.state.turn}`].concat(turnEvents);
         this.switchSides();
+        this.state.lastChangeSequence = withTurnChange;
         return withTurnChange;
     }
 
@@ -397,6 +400,15 @@ class GameWorld extends World {
             actionStrings.push(assistString);
         }
 
+        const pivot = actions.find((action) => action.type === "Pivot") as (IComponentChange & { x: number, y: number });
+
+        if (pivot) {
+            const cmp = this.getComponent(pivot.component);
+            const targetCoords = cmp.x * 10 + cmp.y;
+            assistString = `assist-movement Pivot ${cmp.entity.id} ${cmp.entity.id} ${targetCoords}`;
+            actionStrings.push(assistString);
+        }
+
         const statuses = actions.filter((change) => change.type === "Status" && change.op === "add");
 
         const statusDealingMap: { [k: string]: { target: string, status: string }[] } = {};
@@ -508,6 +520,11 @@ class GameWorld extends World {
             const c1 = assistSource.addComponent({
                 type: "Assisting"
             });
+            const temp1 = assistSource.addComponent({
+                type: "TemporaryPosition",
+                x: actionCoordinates.x,
+                y: actionCoordinates.y
+            })
 
             const c2 = assistTarget.addComponent({
                 type: "Assisted"
@@ -515,12 +532,20 @@ class GameWorld extends World {
 
             this.runSystems("assist");
 
+            this.systems.get("move").forEach((system) => {
+                // @ts-ignore
+                console.dir(system._stagedChanges);
+            });
+
             this.systems.get("assist").forEach((system) => {
                 // @ts-ignore
                 changes = changes.concat(this.outputAssistActions(system._stagedChanges));
             });
 
+            // TODO : run a cleanup function that removes assist commands
+
             assistSource.removeComponent(c1);
+            assistSource.removeComponent(temp1);
             assistTarget.removeComponent(c2);
         }
 

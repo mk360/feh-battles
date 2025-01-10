@@ -17,6 +17,8 @@ class MoveSystem extends System {
     update() {
         const unitsToMove = this.query.refresh().execute();
 
+        console.log(Array.from(unitsToMove).map((i) => i.getOne("Name").value));
+
         unitsToMove.forEach((entity) => {
             const { x, y } = getPosition(entity);
             const mapTile = this.state.map[y][x] as Uint16Array;

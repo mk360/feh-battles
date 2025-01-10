@@ -247,6 +247,11 @@ const ASSISTS: AssistsDict = {
                 x: newVector.x,
                 y: newVector.y
             });
+            this.entity.addComponent({
+                type: "Pivot",
+                x: newVector.x,
+                y: newVector.y,
+            });
         },
     },
     "Physic": {
@@ -535,25 +540,35 @@ const ASSISTS: AssistsDict = {
             const secondPosition = getPosition(ally);
             const vector = new Direction(secondPosition.x - firstPosition.x, secondPosition.y - firstPosition.y);
             const reversed = vector.reverse();
-            const newAllyPosition = reversed.add(reversed.x, reversed.y);
-            const mapSlot = state.map[newAllyPosition.y]?.[newAllyPosition.x] as Uint16Array;
+            const changeVector = reversed.add(reversed.x, reversed.y);
+            const newAllyPosition = changeVector.add(secondPosition.x, secondPosition.y);
+            const validMapTile = state.map[newAllyPosition.y]?.[newAllyPosition.x] as Uint16Array;
 
-            if (mapSlot) {
-                return canReachTile(ally, mapSlot) && (mapSlot[0] & tileBitmasks.occupation) === 0;
+            if (validMapTile) {
+                return canReachTile(ally, validMapTile) && (validMapTile[0] & tileBitmasks.occupation) === 0;
             }
 
             return false;
         },
         onApply(state, ally) {
-            const firstPosition = this.entity.getOne("TemporaryPosition");
+            const firstPosition = getPosition(this.entity);
             const secondPosition = ally.getOne("Position");
             const vector = new Direction(secondPosition.x - firstPosition.x, secondPosition.y - firstPosition.y);
-            const newAllyPosition = vector.reverse().add(secondPosition.x, secondPosition.y);
+            const reversed = vector.reverse();
+            const changeVector = reversed.add(reversed.x, reversed.y);
+            const newAllyPosition = changeVector.add(secondPosition.x, secondPosition.y);
 
             ally.addComponent({
                 type: "Move",
                 x: newAllyPosition.x,
                 y: newAllyPosition.y,
+            });
+
+            this.entity.addComponent({
+                type: "Reposition",
+                targetEntity: ally,
+                x: newAllyPosition.x,
+                y: newAllyPosition.y
             });
         },
     },

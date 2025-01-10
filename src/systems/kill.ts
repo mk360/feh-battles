@@ -17,7 +17,6 @@ class KillSystem extends System {
 
         if (deadUnit) {
             const { value } = deadUnit.getOne("Side");
-            const castTeam = value as "team1" | "team2";
             const { value: movementType } = deadUnit.getOne("MovementType");
             const { weaponType } = deadUnit.getOne("Weapon");
             const position = deadUnit.getOne(Position);
@@ -25,9 +24,9 @@ class KillSystem extends System {
             this.state.occupiedTilesMap.delete(mapTile);
             this.state.skillMap.delete(deadUnit);
             clearTile(mapTile);
-            this.state.teams[castTeam].delete(deadUnit);
-            this.state.teamsByMovementTypes[castTeam][movementType]--;
-            this.state.teamsByWeaponTypes[castTeam][weaponType]--;
+            this.state.teams[value].delete(deadUnit);
+            this.state.teamsByMovementTypes[value][movementType]--;
+            this.state.teamsByWeaponTypes[value][weaponType]--;
             deadUnit.destroy();
         }
     }

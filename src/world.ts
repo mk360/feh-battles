@@ -98,6 +98,7 @@ class GameWorld extends World {
         teams: {},
         teamsByMovementTypes: {},
         teamsByWeaponTypes: {},
+        requestedEnemyRange: [false, false],
         currentSide: "",
         turn: 1,
         skillMap: new Map(),
@@ -256,6 +257,56 @@ class GameWorld extends World {
         return actions;
     }
 
+    getEnemyRange(sideId: string, state: boolean) {
+        const teamIndex = this.state.teamIds.indexOf(sideId);
+        this.state.requestedEnemyRange[teamIndex] = state;
+        const allTiles = new Set<number>();
+        if (state) {
+            const otherTeamId = this.state.teamIds.indexOf(sideId) === 0 ? this.state.teamIds[1] : this.state.teamIds[0];
+            const teamMembers = this.state.teams[otherTeamId];
+            teamMembers.forEach((member) => {
+                const comp = member.addComponent({
+                    type: "Movable"
+                });
+                member.getComponents("MovementTile").forEach((t) => { if (t) member.removeComponent(t); });
+                member.getComponents("AttackTile").forEach((t) => { if (t) member.removeComponent(t); });
+                member.getComponents("WarpTile").forEach((t) => { if (t) member.removeComponent(t); });
+                member.getComponents("AssistTile").forEach((t) => { if (t) member.removeComponent(t); });
+                member.getComponents("TargetableTile").forEach((t) => { if (t) member.removeComponent(t); });
+
+                this.runSystems("movement");
+                const movementTiles = member.getComponents("MovementTile");
+                const attackTiles = member.getComponents("AttackTile");
+                const warpTiles = member.getComponents("WarpTile");
+                const targetableTiles = member.getComponents("TargetableTile");
+                const assistTiles = member.getComponents("AssistTile");
+
+                movementTiles.forEach((tile) => {
+                    allTiles.add(tile.x * 10 + tile.y);
+                });
+                attackTiles.forEach((tile) => {
+                    allTiles.add(tile.x * 10 + tile.y);
+                });
+                warpTiles.forEach((tile) => {
+                    allTiles.add(tile.x * 10 + tile.y);
+                });
+                targetableTiles.forEach((tile) => {
+                    allTiles.add(tile.x * 10 + tile.y);
+                });
+
+                movementTiles.forEach((t) => { if (t) member.removeComponent(t); });
+                attackTiles.forEach((t) => { if (t) member.removeComponent(t); });
+                warpTiles.forEach((t) => { if (t) member.removeComponent(t); });
+                member.getComponents("Obstruct").forEach((t) => { if (t) member.removeComponent(t); });
+                assistTiles.forEach((t) => { if (t) member.removeComponent(t); });
+                targetableTiles.forEach((t) => { if (t) member.removeComponent(t); });
+                member.removeComponent(comp);
+            });
+        }
+
+        return allTiles;
+    }
+
     runCombat(attackerId: string, movementCoordinates: { x: number, y: number }, targetCoordinates: { x: number, y: number }, path: { x: number, y: number }[]) {
         const attacker = this.getEntity(attackerId);
         const range = attacker.getOne("Weapon").range;
@@ -395,8 +446,10 @@ class GameWorld extends World {
 
         if (reposition) {
             const cmp = this.getComponent(reposition.component);
+            const sourcePosition = cmp.entity.getOne("Position");
+            const sourceCoords = sourcePosition.x * 10 + sourcePosition.y;
             const targetCoords = cmp.x * 10 + cmp.y;
-            assistString = `assist-movement Reposition ${cmp.entity} ${cmp.targetEntity} ${targetCoords}`;
+            assistString = `assist-movement Reposition ${cmp.entity.id} ${cmp.targetEntity.id} ${sourceCoords} ${targetCoords}`;
             actionStrings.push(assistString);
         }
 

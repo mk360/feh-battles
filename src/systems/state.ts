@@ -26,6 +26,7 @@ interface GameState {
             [k in WeaponType]: number
         }>;
     };
+    requestedEnemyRange: [boolean, boolean];
     teamsByMovementTypes: {
         [teamId: string]: Partial<{
             [k in MovementType]: number

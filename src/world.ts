@@ -34,6 +34,7 @@ import HPModSystem from "./systems/mechanics/hp-mod";
 import { removeStatuses } from "./systems/apply-map-effect";
 import SpecialCooldownSystem from "./systems/mechanics/special-cooldown";
 import shortid from "shortid";
+import movesetManager from "./moveset-manager";
 
 /**
  * TODO:
@@ -71,6 +72,7 @@ interface InitialLineup {
 }
 
 class GameWorld extends World {
+    static validator = movesetManager;
     id = shortid();
     state: GameState = {
         teamIds: ["", ""],

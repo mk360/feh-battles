@@ -4,20 +4,11 @@ import PASSIVES from "../data/passives";
 import ASSISTS from "../data/assists";
 import SPECIALS from "../data/specials";
 import { writeFileSync } from "fs";
+import { SkillList, CharacterMoveset } from "../interfaces/character-moveset";
 
-interface AllowedSkills {
-    weapons: string[];
-    assists: string[];
-    specials: string[];
-    A: string[];
-    B: string[];
-    C: string[];
-    S: string[];
-}
-
-function generateMoveset(unit: keyof typeof Characters) {
+function generateMoveset(unit: keyof typeof Characters): CharacterMoveset {
     const unitData = Characters[unit];
-    const exclusiveSkills: Omit<AllowedSkills, "S"> = {
+    const exclusiveSkills: Omit<SkillList, "S"> = {
         weapons: [],
         assists: [],
         specials: [],
@@ -26,7 +17,7 @@ function generateMoveset(unit: keyof typeof Characters) {
         C: []
     };
 
-    const commonSkills: AllowedSkills = {
+    const commonSkills: SkillList = {
         weapons: [],
         assists: [],
         specials: [],
@@ -42,12 +33,18 @@ function generateMoveset(unit: keyof typeof Characters) {
         if (weaponData.color && weaponData.color !== unitData.color) continue;
         if (weaponData.exclusiveTo) {
             if (weaponData.exclusiveTo.includes(unit)) {
-                exclusiveSkills.weapons.push(weapon);
+                exclusiveSkills.weapons.push({
+                    name: weapon,
+                    description: weaponData.description
+                });
             }
             continue;
         }
 
-        commonSkills.weapons.push(weapon);
+        commonSkills.weapons.push({
+            name: weapon,
+            description: weaponData.description
+        });
     }
 
     for (let assist in ASSISTS) {
@@ -58,12 +55,18 @@ function generateMoveset(unit: keyof typeof Characters) {
         if (assistData.allowedWeaponTypes && !assistData.allowedWeaponTypes.includes(unitData.weaponType)) continue;
         if (assistData.exclusiveTo) {
             if (assistData.exclusiveTo.includes(unit)) {
-                exclusiveSkills.assists.push(assist);
+                exclusiveSkills.assists.push({
+                    name: assist,
+                    description: assistData.description
+                });
             }
             continue;
         }
 
-        commonSkills.assists.push(assist);
+        commonSkills.assists.push({
+            name: assist,
+            description: assistData.description
+        });
     }
 
     for (let special in SPECIALS) {
@@ -74,12 +77,18 @@ function generateMoveset(unit: keyof typeof Characters) {
         if (specialData.allowedWeaponTypes && !specialData.allowedWeaponTypes.includes(unitData.weaponType)) continue;
         if (specialData.exclusiveTo) {
             if (specialData.exclusiveTo.includes(unit)) {
-                exclusiveSkills.specials.push(special);
+                exclusiveSkills.specials.push({
+                    name: special,
+                    description: specialData.description
+                });
             }
             continue;
         }
 
-        commonSkills.specials.push(special);
+        commonSkills.specials.push({
+            name: special,
+            description: specialData.description
+        });
     }
 
     for (let passive in PASSIVES) {
@@ -95,10 +104,16 @@ function generateMoveset(unit: keyof typeof Characters) {
             continue;
         }
 
-        commonSkills[passiveData.slot].push(passive);
+        commonSkills[passiveData.slot].push({
+            name: passive,
+            description: passiveData.description
+        });
 
         if (passiveData.isSacredSeal) {
-            commonSkills.S.push(passive);
+            commonSkills.S.push({
+                name: passive,
+                description: passiveData.description
+            });
         }
     }
 

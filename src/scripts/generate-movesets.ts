@@ -5,6 +5,7 @@ import ASSISTS from "../data/assists";
 import SPECIALS from "../data/specials";
 import { writeFileSync } from "fs";
 import { SkillList, CharacterMoveset } from "../interfaces/character-moveset";
+import { WeaponColor } from "../interfaces/types";
 
 function generateMoveset(unit: keyof typeof Characters): CharacterMoveset {
     const unitData = Characters[unit];
@@ -99,9 +100,13 @@ function generateMoveset(unit: keyof typeof Characters): CharacterMoveset {
         if (passiveData.allowedMovementTypes && !passiveData.allowedMovementTypes.includes(unitData.movementType)) continue;
         // @ts-ignore
         if (passiveData.allowedWeaponTypes && !passiveData.allowedWeaponTypes.includes(unitData.weaponType)) continue;
+        if (passiveData.allowedColors && !passiveData.allowedColors.includes(unitData.color as WeaponColor)) continue;
         if (passiveData.exclusiveTo) {
             if (passiveData.exclusiveTo.includes(unit)) {
-                exclusiveSkills[passiveData.slot].push(passive);
+                exclusiveSkills[passiveData.slot].push({
+                    name: passive,
+                    description: passiveData.description
+                });
             }
             continue;
         }

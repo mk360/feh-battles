@@ -3482,6 +3482,7 @@ const PASSIVES: PassivesDict = {
     "Armor March 1": {
         slot: "C",
         isSacredSeal: true,
+        allowedMovementTypes: ["armored"],
         description: "At start of turn, if unit's HP = 100% and unit is adjacent to an armored ally, unit and adjacent armored allies can move 1 extra space. (That turn only. Does not stack.)",
         onTurnStart(state) {
             const allies = getAllies(state, this.entity);
@@ -3509,6 +3510,7 @@ const PASSIVES: PassivesDict = {
     "Armor March 2": {
         slot: "C",
         isSacredSeal: true,
+        allowedMovementTypes: ["armored"],
         description: "At start of turn, if unit's HP ≥ 50% and unit is adjacent to an armored ally, unit and adjacent armored allies can move 1 extra space. (That turn only. Does not stack.) ",
         onTurnStart(state) {
             const allies = getAllies(state, this.entity);
@@ -3536,6 +3538,7 @@ const PASSIVES: PassivesDict = {
     "Armor March 3": {
         slot: "C",
         isSacredSeal: true,
+        allowedMovementTypes: ["armored"],
         description: "At start of turn, if unit is adjacent to an armored ally, unit and adjacent armored allies can move 1 extra space. (That turn only. Does not stack.)",
         onTurnStart(state) {
             const allies = getAllies(state, this.entity);
@@ -3761,6 +3764,7 @@ const PASSIVES: PassivesDict = {
     "Infantry Pulse 1": {
         description: "At the start of turn 1, grants Special cooldown count-1 to all infantry allies on team with HP ≤ unit's HP-5. (Stacks with similar skills.)",
         slot: "C",
+        allowedMovementTypes: ["infantry"],
         onTurnStart(battleState) {
             if (battleState.turn === 1) {
                 const allies = getAllies(battleState, this.entity);
@@ -3778,6 +3782,7 @@ const PASSIVES: PassivesDict = {
     "Infantry Pulse 2": {
         description: "At the start of turn 1, grants Special cooldown count-1 to all infantry allies on team with HP ≤ unit's HP-3. (Stacks with similar skills.)",
         slot: "C",
+        allowedMovementTypes: ["infantry"],
         onTurnStart(battleState) {
             if (battleState.turn === 1) {
                 const allies = getAllies(battleState, this.entity);
@@ -3795,6 +3800,7 @@ const PASSIVES: PassivesDict = {
     "Infantry Pulse 3": {
         description: "At the start of turn 1, grants Special cooldown count-1 to all infantry allies on team with HP ≤ unit's HP-5. (Stacks with similar skills.)",
         slot: "C",
+        allowedMovementTypes: ["infantry"],
         onTurnStart(battleState) {
             if (battleState.turn === 1) {
                 const allies = getAllies(battleState, this.entity);
@@ -3906,6 +3912,7 @@ const PASSIVES: PassivesDict = {
     },
     "Triangle Adept 1": {
         description: "If unit has weapon-triangle advantage, boosts Atk by 10%. If unit has weapon-triangle disadvantage, reduces Atk by 10%.",
+        allowedColors: ["red", "blue", "green"],
         onCombatStart() {
             this.entity.addComponent({
                 type: "ApplyAffinity",
@@ -3915,6 +3922,7 @@ const PASSIVES: PassivesDict = {
         slot: "A",
     },
     "Triangle Adept 2": {
+        allowedColors: ["red", "blue", "green"],
         description: "If unit has weapon-triangle advantage, boosts Atk by 15%. If unit has weapon-triangle disadvantage, reduces Atk by 15%.",
         onCombatStart() {
             this.entity.addComponent({
@@ -3925,6 +3933,7 @@ const PASSIVES: PassivesDict = {
         slot: "A",
     },
     "Triangle Adept 3": {
+        allowedColors: ["red", "blue", "green"],
         description: "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
         onCombatStart() {
             this.entity.addComponent({
@@ -3997,6 +4006,7 @@ const PASSIVES: PassivesDict = {
     "HP/Spd 1": {
         slot: "A",
         description: "Grants HP+3, Spd+1.",
+        isSacredSeal: true,
         onEquip() {
             const stats = this.entity.getOne("Stats");
             stats.hp += 3;
@@ -4006,6 +4016,7 @@ const PASSIVES: PassivesDict = {
     },
     "HP/Spd 2": {
         slot: "A",
+        isSacredSeal: true,
         description: "Grants HP+4, Spd+2.",
         onEquip() {
             const stats = this.entity.getOne("Stats");
@@ -4016,6 +4027,7 @@ const PASSIVES: PassivesDict = {
     },
     "HP/Def 1": {
         slot: "A",
+        isSacredSeal: true,
         description: "Grants HP+3, Def+1.",
         onEquip() {
             const stats = this.entity.getOne("Stats");
@@ -4026,6 +4038,7 @@ const PASSIVES: PassivesDict = {
     },
     "HP/Def 2": {
         slot: "A",
+        isSacredSeal: true,
         description: "Grants HP+4, Def+2.",
         onEquip() {
             const stats = this.entity.getOne("Stats");
@@ -4036,6 +4049,7 @@ const PASSIVES: PassivesDict = {
     },
     "HP/Res 1": {
         slot: "A",
+        isSacredSeal: true,
         description: "Grants HP+3, Res+1.",
         onEquip() {
             const stats = this.entity.getOne("Stats");
@@ -4046,6 +4060,7 @@ const PASSIVES: PassivesDict = {
     },
     "HP/Res 2": {
         slot: "A",
+        isSacredSeal: true,
         description: "Grants HP+4, Res+2.",
         onEquip() {
             const stats = this.entity.getOne("Stats");
@@ -4058,6 +4073,7 @@ const PASSIVES: PassivesDict = {
         description: "Inflicts Atk-3 on foes within 2 spaces of target through their next actions after combat.",
         slot: "C",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         onCombatAfter(state, target) {
             const enemies = getAllies(state, target);
             for (let enemy of enemies) {
@@ -4074,6 +4090,7 @@ const PASSIVES: PassivesDict = {
         description: "Inflicts Atk-5 on foes within 2 spaces of target through their next actions after combat.",
         slot: "C",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         onCombatAfter(state, target) {
             const enemies = getAllies(state, target);
             for (let enemy of enemies) {
@@ -4090,6 +4107,7 @@ const PASSIVES: PassivesDict = {
         description: "Inflicts Atk-7 on foes within 2 spaces of target through their next actions after combat.",
         slot: "C",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         onCombatAfter(state, target) {
             const enemies = getAllies(state, target);
             for (let enemy of enemies) {
@@ -4106,6 +4124,7 @@ const PASSIVES: PassivesDict = {
         description: "Inflicts Spd-3 on foes within 2 spaces of target through their next actions after combat.",
         slot: "C",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         onCombatAfter(state, target) {
             const enemies = getAllies(state, target);
             for (let enemy of enemies) {
@@ -4122,6 +4141,7 @@ const PASSIVES: PassivesDict = {
         description: "Inflicts Spd-5 on foes within 2 spaces of target through their next actions after combat.",
         slot: "C",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         onCombatAfter(state, target) {
             const enemies = getAllies(state, target);
             for (let enemy of enemies) {
@@ -4138,6 +4158,7 @@ const PASSIVES: PassivesDict = {
         description: "Inflicts Spd-7 on foes within 2 spaces of target through their next actions after combat.",
         slot: "C",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         onCombatAfter(state, target) {
             const enemies = getAllies(state, target);
             for (let enemy of enemies) {
@@ -4181,6 +4202,7 @@ const PASSIVES: PassivesDict = {
     "Watersweep 1": {
         description: "If unit initiates combat, unit cannot make a follow-up attack. If unit's Spd ≥ foe's Spd+5 and foe uses magic, staff, or dragonstone damage, foe cannot counterattack.",
         slot: "B",
+        allowedWeaponTypes: exceptStaves,
         onCombatInitiate(state, target) {
             target.addComponent({
                 type: "PreventFollowup"
@@ -4198,6 +4220,7 @@ const PASSIVES: PassivesDict = {
     "Watersweep 2": {
         description: "If unit initiates combat, unit cannot make a follow-up attack. If unit's Spd ≥ foe's Spd+3 and foe uses magic, staff, or dragonstone damage, foe cannot counterattack.",
         slot: "B",
+        allowedWeaponTypes: exceptStaves,
         onCombatInitiate(state, target) {
             target.addComponent({
                 type: "PreventFollowup",
@@ -4215,6 +4238,7 @@ const PASSIVES: PassivesDict = {
     "Watersweep 3": {
         description: "If unit initiates combat, unit cannot make a follow-up attack. If unit's Spd > foe's Spd and foe uses magic, staff, or dragonstone damage, foe cannot counterattack.",
         slot: "B",
+        allowedWeaponTypes: exceptStaves,
         onCombatInitiate(state, target) {
             target.addComponent({
                 type: "PreventFollowup",
@@ -4232,6 +4256,7 @@ const PASSIVES: PassivesDict = {
     "Windsweep 1": {
         description: "If unit initiates combat, unit cannot make a follow-up attack. If unit's Spd ≥ foe's Spd+5 and foe uses sword, lance, axe, bow, dagger, or beast damage, foe cannot counterattack.",
         slot: "B",
+        allowedWeaponTypes: exceptStaves,
         onCombatInitiate(state, target) {
             target.addComponent({
                 type: "PreventFollowup"
@@ -4249,6 +4274,7 @@ const PASSIVES: PassivesDict = {
     "Windsweep 2": {
         description: "If unit initiates combat, unit cannot make a follow-up attack. If unit's Spd ≥ foe's Spd+3 and foe uses sword, lance, axe, bow, dagger, or beast damage, foe cannot counterattack.",
         slot: "B",
+        allowedWeaponTypes: exceptStaves,
         onCombatInitiate(state, target) {
             target.addComponent({
                 type: "PreventFollowup",
@@ -4266,6 +4292,7 @@ const PASSIVES: PassivesDict = {
     "Windsweep 3": {
         description: "If unit initiates combat, unit cannot make a follow-up attack. If unit's Spd > foe's Spd and foe uses sword, lance, axe, bow, dagger, or beast damage, foe cannot counterattack.",
         slot: "B",
+        allowedWeaponTypes: exceptStaves,
         onCombatInitiate(state, target) {
             target.addComponent({
                 type: "PreventFollowup",

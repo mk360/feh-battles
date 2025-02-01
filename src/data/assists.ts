@@ -220,7 +220,7 @@ const ASSISTS: AssistsDict = {
                 value: 10
             });
         },
-        allowedWeaponTypes: exceptStaves
+        allowedWeaponTypes: ["staff"]
     },
     "Pivot": {
         range: 1,
@@ -271,6 +271,7 @@ const ASSISTS: AssistsDict = {
         description: "Restores HP = 50% of Atk. (Minimum of 8 HP.) Range = 2.",
         range: 2,
         type: ["healing"],
+        allowedWeaponTypes: ["staff"],
         onApply(state, ally) {
             const { atk } = getMapStats(this.entity);
             const recovered = Math.max(8, Math.floor(atk / 2));

@@ -35,7 +35,8 @@ function generateMoveset(unit: keyof typeof Characters): CharacterMoveset {
             if (weaponData.exclusiveTo.includes(unit)) {
                 exclusiveSkills.weapons.push({
                     name: weapon,
-                    description: weaponData.description
+                    description: weaponData.description,
+                    might: weaponData.might
                 });
             }
             continue;
@@ -43,7 +44,8 @@ function generateMoveset(unit: keyof typeof Characters): CharacterMoveset {
 
         commonSkills.weapons.push({
             name: weapon,
-            description: weaponData.description
+            description: weaponData.description,
+            might: weaponData.might
         });
     }
 

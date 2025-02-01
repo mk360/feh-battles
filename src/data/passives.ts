@@ -20,6 +20,7 @@ import getAffinity from "../systems/get-affinity";
 import getPosition from "../systems/get-position";
 
 const exceptStaves: WeaponType[] = ["axe", "beast", "bow", "breath", "dagger", "lance", "sword", "tome"];
+const closeRange: WeaponType[] = ["sword", "breath", "axe", "lance"];
 
 interface PassivesDict {
     [k: string]: {
@@ -152,7 +153,7 @@ const PASSIVES: PassivesDict = {
         onCombatStart() {
             counterattack(this);
         },
-        allowedWeaponTypes: ["sword", "axe", "lance", "beast", "breath"]
+        allowedWeaponTypes: closeRange
     },
     "Close Counter": {
         description: "Unit can counterattack regardless of enemy range.",
@@ -235,6 +236,7 @@ const PASSIVES: PassivesDict = {
         description: "Grants Atk/Spd/Def/Res+1. After combat, deals 2 damage to unit.",
         slot: "A",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         onEquip() {
             const stats = this.entity.getOne("Stats");
             stats.atk++;
@@ -253,6 +255,7 @@ const PASSIVES: PassivesDict = {
         description: "Grants Atk/Spd/Def/Res+2. After combat, deals 4 damage to unit.",
         slot: "A",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         onEquip() {
             const stats = this.entity.getOne("Stats");
             stats.atk += 2;
@@ -271,6 +274,7 @@ const PASSIVES: PassivesDict = {
         description: "Grants Atk/Spd/Def/Res+3. After combat, deals 6 damage to unit.",
         slot: "A",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         onEquip() {
             const stats = this.entity.getOne("Stats");
             stats.atk += 3;
@@ -638,6 +642,8 @@ const PASSIVES: PassivesDict = {
                 });
             }
         },
+        allowedMovementTypes: ["infantry", "armored"],
+        allowedWeaponTypes: closeRange,
         onSpecialTrigger() {
             const special = this.entity.getOne("Special");
             const { hp, maxHP } = this.entity.getOne("Stats");
@@ -653,6 +659,8 @@ const PASSIVES: PassivesDict = {
     "Wrath 2": {
         slot: "B",
         description: "At start of turn, if unit's HP ≤ 50% and unit's attack can trigger their Special, grants Special cooldown count-1, and deals +10 damage when Special triggers.",
+        allowedWeaponTypes: closeRange,
+        allowedMovementTypes: ["infantry", "armored"],
         onTurnStart() {
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp / maxHP <= 0.5) {
@@ -676,6 +684,8 @@ const PASSIVES: PassivesDict = {
     },
     "Wrath 3": {
         slot: "B",
+        allowedWeaponTypes: closeRange,
+        allowedMovementTypes: ["infantry", "armored"],
         description: "At start of turn, if unit's HP ≤ 75% and unit's attack can trigger their Special, grants Special cooldown count-1, and deals +10 damage when Special triggers.",
         onTurnStart() {
             const { hp, maxHP } = this.entity.getOne("Stats");
@@ -940,6 +950,7 @@ const PASSIVES: PassivesDict = {
     "Death Blow 1": {
         slot: "A",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         description: "If unit initiates combat, grants Atk+2 during combat.",
         onCombatInitiate() {
             this.entity.addComponent({
@@ -951,6 +962,7 @@ const PASSIVES: PassivesDict = {
     "Death Blow 2": {
         slot: "A",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         description: "If unit initiates combat, grants Atk+4 during combat.",
         onCombatInitiate() {
             this.entity.addComponent({
@@ -962,6 +974,7 @@ const PASSIVES: PassivesDict = {
     "Death Blow 3": {
         slot: "A",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         description: "If unit initiates combat, grants Atk+6 during combat.",
         onCombatInitiate() {
             this.entity.addComponent({
@@ -973,6 +986,7 @@ const PASSIVES: PassivesDict = {
     "Darting Blow 1": {
         slot: "A",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         description: "If unit initiates combat, grants Spd+2 during combat.",
         onCombatInitiate() {
             this.entity.addComponent({
@@ -984,6 +998,7 @@ const PASSIVES: PassivesDict = {
     "Darting Blow 2": {
         slot: "A",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         description: "If unit initiates combat, grants Spd+4 during combat.",
         onCombatInitiate() {
             this.entity.addComponent({
@@ -995,6 +1010,7 @@ const PASSIVES: PassivesDict = {
     "Darting Blow 3": {
         slot: "A",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         description: "If unit initiates combat, grants Spd+6 during combat.",
         onCombatInitiate() {
             this.entity.addComponent({
@@ -1006,6 +1022,7 @@ const PASSIVES: PassivesDict = {
     "Armored Blow 1": {
         slot: "A",
         description: "If unit initiates combat, grants Def+2 during combat.",
+        allowedWeaponTypes: exceptStaves,
         onCombatInitiate() {
             this.entity.addComponent({
                 type: "CombatBuff",
@@ -1017,6 +1034,7 @@ const PASSIVES: PassivesDict = {
     "Armored Blow 2": {
         slot: "A",
         description: "If unit initiates combat, grants Def+4 during combat.",
+        allowedWeaponTypes: exceptStaves,
         onCombatInitiate() {
             this.entity.addComponent({
                 type: "CombatBuff",
@@ -1029,6 +1047,7 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         isSacredSeal: true,
         description: "If unit initiates combat, grants Def+6 during combat.",
+        allowedWeaponTypes: exceptStaves,
         onCombatInitiate() {
             this.entity.addComponent({
                 type: "CombatBuff",
@@ -1038,6 +1057,7 @@ const PASSIVES: PassivesDict = {
     },
     "Warding Blow 1": {
         description: "If unit initiates combat, grants Res+2 during combat.",
+        allowedWeaponTypes: exceptStaves,
         slot: "A",
         isSacredSeal: true,
         onCombatInitiate() {
@@ -1049,6 +1069,7 @@ const PASSIVES: PassivesDict = {
     },
     "Warding Blow 2": {
         description: "If unit initiates combat, grants Res+4 during combat.",
+        allowedWeaponTypes: exceptStaves,
         slot: "A",
         onCombatInitiate() {
             this.entity.addComponent({
@@ -1059,6 +1080,7 @@ const PASSIVES: PassivesDict = {
     },
     "Warding Blow 3": {
         description: "If unit initiates combat, grants Res+6 during combat.",
+        allowedWeaponTypes: exceptStaves,
         slot: "A",
         onCombatInitiate() {
             this.entity.addComponent({
@@ -1070,6 +1092,7 @@ const PASSIVES: PassivesDict = {
     "Fierce Stance 1": {
         slot: "A",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         description: "If foe initiates combat, grants Atk+2 during combat.",
         onCombatDefense() {
             this.entity.addComponent({
@@ -1081,6 +1104,7 @@ const PASSIVES: PassivesDict = {
     "Fierce Stance 2": {
         slot: "A",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         description: "If foe initiates combat, grants Atk+4 during combat.",
         onCombatDefense() {
             this.entity.addComponent({
@@ -1092,6 +1116,7 @@ const PASSIVES: PassivesDict = {
     "Fierce Stance 3": {
         slot: "A",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         description: "If foe initiates combat, grants Atk+6 during combat.",
         onCombatDefense() {
             this.entity.addComponent({
@@ -1103,6 +1128,7 @@ const PASSIVES: PassivesDict = {
     "Steady Stance 1": {
         slot: "A",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         description: "If foe initiates combat, grants Def+2 during combat.",
         onCombatDefense() {
             this.entity.addComponent({
@@ -1114,6 +1140,7 @@ const PASSIVES: PassivesDict = {
     "Steady Stance 2": {
         slot: "A",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         description: "If foe initiates combat, grants Def+4 during combat.",
         onCombatDefense() {
             this.entity.addComponent({
@@ -1125,6 +1152,7 @@ const PASSIVES: PassivesDict = {
     "Steady Stance 3": {
         slot: "A",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         description: "If foe initiates combat, grants Def+6 during combat.",
         onCombatDefense() {
             this.entity.addComponent({
@@ -1136,6 +1164,7 @@ const PASSIVES: PassivesDict = {
     "Bracing Blow 1": {
         description: "If unit initiates combat, grants Def/Res+2 during combat.",
         slot: "A",
+        allowedWeaponTypes: exceptStaves,
         isSacredSeal: true,
         onCombatInitiate() {
             this.entity.addComponent({
@@ -1148,6 +1177,7 @@ const PASSIVES: PassivesDict = {
     "Bracing Blow 2": {
         description: "If unit initiates combat, grants Def/Res+4 during combat.",
         slot: "A",
+        allowedWeaponTypes: exceptStaves,
         isSacredSeal: true,
         onCombatInitiate() {
             this.entity.addComponent({
@@ -1160,6 +1190,7 @@ const PASSIVES: PassivesDict = {
     "Steady Blow 1": {
         description: "If unit initiates combat, grants Spd/Def+2 during combat.",
         slot: "A",
+        allowedWeaponTypes: exceptStaves,
         isSacredSeal: true,
         onCombatInitiate() {
             this.entity.addComponent({
@@ -1172,6 +1203,7 @@ const PASSIVES: PassivesDict = {
     "Steady Blow 2": {
         description: "If unit initiates combat, grants Spd/Def+4 during combat.",
         slot: "A",
+        allowedWeaponTypes: exceptStaves,
         isSacredSeal: true,
         onCombatInitiate() {
             this.entity.addComponent({
@@ -1184,6 +1216,7 @@ const PASSIVES: PassivesDict = {
     "Sturdy Blow 1": {
         description: "If unit initiates combat, grants Atk/Def+2 during combat.",
         slot: "A",
+        allowedWeaponTypes: exceptStaves,
         isSacredSeal: true,
         onCombatInitiate() {
             this.entity.addComponent({
@@ -1195,6 +1228,7 @@ const PASSIVES: PassivesDict = {
     "Sturdy Blow 2": {
         description: "If unit initiates combat, grants Atk/Def+4 during combat.",
         slot: "A",
+        allowedWeaponTypes: exceptStaves,
         isSacredSeal: true,
         onCombatInitiate() {
             this.entity.addComponent({
@@ -1206,6 +1240,7 @@ const PASSIVES: PassivesDict = {
     "Swift Strike 1": {
         description: "If unit initiates combat, grants Spd/Res+2 during combat.",
         slot: "A",
+        allowedWeaponTypes: exceptStaves,
         isSacredSeal: true,
         onCombatInitiate() {
             this.entity.addComponent({
@@ -1217,6 +1252,7 @@ const PASSIVES: PassivesDict = {
     "Swift Strike 2": {
         description: "If unit initiates combat, grants Spd/Res+4 during combat.",
         slot: "A",
+        allowedWeaponTypes: exceptStaves,
         isSacredSeal: true,
         onCombatInitiate() {
             this.entity.addComponent({
@@ -1228,6 +1264,7 @@ const PASSIVES: PassivesDict = {
     "Mirror Strike 1": {
         description: "If unit initiates combat, grants Atk/Res+2 during combat.",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         slot: "A",
         onCombatInitiate() {
             this.entity.addComponent({
@@ -1239,6 +1276,7 @@ const PASSIVES: PassivesDict = {
     "Mirror Strike 2": {
         description: "If unit initiates combat, grants Atk/Res+4 during combat.",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         slot: "A",
         onCombatInitiate() {
             this.entity.addComponent({
@@ -1250,6 +1288,7 @@ const PASSIVES: PassivesDict = {
     "Swift Sparrow 1": {
         slot: "A",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         description: "If unit initiates combat, grants Atk/Spd+2 during combat.",
         onCombatInitiate() {
             this.entity.addComponent({
@@ -1262,6 +1301,7 @@ const PASSIVES: PassivesDict = {
     "Swift Sparrow 2": {
         slot: "A",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         description: "If unit initiates combat, grants Atk/Spd+3 during combat.",
         onCombatInitiate() {
             this.entity.addComponent({
@@ -1274,6 +1314,7 @@ const PASSIVES: PassivesDict = {
     "Mirror Stance 1": {
         description: "If foe initiates combat, grants Atk/Res+2 during combat.",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         onCombatDefense() {
             this.entity.addComponent({
                 type: "CombatBuff",
@@ -1286,6 +1327,7 @@ const PASSIVES: PassivesDict = {
     "Mirror Stance 2": {
         description: "If foe initiates combat, grants Atk/Res+4 during combat.",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         onCombatDefense() {
             this.entity.addComponent({
                 type: "CombatBuff",
@@ -1422,6 +1464,7 @@ const PASSIVES: PassivesDict = {
         description: "Grants Atk/Spd+3. Inflicts Def/Res-3.",
         slot: "A",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         onEquip() {
             const stats = this.entity.getOne("Stats");
             stats.atk += 3;
@@ -1434,6 +1477,7 @@ const PASSIVES: PassivesDict = {
         description: "Grants Atk/Spd+4. Inflicts Def/Res-4.",
         slot: "A",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         onEquip() {
             const stats = this.entity.getOne("Stats");
             stats.atk += 4;
@@ -1446,6 +1490,7 @@ const PASSIVES: PassivesDict = {
         description: "Grants Atk/Spd+5. Inflicts Def/Res-5.",
         slot: "A",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         onEquip() {
             const stats = this.entity.getOne("Stats");
             stats.atk += 5;
@@ -1457,6 +1502,7 @@ const PASSIVES: PassivesDict = {
     "Gale Dance 1": {
         description: "If Sing or Dance is used, grants Spd+2 to target.",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         onAssistAfter(battleState, ally, assistSkill) {
             const assist = ASSISTS[assistSkill.name];
             if (assist.type.includes("refresh")) {
@@ -1470,6 +1516,7 @@ const PASSIVES: PassivesDict = {
     "Gale Dance 2": {
         description: "If Sing or Dance is used, grants Spd+3 to target.",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         onAssistAfter(battleState, ally, assistSkill) {
             const assist = ASSISTS[assistSkill.name];
             if (assist.type.includes("refresh")) {
@@ -1483,6 +1530,7 @@ const PASSIVES: PassivesDict = {
     "Gale Dance 3": {
         description: "If Sing or Dance is used, grants Spd+4 to target.",
         isSacredSeal: true,
+        allowedWeaponTypes: exceptStaves,
         onAssistAfter(battleState, ally, assistSkill) {
             const assist = ASSISTS[assistSkill.name];
             if (assist.type.includes("refresh")) {
@@ -1495,6 +1543,7 @@ const PASSIVES: PassivesDict = {
     },
     "Blaze Dance 1": {
         description: "If Sing or Dance is used, grants Atk+2 to target.",
+        allowedWeaponTypes: exceptStaves,
         onAssistAfter(battleState, ally, assistSkill) {
             const assist = ASSISTS[assistSkill.name];
             if (assist.type.includes("refresh")) {
@@ -1508,6 +1557,7 @@ const PASSIVES: PassivesDict = {
     },
     "Blaze Dance 2": {
         description: "If Sing or Dance is used, grants Atk+3 to target.",
+        allowedWeaponTypes: exceptStaves,
         isSacredSeal: true,
         onAssistAfter(battleState, ally, assistSkill) {
             const assist = ASSISTS[assistSkill.name];
@@ -1521,6 +1571,7 @@ const PASSIVES: PassivesDict = {
     },
     "Blaze Dance 3": {
         description: "If Sing or Dance is used, grants Atk+4 to target.",
+        allowedWeaponTypes: exceptStaves,
         isSacredSeal: true,
         onAssistAfter(battleState, ally, assistSkill) {
             const assist = ASSISTS[assistSkill.name];
@@ -1534,6 +1585,7 @@ const PASSIVES: PassivesDict = {
     },
     "Torrent Dance 1": {
         description: "If Sing or Dance is used, grants Res+3 to target.",
+        allowedWeaponTypes: exceptStaves,
         onAssistAfter(battleState, ally, assistSkill) {
             const assist = ASSISTS[assistSkill.name];
             if (assist.type.includes("refresh")) {
@@ -1546,6 +1598,7 @@ const PASSIVES: PassivesDict = {
     },
     "Geyser Dance 2": {
         description: "If Sing or Dance is used, grants Def/Res+3 to target.",
+        allowedWeaponTypes: exceptStaves,
         onAssistAfter(battleState, ally, assistSkill) {
             const assist = ASSISTS[assistSkill.name];
             if (assist.type.includes("refresh")) {
@@ -1559,6 +1612,7 @@ const PASSIVES: PassivesDict = {
     },
     "Geyser Dance 3": {
         description: "If Sing or Dance is used, grants Def/Res+4 to target.",
+        allowedWeaponTypes: exceptStaves,
         onAssistAfter(battleState, ally, assistSkill) {
             const assist = ASSISTS[assistSkill.name];
             if (assist.type.includes("refresh")) {
@@ -1878,7 +1932,7 @@ const PASSIVES: PassivesDict = {
             }
         },
         allowedMovementTypes: ["armored", "infantry"],
-        allowedWeaponTypes: ["sword", "axe", "lance", "breath", "beast"]
+        allowedWeaponTypes: closeRange
     },
     "Desperation 1": {
         slot: "B",
@@ -2158,7 +2212,7 @@ const PASSIVES: PassivesDict = {
     },
     "Shield Pulse 1": {
         allowedMovementTypes: ["infantry", "armored"],
-        allowedWeaponTypes: ["sword", "lance", "axe", "breath", "beast"],
+        allowedWeaponTypes: closeRange,
         description: "At the start of turn 1, if foe's attack can trigger unit's Special, grants Special cooldown count-1.",
         slot: "B",
         onTurnStart(state) {
@@ -2176,7 +2230,7 @@ const PASSIVES: PassivesDict = {
     },
     "Shield Pulse 2": {
         allowedMovementTypes: ["infantry", "armored"],
-        allowedWeaponTypes: ["sword", "lance", "axe", "breath", "beast"],
+        allowedWeaponTypes: closeRange,
         description: "At the start of turn 1, if foe's attack can trigger unit's Special, grants Special cooldown count-1. Reduces damage dealt to unit by 5 when Special triggers.",
         slot: "B",
         onTurnStart(state) {
@@ -2204,7 +2258,7 @@ const PASSIVES: PassivesDict = {
     },
     "Shield Pulse 3": {
         allowedMovementTypes: ["infantry", "armored"],
-        allowedWeaponTypes: ["sword", "lance", "axe", "breath", "beast"],
+        allowedWeaponTypes: closeRange,
         description: "At the start of turn 1, if foe's attack can trigger unit's Special, grants Special cooldown count-2. Reduces damage dealt to unit by 5 when Special triggers.",
         slot: "B",
         onTurnStart(state) {
@@ -2232,7 +2286,7 @@ const PASSIVES: PassivesDict = {
     },
     "Cancel Affinity 1": {
         slot: "B",
-        allowedWeaponTypes: ["sword", "breath", "axe", "lance"],
+        allowedWeaponTypes: closeRange,
         description: "Neutralizes all weapon-triangle advantage granted by unit's and foe's skills.",
         onCombatStart(state, target) {
             this.entity.addComponent({
@@ -2246,7 +2300,7 @@ const PASSIVES: PassivesDict = {
     },
     "Cancel Affinity 2": {
         slot: "B",
-        allowedWeaponTypes: ["sword", "breath", "axe", "lance"],
+        allowedWeaponTypes: closeRange,
         description: "Neutralizes weapon-triangle advantage granted by unit's skills. If unit has weapon-triangle disadvantage, neutralizes weapon-triangle advantage granted by foe's skills.",
         onCombatStart(state, target) {
             target.addComponent({
@@ -2262,7 +2316,7 @@ const PASSIVES: PassivesDict = {
     },
     "Cancel Affinity 3": {
         slot: "B",
-        allowedWeaponTypes: ["sword", "breath", "axe", "lance"],
+        allowedWeaponTypes: closeRange,
         description: "Neutralizes weapon-triangle advantage granted by unit's skills. If unit has weapon-triangle disadvantage, neutralizes weapon-triangle advantage granted by foe's skills.",
         onCombatStart(state, target) {
             target.addComponent({
@@ -2279,7 +2333,7 @@ const PASSIVES: PassivesDict = {
     "Drag Back": {
         slot: "B",
         description: "If unit initiates combat, unit moves 1 space away after combat. Target foe moves to unit's previous space.",
-        allowedWeaponTypes: ["sword", "breath", "axe", "lance"],
+        allowedWeaponTypes: closeRange,
         onCombatAfter(state, target) {
             const retreatChecker = retreat(state, this.entity, target);
             const { x, y } = getPosition(this.entity);
@@ -2298,7 +2352,7 @@ const PASSIVES: PassivesDict = {
     "Hit and Run": {
         slot: "B",
         description: "If unit initiates combat, unit moves 1 space away after combat.",
-        allowedWeaponTypes: ["sword", "breath", "axe", "lance"],
+        allowedWeaponTypes: closeRange,
         onCombatAfter(state, target) {
             const retreatChecker = retreat(state, this.entity, target);
             if (retreatChecker.checker()) {
@@ -2309,6 +2363,7 @@ const PASSIVES: PassivesDict = {
     "Knock Back": {
         description: "If unit initiates combat, target foe moves 1 space away after combat.",
         slot: "B",
+        allowedWeaponTypes: closeRange,
         onCombatAfter(state, target) {
             const shoveChecker = shove(state, this.entity, target, 1);
             if (shoveChecker.checker()) {
@@ -2319,7 +2374,7 @@ const PASSIVES: PassivesDict = {
     "Lunge": {
         description: "If unit initiates combat, unit and target foe swap spaces after combat.",
         slot: "B",
-        allowedWeaponTypes: ["axe", "sword", "breath", "lance"],
+        allowedWeaponTypes: closeRange,
         onCombatAfter(state, target) {
             const boundSwap = swap();
             if (this.entity.getOne("InitiateCombat") && boundSwap.checker(state, this.entity, target)) {
@@ -2345,6 +2400,15 @@ const PASSIVES: PassivesDict = {
         allowedColors: ["colorless", "green", "red"],
         description: "If unit's HP ≥ 70% in combat against an axe foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
     },
+    "Axebreaker 3": {
+        onCombatStart(state, target) {
+            breaker(this, target, "axe", 0.5);
+        },
+        slot: "B",
+        allowedWeaponTypes: ["sword", "axe", "beast", "bow", "dagger", "breath", "tome", "staff"],
+        allowedColors: ["colorless", "green", "red"],
+        description: "If unit's HP ≥ 50% in combat against an axe foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+    },
     "Renewal 1": {
         description: "At the start of every fourth turn, restores 10 HP.",
         isSacredSeal: true,
@@ -2368,15 +2432,6 @@ const PASSIVES: PassivesDict = {
             renewal(this, state.turn % 2 === 1, 10);
         },
         slot: "B",
-    },
-    "Axebreaker 3": {
-        onCombatStart(state, target) {
-            breaker(this, target, "axe", 0.5);
-        },
-        slot: "B",
-        allowedWeaponTypes: ["sword", "axe", "beast", "bow", "dagger", "breath", "tome", "staff"],
-        allowedColors: ["colorless", "green", "red"],
-        description: "If unit's HP ≥ 50% in combat against an axe foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
     },
     "Daggerbreaker 1": {
         onCombatStart(state, target) {

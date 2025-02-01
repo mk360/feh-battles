@@ -42,8 +42,6 @@ class MovementSystem extends System {
         const allies = getAllies(this.state, unit);
         const obstructors = getEnemies(this.state, unit);
 
-        const { skillMap } = this.state;
-
         const pathfinders = allies.filter((ally) => ally.getOne("Pathfinder")).map((pathfinder) => {
             const { x, y } = pathfinder.getOne("Position");
             return this.state.map[y][x];
@@ -54,7 +52,7 @@ class MovementSystem extends System {
         if (!unit.getOne("Pass")) {
             for (let obstructor of obstructors) {
                 if (this.state.skillMap.get(obstructor)?.onTurnEnemyCheckRange) {
-                    for (let skill of skillMap.get(obstructor).onTurnEnemyCheckRange) {
+                    for (let skill of this.state.skillMap.get(obstructor).onTurnEnemyCheckRange) {
                         const skillData = PASSIVES[skill.name];
                         skillData.onTurnEnemyCheckRange.call(skill, this.state, unit);
                     }
@@ -78,7 +76,7 @@ class MovementSystem extends System {
         });
 
         for (let ally of allies) {
-            if (skillMap.get(ally).onTurnAllyCheckRange) {
+            if (this.state.skillMap.get(ally).onTurnAllyCheckRange) {
                 for (let skill of this.state.skillMap.get(ally).onTurnAllyCheckRange) {
                     const skillData = PASSIVES[skill.name];
                     skillData.onTurnAllyCheckRange.call(skill, this.state, unit);
@@ -240,7 +238,6 @@ class MovementSystem extends System {
         let surroundings = getSurroundings(this.state.map, y, x, movementTiles);
         if (attackRange === 1) surroundings = surroundings.filter((tile) => !movementTiles.has(tile));
         const targetSet = attackRange === 1 ? tiles : temporaryTiles;
-
         for (let surroundingTile of surroundings) {
             targetSet.add(surroundingTile);
         }

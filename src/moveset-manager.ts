@@ -2,7 +2,7 @@ import { CharacterMoveset } from "./interfaces/character-moveset";
 
 class MovesetManager {
     getCharacterMoveset(name: string) {
-        const formattedName = name.replace(":", "_");
+        const formattedName = name.replace(": ", "_");
         return require(`./data/movesets/${formattedName}.json`);
     }
 

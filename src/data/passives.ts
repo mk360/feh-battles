@@ -1,26 +1,27 @@
-import { Component, Entity } from "ape-ecs";
+import { Entity } from "ape-ecs";
 import Skill from "../components/skill";
-import HeroSystem from "../systems/hero";
-import GameState from "../systems/state";
-import { MovementType, Stat, Stats, PassiveSlot, WeaponType, WeaponColor } from "../interfaces/types";
-import getAllies from "../utils/get-allies";
-import getEnemies from "../utils/get-enemies";
-import { mapBuffByMovementType, honeStat, combatBuffByRange, defiant, breaker, elementalBoost, renewal, threaten, bond, counterattack, guidance, swap, retreat, shove } from "./effects";
-import Characters from "./characters.json";
-import getCombatStats from "../systems/get-combat-stats";
 import CombatTurnOutcome from "../interfaces/combat-turn-outcome";
-import getSurroundings from "../systems/get-surroundings";
-import getTileCoordinates from "../systems/get-tile-coordinates";
-import canReachTile from "../systems/can-reach-tile";
-import SPECIALS from "./specials";
+import { MovementType, PassiveSlot, Stat, Stats, WeaponColor, WeaponType } from "../interfaces/types";
 import { applyMapComponent } from "../systems/apply-map-effect";
-import ASSISTS from "./assists";
+import canReachTile from "../systems/can-reach-tile";
 import { defenderCanDefend } from "../systems/generate-turns";
 import getAffinity from "../systems/get-affinity";
+import getCombatStats from "../systems/get-combat-stats";
 import getPosition from "../systems/get-position";
+import getSurroundings from "../systems/get-surroundings";
+import getTileCoordinates from "../systems/get-tile-coordinates";
+import HeroSystem from "../systems/hero";
+import GameState from "../systems/state";
+import getAllies from "../utils/get-allies";
+import getEnemies from "../utils/get-enemies";
+import ASSISTS from "./assists";
+import Characters from "./characters.json";
+import { bond, breaker, combatBuffByRange, counterattack, defiant, elementalBoost, guidance, honeStat, mapBuffByMovementType, renewal, retreat, shove, swap, threaten } from "./effects";
+import SPECIALS from "./specials";
 
 const exceptStaves: WeaponType[] = ["axe", "beast", "bow", "breath", "dagger", "lance", "sword", "tome"];
-const closeRange: WeaponType[] = ["sword", "breath", "axe", "lance"];
+const closeRange: WeaponType[] = ["sword", "breath", "axe", "lance", "beast"];
+const farRange: WeaponType[] = ["tome", "staff", "bow", "dagger"];
 
 interface PassivesDict {
     [k: string]: {
@@ -62,16 +63,9 @@ function ploy(skill: Skill, state: GameState, affectedStat: Stat, debuff: number
         const isCardinal = x === enemyPos.x || y === enemyPos.y;
         const resIsHigher = skill.entity.getOne("Stats").res > enemy.getOne("Stats").res;
         if (isCardinal && resIsHigher) {
-            enemy.addComponent({
-                type: "MapDebuff",
+            applyMapComponent(enemy, "MapDebuff", {
                 [affectedStat]: debuff
-            });
-            enemy.addTag("Penalty");
-            enemy.addComponent({
-                type: "Status",
-                value: "Penalty",
-                source: skill.entity
-            })
+            }, skill.entity);
         }
     }
 }
@@ -107,31 +101,17 @@ function tactic(thisArg: Skill, state: GameState, affectedStat: Stat, buff: numb
     const allies = getAllies(state, thisArg.entity);
 
     if (state.teamsByMovementTypes[thisArg.entity.getOne("Side").value][userMovementType] <= 2) {
-        thisArg.entity.addComponent({
-            type: "MapBuff",
+        applyMapComponent(thisArg.entity, "MapBuff", {
             [affectedStat]: buff
-        });
-
-        thisArg.entity.addComponent({
-            type: "Status",
-            value: "Bonus",
-            source: thisArg.entity,
-        });
+        }, thisArg.entity);
     }
 
     for (let ally of allies) {
         const allyMovementType = ally.getOne("MovementType").value;
         if (state.teamsByMovementTypes[thisArg.entity.getOne("Side").value][allyMovementType] <= 2) {
-            ally.addComponent({
-                type: "MapBuff",
+            applyMapComponent(ally, "MapBuff", {
                 [affectedStat]: buff
-            });
-
-            ally.addComponent({
-                type: "Status",
-                value: "Bonus",
-                source: thisArg.entity,
-            });
+            }, thisArg.entity);
         }
     }
 }
@@ -147,13 +127,78 @@ function movementBasedCombatBuff(buff: Stats, range: number) {
 }
 
 const PASSIVES: PassivesDict = {
-    "Distant Counter": {
-        description: "Unit can counterattack regardless of enemy range.",
+    "Attack +1": {
+        description: "Grants Attack +1.",
         slot: "A",
-        onCombatStart() {
-            counterattack(this);
+        isSacredSeal: true,
+        onEquip() {
+            this.entity.getOne("Stats").atk++;
         },
-        allowedWeaponTypes: closeRange
+    },
+    "Attack +2": {
+        description: "Grants Attack +2.",
+        slot: "A",
+        isSacredSeal: true,
+        onEquip() {
+            this.entity.getOne("Stats").atk += 2;
+        },
+    },
+    "Attack +3": {
+        description: "Grants Attack +3.",
+        slot: "A",
+        isSacredSeal: true,
+        onEquip() {
+            this.entity.getOne("Stats").atk += 3;
+        },
+    },
+    "Attack/Def 1": {
+        description: "Grants Atk/Def+1.",
+        slot: "A",
+        isSacredSeal: true,
+        onEquip() {
+            this.entity.getOne("Stats").atk++;
+            this.entity.getOne("Stats").def++;
+        }
+    },
+    "Attack/Def 2": {
+        description: "Grants Atk/Def+2.",
+        slot: "A",
+        isSacredSeal: true,
+        onEquip() {
+            this.entity.getOne("Stats").atk += 2;
+            this.entity.getOne("Stats").def += 2;
+        }
+    },
+    "Attack/Res 1": {
+        description: "Grants Atk/Res+1.",
+        slot: "A",
+        isSacredSeal: true,
+        onEquip() {
+            this.entity.getOne("Stats").atk++;
+            this.entity.getOne("Stats").res++;
+        }
+    },
+    "Attack/Res 2": {
+        description: "Grants Atk/Res+2.",
+        slot: "A",
+        isSacredSeal: true,
+        onEquip() {
+            this.entity.getOne("Stats").atk += 2;
+            this.entity.getOne("Stats").res += 2;
+        }
+    },
+    "Beorc's Blessing": {
+        slot: "B",
+        description: `Neutralizes cavalry and flying foes' bonuses (from skills like Fortify, Rally, etc.) during combat. (Skill cannot be inherited.)`,
+        onCombatStart(state, target) {
+            if (target.has("Panic")) return;
+            if (["flier", "cavalry"].includes(target.getOne("MovementType").value)) {
+                target.addComponent({
+                    type: "NeutralizeMapBuffs",
+                });
+            }
+        },
+        exclusiveTo: ["Ike: Brave Mercenary"]
     },
     "Close Counter": {
         description: "Unit can counterattack regardless of enemy range.",
@@ -173,13 +218,37 @@ const PASSIVES: PassivesDict = {
         },
         slot: "B",
     },
-    "Recover Ring": {
-        description: "At start of turn, restores 10 HP. (Skill cannot be inherited.)",
-        exclusiveTo: ["Arvis: Emperor of Flame"],
-        slot: "B",
-        onTurnStart() {
-            renewal(this, true, 10);
+    "Defense +1": {
+        description: "Grants Defense +1.",
+        slot: "A",
+        isSacredSeal: true,
+        onEquip() {
+            this.entity.getOne("Stats").def++;
         },
+    },
+    "Defense +2": {
+        description: "Grants Defense +2.",
+        slot: "A",
+        isSacredSeal: true,
+        onEquip() {
+            this.entity.getOne("Stats").def += 2;
+        },
+    },
+    "Defense +3": {
+        description: "Grants Defense +3.",
+        slot: "A",
+        isSacredSeal: true,
+        onEquip() {
+            this.entity.getOne("Stats").def += 3;
+        },
+    },
+    "Distant Counter": {
+        description: "Unit can counterattack regardless of enemy range.",
+        slot: "A",
+        onCombatStart() {
+            counterattack(this);
+        },
+        allowedWeaponTypes: closeRange
     },
     "Follow-Up Ring": {
         description: "At start of combat, if unit's HP ≥ 50%, unit makes a guaranteed follow-up attack. (Skill cannot be inherited.)",
@@ -194,43 +263,6 @@ const PASSIVES: PassivesDict = {
                 });
             }
         }
-    },
-    "Beorc's Blessing": {
-        slot: "B",
-        description: `Neutralizes cavalry and flying foes' bonuses (from skills like Fortify, Rally, etc.) during combat. (Skill cannot be inherited.)`,
-        onCombatStart(state, target) {
-            if (target.has("Panic")) return;
-            if (["flier", "cavalry"].includes(target.getOne("MovementType").value)) {
-                target.addComponent({
-                    type: "NeutralizeMapBuffs",
-                });
-            }
-        },
-        exclusiveTo: ["Ike: Brave Mercenary"]
-    },
-    "Sacae's Blessing": {
-        description: "If foe uses sword, lance, or axe, foe cannot counterattack. (Skill cannot be inherited.)",
-        slot: "A",
-        exclusiveTo: ["Lyn: Brave Lady"],
-        onCombatInitiate(state, target) {
-            if (["sword", "axe", "lance"].includes(target.getOne("Weapon").weaponType)) {
-                this.entity.addComponent({
-                    type: "PreventCounterattack"
-                });
-            }
-        },
-    },
-    "Svalinn Shield": {
-        slot: "A",
-        protects: ["armored"],
-        allowedMovementTypes: ["armored"],
-        description: 'Neutralizes "effective against armor" bonuses.',
-    },
-    "Iote's Shield": {
-        slot: "A",
-        description: 'Neutralizes "effective against flying" bonuses.',
-        protects: ["flier"],
-        allowedMovementTypes: ["flier"]
     },
     "Fury 1": {
         description: "Grants Atk/Spd/Def/Res+1. After combat, deals 2 damage to unit.",
@@ -316,52 +348,18 @@ const PASSIVES: PassivesDict = {
             this.entity.getOne("Stats").hp += 5;
         },
     },
-    "Attack +1": {
-        description: "Grants Attack +1.",
+    "Iote's Shield": {
         slot: "A",
-        isSacredSeal: true,
-        onEquip() {
-            this.entity.getOne("Stats").atk++;
-        },
+        description: 'Neutralizes "effective against flying" bonuses.',
+        protects: ["flier"],
+        allowedMovementTypes: ["flier"]
     },
-    "Attack +2": {
-        description: "Grants Attack +2.",
-        slot: "A",
-        isSacredSeal: true,
-        onEquip() {
-            this.entity.getOne("Stats").atk += 2;
-        },
-    },
-    "Attack +3": {
-        description: "Grants Attack +3.",
-        slot: "A",
-        isSacredSeal: true,
-        onEquip() {
-            this.entity.getOne("Stats").atk += 3;
-        },
-    },
-    "Defense +1": {
-        description: "Grants Defense +1.",
-        slot: "A",
-        isSacredSeal: true,
-        onEquip() {
-            this.entity.getOne("Stats").def++;
-        },
-    },
-    "Defense +2": {
-        description: "Grants Defense +2.",
-        slot: "A",
-        isSacredSeal: true,
-        onEquip() {
-            this.entity.getOne("Stats").def += 2;
-        },
-    },
-    "Defense +3": {
-        description: "Grants Defense +3.",
-        slot: "A",
-        isSacredSeal: true,
-        onEquip() {
-            this.entity.getOne("Stats").def += 3;
+    "Recover Ring": {
+        description: "At start of turn, restores 10 HP. (Skill cannot be inherited.)",
+        exclusiveTo: ["Arvis: Emperor of Flame"],
+        slot: "B",
+        onTurnStart() {
+            renewal(this, true, 10);
         },
     },
     "Resistance +1": {
@@ -388,6 +386,18 @@ const PASSIVES: PassivesDict = {
             this.entity.getOne("Stats").res += 3;
         },
     },
+    "Sacae's Blessing": {
+        description: "If foe uses sword, lance, or axe, foe cannot counterattack. (Skill cannot be inherited.)",
+        slot: "A",
+        exclusiveTo: ["Lyn: Brave Lady"],
+        onCombatInitiate(state, target) {
+            if (["sword", "axe", "lance"].includes(target.getOne("Weapon").weaponType)) {
+                this.entity.addComponent({
+                    type: "PreventCounterattack"
+                });
+            }
+        },
+    },
     "Speed +1": {
         description: "Grants Speed +1.",
         isSacredSeal: true,
@@ -412,41 +422,11 @@ const PASSIVES: PassivesDict = {
             this.entity.getOne("Stats").spd += 3;
         },
     },
-    "Attack/Res 1": {
-        description: "Grants Atk/Res+1.",
+    "Svalinn Shield": {
         slot: "A",
-        isSacredSeal: true,
-        onEquip() {
-            this.entity.getOne("Stats").atk++;
-            this.entity.getOne("Stats").res++;
-        }
-    },
-    "Attack/Res 2": {
-        description: "Grants Atk/Res+2.",
-        slot: "A",
-        isSacredSeal: true,
-        onEquip() {
-            this.entity.getOne("Stats").atk += 2;
-            this.entity.getOne("Stats").res += 2;
-        }
-    },
-    "Attack/Def 1": {
-        description: "Grants Atk/Def+1.",
-        slot: "A",
-        isSacredSeal: true,
-        onEquip() {
-            this.entity.getOne("Stats").atk++;
-            this.entity.getOne("Stats").def++;
-        }
-    },
-    "Attack/Def 2": {
-        description: "Grants Atk/Def+2.",
-        slot: "A",
-        isSacredSeal: true,
-        onEquip() {
-            this.entity.getOne("Stats").atk += 2;
-            this.entity.getOne("Stats").def += 2;
-        }
+        protects: ["armored"],
+        allowedMovementTypes: ["armored"],
+        description: 'Neutralizes "effective against armor" bonuses.',
     },
     "Spd/Def 1": {
         description: "Grants Spd/Def+1.",
@@ -3144,7 +3124,7 @@ const PASSIVES: PassivesDict = {
                 if (enemyPosition.x === x || enemyPosition.y === y) {
                     const { hp: enemyHp } = enemy.getOne("Stats");
                     if (enemyHp <= hp - 5) {
-                        enemy.addComponent({ type: "Status", value: "Panic", source: this.entity });
+                        applyMapComponent(enemy, "Panic", {}, this.entity);
                     }
                 }
             }
@@ -3164,7 +3144,7 @@ const PASSIVES: PassivesDict = {
                 if (enemyPosition.x === x || enemyPosition.y === y) {
                     const { hp: enemyHp } = enemy.getOne("Stats");
                     if (enemyHp <= hp - 3) {
-                        enemy.addComponent({ type: "Status", value: "Panic", source: this.entity });
+                        applyMapComponent(enemy, "Panic", {}, this.entity);
                     }
                 }
             }
@@ -3184,7 +3164,7 @@ const PASSIVES: PassivesDict = {
                 if (enemyPosition.x === x || enemyPosition.y === y) {
                     const { hp: enemyHp } = enemy.getOne("Stats");
                     if (enemyHp < hp) {
-                        enemy.addComponent({ type: "Status", value: "Panic", source: this.entity });
+                        applyMapComponent(enemy, "Panic", {}, this.entity);
                     }
                 }
             }
@@ -3396,6 +3376,7 @@ const PASSIVES: PassivesDict = {
     },
     "Wary Fighter 1": {
         slot: "B",
+        allowedMovementTypes: ["armored"],
         description: "If unit's HP ≥ 90%, unit and foe cannot make a follow-up attack.",
         onCombatStart(state, target) {
             const { hp, maxHP } = this.entity.getOne("Stats");
@@ -3411,6 +3392,7 @@ const PASSIVES: PassivesDict = {
     },
     "Wary Fighter 2": {
         slot: "B",
+        allowedMovementTypes: ["armored"],
         description: "If unit's HP ≥ 70%, unit and foe cannot make a follow-up attack.",
         onCombatStart(state, target) {
             const { hp, maxHP } = this.entity.getOne("Stats");

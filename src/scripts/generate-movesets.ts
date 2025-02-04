@@ -129,7 +129,7 @@ function generateMoveset(unit: keyof typeof Characters): CharacterMoveset {
 
 function outputMoveset(heroName: keyof typeof Characters) {
     const moveset = generateMoveset(heroName);
-    writeFileSync(`src/data/movesets/${heroName.replace(": ", "_")}.json`, JSON.stringify(moveset));
+    writeFileSync(`src/data/movesets/${heroName.replace(": ", "_")}.json`, JSON.stringify(moveset, null, 2));
 }
 
 for (let character in Characters) {

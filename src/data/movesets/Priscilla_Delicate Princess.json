@@ -10,11 +10,6 @@
   "commonSkills": {
     "weapons": [
       {
-        "name": "Assault",
-        "description": "",
-        "might": 10
-      },
-      {
         "name": "Absorb",
         "description": "Restores HP = 50% of damage dealt.",
         "might": 4
@@ -23,6 +18,11 @@
         "name": "Absorb+",
         "description": "Restores HP = 50% of damage dealt.&lt;br>After combat, if unit attacked, restores 7 HP to allies within 2 spaces of unit.",
         "might": 7
+      },
+      {
+        "name": "Assault",
+        "description": "",
+        "might": 10
       },
       {
         "name": "Candlelight",
@@ -163,6 +163,38 @@
     ],
     "A": [
       {
+        "name": "Atk/Def Bond 1",
+        "description": "If unit is adjacent to an ally, grants Atk/Def+3 during combat."
+      },
+      {
+        "name": "Atk/Def Bond 2",
+        "description": "If unit is adjacent to an ally, grants Atk/Def+4 during combat."
+      },
+      {
+        "name": "Atk/Def Bond 3",
+        "description": "If unit is adjacent to an ally, grants Atk/Def+5 during combat."
+      },
+      {
+        "name": "Atk/Res Bond 1",
+        "description": "If unit is adjacent to an ally, grants Atk/Res+3 during combat."
+      },
+      {
+        "name": "Atk/Res Bond 2",
+        "description": "If unit is adjacent to an ally, grants Atk/Res+4 during combat."
+      },
+      {
+        "name": "Atk/Res Bond 3",
+        "description": "If unit is adjacent to an ally, grants Atk/Res+5 during combat."
+      },
+      {
+        "name": "Atk/Spd 1",
+        "description": "Grants Atk/Spd+1."
+      },
+      {
+        "name": "Atk/Spd 2",
+        "description": "Grants Atk/Spd+2."
+      },
+      {
         "name": "Attack +1",
         "description": "Grants Attack +1."
       },
@@ -195,78 +227,6 @@
         "description": "Unit can counterattack regardless of enemy range."
       },
       {
-        "name": "Defense +1",
-        "description": "Grants Defense +1."
-      },
-      {
-        "name": "Defense +2",
-        "description": "Grants Defense +2."
-      },
-      {
-        "name": "Defense +3",
-        "description": "Grants Defense +3."
-      },
-      {
-        "name": "HP +3",
-        "description": "Grants HP +3."
-      },
-      {
-        "name": "HP +4",
-        "description": "Grants HP +4."
-      },
-      {
-        "name": "HP +5",
-        "description": "Grants HP +5."
-      },
-      {
-        "name": "Resistance +1",
-        "description": "Grants Resistance +1."
-      },
-      {
-        "name": "Resistance +2",
-        "description": "Grants Resistance +2."
-      },
-      {
-        "name": "Resistance +3",
-        "description": "Grants Resistance +3."
-      },
-      {
-        "name": "Speed +1",
-        "description": "Grants Speed +1."
-      },
-      {
-        "name": "Speed +2",
-        "description": "Grants Speed +2."
-      },
-      {
-        "name": "Speed +3",
-        "description": "Grants Speed +3."
-      },
-      {
-        "name": "Spd/Def 1",
-        "description": "Grants Spd/Def+1."
-      },
-      {
-        "name": "Spd/Def 2",
-        "description": "Grants Spd/Def+2."
-      },
-      {
-        "name": "Spd/Res 1",
-        "description": "Grants Spd/Res+1."
-      },
-      {
-        "name": "Spd/Res 2",
-        "description": "Grants Spd/Res+2."
-      },
-      {
-        "name": "Atk/Spd 1",
-        "description": "Grants Atk/Spd+1."
-      },
-      {
-        "name": "Atk/Spd 2",
-        "description": "Grants Atk/Spd+2."
-      },
-      {
         "name": "Close Def 1",
         "description": "If foe initiates combat and uses sword, lance, axe, dragonstone, or beast damage, grants Def/Res+2 during combat."
       },
@@ -279,92 +239,16 @@
         "description": "If foe initiates combat and uses sword, lance, axe, dragonstone, or beast damage, grants Def/Res+6 during combat."
       },
       {
-        "name": "Distant Def 1",
-        "description": "If foe initiates combat and uses bow, dagger, magic, or staff, grants Def/Res+2 during combat."
+        "name": "Defense +1",
+        "description": "Grants Defense +1."
       },
       {
-        "name": "Distant Def 2",
-        "description": "If foe initiates combat and uses bow, dagger, magic, or staff, grants Def/Res+4 during combat."
+        "name": "Defense +2",
+        "description": "Grants Defense +2."
       },
       {
-        "name": "Distant Def 3",
-        "description": "If foe initiates combat and uses bow, dagger, magic, or staff, grants Def/Res+6 during combat."
-      },
-      {
-        "name": "Atk/Def Bond 1",
-        "description": "If unit is adjacent to an ally, grants Atk/Def+3 during combat."
-      },
-      {
-        "name": "Atk/Def Bond 2",
-        "description": "If unit is adjacent to an ally, grants Atk/Def+4 during combat."
-      },
-      {
-        "name": "Atk/Def Bond 3",
-        "description": "If unit is adjacent to an ally, grants Atk/Def+5 during combat."
-      },
-      {
-        "name": "Atk/Res Bond 1",
-        "description": "If unit is adjacent to an ally, grants Atk/Res+3 during combat."
-      },
-      {
-        "name": "Atk/Res Bond 2",
-        "description": "If unit is adjacent to an ally, grants Atk/Res+4 during combat."
-      },
-      {
-        "name": "Atk/Res Bond 3",
-        "description": "If unit is adjacent to an ally, grants Atk/Res+5 during combat."
-      },
-      {
-        "name": "Water Boost 1",
-        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Res+2 during combat."
-      },
-      {
-        "name": "Water Boost 2",
-        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Res+4 during combat."
-      },
-      {
-        "name": "Water Boost 3",
-        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Res+6 during combat."
-      },
-      {
-        "name": "Wind Boost 1",
-        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Spd+2 during combat."
-      },
-      {
-        "name": "Wind Boost 2",
-        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Spd+4 during combat."
-      },
-      {
-        "name": "Wind Boost 3",
-        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Spd+6 during combat."
-      },
-      {
-        "name": "Earth Boost 1",
-        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Def+2 during combat."
-      },
-      {
-        "name": "Earth Boost 2",
-        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Def+4 during combat."
-      },
-      {
-        "name": "Earth Boost 3",
-        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Def+6 during combat."
-      },
-      {
-        "name": "Fire Boost 1",
-        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Atk+2 during combat."
-      },
-      {
-        "name": "Fire Boost 2",
-        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Atk+4 during combat."
-      },
-      {
-        "name": "Fire Boost 3",
-        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Atk+6 during combat."
-      },
-      {
-        "name": "Grani's Shield",
-        "description": "Neutralizes \"effective against cavalry\" bonuses."
+        "name": "Defense +3",
+        "description": "Grants Defense +3."
       },
       {
         "name": "Defiant Atk 1",
@@ -391,6 +275,18 @@
         "description": "At start of turn, if unit's HP ≤ 50%, grants Def+7 for 1 turn."
       },
       {
+        "name": "Defiant Res 1",
+        "description": "At start of turn, if unit's HP ≤ 50%, grants Res+3 for 1 turn."
+      },
+      {
+        "name": "Defiant Res 2",
+        "description": "At start of turn, if unit's HP ≤ 50%, grants Res+5 for 1 turn."
+      },
+      {
+        "name": "Defiant Res 3",
+        "description": "At start of turn, if unit's HP ≤ 50%, grants Res+7 for 1 turn."
+      },
+      {
         "name": "Defiant Spd 1",
         "description": "At start of turn, if unit's HP ≤ 50%, grants Spd+3 for 1 turn."
       },
@@ -403,16 +299,40 @@
         "description": "At start of turn, if unit's HP ≤ 50%, grants Spd+7 for 1 turn."
       },
       {
-        "name": "Defiant Res 1",
-        "description": "At start of turn, if unit's HP ≤ 50%, grants Res+3 for 1 turn."
+        "name": "Distant Def 1",
+        "description": "If foe initiates combat and uses bow, dagger, magic, or staff, grants Def/Res+2 during combat."
       },
       {
-        "name": "Defiant Res 2",
-        "description": "At start of turn, if unit's HP ≤ 50%, grants Res+5 for 1 turn."
+        "name": "Distant Def 2",
+        "description": "If foe initiates combat and uses bow, dagger, magic, or staff, grants Def/Res+4 during combat."
       },
       {
-        "name": "Defiant Res 3",
-        "description": "At start of turn, if unit's HP ≤ 50%, grants Res+7 for 1 turn."
+        "name": "Distant Def 3",
+        "description": "If foe initiates combat and uses bow, dagger, magic, or staff, grants Def/Res+6 during combat."
+      },
+      {
+        "name": "Earth Boost 1",
+        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Def+2 during combat."
+      },
+      {
+        "name": "Earth Boost 2",
+        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Def+4 during combat."
+      },
+      {
+        "name": "Earth Boost 3",
+        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Def+6 during combat."
+      },
+      {
+        "name": "Fire Boost 1",
+        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Atk+2 during combat."
+      },
+      {
+        "name": "Fire Boost 2",
+        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Atk+4 during combat."
+      },
+      {
+        "name": "Fire Boost 3",
+        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Atk+6 during combat."
       },
       {
         "name": "Fortress Def 1",
@@ -439,12 +359,20 @@
         "description": "Grants Res+5. Inflicts Atk-3."
       },
       {
-        "name": "HP/Spd 1",
-        "description": "Grants HP+3, Spd+1."
+        "name": "Grani's Shield",
+        "description": "Neutralizes \"effective against cavalry\" bonuses."
       },
       {
-        "name": "HP/Spd 2",
-        "description": "Grants HP+4, Spd+2."
+        "name": "HP +3",
+        "description": "Grants HP +3."
+      },
+      {
+        "name": "HP +4",
+        "description": "Grants HP +4."
+      },
+      {
+        "name": "HP +5",
+        "description": "Grants HP +5."
       },
       {
         "name": "HP/Def 1",
@@ -461,141 +389,81 @@
       {
         "name": "HP/Res 2",
         "description": "Grants HP+4, Res+2."
+      },
+      {
+        "name": "HP/Spd 1",
+        "description": "Grants HP+3, Spd+1."
+      },
+      {
+        "name": "HP/Spd 2",
+        "description": "Grants HP+4, Spd+2."
+      },
+      {
+        "name": "Resistance +1",
+        "description": "Grants Resistance +1."
+      },
+      {
+        "name": "Resistance +2",
+        "description": "Grants Resistance +2."
+      },
+      {
+        "name": "Resistance +3",
+        "description": "Grants Resistance +3."
+      },
+      {
+        "name": "Spd/Def 1",
+        "description": "Grants Spd/Def+1."
+      },
+      {
+        "name": "Spd/Def 2",
+        "description": "Grants Spd/Def+2."
+      },
+      {
+        "name": "Spd/Res 1",
+        "description": "Grants Spd/Res+1."
+      },
+      {
+        "name": "Spd/Res 2",
+        "description": "Grants Spd/Res+2."
+      },
+      {
+        "name": "Speed +1",
+        "description": "Grants Speed +1."
+      },
+      {
+        "name": "Speed +2",
+        "description": "Grants Speed +2."
+      },
+      {
+        "name": "Speed +3",
+        "description": "Grants Speed +3."
+      },
+      {
+        "name": "Water Boost 1",
+        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Res+2 during combat."
+      },
+      {
+        "name": "Water Boost 2",
+        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Res+4 during combat."
+      },
+      {
+        "name": "Water Boost 3",
+        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Res+6 during combat."
+      },
+      {
+        "name": "Wind Boost 1",
+        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Spd+2 during combat."
+      },
+      {
+        "name": "Wind Boost 2",
+        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Spd+4 during combat."
+      },
+      {
+        "name": "Wind Boost 3",
+        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Spd+6 during combat."
       }
     ],
     "B": [
-      {
-        "name": "Guard 1",
-        "description": "At start of combat, if unit's HP = 100%, inflicts Special cooldown charge -1 on foe per attack. (Only highest value applied. Does not stack.)"
-      },
-      {
-        "name": "Guard 2",
-        "description": "At start of combat, if unit's HP ≥ 90%, inflicts Special cooldown charge -1 on foe per attack. (Only highest value applied. Does not stack.)"
-      },
-      {
-        "name": "Guard 3",
-        "description": "At start of combat, if unit's HP ≥ 80%, inflicts Special cooldown charge -1 on foe per attack. (Only highest value applied. Does not stack.)"
-      },
-      {
-        "name": "Obstruct 1",
-        "description": "If unit's HP ≥ 90%, foes cannot move through spaces adjacent to unit. (Does not affect foes with Pass skills.)"
-      },
-      {
-        "name": "Obstruct 2",
-        "description": "If unit's HP ≥ 70%, foes cannot move through spaces adjacent to unit. (Does not affect foes with Pass skills.)"
-      },
-      {
-        "name": "Obstruct 3",
-        "description": "If unit's HP ≥ 50%, foes cannot move through spaces adjacent to unit. (Does not affect foes with Pass skills.)"
-      },
-      {
-        "name": "Dazzling Staff 1",
-        "description": "At start of combat, if unit's HP = 100%, foe cannot counterattack."
-      },
-      {
-        "name": "Dazzling Staff 2",
-        "description": "At start of combat, if unit's HP ≥ 50%, foe cannot counterattack."
-      },
-      {
-        "name": "Dazzling Staff 3",
-        "description": "Foe cannot counterattack."
-      },
-      {
-        "name": "Wrathful Staff 1",
-        "description": "At start of combat, if unit's HP = 100%, calculates damage from staff like other weapons."
-      },
-      {
-        "name": "Wrathful Staff 2",
-        "description": "At start of combat, if unit's HP = 100%, calculates damage from staff like other weapons."
-      },
-      {
-        "name": "Wrathful Staff 3",
-        "description": "At start of combat, if unit's HP = 100%, calculates damage from staff like other weapons."
-      },
-      {
-        "name": "Vantage 1",
-        "description": "If unit's HP ≤ 25% and foe initiates combat, unit can counterattack before foe's first attack."
-      },
-      {
-        "name": "Vantage 2",
-        "description": "If unit's HP ≤ 50% and foe initiates combat, unit can counterattack before foe's first attack."
-      },
-      {
-        "name": "Vantage 3",
-        "description": "If unit's HP ≤ 75% and foe initiates combat, unit can counterattack before foe's first attack."
-      },
-      {
-        "name": "Live to Serve 1",
-        "description": "When healing an ally with a staff, restores HP to unit = 50% of HP restored to target."
-      },
-      {
-        "name": "Live to Serve 2",
-        "description": "When healing an ally with a staff, restores HP to unit = 75% of HP restored to target."
-      },
-      {
-        "name": "Live to Serve 3",
-        "description": "When healing an ally with a staff, restores HP to unit = HP restored to target."
-      },
-      {
-        "name": "Desperation 1",
-        "description": "If unit's HP ≤ 25% and unit initiates combat, unit can make a follow-up attack before foe can counterattack."
-      },
-      {
-        "name": "Desperation 2",
-        "description": "If unit's HP ≤ 50% and unit initiates combat, unit can make a follow-up attack before foe can counterattack."
-      },
-      {
-        "name": "Desperation 3",
-        "description": "If unit's HP ≤ 75% and unit initiates combat, unit can make a follow-up attack before foe can counterattack."
-      },
-      {
-        "name": "Brash Assault 1",
-        "description": "If unit initiates combat against a foe that can counter and unit's HP ≤ 30%, unit makes a guaranteed follow-up attack."
-      },
-      {
-        "name": "Brash Assault 2",
-        "description": "If unit initiates combat against a foe that can counter and unit's HP ≤ 40%, unit makes a guaranteed follow-up attack."
-      },
-      {
-        "name": "Brash Assault 3",
-        "description": "If unit initiates combat against a foe that can counter and unit's HP ≤ 50%, unit makes a guaranteed follow-up attack."
-      },
-      {
-        "name": "Escape Route 1",
-        "description": "If unit's HP ≤ 30%, unit can move to a space adjacent to any ally."
-      },
-      {
-        "name": "Escape Route 2",
-        "description": "If unit's HP ≤ 40%, unit can move to a space adjacent to any ally."
-      },
-      {
-        "name": "Escape Route 3",
-        "description": "If unit's HP ≤ 50%, unit can move to a space adjacent to any ally."
-      },
-      {
-        "name": "Wings of Mercy 1",
-        "description": "If an ally's HP ≤ 30%, unit can move to a space adjacent to that ally."
-      },
-      {
-        "name": "Wings of Mercy 2",
-        "description": "If an ally's HP ≤ 40%, unit can move to a space adjacent to that ally."
-      },
-      {
-        "name": "Wings of Mercy 3",
-        "description": "If an ally's HP ≤ 50%, unit can move to a space adjacent to that ally."
-      },
-      {
-        "name": "Pass 1",
-        "description": "If unit's HP ≥ 75%, unit can move through foes' spaces."
-      },
-      {
-        "name": "Pass 2",
-        "description": "If unit's HP ≥ 50%, unit can move through foes' spaces."
-      },
-      {
-        "name": "Pass 3",
-        "description": "If unit's HP ≥ 25%, unit can move through foes' spaces."
-      },
       {
         "name": "Axebreaker 1",
         "description": "If unit's HP ≥ 90% in combat against an axe foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
@@ -607,66 +475,6 @@
       {
         "name": "Axebreaker 3",
         "description": "If unit's HP ≥ 50% in combat against an axe foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
-      },
-      {
-        "name": "Renewal 1",
-        "description": "At the start of every fourth turn, restores 10 HP."
-      },
-      {
-        "name": "Renewal 2",
-        "description": "At the start of every third turn, restores 10 HP."
-      },
-      {
-        "name": "Renewal 3",
-        "description": "At start of odd-numbered turns, restores 10 HP."
-      },
-      {
-        "name": "Daggerbreaker 1",
-        "description": "If unit's HP ≥ 90% in combat against a colorless dagger foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
-      },
-      {
-        "name": "Daggerbreaker 2",
-        "description": "If unit's HP ≥ 70% in combat against a colorless dagger foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
-      },
-      {
-        "name": "Daggerbreaker 3",
-        "description": "If unit's HP ≥ 50% in combat against a colorless dagger foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
-      },
-      {
-        "name": "Lancebreaker 1",
-        "description": "If unit's HP ≥ 90% in combat against a lance foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
-      },
-      {
-        "name": "Lancebreaker 2",
-        "description": "If unit's HP ≥ 70% in combat against a lance foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
-      },
-      {
-        "name": "Lancebreaker 3",
-        "description": "If unit's HP ≥ 50% in combat against a lance foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
-      },
-      {
-        "name": "Swordbreaker 1",
-        "description": "If unit's HP ≥ 90% in combat against a sword foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
-      },
-      {
-        "name": "Swordbreaker 2",
-        "description": "If unit's HP ≥ 70% in combat against a sword foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
-      },
-      {
-        "name": "Swordbreaker 3",
-        "description": "If unit's HP ≥ 50% in combat against a sword foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
-      },
-      {
-        "name": "R Tomebreaker 1",
-        "description": "If unit's HP ≥ 90% in combat against a red tome foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
-      },
-      {
-        "name": "R Tomebreaker 2",
-        "description": "If unit's HP ≥ 70% in combat against a red tome foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
-      },
-      {
-        "name": "R Tomebreaker 3",
-        "description": "If unit's HP ≥ 50% in combat against a red tome foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
       },
       {
         "name": "B Tomebreaker 1",
@@ -681,18 +489,6 @@
         "description": "If unit's HP ≥ 50% in combat against a blue tome foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
       },
       {
-        "name": "G Tomebreaker 1",
-        "description": "If unit's HP ≥ 90% in combat against a green tome foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
-      },
-      {
-        "name": "G Tomebreaker 2",
-        "description": "If unit's HP ≥ 70% in combat against a green tome foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
-      },
-      {
-        "name": "G Tomebreaker 3",
-        "description": "If unit's HP ≥ 50% in combat against a green tome foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
-      },
-      {
         "name": "Bowbreaker 1",
         "description": "If unit's HP ≥ 90% in combat against a colorless bow foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
       },
@@ -705,6 +501,138 @@
         "description": "If unit's HP ≥ 50% in combat against a colorless bow foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
       },
       {
+        "name": "Brash Assault 1",
+        "description": "If unit initiates combat against a foe that can counter and unit's HP ≤ 30%, unit makes a guaranteed follow-up attack."
+      },
+      {
+        "name": "Brash Assault 2",
+        "description": "If unit initiates combat against a foe that can counter and unit's HP ≤ 40%, unit makes a guaranteed follow-up attack."
+      },
+      {
+        "name": "Brash Assault 3",
+        "description": "If unit initiates combat against a foe that can counter and unit's HP ≤ 50%, unit makes a guaranteed follow-up attack."
+      },
+      {
+        "name": "Daggerbreaker 1",
+        "description": "If unit's HP ≥ 90% in combat against a colorless dagger foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+      },
+      {
+        "name": "Daggerbreaker 2",
+        "description": "If unit's HP ≥ 70% in combat against a colorless dagger foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+      },
+      {
+        "name": "Daggerbreaker 3",
+        "description": "If unit's HP ≥ 50% in combat against a colorless dagger foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+      },
+      {
+        "name": "Dazzling Staff 1",
+        "description": "At start of combat, if unit's HP = 100%, foe cannot counterattack."
+      },
+      {
+        "name": "Dazzling Staff 2",
+        "description": "At start of combat, if unit's HP ≥ 50%, foe cannot counterattack."
+      },
+      {
+        "name": "Dazzling Staff 3",
+        "description": "Foe cannot counterattack."
+      },
+      {
+        "name": "Desperation 1",
+        "description": "If unit's HP ≤ 25% and unit initiates combat, unit can make a follow-up attack before foe can counterattack."
+      },
+      {
+        "name": "Desperation 2",
+        "description": "If unit's HP ≤ 50% and unit initiates combat, unit can make a follow-up attack before foe can counterattack."
+      },
+      {
+        "name": "Desperation 3",
+        "description": "If unit's HP ≤ 75% and unit initiates combat, unit can make a follow-up attack before foe can counterattack."
+      },
+      {
+        "name": "Escape Route 1",
+        "description": "If unit's HP ≤ 30%, unit can move to a space adjacent to any ally."
+      },
+      {
+        "name": "Escape Route 2",
+        "description": "If unit's HP ≤ 40%, unit can move to a space adjacent to any ally."
+      },
+      {
+        "name": "Escape Route 3",
+        "description": "If unit's HP ≤ 50%, unit can move to a space adjacent to any ally."
+      },
+      {
+        "name": "G Tomebreaker 1",
+        "description": "If unit's HP ≥ 90% in combat against a green tome foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+      },
+      {
+        "name": "G Tomebreaker 2",
+        "description": "If unit's HP ≥ 70% in combat against a green tome foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+      },
+      {
+        "name": "G Tomebreaker 3",
+        "description": "If unit's HP ≥ 50% in combat against a green tome foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+      },
+      {
+        "name": "Guard 1",
+        "description": "At start of combat, if unit's HP = 100%, inflicts Special cooldown charge -1 on foe per attack. (Only highest value applied. Does not stack.)"
+      },
+      {
+        "name": "Guard 2",
+        "description": "At start of combat, if unit's HP ≥ 90%, inflicts Special cooldown charge -1 on foe per attack. (Only highest value applied. Does not stack.)"
+      },
+      {
+        "name": "Guard 3",
+        "description": "At start of combat, if unit's HP ≥ 80%, inflicts Special cooldown charge -1 on foe per attack. (Only highest value applied. Does not stack.)"
+      },
+      {
+        "name": "Lancebreaker 1",
+        "description": "If unit's HP ≥ 90% in combat against a lance foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+      },
+      {
+        "name": "Lancebreaker 2",
+        "description": "If unit's HP ≥ 70% in combat against a lance foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+      },
+      {
+        "name": "Lancebreaker 3",
+        "description": "If unit's HP ≥ 50% in combat against a lance foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+      },
+      {
+        "name": "Live to Serve 1",
+        "description": "When healing an ally with a staff, restores HP to unit = 50% of HP restored to target."
+      },
+      {
+        "name": "Live to Serve 2",
+        "description": "When healing an ally with a staff, restores HP to unit = 75% of HP restored to target."
+      },
+      {
+        "name": "Live to Serve 3",
+        "description": "When healing an ally with a staff, restores HP to unit = HP restored to target."
+      },
+      {
+        "name": "Obstruct 1",
+        "description": "If unit's HP ≥ 90%, foes cannot move through spaces adjacent to unit. (Does not affect foes with Pass skills.)"
+      },
+      {
+        "name": "Obstruct 2",
+        "description": "If unit's HP ≥ 70%, foes cannot move through spaces adjacent to unit. (Does not affect foes with Pass skills.)"
+      },
+      {
+        "name": "Obstruct 3",
+        "description": "If unit's HP ≥ 50%, foes cannot move through spaces adjacent to unit. (Does not affect foes with Pass skills.)"
+      },
+      {
+        "name": "Pass 1",
+        "description": "If unit's HP ≥ 75%, unit can move through foes' spaces."
+      },
+      {
+        "name": "Pass 2",
+        "description": "If unit's HP ≥ 50%, unit can move through foes' spaces."
+      },
+      {
+        "name": "Pass 3",
+        "description": "If unit's HP ≥ 25%, unit can move through foes' spaces."
+      },
+      {
         "name": "Quick Riposte 1",
         "description": "If unit's HP ≥ 90% and foe initiates combat, unit makes a guaranteed follow-up attack."
       },
@@ -715,9 +643,105 @@
       {
         "name": "Quick Riposte 3",
         "description": "If unit's HP ≥ 50% and foe initiates combat, unit makes a guaranteed follow-up attack."
+      },
+      {
+        "name": "R Tomebreaker 1",
+        "description": "If unit's HP ≥ 90% in combat against a red tome foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+      },
+      {
+        "name": "R Tomebreaker 2",
+        "description": "If unit's HP ≥ 70% in combat against a red tome foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+      },
+      {
+        "name": "R Tomebreaker 3",
+        "description": "If unit's HP ≥ 50% in combat against a red tome foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+      },
+      {
+        "name": "Renewal 1",
+        "description": "At the start of every fourth turn, restores 10 HP."
+      },
+      {
+        "name": "Renewal 2",
+        "description": "At the start of every third turn, restores 10 HP."
+      },
+      {
+        "name": "Renewal 3",
+        "description": "At start of odd-numbered turns, restores 10 HP."
+      },
+      {
+        "name": "Swordbreaker 1",
+        "description": "If unit's HP ≥ 90% in combat against a sword foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+      },
+      {
+        "name": "Swordbreaker 2",
+        "description": "If unit's HP ≥ 70% in combat against a sword foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+      },
+      {
+        "name": "Swordbreaker 3",
+        "description": "If unit's HP ≥ 50% in combat against a sword foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+      },
+      {
+        "name": "Vantage 1",
+        "description": "If unit's HP ≤ 25% and foe initiates combat, unit can counterattack before foe's first attack."
+      },
+      {
+        "name": "Vantage 2",
+        "description": "If unit's HP ≤ 50% and foe initiates combat, unit can counterattack before foe's first attack."
+      },
+      {
+        "name": "Vantage 3",
+        "description": "If unit's HP ≤ 75% and foe initiates combat, unit can counterattack before foe's first attack."
+      },
+      {
+        "name": "Wings of Mercy 1",
+        "description": "If an ally's HP ≤ 30%, unit can move to a space adjacent to that ally."
+      },
+      {
+        "name": "Wings of Mercy 2",
+        "description": "If an ally's HP ≤ 40%, unit can move to a space adjacent to that ally."
+      },
+      {
+        "name": "Wings of Mercy 3",
+        "description": "If an ally's HP ≤ 50%, unit can move to a space adjacent to that ally."
+      },
+      {
+        "name": "Wrathful Staff 1",
+        "description": "At start of combat, if unit's HP = 100%, calculates damage from staff like other weapons."
+      },
+      {
+        "name": "Wrathful Staff 2",
+        "description": "At start of combat, if unit's HP = 100%, calculates damage from staff like other weapons."
+      },
+      {
+        "name": "Wrathful Staff 3",
+        "description": "At start of combat, if unit's HP = 100%, calculates damage from staff like other weapons."
       }
     ],
     "C": [
+      {
+        "name": "Atk Ploy 1",
+        "description": "At start of turn, inflicts Atk-3 on foes in cardinal directions with Res < unit's Res through their next actions."
+      },
+      {
+        "name": "Atk Ploy 2",
+        "description": "At start of turn, inflicts Atk-4 on foes in cardinal directions with Res < unit's Res through their next actions."
+      },
+      {
+        "name": "Atk Ploy 3",
+        "description": "At start of turn, inflicts Atk-5 on foes in cardinal directions with Res < unit's Res through their next actions."
+      },
+      {
+        "name": "Atk Tactic 1",
+        "description": "At start of turn, grants Atk+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
+      },
+      {
+        "name": "Atk Tactic 2",
+        "description": "At start of turn, grants Atk+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
+      },
+      {
+        "name": "Atk Tactic 3",
+        "description": "At start of turn, grants Atk+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
+      },
       {
         "name": "Breath of Life 1",
         "description": "If unit initiates combat, restores 3 HP to adjacent allies after combat."
@@ -731,48 +755,56 @@
         "description": "If unit initiates combat, restores 7 HP to adjacent allies after combat."
       },
       {
-        "name": "Savage Blow 1",
-        "description": "If unit initiates combat, deals 3 damage to foes within 2 spaces of target after combat."
+        "name": "Def Ploy 1",
+        "description": "At start of turn, inflicts Def-3 on foes in cardinal directions with Res < unit's Res through their next actions."
       },
       {
-        "name": "Savage Blow 2",
-        "description": "If unit initiates combat, deals 5 damage to foes within 2 spaces of target after combat."
+        "name": "Def Ploy 2",
+        "description": "At start of turn, inflicts Def-4 on foes in cardinal directions with Res < unit's Res through their next actions."
       },
       {
-        "name": "Savage Blow 3",
-        "description": "If unit initiates combat, deals 7 damage to foes within 2 spaces of target after combat."
+        "name": "Def Ploy 3",
+        "description": "At start of turn, inflicts Def-5 on foes in cardinal directions with Res < unit's Res through their next actions."
       },
       {
-        "name": "Hone Atk 1",
-        "description": "At start of turn, grants Atk+2 to adjacent allies for 1 turn."
+        "name": "Def Tactic 1",
+        "description": "At start of turn, grants Def+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
       },
       {
-        "name": "Hone Atk 2",
-        "description": "At start of turn, grants Atk+3 to adjacent allies for 1 turn."
+        "name": "Def Tactic 2",
+        "description": "At start of turn, grants Def+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
       },
       {
-        "name": "Hone Atk 3",
-        "description": "At start of turn, grants Atk+4 to adjacent allies for 1 turn."
+        "name": "Def Tactic 3",
+        "description": "At start of turn, grants Def+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
       },
       {
-        "name": "Hone Atk 4",
-        "description": "At start of turn, grants Atk+7 to adjacent allies for 1 turn."
+        "name": "Drive Atk 1",
+        "description": "Grants Atk+2 to allies within 2 spaces during combat."
       },
       {
-        "name": "Hone Spd 1",
-        "description": "At start of turn, grants Spd+2 to adjacent allies for 1 turn."
+        "name": "Drive Atk 2",
+        "description": "Grants Atk+3 to allies within 2 spaces during combat."
       },
       {
-        "name": "Hone Spd 2",
-        "description": "At start of turn, grants Spd+3 to adjacent allies for 1 turn."
+        "name": "Drive Def 1",
+        "description": "Grants Def+2 to allies within 2 spaces during combat."
       },
       {
-        "name": "Hone Spd 3",
-        "description": "At start of turn, grants Spd+4 to adjacent allies for 1 turn."
+        "name": "Drive Def 2",
+        "description": "Grants Def+3 to allies within 2 spaces during combat."
       },
       {
-        "name": "Hone Cavalry",
-        "description": "At start of turn, grants Atk/Spd+6 to adjacent cavalry allies for 1 turn."
+        "name": "Drive Res 1",
+        "description": "Grants Res+2 to allies within 2 spaces during combat."
+      },
+      {
+        "name": "Drive Res 2",
+        "description": "Grants Res+3 to allies within 2 spaces during combat."
+      },
+      {
+        "name": "Fortify Cavalry",
+        "description": "At start of turn, grants Def/Res+6 to adjacent cavalry allies for 1 turn."
       },
       {
         "name": "Fortify Def 1",
@@ -799,124 +831,40 @@
         "description": "At start of turn, grants Res+4 to adjacent allies for 1 turn."
       },
       {
-        "name": "Fortify Cavalry",
-        "description": "At start of turn, grants Def/Res+6 to adjacent cavalry allies for 1 turn."
-      },
-      {
         "name": "Goad Cavalry",
         "description": "Grants Atk/Spd+4 to cavalry allies within 2 spaces during combat."
       },
       {
-        "name": "Ward Cavalry",
-        "description": "Grants Def/Res+4 to cavalry allies within 2 spaces during combat."
+        "name": "Hone Atk 1",
+        "description": "At start of turn, grants Atk+2 to adjacent allies for 1 turn."
       },
       {
-        "name": "Panic Ploy 1",
-        "description": "At start of turn, converts bonuses on foes in cardinal directions with HP ≤ unit's HP-5 into penalties through their next actions."
+        "name": "Hone Atk 2",
+        "description": "At start of turn, grants Atk+3 to adjacent allies for 1 turn."
       },
       {
-        "name": "Panic Ploy 2",
-        "description": "At start of turn, converts bonuses on foes in cardinal directions with HP ≤ unit's HP-3 into penalties through their next actions."
+        "name": "Hone Atk 3",
+        "description": "At start of turn, grants Atk+4 to adjacent allies for 1 turn."
       },
       {
-        "name": "Panic Ploy 3",
-        "description": "At start of turn, converts bonuses on foes in cardinal directions with HP < unit's HP into penalties through their next actions."
+        "name": "Hone Atk 4",
+        "description": "At start of turn, grants Atk+7 to adjacent allies for 1 turn."
       },
       {
-        "name": "Atk Ploy 1",
-        "description": "At start of turn, inflicts Atk-3 on foes in cardinal directions with Res < unit's Res through their next actions."
+        "name": "Hone Cavalry",
+        "description": "At start of turn, grants Atk/Spd+6 to adjacent cavalry allies for 1 turn."
       },
       {
-        "name": "Atk Ploy 2",
-        "description": "At start of turn, inflicts Atk-4 on foes in cardinal directions with Res < unit's Res through their next actions."
+        "name": "Hone Spd 1",
+        "description": "At start of turn, grants Spd+2 to adjacent allies for 1 turn."
       },
       {
-        "name": "Atk Ploy 3",
-        "description": "At start of turn, inflicts Atk-5 on foes in cardinal directions with Res < unit's Res through their next actions."
+        "name": "Hone Spd 2",
+        "description": "At start of turn, grants Spd+3 to adjacent allies for 1 turn."
       },
       {
-        "name": "Spd Ploy 1",
-        "description": "At start of turn, inflicts Spd-3 on foes in cardinal directions with Res < unit's Res through their next actions."
-      },
-      {
-        "name": "Spd Ploy 2",
-        "description": "At start of turn, inflicts Spd-4 on foes in cardinal directions with Res < unit's Res through their next actions."
-      },
-      {
-        "name": "Spd Ploy 3",
-        "description": "At start of turn, inflicts Spd-5 on foes in cardinal directions with Res < unit's Res through their next actions."
-      },
-      {
-        "name": "Def Ploy 1",
-        "description": "At start of turn, inflicts Def-3 on foes in cardinal directions with Res < unit's Res through their next actions."
-      },
-      {
-        "name": "Def Ploy 2",
-        "description": "At start of turn, inflicts Def-4 on foes in cardinal directions with Res < unit's Res through their next actions."
-      },
-      {
-        "name": "Def Ploy 3",
-        "description": "At start of turn, inflicts Def-5 on foes in cardinal directions with Res < unit's Res through their next actions."
-      },
-      {
-        "name": "Res Ploy 1",
-        "description": "At start of turn, inflicts Res-3 on foes in cardinal directions with Res < unit's Res through their next actions."
-      },
-      {
-        "name": "Res Ploy 2",
-        "description": "At start of turn, inflicts Res-4 on foes in cardinal directions with Res < unit's Res through their next actions."
-      },
-      {
-        "name": "Res Ploy 3",
-        "description": "At start of turn, inflicts Res-5 on foes in cardinal directions with Res < unit's Res through their next actions."
-      },
-      {
-        "name": "Atk Tactic 1",
-        "description": "At start of turn, grants Atk+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
-        "name": "Atk Tactic 2",
-        "description": "At start of turn, grants Atk+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
-        "name": "Atk Tactic 3",
-        "description": "At start of turn, grants Atk+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
-        "name": "Spd Tactic 1",
-        "description": "At start of turn, grants Spd+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
-        "name": "Spd Tactic 2",
-        "description": "At start of turn, grants Spd+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
-        "name": "Spd Tactic 3",
-        "description": "At start of turn, grants Spd+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
-        "name": "Def Tactic 1",
-        "description": "At start of turn, grants Def+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
-        "name": "Def Tactic 2",
-        "description": "At start of turn, grants Def+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
-        "name": "Def Tactic 3",
-        "description": "At start of turn, grants Def+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
-        "name": "Res Tactic 1",
-        "description": "At start of turn, grants Res+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
-        "name": "Res Tactic 2",
-        "description": "At start of turn, grants Res+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
-        "name": "Res Tactic 3",
-        "description": "At start of turn, grants Res+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
+        "name": "Hone Spd 3",
+        "description": "At start of turn, grants Spd+4 to adjacent allies for 1 turn."
       },
       {
         "name": "Odd Atk Wave 1",
@@ -931,28 +879,76 @@
         "description": "On odd turns, adds +6 Atk for unit and nearby allies for 1 turn."
       },
       {
-        "name": "Drive Def 1",
-        "description": "Grants Def+2 to allies within 2 spaces during combat."
+        "name": "Panic Ploy 1",
+        "description": "At start of turn, converts bonuses on foes in cardinal directions with HP ≤ unit's HP-5 into penalties through their next actions."
       },
       {
-        "name": "Drive Def 2",
-        "description": "Grants Def+3 to allies within 2 spaces during combat."
+        "name": "Panic Ploy 2",
+        "description": "At start of turn, converts bonuses on foes in cardinal directions with HP ≤ unit's HP-3 into penalties through their next actions."
       },
       {
-        "name": "Drive Atk 1",
-        "description": "Grants Atk+2 to allies within 2 spaces during combat."
+        "name": "Panic Ploy 3",
+        "description": "At start of turn, converts bonuses on foes in cardinal directions with HP < unit's HP into penalties through their next actions."
       },
       {
-        "name": "Drive Atk 2",
-        "description": "Grants Atk+3 to allies within 2 spaces during combat."
+        "name": "Res Ploy 1",
+        "description": "At start of turn, inflicts Res-3 on foes in cardinal directions with Res < unit's Res through their next actions."
       },
       {
-        "name": "Drive Res 1",
-        "description": "Grants Res+2 to allies within 2 spaces during combat."
+        "name": "Res Ploy 2",
+        "description": "At start of turn, inflicts Res-4 on foes in cardinal directions with Res < unit's Res through their next actions."
       },
       {
-        "name": "Drive Res 2",
-        "description": "Grants Res+3 to allies within 2 spaces during combat."
+        "name": "Res Ploy 3",
+        "description": "At start of turn, inflicts Res-5 on foes in cardinal directions with Res < unit's Res through their next actions."
+      },
+      {
+        "name": "Res Tactic 1",
+        "description": "At start of turn, grants Res+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
+      },
+      {
+        "name": "Res Tactic 2",
+        "description": "At start of turn, grants Res+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
+      },
+      {
+        "name": "Res Tactic 3",
+        "description": "At start of turn, grants Res+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
+      },
+      {
+        "name": "Savage Blow 1",
+        "description": "If unit initiates combat, deals 3 damage to foes within 2 spaces of target after combat."
+      },
+      {
+        "name": "Savage Blow 2",
+        "description": "If unit initiates combat, deals 5 damage to foes within 2 spaces of target after combat."
+      },
+      {
+        "name": "Savage Blow 3",
+        "description": "If unit initiates combat, deals 7 damage to foes within 2 spaces of target after combat."
+      },
+      {
+        "name": "Spd Ploy 1",
+        "description": "At start of turn, inflicts Spd-3 on foes in cardinal directions with Res < unit's Res through their next actions."
+      },
+      {
+        "name": "Spd Ploy 2",
+        "description": "At start of turn, inflicts Spd-4 on foes in cardinal directions with Res < unit's Res through their next actions."
+      },
+      {
+        "name": "Spd Ploy 3",
+        "description": "At start of turn, inflicts Spd-5 on foes in cardinal directions with Res < unit's Res through their next actions."
+      },
+      {
+        "name": "Spd Tactic 1",
+        "description": "At start of turn, grants Spd+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
+      },
+      {
+        "name": "Spd Tactic 2",
+        "description": "At start of turn, grants Spd+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
+      },
+      {
+        "name": "Spd Tactic 3",
+        "description": "At start of turn, grants Spd+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
       },
       {
         "name": "Spur Atk 1",
@@ -967,18 +963,6 @@
         "description": "Grants Atk+4 to adjacent allies during combat."
       },
       {
-        "name": "Spur Res 1",
-        "description": "Grants Res+2 to adjacent allies during combat."
-      },
-      {
-        "name": "Spur Res 2",
-        "description": "Grants Res+3 to adjacent allies during combat."
-      },
-      {
-        "name": "Spur Res 3",
-        "description": "Grants Res+4 to adjacent allies during combat."
-      },
-      {
         "name": "Spur Def 1",
         "description": "Grants Def+2 to adjacent allies during combat."
       },
@@ -989,6 +973,26 @@
       {
         "name": "Spur Def 3",
         "description": "Grants Def+4 to adjacent allies during combat."
+      },
+      {
+        "name": "Spur Def/Res 1",
+        "description": "Grants Def/Res +2 to adjacent allies during combat."
+      },
+      {
+        "name": "Spur Def/Res 2",
+        "description": "Grants Def/Res +3 to adjacent allies during combat."
+      },
+      {
+        "name": "Spur Res 1",
+        "description": "Grants Res+2 to adjacent allies during combat."
+      },
+      {
+        "name": "Spur Res 2",
+        "description": "Grants Res+3 to adjacent allies during combat."
+      },
+      {
+        "name": "Spur Res 3",
+        "description": "Grants Res+4 to adjacent allies during combat."
       },
       {
         "name": "Spur Spd 1",
@@ -1003,12 +1007,12 @@
         "description": "Grants Spd+4 to adjacent allies during combat."
       },
       {
-        "name": "Spur Def/Res 1",
-        "description": "Grants Def/Res +2 to adjacent allies during combat."
+        "name": "Spur Spd/Def 1",
+        "description": "Grants Spd/Def+2 to adjacent allies during combat."
       },
       {
-        "name": "Spur Def/Res 2",
-        "description": "Grants Def/Res +3 to adjacent allies during combat."
+        "name": "Spur Spd/Def 2",
+        "description": "Grants Spd/Def+3 to adjacent allies during combat."
       },
       {
         "name": "Threaten Atk 1",
@@ -1035,18 +1039,6 @@
         "description": "At start of turn, inflicts Def-7 on foes within 2 spaces through their next actions."
       },
       {
-        "name": "Threaten Spd 1",
-        "description": "At start of turn, inflicts Spd-3 on foes within 2 spaces through their next actions."
-      },
-      {
-        "name": "Threaten Spd 2",
-        "description": "At start of turn, inflicts Spd-5 on foes within 2 spaces through their next actions."
-      },
-      {
-        "name": "Threaten Spd 3",
-        "description": "At start of turn, inflicts Spd-7 on foes within 2 spaces through their next actions."
-      },
-      {
         "name": "Threaten Res 1",
         "description": "At start of turn, inflicts Res-3 on foes within 2 spaces through their next actions."
       },
@@ -1059,15 +1051,79 @@
         "description": "At start of turn, inflicts Res-7 on foes within 2 spaces through their next actions."
       },
       {
-        "name": "Spur Spd/Def 1",
-        "description": "Grants Spd/Def+2 to adjacent allies during combat."
+        "name": "Threaten Spd 1",
+        "description": "At start of turn, inflicts Spd-3 on foes within 2 spaces through their next actions."
       },
       {
-        "name": "Spur Spd/Def 2",
-        "description": "Grants Spd/Def+3 to adjacent allies during combat."
+        "name": "Threaten Spd 2",
+        "description": "At start of turn, inflicts Spd-5 on foes within 2 spaces through their next actions."
+      },
+      {
+        "name": "Threaten Spd 3",
+        "description": "At start of turn, inflicts Spd-7 on foes within 2 spaces through their next actions."
+      },
+      {
+        "name": "Ward Cavalry",
+        "description": "Grants Def/Res+4 to cavalry allies within 2 spaces during combat."
       }
     ],
     "S": [
+      {
+        "name": "Atk Ploy 1",
+        "description": "At start of turn, inflicts Atk-3 on foes in cardinal directions with Res < unit's Res through their next actions."
+      },
+      {
+        "name": "Atk Ploy 2",
+        "description": "At start of turn, inflicts Atk-4 on foes in cardinal directions with Res < unit's Res through their next actions."
+      },
+      {
+        "name": "Atk Ploy 3",
+        "description": "At start of turn, inflicts Atk-5 on foes in cardinal directions with Res < unit's Res through their next actions."
+      },
+      {
+        "name": "Atk Tactic 1",
+        "description": "At start of turn, grants Atk+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
+      },
+      {
+        "name": "Atk Tactic 2",
+        "description": "At start of turn, grants Atk+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
+      },
+      {
+        "name": "Atk Tactic 3",
+        "description": "At start of turn, grants Atk+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
+      },
+      {
+        "name": "Atk/Def Bond 1",
+        "description": "If unit is adjacent to an ally, grants Atk/Def+3 during combat."
+      },
+      {
+        "name": "Atk/Def Bond 2",
+        "description": "If unit is adjacent to an ally, grants Atk/Def+4 during combat."
+      },
+      {
+        "name": "Atk/Def Bond 3",
+        "description": "If unit is adjacent to an ally, grants Atk/Def+5 during combat."
+      },
+      {
+        "name": "Atk/Res Bond 1",
+        "description": "If unit is adjacent to an ally, grants Atk/Res+3 during combat."
+      },
+      {
+        "name": "Atk/Res Bond 2",
+        "description": "If unit is adjacent to an ally, grants Atk/Res+4 during combat."
+      },
+      {
+        "name": "Atk/Res Bond 3",
+        "description": "If unit is adjacent to an ally, grants Atk/Res+5 during combat."
+      },
+      {
+        "name": "Atk/Spd 1",
+        "description": "Grants Atk/Spd+1."
+      },
+      {
+        "name": "Atk/Spd 2",
+        "description": "Grants Atk/Spd+2."
+      },
       {
         "name": "Attack +1",
         "description": "Grants Attack +1."
@@ -1097,182 +1153,6 @@
         "description": "Grants Atk/Res+2."
       },
       {
-        "name": "Defense +1",
-        "description": "Grants Defense +1."
-      },
-      {
-        "name": "Defense +2",
-        "description": "Grants Defense +2."
-      },
-      {
-        "name": "Defense +3",
-        "description": "Grants Defense +3."
-      },
-      {
-        "name": "HP +3",
-        "description": "Grants HP +3."
-      },
-      {
-        "name": "HP +4",
-        "description": "Grants HP +4."
-      },
-      {
-        "name": "HP +5",
-        "description": "Grants HP +5."
-      },
-      {
-        "name": "Resistance +1",
-        "description": "Grants Resistance +1."
-      },
-      {
-        "name": "Resistance +2",
-        "description": "Grants Resistance +2."
-      },
-      {
-        "name": "Resistance +3",
-        "description": "Grants Resistance +3."
-      },
-      {
-        "name": "Speed +1",
-        "description": "Grants Speed +1."
-      },
-      {
-        "name": "Speed +2",
-        "description": "Grants Speed +2."
-      },
-      {
-        "name": "Speed +3",
-        "description": "Grants Speed +3."
-      },
-      {
-        "name": "Spd/Def 1",
-        "description": "Grants Spd/Def+1."
-      },
-      {
-        "name": "Spd/Res 1",
-        "description": "Grants Spd/Res+1."
-      },
-      {
-        "name": "Spd/Res 2",
-        "description": "Grants Spd/Res+2."
-      },
-      {
-        "name": "Atk/Spd 1",
-        "description": "Grants Atk/Spd+1."
-      },
-      {
-        "name": "Atk/Spd 2",
-        "description": "Grants Atk/Spd+2."
-      },
-      {
-        "name": "Distant Def 1",
-        "description": "If foe initiates combat and uses bow, dagger, magic, or staff, grants Def/Res+2 during combat."
-      },
-      {
-        "name": "Distant Def 2",
-        "description": "If foe initiates combat and uses bow, dagger, magic, or staff, grants Def/Res+4 during combat."
-      },
-      {
-        "name": "Distant Def 3",
-        "description": "If foe initiates combat and uses bow, dagger, magic, or staff, grants Def/Res+6 during combat."
-      },
-      {
-        "name": "Obstruct 1",
-        "description": "If unit's HP ≥ 90%, foes cannot move through spaces adjacent to unit. (Does not affect foes with Pass skills.)"
-      },
-      {
-        "name": "Obstruct 2",
-        "description": "If unit's HP ≥ 70%, foes cannot move through spaces adjacent to unit. (Does not affect foes with Pass skills.)"
-      },
-      {
-        "name": "Obstruct 3",
-        "description": "If unit's HP ≥ 50%, foes cannot move through spaces adjacent to unit. (Does not affect foes with Pass skills.)"
-      },
-      {
-        "name": "Atk/Def Bond 1",
-        "description": "If unit is adjacent to an ally, grants Atk/Def+3 during combat."
-      },
-      {
-        "name": "Atk/Def Bond 2",
-        "description": "If unit is adjacent to an ally, grants Atk/Def+4 during combat."
-      },
-      {
-        "name": "Atk/Def Bond 3",
-        "description": "If unit is adjacent to an ally, grants Atk/Def+5 during combat."
-      },
-      {
-        "name": "Atk/Res Bond 1",
-        "description": "If unit is adjacent to an ally, grants Atk/Res+3 during combat."
-      },
-      {
-        "name": "Atk/Res Bond 2",
-        "description": "If unit is adjacent to an ally, grants Atk/Res+4 during combat."
-      },
-      {
-        "name": "Atk/Res Bond 3",
-        "description": "If unit is adjacent to an ally, grants Atk/Res+5 during combat."
-      },
-      {
-        "name": "Water Boost 1",
-        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Res+2 during combat."
-      },
-      {
-        "name": "Water Boost 2",
-        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Res+4 during combat."
-      },
-      {
-        "name": "Water Boost 3",
-        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Res+6 during combat."
-      },
-      {
-        "name": "Wind Boost 1",
-        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Spd+2 during combat."
-      },
-      {
-        "name": "Wind Boost 2",
-        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Spd+4 during combat."
-      },
-      {
-        "name": "Wind Boost 3",
-        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Spd+6 during combat."
-      },
-      {
-        "name": "Earth Boost 1",
-        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Def+2 during combat."
-      },
-      {
-        "name": "Earth Boost 2",
-        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Def+4 during combat."
-      },
-      {
-        "name": "Earth Boost 3",
-        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Def+6 during combat."
-      },
-      {
-        "name": "Live to Serve 1",
-        "description": "When healing an ally with a staff, restores HP to unit = 50% of HP restored to target."
-      },
-      {
-        "name": "Live to Serve 2",
-        "description": "When healing an ally with a staff, restores HP to unit = 75% of HP restored to target."
-      },
-      {
-        "name": "Live to Serve 3",
-        "description": "When healing an ally with a staff, restores HP to unit = HP restored to target."
-      },
-      {
-        "name": "Desperation 1",
-        "description": "If unit's HP ≤ 25% and unit initiates combat, unit can make a follow-up attack before foe can counterattack."
-      },
-      {
-        "name": "Desperation 2",
-        "description": "If unit's HP ≤ 50% and unit initiates combat, unit can make a follow-up attack before foe can counterattack."
-      },
-      {
-        "name": "Desperation 3",
-        "description": "If unit's HP ≤ 75% and unit initiates combat, unit can make a follow-up attack before foe can counterattack."
-      },
-      {
         "name": "Brash Assault 1",
         "description": "If unit initiates combat against a foe that can counter and unit's HP ≤ 30%, unit makes a guaranteed follow-up attack."
       },
@@ -1285,16 +1165,40 @@
         "description": "If unit initiates combat against a foe that can counter and unit's HP ≤ 50%, unit makes a guaranteed follow-up attack."
       },
       {
-        "name": "Renewal 1",
-        "description": "At the start of every fourth turn, restores 10 HP."
+        "name": "Breath of Life 1",
+        "description": "If unit initiates combat, restores 3 HP to adjacent allies after combat."
       },
       {
-        "name": "Renewal 2",
-        "description": "At the start of every third turn, restores 10 HP."
+        "name": "Breath of Life 2",
+        "description": "If unit initiates combat, restores 5 HP to adjacent allies after combat."
       },
       {
-        "name": "Renewal 3",
-        "description": "At start of odd-numbered turns, restores 10 HP."
+        "name": "Breath of Life 3",
+        "description": "If unit initiates combat, restores 7 HP to adjacent allies after combat."
+      },
+      {
+        "name": "Def Ploy 1",
+        "description": "At start of turn, inflicts Def-3 on foes in cardinal directions with Res < unit's Res through their next actions."
+      },
+      {
+        "name": "Def Ploy 2",
+        "description": "At start of turn, inflicts Def-4 on foes in cardinal directions with Res < unit's Res through their next actions."
+      },
+      {
+        "name": "Def Ploy 3",
+        "description": "At start of turn, inflicts Def-5 on foes in cardinal directions with Res < unit's Res through their next actions."
+      },
+      {
+        "name": "Defense +1",
+        "description": "Grants Defense +1."
+      },
+      {
+        "name": "Defense +2",
+        "description": "Grants Defense +2."
+      },
+      {
+        "name": "Defense +3",
+        "description": "Grants Defense +3."
       },
       {
         "name": "Defiant Atk 1",
@@ -1333,40 +1237,64 @@
         "description": "At start of turn, if unit's HP ≤ 50%, grants Spd+7 for 1 turn."
       },
       {
-        "name": "Breath of Life 1",
-        "description": "If unit initiates combat, restores 3 HP to adjacent allies after combat."
+        "name": "Desperation 1",
+        "description": "If unit's HP ≤ 25% and unit initiates combat, unit can make a follow-up attack before foe can counterattack."
       },
       {
-        "name": "Breath of Life 2",
-        "description": "If unit initiates combat, restores 5 HP to adjacent allies after combat."
+        "name": "Desperation 2",
+        "description": "If unit's HP ≤ 50% and unit initiates combat, unit can make a follow-up attack before foe can counterattack."
       },
       {
-        "name": "Breath of Life 3",
-        "description": "If unit initiates combat, restores 7 HP to adjacent allies after combat."
+        "name": "Desperation 3",
+        "description": "If unit's HP ≤ 75% and unit initiates combat, unit can make a follow-up attack before foe can counterattack."
       },
       {
-        "name": "Savage Blow 1",
-        "description": "If unit initiates combat, deals 3 damage to foes within 2 spaces of target after combat."
+        "name": "Distant Def 1",
+        "description": "If foe initiates combat and uses bow, dagger, magic, or staff, grants Def/Res+2 during combat."
       },
       {
-        "name": "Savage Blow 2",
-        "description": "If unit initiates combat, deals 5 damage to foes within 2 spaces of target after combat."
+        "name": "Distant Def 2",
+        "description": "If foe initiates combat and uses bow, dagger, magic, or staff, grants Def/Res+4 during combat."
       },
       {
-        "name": "Savage Blow 3",
-        "description": "If unit initiates combat, deals 7 damage to foes within 2 spaces of target after combat."
+        "name": "Distant Def 3",
+        "description": "If foe initiates combat and uses bow, dagger, magic, or staff, grants Def/Res+6 during combat."
       },
       {
-        "name": "Hone Atk 1",
-        "description": "At start of turn, grants Atk+2 to adjacent allies for 1 turn."
+        "name": "Drive Atk 1",
+        "description": "Grants Atk+2 to allies within 2 spaces during combat."
       },
       {
-        "name": "Hone Atk 2",
-        "description": "At start of turn, grants Atk+3 to adjacent allies for 1 turn."
+        "name": "Drive Atk 2",
+        "description": "Grants Atk+3 to allies within 2 spaces during combat."
       },
       {
-        "name": "Hone Atk 3",
-        "description": "At start of turn, grants Atk+4 to adjacent allies for 1 turn."
+        "name": "Drive Def 1",
+        "description": "Grants Def+2 to allies within 2 spaces during combat."
+      },
+      {
+        "name": "Drive Def 2",
+        "description": "Grants Def+3 to allies within 2 spaces during combat."
+      },
+      {
+        "name": "Drive Res 1",
+        "description": "Grants Res+2 to allies within 2 spaces during combat."
+      },
+      {
+        "name": "Drive Res 2",
+        "description": "Grants Res+3 to allies within 2 spaces during combat."
+      },
+      {
+        "name": "Earth Boost 1",
+        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Def+2 during combat."
+      },
+      {
+        "name": "Earth Boost 2",
+        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Def+4 during combat."
+      },
+      {
+        "name": "Earth Boost 3",
+        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Def+6 during combat."
       },
       {
         "name": "Fortify Def 1",
@@ -1393,226 +1321,6 @@
         "description": "At start of turn, grants Res+4 to adjacent allies for 1 turn."
       },
       {
-        "name": "Panic Ploy 1",
-        "description": "At start of turn, converts bonuses on foes in cardinal directions with HP ≤ unit's HP-5 into penalties through their next actions."
-      },
-      {
-        "name": "Panic Ploy 2",
-        "description": "At start of turn, converts bonuses on foes in cardinal directions with HP ≤ unit's HP-3 into penalties through their next actions."
-      },
-      {
-        "name": "Panic Ploy 3",
-        "description": "At start of turn, converts bonuses on foes in cardinal directions with HP < unit's HP into penalties through their next actions."
-      },
-      {
-        "name": "Atk Ploy 1",
-        "description": "At start of turn, inflicts Atk-3 on foes in cardinal directions with Res < unit's Res through their next actions."
-      },
-      {
-        "name": "Atk Ploy 2",
-        "description": "At start of turn, inflicts Atk-4 on foes in cardinal directions with Res < unit's Res through their next actions."
-      },
-      {
-        "name": "Atk Ploy 3",
-        "description": "At start of turn, inflicts Atk-5 on foes in cardinal directions with Res < unit's Res through their next actions."
-      },
-      {
-        "name": "Spd Ploy 1",
-        "description": "At start of turn, inflicts Spd-3 on foes in cardinal directions with Res < unit's Res through their next actions."
-      },
-      {
-        "name": "Spd Ploy 2",
-        "description": "At start of turn, inflicts Spd-4 on foes in cardinal directions with Res < unit's Res through their next actions."
-      },
-      {
-        "name": "Spd Ploy 3",
-        "description": "At start of turn, inflicts Spd-5 on foes in cardinal directions with Res < unit's Res through their next actions."
-      },
-      {
-        "name": "Def Ploy 1",
-        "description": "At start of turn, inflicts Def-3 on foes in cardinal directions with Res < unit's Res through their next actions."
-      },
-      {
-        "name": "Def Ploy 2",
-        "description": "At start of turn, inflicts Def-4 on foes in cardinal directions with Res < unit's Res through their next actions."
-      },
-      {
-        "name": "Def Ploy 3",
-        "description": "At start of turn, inflicts Def-5 on foes in cardinal directions with Res < unit's Res through their next actions."
-      },
-      {
-        "name": "Res Ploy 1",
-        "description": "At start of turn, inflicts Res-3 on foes in cardinal directions with Res < unit's Res through their next actions."
-      },
-      {
-        "name": "Res Ploy 2",
-        "description": "At start of turn, inflicts Res-4 on foes in cardinal directions with Res < unit's Res through their next actions."
-      },
-      {
-        "name": "Res Ploy 3",
-        "description": "At start of turn, inflicts Res-5 on foes in cardinal directions with Res < unit's Res through their next actions."
-      },
-      {
-        "name": "Atk Tactic 1",
-        "description": "At start of turn, grants Atk+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
-        "name": "Atk Tactic 2",
-        "description": "At start of turn, grants Atk+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
-        "name": "Atk Tactic 3",
-        "description": "At start of turn, grants Atk+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
-        "name": "Spd Tactic 1",
-        "description": "At start of turn, grants Spd+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
-        "name": "Spd Tactic 2",
-        "description": "At start of turn, grants Spd+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
-        "name": "Spd Tactic 3",
-        "description": "At start of turn, grants Spd+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
-        "name": "Odd Atk Wave 1",
-        "description": "On odd turns, adds +2 Atk for unit and nearby allies for 1 turn."
-      },
-      {
-        "name": "Odd Atk Wave 2",
-        "description": "On odd turns, adds +4 Atk for unit and nearby allies for 1 turn."
-      },
-      {
-        "name": "Odd Atk Wave 3",
-        "description": "On odd turns, adds +6 Atk for unit and nearby allies for 1 turn."
-      },
-      {
-        "name": "Quick Riposte 1",
-        "description": "If unit's HP ≥ 90% and foe initiates combat, unit makes a guaranteed follow-up attack."
-      },
-      {
-        "name": "Quick Riposte 2",
-        "description": "If unit's HP ≥ 70% and foe initiates combat, unit makes a guaranteed follow-up attack."
-      },
-      {
-        "name": "Quick Riposte 3",
-        "description": "If unit's HP ≥ 50% and foe initiates combat, unit makes a guaranteed follow-up attack."
-      },
-      {
-        "name": "Drive Def 1",
-        "description": "Grants Def+2 to allies within 2 spaces during combat."
-      },
-      {
-        "name": "Drive Def 2",
-        "description": "Grants Def+3 to allies within 2 spaces during combat."
-      },
-      {
-        "name": "Drive Atk 1",
-        "description": "Grants Atk+2 to allies within 2 spaces during combat."
-      },
-      {
-        "name": "Drive Atk 2",
-        "description": "Grants Atk+3 to allies within 2 spaces during combat."
-      },
-      {
-        "name": "Drive Res 1",
-        "description": "Grants Res+2 to allies within 2 spaces during combat."
-      },
-      {
-        "name": "Drive Res 2",
-        "description": "Grants Res+3 to allies within 2 spaces during combat."
-      },
-      {
-        "name": "Spur Atk 1",
-        "description": "Grants Atk+2 to adjacent allies during combat."
-      },
-      {
-        "name": "Spur Atk 2",
-        "description": "Grants Atk+3 to adjacent allies during combat."
-      },
-      {
-        "name": "Spur Atk 3",
-        "description": "Grants Atk+4 to adjacent allies during combat."
-      },
-      {
-        "name": "Spur Res 1",
-        "description": "Grants Res+2 to adjacent allies during combat."
-      },
-      {
-        "name": "Spur Res 2",
-        "description": "Grants Res+3 to adjacent allies during combat."
-      },
-      {
-        "name": "Spur Res 3",
-        "description": "Grants Res+4 to adjacent allies during combat."
-      },
-      {
-        "name": "Spur Def 1",
-        "description": "Grants Def+2 to adjacent allies during combat."
-      },
-      {
-        "name": "Spur Def 2",
-        "description": "Grants Def+3 to adjacent allies during combat."
-      },
-      {
-        "name": "Spur Def 3",
-        "description": "Grants Def+4 to adjacent allies during combat."
-      },
-      {
-        "name": "Spur Def/Res 1",
-        "description": "Grants Def/Res +2 to adjacent allies during combat."
-      },
-      {
-        "name": "Spur Def/Res 2",
-        "description": "Grants Def/Res +3 to adjacent allies during combat."
-      },
-      {
-        "name": "Threaten Atk 2",
-        "description": "At start of turn, inflicts Atk-5 on foes within 2 spaces through their next actions."
-      },
-      {
-        "name": "Threaten Atk 3",
-        "description": "At start of turn, inflicts Atk-7 on foes within 2 spaces through their next actions."
-      },
-      {
-        "name": "Threaten Def 1",
-        "description": "At start of turn, inflicts Def-3 on foes within 2 spaces through their next actions."
-      },
-      {
-        "name": "Threaten Def 2",
-        "description": "At start of turn, inflicts Def-5 on foes within 2 spaces through their next actions."
-      },
-      {
-        "name": "Threaten Def 3",
-        "description": "At start of turn, inflicts Def-7 on foes within 2 spaces through their next actions."
-      },
-      {
-        "name": "Threaten Spd 1",
-        "description": "At start of turn, inflicts Spd-3 on foes within 2 spaces through their next actions."
-      },
-      {
-        "name": "Threaten Spd 2",
-        "description": "At start of turn, inflicts Spd-5 on foes within 2 spaces through their next actions."
-      },
-      {
-        "name": "Threaten Spd 3",
-        "description": "At start of turn, inflicts Spd-7 on foes within 2 spaces through their next actions."
-      },
-      {
-        "name": "Threaten Res 1",
-        "description": "At start of turn, inflicts Res-3 on foes within 2 spaces through their next actions."
-      },
-      {
-        "name": "Threaten Res 2",
-        "description": "At start of turn, inflicts Res-5 on foes within 2 spaces through their next actions."
-      },
-      {
-        "name": "Threaten Res 3",
-        "description": "At start of turn, inflicts Res-7 on foes within 2 spaces through their next actions."
-      },
-      {
         "name": "Fortress Def 1",
         "description": "Grants Def+3. Inflicts Atk-3."
       },
@@ -1637,12 +1345,28 @@
         "description": "Grants Res+5. Inflicts Atk-3."
       },
       {
-        "name": "HP/Spd 1",
-        "description": "Grants HP+3, Spd+1."
+        "name": "Hone Atk 1",
+        "description": "At start of turn, grants Atk+2 to adjacent allies for 1 turn."
       },
       {
-        "name": "HP/Spd 2",
-        "description": "Grants HP+4, Spd+2."
+        "name": "Hone Atk 2",
+        "description": "At start of turn, grants Atk+3 to adjacent allies for 1 turn."
+      },
+      {
+        "name": "Hone Atk 3",
+        "description": "At start of turn, grants Atk+4 to adjacent allies for 1 turn."
+      },
+      {
+        "name": "HP +3",
+        "description": "Grants HP +3."
+      },
+      {
+        "name": "HP +4",
+        "description": "Grants HP +4."
+      },
+      {
+        "name": "HP +5",
+        "description": "Grants HP +5."
       },
       {
         "name": "HP/Def 1",
@@ -1661,12 +1385,288 @@
         "description": "Grants HP+4, Res+2."
       },
       {
+        "name": "HP/Spd 1",
+        "description": "Grants HP+3, Spd+1."
+      },
+      {
+        "name": "HP/Spd 2",
+        "description": "Grants HP+4, Spd+2."
+      },
+      {
+        "name": "Live to Serve 1",
+        "description": "When healing an ally with a staff, restores HP to unit = 50% of HP restored to target."
+      },
+      {
+        "name": "Live to Serve 2",
+        "description": "When healing an ally with a staff, restores HP to unit = 75% of HP restored to target."
+      },
+      {
+        "name": "Live to Serve 3",
+        "description": "When healing an ally with a staff, restores HP to unit = HP restored to target."
+      },
+      {
+        "name": "Obstruct 1",
+        "description": "If unit's HP ≥ 90%, foes cannot move through spaces adjacent to unit. (Does not affect foes with Pass skills.)"
+      },
+      {
+        "name": "Obstruct 2",
+        "description": "If unit's HP ≥ 70%, foes cannot move through spaces adjacent to unit. (Does not affect foes with Pass skills.)"
+      },
+      {
+        "name": "Obstruct 3",
+        "description": "If unit's HP ≥ 50%, foes cannot move through spaces adjacent to unit. (Does not affect foes with Pass skills.)"
+      },
+      {
+        "name": "Odd Atk Wave 1",
+        "description": "On odd turns, adds +2 Atk for unit and nearby allies for 1 turn."
+      },
+      {
+        "name": "Odd Atk Wave 2",
+        "description": "On odd turns, adds +4 Atk for unit and nearby allies for 1 turn."
+      },
+      {
+        "name": "Odd Atk Wave 3",
+        "description": "On odd turns, adds +6 Atk for unit and nearby allies for 1 turn."
+      },
+      {
+        "name": "Panic Ploy 1",
+        "description": "At start of turn, converts bonuses on foes in cardinal directions with HP ≤ unit's HP-5 into penalties through their next actions."
+      },
+      {
+        "name": "Panic Ploy 2",
+        "description": "At start of turn, converts bonuses on foes in cardinal directions with HP ≤ unit's HP-3 into penalties through their next actions."
+      },
+      {
+        "name": "Panic Ploy 3",
+        "description": "At start of turn, converts bonuses on foes in cardinal directions with HP < unit's HP into penalties through their next actions."
+      },
+      {
+        "name": "Quick Riposte 1",
+        "description": "If unit's HP ≥ 90% and foe initiates combat, unit makes a guaranteed follow-up attack."
+      },
+      {
+        "name": "Quick Riposte 2",
+        "description": "If unit's HP ≥ 70% and foe initiates combat, unit makes a guaranteed follow-up attack."
+      },
+      {
+        "name": "Quick Riposte 3",
+        "description": "If unit's HP ≥ 50% and foe initiates combat, unit makes a guaranteed follow-up attack."
+      },
+      {
+        "name": "Renewal 1",
+        "description": "At the start of every fourth turn, restores 10 HP."
+      },
+      {
+        "name": "Renewal 2",
+        "description": "At the start of every third turn, restores 10 HP."
+      },
+      {
+        "name": "Renewal 3",
+        "description": "At start of odd-numbered turns, restores 10 HP."
+      },
+      {
+        "name": "Res Ploy 1",
+        "description": "At start of turn, inflicts Res-3 on foes in cardinal directions with Res < unit's Res through their next actions."
+      },
+      {
+        "name": "Res Ploy 2",
+        "description": "At start of turn, inflicts Res-4 on foes in cardinal directions with Res < unit's Res through their next actions."
+      },
+      {
+        "name": "Res Ploy 3",
+        "description": "At start of turn, inflicts Res-5 on foes in cardinal directions with Res < unit's Res through their next actions."
+      },
+      {
+        "name": "Resistance +1",
+        "description": "Grants Resistance +1."
+      },
+      {
+        "name": "Resistance +2",
+        "description": "Grants Resistance +2."
+      },
+      {
+        "name": "Resistance +3",
+        "description": "Grants Resistance +3."
+      },
+      {
+        "name": "Savage Blow 1",
+        "description": "If unit initiates combat, deals 3 damage to foes within 2 spaces of target after combat."
+      },
+      {
+        "name": "Savage Blow 2",
+        "description": "If unit initiates combat, deals 5 damage to foes within 2 spaces of target after combat."
+      },
+      {
+        "name": "Savage Blow 3",
+        "description": "If unit initiates combat, deals 7 damage to foes within 2 spaces of target after combat."
+      },
+      {
+        "name": "Spd Ploy 1",
+        "description": "At start of turn, inflicts Spd-3 on foes in cardinal directions with Res < unit's Res through their next actions."
+      },
+      {
+        "name": "Spd Ploy 2",
+        "description": "At start of turn, inflicts Spd-4 on foes in cardinal directions with Res < unit's Res through their next actions."
+      },
+      {
+        "name": "Spd Ploy 3",
+        "description": "At start of turn, inflicts Spd-5 on foes in cardinal directions with Res < unit's Res through their next actions."
+      },
+      {
+        "name": "Spd Tactic 1",
+        "description": "At start of turn, grants Spd+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
+      },
+      {
+        "name": "Spd Tactic 2",
+        "description": "At start of turn, grants Spd+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
+      },
+      {
+        "name": "Spd Tactic 3",
+        "description": "At start of turn, grants Spd+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
+      },
+      {
+        "name": "Spd/Def 1",
+        "description": "Grants Spd/Def+1."
+      },
+      {
+        "name": "Spd/Res 1",
+        "description": "Grants Spd/Res+1."
+      },
+      {
+        "name": "Spd/Res 2",
+        "description": "Grants Spd/Res+2."
+      },
+      {
+        "name": "Speed +1",
+        "description": "Grants Speed +1."
+      },
+      {
+        "name": "Speed +2",
+        "description": "Grants Speed +2."
+      },
+      {
+        "name": "Speed +3",
+        "description": "Grants Speed +3."
+      },
+      {
+        "name": "Spur Atk 1",
+        "description": "Grants Atk+2 to adjacent allies during combat."
+      },
+      {
+        "name": "Spur Atk 2",
+        "description": "Grants Atk+3 to adjacent allies during combat."
+      },
+      {
+        "name": "Spur Atk 3",
+        "description": "Grants Atk+4 to adjacent allies during combat."
+      },
+      {
+        "name": "Spur Def 1",
+        "description": "Grants Def+2 to adjacent allies during combat."
+      },
+      {
+        "name": "Spur Def 2",
+        "description": "Grants Def+3 to adjacent allies during combat."
+      },
+      {
+        "name": "Spur Def 3",
+        "description": "Grants Def+4 to adjacent allies during combat."
+      },
+      {
+        "name": "Spur Def/Res 1",
+        "description": "Grants Def/Res +2 to adjacent allies during combat."
+      },
+      {
+        "name": "Spur Def/Res 2",
+        "description": "Grants Def/Res +3 to adjacent allies during combat."
+      },
+      {
+        "name": "Spur Res 1",
+        "description": "Grants Res+2 to adjacent allies during combat."
+      },
+      {
+        "name": "Spur Res 2",
+        "description": "Grants Res+3 to adjacent allies during combat."
+      },
+      {
+        "name": "Spur Res 3",
+        "description": "Grants Res+4 to adjacent allies during combat."
+      },
+      {
         "name": "Spur Spd/Def 1",
         "description": "Grants Spd/Def+2 to adjacent allies during combat."
       },
       {
         "name": "Spur Spd/Def 2",
         "description": "Grants Spd/Def+3 to adjacent allies during combat."
+      },
+      {
+        "name": "Threaten Atk 2",
+        "description": "At start of turn, inflicts Atk-5 on foes within 2 spaces through their next actions."
+      },
+      {
+        "name": "Threaten Atk 3",
+        "description": "At start of turn, inflicts Atk-7 on foes within 2 spaces through their next actions."
+      },
+      {
+        "name": "Threaten Def 1",
+        "description": "At start of turn, inflicts Def-3 on foes within 2 spaces through their next actions."
+      },
+      {
+        "name": "Threaten Def 2",
+        "description": "At start of turn, inflicts Def-5 on foes within 2 spaces through their next actions."
+      },
+      {
+        "name": "Threaten Def 3",
+        "description": "At start of turn, inflicts Def-7 on foes within 2 spaces through their next actions."
+      },
+      {
+        "name": "Threaten Res 1",
+        "description": "At start of turn, inflicts Res-3 on foes within 2 spaces through their next actions."
+      },
+      {
+        "name": "Threaten Res 2",
+        "description": "At start of turn, inflicts Res-5 on foes within 2 spaces through their next actions."
+      },
+      {
+        "name": "Threaten Res 3",
+        "description": "At start of turn, inflicts Res-7 on foes within 2 spaces through their next actions."
+      },
+      {
+        "name": "Threaten Spd 1",
+        "description": "At start of turn, inflicts Spd-3 on foes within 2 spaces through their next actions."
+      },
+      {
+        "name": "Threaten Spd 2",
+        "description": "At start of turn, inflicts Spd-5 on foes within 2 spaces through their next actions."
+      },
+      {
+        "name": "Threaten Spd 3",
+        "description": "At start of turn, inflicts Spd-7 on foes within 2 spaces through their next actions."
+      },
+      {
+        "name": "Water Boost 1",
+        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Res+2 during combat."
+      },
+      {
+        "name": "Water Boost 2",
+        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Res+4 during combat."
+      },
+      {
+        "name": "Water Boost 3",
+        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Res+6 during combat."
+      },
+      {
+        "name": "Wind Boost 1",
+        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Spd+2 during combat."
+      },
+      {
+        "name": "Wind Boost 2",
+        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Spd+4 during combat."
+      },
+      {
+        "name": "Wind Boost 3",
+        "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Spd+6 during combat."
       }
     ]
   }

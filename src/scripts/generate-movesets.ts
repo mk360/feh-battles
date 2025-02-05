@@ -50,6 +50,8 @@ function generateMoveset(unit: keyof typeof Characters): CharacterMoveset {
         });
     }
 
+    commonSkills.weapons = commonSkills.weapons.sort((a, b) => a.name.localeCompare(b.name));
+
     for (let assist in ASSISTS) {
         const assistData = ASSISTS[assist];
         // @ts-ignore
@@ -71,6 +73,8 @@ function generateMoveset(unit: keyof typeof Characters): CharacterMoveset {
             description: assistData.description
         });
     }
+
+    commonSkills.assists = commonSkills.assists.sort((a, b) => a.name.localeCompare(b.name));
 
     for (let special in SPECIALS) {
         const specialData = SPECIALS[special];
@@ -123,6 +127,11 @@ function generateMoveset(unit: keyof typeof Characters): CharacterMoveset {
             });
         }
     }
+
+    commonSkills.A = commonSkills.A.sort((a, b) => a.name.localeCompare(b.name));
+    commonSkills.B = commonSkills.B.sort((a, b) => a.name.localeCompare(b.name));
+    commonSkills.C = commonSkills.C.sort((a, b) => a.name.localeCompare(b.name));
+    commonSkills.S = commonSkills.S.sort((a, b) => a.name.localeCompare(b.name));
 
     return { exclusiveSkills, commonSkills };
 };

@@ -86,7 +86,8 @@ function generateMoveset(unit: keyof typeof Characters): CharacterMoveset {
             if (specialData.exclusiveTo.includes(unit)) {
                 exclusiveSkills.specials.push({
                     name: special,
-                    description: specialData.description
+                    description: specialData.description,
+                    cooldown: specialData.cooldown
                 });
             }
             continue;
@@ -94,7 +95,8 @@ function generateMoveset(unit: keyof typeof Characters): CharacterMoveset {
 
         commonSkills.specials.push({
             name: special,
-            description: specialData.description
+            description: specialData.description,
+            cooldown: specialData.cooldown
         });
     }
 

@@ -140,31 +140,38 @@
     "specials": [
       {
         "name": "Heavenly Light",
-        "description": "When healing an ally with a staff, restores 10 HP to all allies."
+        "description": "When healing an ally with a staff, restores 10 HP to all allies.",
+        "cooldown": 2
       },
       {
         "name": "Imbue",
-        "description": "When healing an ally with a staff, restores an additional 10 HP to target ally."
+        "description": "When healing an ally with a staff, restores an additional 10 HP to target ally.",
+        "cooldown": 1
       },
       {
         "name": "Kindled-Fire Balm",
-        "description": "When healing an ally with a staff, grants Atk+4 to all allies for 1 turn."
+        "description": "When healing an ally with a staff, grants Atk+4 to all allies for 1 turn.",
+        "cooldown": 1
       },
       {
         "name": "Miracle",
-        "description": "If unit's HP > 1 and foe would reduce unit's HP to 0, unit survives with 1 HP."
+        "description": "If unit's HP > 1 and foe would reduce unit's HP to 0, unit survives with 1 HP.",
+        "cooldown": 5
       },
       {
         "name": "Solid-Earth Balm",
-        "description": "When healing an ally with a staff, grants Def+4 to all allies for 1 turn."
+        "description": "When healing an ally with a staff, grants Def+4 to all allies for 1 turn.",
+        "cooldown": 1
       },
       {
         "name": "Still-Water Balm",
-        "description": "When healing an ally with a staff, grants Res+4 to all allies for 1 turn."
+        "description": "When healing an ally with a staff, grants Res+4 to all allies for 1 turn.",
+        "cooldown": 1
       },
       {
         "name": "Swift-Winds Balm",
-        "description": "When healing an ally with a staff, grants Spd+4 to all allies for 1 turn."
+        "description": "When healing an ally with a staff, grants Spd+4 to all allies for 1 turn.",
+        "cooldown": 1
       }
     ],
     "A": [

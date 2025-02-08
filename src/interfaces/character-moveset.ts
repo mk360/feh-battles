@@ -6,7 +6,7 @@ interface SkillWithDescription {
 export interface SkillList {
     weapons: (SkillWithDescription & { might: number })[];
     assists: SkillWithDescription[];
-    specials: SkillWithDescription[];
+    specials: (SkillWithDescription & { cooldown: number })[];
     A: SkillWithDescription[];
     B: SkillWithDescription[];
     C: SkillWithDescription[];

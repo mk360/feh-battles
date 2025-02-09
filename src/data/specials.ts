@@ -307,7 +307,7 @@ const SPECIALS: SpecialsDict = {
                 });
             }
         },
-        allowedWeaponTypes: melee,
+        allowedWeaponTypes: ["sword", "axe", "lance", "beast"],
     },
     "Glacies": {
         description: "Boosts damage by 80% of unit's Res.",

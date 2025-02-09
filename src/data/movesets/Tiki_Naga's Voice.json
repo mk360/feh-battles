@@ -210,11 +210,6 @@
         "cooldown": 2
       },
       {
-        "name": "Galeforce",
-        "description": "If unit initiates combat, grants unit another action after combat. (Once per turn.)",
-        "cooldown": 5
-      },
-      {
         "name": "Glacies",
         "description": "Boosts damage by 80% of unit's Res.",
         "cooldown": 4

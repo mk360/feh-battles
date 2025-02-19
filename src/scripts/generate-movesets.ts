@@ -50,7 +50,11 @@ function generateMoveset(unit: keyof typeof Characters): CharacterMoveset {
         });
     }
 
-    commonSkills.weapons = commonSkills.weapons.sort((a, b) => a.name.localeCompare(b.name));
+    commonSkills.weapons = commonSkills.weapons.sort((a, b) => {
+        const mightDifference = b.might - a.might;
+        if (mightDifference !== 0) return mightDifference;
+        return a.name.localeCompare(b.name);
+    });
 
     for (let assist in ASSISTS) {
         const assistData = ASSISTS[assist];
@@ -99,6 +103,12 @@ function generateMoveset(unit: keyof typeof Characters): CharacterMoveset {
             cooldown: specialData.cooldown
         });
     }
+
+    commonSkills.specials = commonSkills.specials.sort((a, b) => {
+        const cooldownDifference = b.cooldown - a.cooldown;
+        if (cooldownDifference !== 0) return cooldownDifference;
+        return a.name.localeCompare(b.name);
+    });
 
     for (let passive in PASSIVES) {
         const passiveData = PASSIVES[passive];

@@ -16,114 +16,9 @@
   "commonSkills": {
     "weapons": [
       {
-        "name": "Berkut's Lance",
-        "description": "If foe initiates combat, grants Res+4 during combat.",
-        "might": 10
-      },
-      {
-        "name": "Berkut's Lance+",
-        "description": "If foe initiates combat, grants Res+4 during combat.",
-        "might": 14
-      },
-      {
-        "name": "Brave Lance",
-        "description": "Inflicts Spd-5. If unit initiates combat, unit attacks twice.",
-        "might": 5
-      },
-      {
-        "name": "Brave Lance+",
-        "description": "Inflicts Spd-5. If unit initiates combat, unit attacks twice.",
-        "might": 8
-      },
-      {
-        "name": "Carrot Lance",
-        "description": "If unit initiates combat, restores 4 HP after combat.",
-        "might": 9
-      },
-      {
-        "name": "Carrot Lance+",
-        "description": "If unit initiates combat, restores 4 HP after combat.",
-        "might": 13
-      },
-      {
-        "name": "Deft Harpoon",
-        "description": "At start of combat, if unit's HP = 100%, grants Atk/Spd/Def/Res+2, but after combat, if unit attacked, deals 2 damage to unit.",
-        "might": 10
-      },
-      {
-        "name": "Deft Harpoon+",
-        "description": "At start of combat, if unit's HP = 100%, grants Atk/Spd/Def/Res+2, but after combat, if unit attacked, deals 2 damage to unit.",
-        "might": 14
-      },
-      {
-        "name": "Firesweep Lance",
-        "description": "Unit and foe cannot counterattack.",
-        "might": 11
-      },
-      {
         "name": "Firesweep Lance+",
         "description": "Unit and foe cannot counterattack.",
         "might": 15
-      },
-      {
-        "name": "First Bite",
-        "description": "If unit initiates combat, grants Def/Res+2 to allies within 2 spaces for 1 turn after combat.",
-        "might": 10
-      },
-      {
-        "name": "First Bite+",
-        "description": "If unit initiates combat, grants Def/Res+2 to allies within 2 spaces for 1 turn after combat.",
-        "might": 14
-      },
-      {
-        "name": "Heavy Spear",
-        "description": "Effective against armored foes.",
-        "might": 8
-      },
-      {
-        "name": "Heavy Spear+",
-        "description": "Effective against armored foes.",
-        "might": 12
-      },
-      {
-        "name": "Iron Lance",
-        "description": "",
-        "might": 6
-      },
-      {
-        "name": "Killer Lance",
-        "description": "Accelerates Special trigger (cooldown count-1).",
-        "might": 7
-      },
-      {
-        "name": "Killer Lance+",
-        "description": "Accelerates Special trigger (cooldown count-1).",
-        "might": 11
-      },
-      {
-        "name": "Ridersbane",
-        "description": "Effective against cavalry foes.",
-        "might": 10
-      },
-      {
-        "name": "Ridersbane+",
-        "description": "Effective against cavalry foes.",
-        "might": 14
-      },
-      {
-        "name": "Sapphire Lance",
-        "description": "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
-        "might": 8
-      },
-      {
-        "name": "Sapphire Lance+",
-        "description": "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
-        "might": 12
-      },
-      {
-        "name": "Silver Lance",
-        "description": "",
-        "might": 11
       },
       {
         "name": "Silver Lance+",
@@ -131,9 +26,24 @@
         "might": 15
       },
       {
-        "name": "Slaying Lance",
-        "description": "Accelerates Special trigger (cooldown count-1).",
-        "might": 10
+        "name": "Berkut's Lance+",
+        "description": "If foe initiates combat, grants Res+4 during combat.",
+        "might": 14
+      },
+      {
+        "name": "Deft Harpoon+",
+        "description": "At start of combat, if unit's HP = 100%, grants Atk/Spd/Def/Res+2, but after combat, if unit attacked, deals 2 damage to unit.",
+        "might": 14
+      },
+      {
+        "name": "First Bite+",
+        "description": "If unit initiates combat, grants Def/Res+2 to allies within 2 spaces for 1 turn after combat.",
+        "might": 14
+      },
+      {
+        "name": "Ridersbane+",
+        "description": "Effective against cavalry foes.",
+        "might": 14
       },
       {
         "name": "Slaying Lance+",
@@ -141,9 +51,99 @@
         "might": 14
       },
       {
+        "name": "Carrot Lance+",
+        "description": "If unit initiates combat, restores 4 HP after combat.",
+        "might": 13
+      },
+      {
+        "name": "Heavy Spear+",
+        "description": "Effective against armored foes.",
+        "might": 12
+      },
+      {
+        "name": "Sapphire Lance+",
+        "description": "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
+        "might": 12
+      },
+      {
+        "name": "Firesweep Lance",
+        "description": "Unit and foe cannot counterattack.",
+        "might": 11
+      },
+      {
+        "name": "Killer Lance+",
+        "description": "Accelerates Special trigger (cooldown count-1).",
+        "might": 11
+      },
+      {
+        "name": "Silver Lance",
+        "description": "",
+        "might": 11
+      },
+      {
+        "name": "Berkut's Lance",
+        "description": "If foe initiates combat, grants Res+4 during combat.",
+        "might": 10
+      },
+      {
+        "name": "Deft Harpoon",
+        "description": "At start of combat, if unit's HP = 100%, grants Atk/Spd/Def/Res+2, but after combat, if unit attacked, deals 2 damage to unit.",
+        "might": 10
+      },
+      {
+        "name": "First Bite",
+        "description": "If unit initiates combat, grants Def/Res+2 to allies within 2 spaces for 1 turn after combat.",
+        "might": 10
+      },
+      {
+        "name": "Ridersbane",
+        "description": "Effective against cavalry foes.",
+        "might": 10
+      },
+      {
+        "name": "Slaying Lance",
+        "description": "Accelerates Special trigger (cooldown count-1).",
+        "might": 10
+      },
+      {
+        "name": "Carrot Lance",
+        "description": "If unit initiates combat, restores 4 HP after combat.",
+        "might": 9
+      },
+      {
+        "name": "Brave Lance+",
+        "description": "Inflicts Spd-5. If unit initiates combat, unit attacks twice.",
+        "might": 8
+      },
+      {
+        "name": "Heavy Spear",
+        "description": "Effective against armored foes.",
+        "might": 8
+      },
+      {
+        "name": "Sapphire Lance",
+        "description": "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
+        "might": 8
+      },
+      {
         "name": "Steel Lance",
         "description": "",
         "might": 8
+      },
+      {
+        "name": "Killer Lance",
+        "description": "Accelerates Special trigger (cooldown count-1).",
+        "might": 7
+      },
+      {
+        "name": "Iron Lance",
+        "description": "",
+        "might": 6
+      },
+      {
+        "name": "Brave Lance",
+        "description": "Inflicts Spd-5. If unit initiates combat, unit attacks twice.",
+        "might": 5
       }
     ],
     "assists": [
@@ -226,32 +226,12 @@
     ],
     "specials": [
       {
-        "name": "Aegis",
-        "description": "If foe is 2 spaces from unit, reduces damage from foe's attack by 50%.",
-        "cooldown": 3
-      },
-      {
         "name": "Aether",
         "description": "Treats foe's Def/Res as if reduced by 50% during combat. Restores HP = half of damage dealt.",
         "cooldown": 5
       },
       {
-        "name": "Astra",
-        "description": "Boosts damage dealt by 150%.",
-        "cooldown": 4
-      },
-      {
-        "name": "Bonfire",
-        "description": "Boosts damage by 50% of unit's Def.",
-        "cooldown": 3
-      },
-      {
         "name": "Blazing Flame",
-        "description": "Before combat this unit initiates, foes in an area near target take damage equal to 1.5 x (unit's Atk minus foe's Def or Res).",
-        "cooldown": 5
-      },
-      {
-        "name": "Blazing Thunder",
         "description": "Before combat this unit initiates, foes in an area near target take damage equal to 1.5 x (unit's Atk minus foe's Def or Res).",
         "cooldown": 5
       },
@@ -261,59 +241,14 @@
         "cooldown": 5
       },
       {
-        "name": "Blazing Wind",
+        "name": "Blazing Thunder",
         "description": "Before combat this unit initiates, foes in an area near target take damage equal to 1.5 x (unit's Atk minus foe's Def or Res).",
-        "cooldown": 4
-      },
-      {
-        "name": "Buckler",
-        "description": "Reduces damage from an adjacent foe's attack by 30%.",
-        "cooldown": 3
-      },
-      {
-        "name": "Chilling Wind",
-        "description": "Boosts damage by 50% of unit's Res.",
-        "cooldown": 4
-      },
-      {
-        "name": "Daylight",
-        "description": "Restores HP = 30% of damage dealt.",
-        "cooldown": 3
-      },
-      {
-        "name": "Draconic Aura",
-        "description": "Boosts damage by 30% of unit's Atk.",
-        "cooldown": 3
-      },
-      {
-        "name": "Dragon Fang",
-        "description": "Boosts damage by 50% of unit's Atk.",
-        "cooldown": 4
-      },
-      {
-        "name": "Escutcheon",
-        "description": "Reduces damage from an adjacent foe's attack by 30%.",
-        "cooldown": 2
+        "cooldown": 5
       },
       {
         "name": "Galeforce",
         "description": "If unit initiates combat, grants unit another action after combat. (Once per turn.)",
         "cooldown": 5
-      },
-      {
-        "name": "Glacies",
-        "description": "Boosts damage by 80% of unit's Res.",
-        "cooldown": 4
-      },
-      {
-        "name": "Glimmer",
-        "description": "Boosts damage dealt by 50%.",
-        "cooldown": 2
-      },
-      {
-        "name": "Glowing Ember",
-        "description": "Boosts damage by 50% of unit's Def.",
-        "cooldown": 4
       },
       {
         "name": "Growing Flame",
@@ -336,54 +271,54 @@
         "cooldown": 5
       },
       {
-        "name": "Holy Vestments",
-        "description": "If foe is 2 spaces from unit, reduces damage from foe's attack by 30%.",
-        "cooldown": 3
-      },
-      {
-        "name": "Iceberg",
-        "description": "Boosts damage by 50% of unit's Res.",
-        "cooldown": 3
-      },
-      {
-        "name": "Ignis",
-        "description": "Boosts damage by 80% of unit's Def.",
-        "cooldown": 4
-      },
-      {
-        "name": "Luna",
-        "description": "Treats foe's Def/Res as if reduced by 50% during combat.",
-        "cooldown": 3
-      },
-      {
         "name": "Miracle",
         "description": "If unit's HP > 1 and foe would reduce unit's HP to 0, unit survives with 1 HP.",
         "cooldown": 5
       },
       {
-        "name": "Moonbow",
-        "description": "Treats foe's Def/Res as if reduced by 30% during combat.",
-        "cooldown": 2
+        "name": "Rising Light",
+        "description": "Before combat this unit initiates, foes in a wide area around target take damage equal to (unit's Atk minus foe's Def or Res).",
+        "cooldown": 5
       },
       {
-        "name": "New Moon",
-        "description": "Treats foe's Def/Res as if reduced by 30% during combat.",
-        "cooldown": 3
+        "name": "Rising Thunder",
+        "description": "Before combat this unit initiates, foes in a wide area around target take damage equal to (unit's Atk minus foe's Def or Res).",
+        "cooldown": 5
       },
       {
-        "name": "Night Sky",
-        "description": "Boosts damage dealt by 50%.",
-        "cooldown": 3
+        "name": "Astra",
+        "description": "Boosts damage dealt by 150%.",
+        "cooldown": 4
       },
       {
-        "name": "Noontime",
-        "description": "Restores HP = 30% of damage dealt.",
-        "cooldown": 2
+        "name": "Blazing Wind",
+        "description": "Before combat this unit initiates, foes in an area near target take damage equal to 1.5 x (unit's Atk minus foe's Def or Res).",
+        "cooldown": 4
       },
       {
-        "name": "Pavise",
-        "description": "Reduces damage from an adjacent foe's attack by 50%.",
-        "cooldown": 3
+        "name": "Chilling Wind",
+        "description": "Boosts damage by 50% of unit's Res.",
+        "cooldown": 4
+      },
+      {
+        "name": "Dragon Fang",
+        "description": "Boosts damage by 50% of unit's Atk.",
+        "cooldown": 4
+      },
+      {
+        "name": "Glacies",
+        "description": "Boosts damage by 80% of unit's Res.",
+        "cooldown": 4
+      },
+      {
+        "name": "Glowing Ember",
+        "description": "Boosts damage by 50% of unit's Def.",
+        "cooldown": 4
+      },
+      {
+        "name": "Ignis",
+        "description": "Boosts damage by 80% of unit's Def.",
+        "cooldown": 4
       },
       {
         "name": "Rising Flame",
@@ -396,24 +331,64 @@
         "cooldown": 4
       },
       {
-        "name": "Retribution",
-        "description": "Boosts damage by 30% of damage dealt to unit.",
+        "name": "Aegis",
+        "description": "If foe is 2 spaces from unit, reduces damage from foe's attack by 50%.",
         "cooldown": 3
       },
       {
-        "name": "Reprisal",
+        "name": "Bonfire",
+        "description": "Boosts damage by 50% of unit's Def.",
+        "cooldown": 3
+      },
+      {
+        "name": "Buckler",
+        "description": "Reduces damage from an adjacent foe's attack by 30%.",
+        "cooldown": 3
+      },
+      {
+        "name": "Daylight",
+        "description": "Restores HP = 30% of damage dealt.",
+        "cooldown": 3
+      },
+      {
+        "name": "Draconic Aura",
+        "description": "Boosts damage by 30% of unit's Atk.",
+        "cooldown": 3
+      },
+      {
+        "name": "Holy Vestments",
+        "description": "If foe is 2 spaces from unit, reduces damage from foe's attack by 30%.",
+        "cooldown": 3
+      },
+      {
+        "name": "Iceberg",
+        "description": "Boosts damage by 50% of unit's Res.",
+        "cooldown": 3
+      },
+      {
+        "name": "Luna",
+        "description": "Treats foe's Def/Res as if reduced by 50% during combat.",
+        "cooldown": 3
+      },
+      {
+        "name": "New Moon",
+        "description": "Treats foe's Def/Res as if reduced by 30% during combat.",
+        "cooldown": 3
+      },
+      {
+        "name": "Night Sky",
+        "description": "Boosts damage dealt by 50%.",
+        "cooldown": 3
+      },
+      {
+        "name": "Pavise",
+        "description": "Reduces damage from an adjacent foe's attack by 50%.",
+        "cooldown": 3
+      },
+      {
+        "name": "Retribution",
         "description": "Boosts damage by 30% of damage dealt to unit.",
-        "cooldown": 2
-      },
-      {
-        "name": "Rising Thunder",
-        "description": "Before combat this unit initiates, foes in a wide area around target take damage equal to (unit's Atk minus foe's Def or Res).",
-        "cooldown": 5
-      },
-      {
-        "name": "Rising Light",
-        "description": "Before combat this unit initiates, foes in a wide area around target take damage equal to (unit's Atk minus foe's Def or Res).",
-        "cooldown": 5
+        "cooldown": 3
       },
       {
         "name": "Sacred Cowl",
@@ -424,6 +399,31 @@
         "name": "Sol",
         "description": "Restores HP = 50% of damage dealt.",
         "cooldown": 3
+      },
+      {
+        "name": "Escutcheon",
+        "description": "Reduces damage from an adjacent foe's attack by 30%.",
+        "cooldown": 2
+      },
+      {
+        "name": "Glimmer",
+        "description": "Boosts damage dealt by 50%.",
+        "cooldown": 2
+      },
+      {
+        "name": "Moonbow",
+        "description": "Treats foe's Def/Res as if reduced by 30% during combat.",
+        "cooldown": 2
+      },
+      {
+        "name": "Noontime",
+        "description": "Restores HP = 30% of damage dealt.",
+        "cooldown": 2
+      },
+      {
+        "name": "Reprisal",
+        "description": "Boosts damage by 30% of damage dealt to unit.",
+        "cooldown": 2
       },
       {
         "name": "Vengeance",

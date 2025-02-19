@@ -16,19 +16,44 @@
   "commonSkills": {
     "weapons": [
       {
-        "name": "Bolganone",
-        "description": "",
-        "might": 9
-      },
-      {
         "name": "Bolganone+",
         "description": "",
         "might": 13
       },
       {
-        "name": "Elfire",
+        "name": "Fenrir+",
         "description": "",
-        "might": 6
+        "might": 13
+      },
+      {
+        "name": "Rauðrblade+",
+        "description": "Slows Special trigger (cooldown count+1). Grants bonus to unit's Atk = total bonuses on unit during combat.",
+        "might": 13
+      },
+      {
+        "name": "Tomato Tome+",
+        "description": "Grants Atk/Spd+1 to allies within 2 spaces during combat.",
+        "might": 12
+      },
+      {
+        "name": "Rauðrraven+",
+        "description": "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
+        "might": 11
+      },
+      {
+        "name": "Rauðrowl+",
+        "description": "During combat, boosts unit's Atk/Spd/Def/Res by number of adjacent allies × 2.",
+        "might": 10
+      },
+      {
+        "name": "Rauðrwolf+",
+        "description": "Effective against cavalry foes.",
+        "might": 10
+      },
+      {
+        "name": "Bolganone",
+        "description": "",
+        "might": 9
       },
       {
         "name": "Fenrir",
@@ -36,9 +61,39 @@
         "might": 9
       },
       {
-        "name": "Fenrir+",
+        "name": "Rauðrblade",
+        "description": "Slows Special trigger (cooldown count+1). Grants bonus to unit's Atk = total bonuses on unit during combat.",
+        "might": 9
+      },
+      {
+        "name": "Tomato Tome",
+        "description": "Grants Atk/Spd+1 to allies within 2 spaces during combat.",
+        "might": 8
+      },
+      {
+        "name": "Rauðrraven",
+        "description": "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
+        "might": 7
+      },
+      {
+        "name": "Elfire",
         "description": "",
-        "might": 13
+        "might": 6
+      },
+      {
+        "name": "Rauðrowl",
+        "description": "During combat, boosts unit's Atk/Spd/Def/Res by number of adjacent allies × 2.",
+        "might": 6
+      },
+      {
+        "name": "Rauðrwolf",
+        "description": "Effective against cavalry foes.",
+        "might": 6
+      },
+      {
+        "name": "Ruin",
+        "description": "",
+        "might": 6
       },
       {
         "name": "Fire",
@@ -49,61 +104,6 @@
         "name": "Flux",
         "description": "",
         "might": 4
-      },
-      {
-        "name": "Rauðrblade",
-        "description": "Slows Special trigger (cooldown count+1). Grants bonus to unit's Atk = total bonuses on unit during combat.",
-        "might": 9
-      },
-      {
-        "name": "Rauðrblade+",
-        "description": "Slows Special trigger (cooldown count+1). Grants bonus to unit's Atk = total bonuses on unit during combat.",
-        "might": 13
-      },
-      {
-        "name": "Rauðrowl",
-        "description": "During combat, boosts unit's Atk/Spd/Def/Res by number of adjacent allies × 2.",
-        "might": 6
-      },
-      {
-        "name": "Rauðrowl+",
-        "description": "During combat, boosts unit's Atk/Spd/Def/Res by number of adjacent allies × 2.",
-        "might": 10
-      },
-      {
-        "name": "Rauðrraven",
-        "description": "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
-        "might": 7
-      },
-      {
-        "name": "Rauðrraven+",
-        "description": "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
-        "might": 11
-      },
-      {
-        "name": "Rauðrwolf",
-        "description": "Effective against cavalry foes.",
-        "might": 6
-      },
-      {
-        "name": "Rauðrwolf+",
-        "description": "Effective against cavalry foes.",
-        "might": 10
-      },
-      {
-        "name": "Ruin",
-        "description": "",
-        "might": 6
-      },
-      {
-        "name": "Tomato Tome",
-        "description": "Grants Atk/Spd+1 to allies within 2 spaces during combat.",
-        "might": 8
-      },
-      {
-        "name": "Tomato Tome+",
-        "description": "Grants Atk/Spd+1 to allies within 2 spaces during combat.",
-        "might": 12
       }
     ],
     "assists": [
@@ -191,22 +191,7 @@
         "cooldown": 5
       },
       {
-        "name": "Astra",
-        "description": "Boosts damage dealt by 150%.",
-        "cooldown": 4
-      },
-      {
-        "name": "Bonfire",
-        "description": "Boosts damage by 50% of unit's Def.",
-        "cooldown": 3
-      },
-      {
         "name": "Blazing Flame",
-        "description": "Before combat this unit initiates, foes in an area near target take damage equal to 1.5 x (unit's Atk minus foe's Def or Res).",
-        "cooldown": 5
-      },
-      {
-        "name": "Blazing Thunder",
         "description": "Before combat this unit initiates, foes in an area near target take damage equal to 1.5 x (unit's Atk minus foe's Def or Res).",
         "cooldown": 5
       },
@@ -216,44 +201,9 @@
         "cooldown": 5
       },
       {
-        "name": "Blazing Wind",
+        "name": "Blazing Thunder",
         "description": "Before combat this unit initiates, foes in an area near target take damage equal to 1.5 x (unit's Atk minus foe's Def or Res).",
-        "cooldown": 4
-      },
-      {
-        "name": "Chilling Wind",
-        "description": "Boosts damage by 50% of unit's Res.",
-        "cooldown": 4
-      },
-      {
-        "name": "Daylight",
-        "description": "Restores HP = 30% of damage dealt.",
-        "cooldown": 3
-      },
-      {
-        "name": "Draconic Aura",
-        "description": "Boosts damage by 30% of unit's Atk.",
-        "cooldown": 3
-      },
-      {
-        "name": "Dragon Fang",
-        "description": "Boosts damage by 50% of unit's Atk.",
-        "cooldown": 4
-      },
-      {
-        "name": "Glacies",
-        "description": "Boosts damage by 80% of unit's Res.",
-        "cooldown": 4
-      },
-      {
-        "name": "Glimmer",
-        "description": "Boosts damage dealt by 50%.",
-        "cooldown": 2
-      },
-      {
-        "name": "Glowing Ember",
-        "description": "Boosts damage by 50% of unit's Def.",
-        "cooldown": 4
+        "cooldown": 5
       },
       {
         "name": "Growing Flame",
@@ -276,44 +226,54 @@
         "cooldown": 5
       },
       {
-        "name": "Iceberg",
-        "description": "Boosts damage by 50% of unit's Res.",
-        "cooldown": 3
-      },
-      {
-        "name": "Ignis",
-        "description": "Boosts damage by 80% of unit's Def.",
-        "cooldown": 4
-      },
-      {
-        "name": "Luna",
-        "description": "Treats foe's Def/Res as if reduced by 50% during combat.",
-        "cooldown": 3
-      },
-      {
         "name": "Miracle",
         "description": "If unit's HP > 1 and foe would reduce unit's HP to 0, unit survives with 1 HP.",
         "cooldown": 5
       },
       {
-        "name": "Moonbow",
-        "description": "Treats foe's Def/Res as if reduced by 30% during combat.",
-        "cooldown": 2
+        "name": "Rising Light",
+        "description": "Before combat this unit initiates, foes in a wide area around target take damage equal to (unit's Atk minus foe's Def or Res).",
+        "cooldown": 5
       },
       {
-        "name": "New Moon",
-        "description": "Treats foe's Def/Res as if reduced by 30% during combat.",
-        "cooldown": 3
+        "name": "Rising Thunder",
+        "description": "Before combat this unit initiates, foes in a wide area around target take damage equal to (unit's Atk minus foe's Def or Res).",
+        "cooldown": 5
       },
       {
-        "name": "Night Sky",
-        "description": "Boosts damage dealt by 50%.",
-        "cooldown": 3
+        "name": "Astra",
+        "description": "Boosts damage dealt by 150%.",
+        "cooldown": 4
       },
       {
-        "name": "Noontime",
-        "description": "Restores HP = 30% of damage dealt.",
-        "cooldown": 2
+        "name": "Blazing Wind",
+        "description": "Before combat this unit initiates, foes in an area near target take damage equal to 1.5 x (unit's Atk minus foe's Def or Res).",
+        "cooldown": 4
+      },
+      {
+        "name": "Chilling Wind",
+        "description": "Boosts damage by 50% of unit's Res.",
+        "cooldown": 4
+      },
+      {
+        "name": "Dragon Fang",
+        "description": "Boosts damage by 50% of unit's Atk.",
+        "cooldown": 4
+      },
+      {
+        "name": "Glacies",
+        "description": "Boosts damage by 80% of unit's Res.",
+        "cooldown": 4
+      },
+      {
+        "name": "Glowing Ember",
+        "description": "Boosts damage by 50% of unit's Def.",
+        "cooldown": 4
+      },
+      {
+        "name": "Ignis",
+        "description": "Boosts damage by 80% of unit's Def.",
+        "cooldown": 4
       },
       {
         "name": "Rising Flame",
@@ -326,29 +286,69 @@
         "cooldown": 4
       },
       {
+        "name": "Bonfire",
+        "description": "Boosts damage by 50% of unit's Def.",
+        "cooldown": 3
+      },
+      {
+        "name": "Daylight",
+        "description": "Restores HP = 30% of damage dealt.",
+        "cooldown": 3
+      },
+      {
+        "name": "Draconic Aura",
+        "description": "Boosts damage by 30% of unit's Atk.",
+        "cooldown": 3
+      },
+      {
+        "name": "Iceberg",
+        "description": "Boosts damage by 50% of unit's Res.",
+        "cooldown": 3
+      },
+      {
+        "name": "Luna",
+        "description": "Treats foe's Def/Res as if reduced by 50% during combat.",
+        "cooldown": 3
+      },
+      {
+        "name": "New Moon",
+        "description": "Treats foe's Def/Res as if reduced by 30% during combat.",
+        "cooldown": 3
+      },
+      {
+        "name": "Night Sky",
+        "description": "Boosts damage dealt by 50%.",
+        "cooldown": 3
+      },
+      {
         "name": "Retribution",
         "description": "Boosts damage by 30% of damage dealt to unit.",
         "cooldown": 3
       },
       {
-        "name": "Reprisal",
-        "description": "Boosts damage by 30% of damage dealt to unit.",
-        "cooldown": 2
-      },
-      {
-        "name": "Rising Thunder",
-        "description": "Before combat this unit initiates, foes in a wide area around target take damage equal to (unit's Atk minus foe's Def or Res).",
-        "cooldown": 5
-      },
-      {
-        "name": "Rising Light",
-        "description": "Before combat this unit initiates, foes in a wide area around target take damage equal to (unit's Atk minus foe's Def or Res).",
-        "cooldown": 5
-      },
-      {
         "name": "Sol",
         "description": "Restores HP = 50% of damage dealt.",
         "cooldown": 3
+      },
+      {
+        "name": "Glimmer",
+        "description": "Boosts damage dealt by 50%.",
+        "cooldown": 2
+      },
+      {
+        "name": "Moonbow",
+        "description": "Treats foe's Def/Res as if reduced by 30% during combat.",
+        "cooldown": 2
+      },
+      {
+        "name": "Noontime",
+        "description": "Restores HP = 30% of damage dealt.",
+        "cooldown": 2
+      },
+      {
+        "name": "Reprisal",
+        "description": "Boosts damage by 30% of damage dealt to unit.",
+        "cooldown": 2
       },
       {
         "name": "Vengeance",

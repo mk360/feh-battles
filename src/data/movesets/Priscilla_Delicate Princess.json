@@ -10,24 +10,14 @@
   "commonSkills": {
     "weapons": [
       {
-        "name": "Absorb",
-        "description": "Restores HP = 50% of damage dealt.",
-        "might": 4
+        "name": "Fear+",
+        "description": "After combat, if unit attacked, inflicts Atk-7 on target and foes within 2 spaces of target through their next actions.",
+        "might": 12
       },
       {
-        "name": "Absorb+",
-        "description": "Restores HP = 50% of damage dealt.&lt;br>After combat, if unit attacked, restores 7 HP to allies within 2 spaces of unit.",
-        "might": 7
-      },
-      {
-        "name": "Assault",
-        "description": "",
-        "might": 10
-      },
-      {
-        "name": "Candlelight",
-        "description": "After combat, if unit attacked, inflicts status on foe preventing counterattacks through its next action.",
-        "might": 7
+        "name": "Slow+",
+        "description": "After combat, if unit attacked, inflicts Spd-7 on target and foes within 2 spaces of target through their next actions.",
+        "might": 12
       },
       {
         "name": "Candlelight+",
@@ -35,19 +25,14 @@
         "might": 11
       },
       {
-        "name": "Fear",
-        "description": "After combat, if unit attacked, inflicts Atk-6 on foe through its next action.",
-        "might": 5
+        "name": "Panic+",
+        "description": "After combat, if unit attacked, converts bonuses on target and foes within 2 spaces of target into penalties through their next actions.",
+        "might": 11
       },
       {
-        "name": "Fear+",
-        "description": "After combat, if unit attacked, inflicts Atk-7 on target and foes within 2 spaces of target through their next actions.",
-        "might": 12
-      },
-      {
-        "name": "Gravity",
-        "description": "After combat, if unit attacked, inflicts status on foe restricting movement to 1 space through its next action.",
-        "might": 6
+        "name": "Assault",
+        "description": "",
+        "might": 10
       },
       {
         "name": "Gravity+",
@@ -55,14 +40,19 @@
         "might": 10
       },
       {
-        "name": "Pain",
-        "description": "After combat, if unit attacked, deals 10 damage to foe.",
-        "might": 3
-      },
-      {
         "name": "Pain+",
         "description": "Deals 10 damage to target and foes within 2 spaces of target after combat.",
         "might": 10
+      },
+      {
+        "name": "Absorb+",
+        "description": "Restores HP = 50% of damage dealt.&lt;br>After combat, if unit attacked, restores 7 HP to allies within 2 spaces of unit.",
+        "might": 7
+      },
+      {
+        "name": "Candlelight",
+        "description": "After combat, if unit attacked, inflicts status on foe preventing counterattacks through its next action.",
+        "might": 7
       },
       {
         "name": "Panic",
@@ -70,9 +60,14 @@
         "might": 7
       },
       {
-        "name": "Panic+",
-        "description": "After combat, if unit attacked, converts bonuses on target and foes within 2 spaces of target into penalties through their next actions.",
-        "might": 11
+        "name": "Gravity",
+        "description": "After combat, if unit attacked, inflicts status on foe restricting movement to 1 space through its next action.",
+        "might": 6
+      },
+      {
+        "name": "Fear",
+        "description": "After combat, if unit attacked, inflicts Atk-6 on foe through its next action.",
+        "might": 5
       },
       {
         "name": "Slow",
@@ -80,9 +75,14 @@
         "might": 5
       },
       {
-        "name": "Slow+",
-        "description": "After combat, if unit attacked, inflicts Spd-7 on target and foes within 2 spaces of target through their next actions.",
-        "might": 12
+        "name": "Absorb",
+        "description": "Restores HP = 50% of damage dealt.",
+        "might": 4
+      },
+      {
+        "name": "Pain",
+        "description": "After combat, if unit attacked, deals 10 damage to foe.",
+        "might": 3
       }
     ],
     "assists": [
@@ -133,6 +133,11 @@
     ],
     "specials": [
       {
+        "name": "Miracle",
+        "description": "If unit's HP > 1 and foe would reduce unit's HP to 0, unit survives with 1 HP.",
+        "cooldown": 5
+      },
+      {
         "name": "Heavenly Light",
         "description": "When healing an ally with a staff, restores 10 HP to all allies.",
         "cooldown": 2
@@ -146,11 +151,6 @@
         "name": "Kindled-Fire Balm",
         "description": "When healing an ally with a staff, grants Atk+4 to all allies for 1 turn.",
         "cooldown": 1
-      },
-      {
-        "name": "Miracle",
-        "description": "If unit's HP > 1 and foe would reduce unit's HP to 0, unit survives with 1 HP.",
-        "cooldown": 5
       },
       {
         "name": "Solid-Earth Balm",

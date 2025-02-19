@@ -73,8 +73,7 @@ func validateMoveset(filePath string, heroName string, skillsStruct *map[string]
 		len(movesetStruct.ExclusiveSkills.Specials)+
 		len(movesetStruct.ExclusiveSkills.A)+
 		len(movesetStruct.ExclusiveSkills.B)+
-		len(movesetStruct.ExclusiveSkills.C)+
-		len(movesetStruct.ExclusiveSkills.S))
+		len(movesetStruct.ExclusiveSkills.C))
 	var query = url.Values{
 		"action": []string{"cargoquery"},
 		"format": []string{"json"},
@@ -160,6 +159,9 @@ func validateMoveset(filePath string, heroName string, skillsStruct *map[string]
 			var isMoveCompatible = strings.Contains(skillData.MoveType, unitStruct.Cargoquery[0].Title.MoveType)
 			if !isWeaponCompatible || !isMoveCompatible {
 				fmt.Println(heroName + " shouldn't learn " + skill)
+			}
+			if isMoveCompatible && isWeaponCompatible && !slices.Contains(fullSkillList, skill) {
+				fmt.Println(heroName + " should learn " + skill)
 			}
 		}
 	}

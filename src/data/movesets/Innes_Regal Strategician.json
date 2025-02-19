@@ -1,6 +1,12 @@
 {
   "exclusiveSkills": {
-    "weapons": [],
+    "weapons": [
+      {
+        "name": "Nidhogg",
+        "description": "Effective against flying foes. During combat, boosts unit's Atk/Spd/Def/Res by number of adjacent allies × 2.",
+        "might": 14
+      }
+    ],
     "assists": [],
     "specials": [],
     "A": [],
@@ -9,11 +15,6 @@
   },
   "commonSkills": {
     "weapons": [
-      {
-        "name": "Nidhogg",
-        "description": "Effective against flying foes. During combat, boosts unit's Atk/Spd/Def/Res by number of adjacent allies × 2.",
-        "might": 14
-      },
       {
         "name": "Silver Bow+",
         "description": "Effective against flying foes.",

@@ -3170,7 +3170,8 @@ const WEAPONS: WeaponDict = {
         effectiveAgainst: ["flier"],
         onCombatStart(state) {
             Effects.owl(this, state);
-        }
+        },
+        exclusiveTo: ["Innes: Regal Strategician"]
     },
     "Niles's Bow": {
         description: "Accelerates Special trigger (cooldown count-1). Effective against flying foes. If foe's Def ≥ foe's Res+5, deals +7 damage.",

@@ -977,7 +977,7 @@
       },
       {
         "name": "Cancel Affinity 3",
-        "description": "Neutralizes weapon-triangle advantage granted by unit's skills. If unit has weapon-triangle disadvantage, neutralizes weapon-triangle advantage granted by foe's skills."
+        "description": "Neutralizes weapon-triangle advantage granted by unit's skills. If unit has weapon-triangle disadvantage, reverses weapon-triangle advantage granted by foe's skills."
       },
       {
         "name": "Daggerbreaker 1",
@@ -1074,6 +1074,10 @@
       {
         "name": "Lancebreaker 1",
         "description": "If unit's HP ≥ 90% in combat against a lance foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
+      },
+      {
+        "name": "Lancebreaker 2",
+        "description": "If unit's HP ≥ 70% in combat against a lance foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
       },
       {
         "name": "Lancebreaker 3",

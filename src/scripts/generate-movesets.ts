@@ -5,7 +5,7 @@ import ASSISTS from "../data/assists";
 import SPECIALS from "../data/specials";
 import { writeFileSync } from "fs";
 import { SkillList, CharacterMoveset } from "../interfaces/character-moveset";
-import { WeaponColor } from "../interfaces/types";
+import { WeaponColor, WeaponType } from "../interfaces/types";
 
 function generateMoveset(unit: keyof typeof Characters): CharacterMoveset {
     const unitData = Characters[unit];
@@ -115,8 +115,10 @@ function generateMoveset(unit: keyof typeof Characters): CharacterMoveset {
         // @ts-ignore
         if (passiveData.allowedMovementTypes && !passiveData.allowedMovementTypes.includes(unitData.movementType)) continue;
         // @ts-ignore
-        if (passiveData.allowedWeaponTypes && !passiveData.allowedWeaponTypes.includes(unitData.weaponType)) continue;
-        if (passiveData.allowedColors && !passiveData.allowedColors.includes(unitData.color as WeaponColor)) continue;
+        const hasDetailedWeaponsAllowed = passiveData.extraAllowedWeapons?.includes(`${unitData.color}-${unitData.weaponType}`) ?? false;
+        if ((passiveData.allowedWeaponTypes && !passiveData.allowedWeaponTypes.includes(unitData.weaponType as WeaponType)) && !hasDetailedWeaponsAllowed) continue;
+        if ((passiveData.allowedColors && !passiveData.allowedColors.includes(unitData.color as WeaponColor)) && !hasDetailedWeaponsAllowed) continue;
+
         if (passiveData.exclusiveTo) {
             if (passiveData.exclusiveTo.includes(unit)) {
                 exclusiveSkills[passiveData.slot].push({

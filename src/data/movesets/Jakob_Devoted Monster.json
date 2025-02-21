@@ -900,6 +900,18 @@
         "description": "If unit initiates combat against a foe that can counter and unit's HP ≤ 50%, unit makes a guaranteed follow-up attack."
       },
       {
+        "name": "Cancel Affinity 1",
+        "description": "Neutralizes all weapon-triangle advantage granted by unit's and foe's skills."
+      },
+      {
+        "name": "Cancel Affinity 2",
+        "description": "Neutralizes weapon-triangle advantage granted by unit's skills. If unit has weapon-triangle disadvantage, neutralizes weapon-triangle advantage granted by foe's skills."
+      },
+      {
+        "name": "Cancel Affinity 3",
+        "description": "Neutralizes weapon-triangle advantage granted by unit's skills. If unit has weapon-triangle disadvantage, reverses weapon-triangle advantage granted by foe's skills."
+      },
+      {
         "name": "Daggerbreaker 1",
         "description": "If unit's HP ≥ 90% in combat against a colorless dagger foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
       },

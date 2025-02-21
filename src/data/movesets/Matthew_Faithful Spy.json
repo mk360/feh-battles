@@ -71,6 +71,11 @@
         "might": 5
       },
       {
+        "name": "Poison Dagger+",
+        "description": "Effective against infantry foes.&lt;br>After combat, if unit attacked, inflicts Def/Res-4 on infantry foe through its next action.",
+        "might": 5
+      },
+      {
         "name": "Steel Dagger",
         "description": "After combat, if unit attacked, inflicts Def/Res-3 on foe through its next action.",
         "might": 5
@@ -84,6 +89,11 @@
         "name": "Iron Dagger",
         "description": "After combat, if unit attacked, inflicts Def/Res-3 on foe through its next action.",
         "might": 3
+      },
+      {
+        "name": "Poison Dagger",
+        "description": "Effective against infantry foes.&lt;br>After combat, if unit attacked, inflicts Def/Res-4 on infantry foe through its next action.",
+        "might": 2
       }
     ],
     "assists": [
@@ -870,6 +880,18 @@
       {
         "name": "Brash Assault 3",
         "description": "If unit initiates combat against a foe that can counter and unit's HP ≤ 50%, unit makes a guaranteed follow-up attack."
+      },
+      {
+        "name": "Cancel Affinity 1",
+        "description": "Neutralizes all weapon-triangle advantage granted by unit's and foe's skills."
+      },
+      {
+        "name": "Cancel Affinity 2",
+        "description": "Neutralizes weapon-triangle advantage granted by unit's skills. If unit has weapon-triangle disadvantage, neutralizes weapon-triangle advantage granted by foe's skills."
+      },
+      {
+        "name": "Cancel Affinity 3",
+        "description": "Neutralizes weapon-triangle advantage granted by unit's skills. If unit has weapon-triangle disadvantage, reverses weapon-triangle advantage granted by foe's skills."
       },
       {
         "name": "Daggerbreaker 1",

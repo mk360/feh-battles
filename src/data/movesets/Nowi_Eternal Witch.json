@@ -622,6 +622,18 @@
         "description": "Grants Atk/Spd/Def/Res+3. After combat, deals 6 damage to unit."
       },
       {
+        "name": "Heavy Blade 1",
+        "description": "If unit's Atk ≥ foe's Atk+5, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)"
+      },
+      {
+        "name": "Heavy Blade 2",
+        "description": "If unit's Atk ≥ foe's Atk+3, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)"
+      },
+      {
+        "name": "Heavy Blade 3",
+        "description": "If unit's Atk > foe's Atk, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)"
+      },
+      {
         "name": "HP +3",
         "description": "Grants HP +3."
       },
@@ -1930,6 +1942,18 @@
       {
         "name": "Guidance 3",
         "description": "Infantry and armored allies within 2 spaces can move to a space adjacent to unit."
+      },
+      {
+        "name": "Heavy Blade 1",
+        "description": "If unit's Atk ≥ foe's Atk+5, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)"
+      },
+      {
+        "name": "Heavy Blade 2",
+        "description": "If unit's Atk ≥ foe's Atk+3, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)"
+      },
+      {
+        "name": "Heavy Blade 3",
+        "description": "If unit's Atk > foe's Atk, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)"
       },
       {
         "name": "Hone Atk 1",

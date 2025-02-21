@@ -57,7 +57,7 @@ type UnitRes struct {
 	} `json:"cargoquery"`
 }
 
-func validateMoveset(filePath string, heroName string, skillsStruct *map[string]SkillData, wg *sync.WaitGroup) {
+func validateMoveset(filePath string, heroName string, skillsStruct *map[string]SkillData, subset *[]string, wg *sync.WaitGroup) {
 	var movesetData, _ = os.ReadFile(filePath)
 	var movesetStruct Moveset = Moveset{}
 	json.Unmarshal(movesetData, &movesetStruct)
@@ -160,9 +160,16 @@ func validateMoveset(filePath string, heroName string, skillsStruct *map[string]
 			if !isWeaponCompatible || !isMoveCompatible {
 				fmt.Println(heroName + " shouldn't learn " + skill)
 			}
-			if isMoveCompatible && isWeaponCompatible && !slices.Contains(fullSkillList, skill) {
-				fmt.Println(heroName + " should learn " + skill)
-			}
+		}
+	}
+
+	for _, skill := range *subset {
+		var skillData, _ = jsonRef[skill]
+		var isWeaponCompatible = strings.Contains(skillData.WeaponType, unitStruct.Cargoquery[0].Title.WeaponType)
+		var isMoveCompatible = strings.Contains(skillData.MoveType, unitStruct.Cargoquery[0].Title.MoveType)
+		var skillIsIncluded = slices.Contains(fullSkillList, skill)
+		if isWeaponCompatible && isMoveCompatible && !skillIsIncluded {
+			fmt.Println(heroName + " should learn " + skill)
 		}
 	}
 
@@ -172,15 +179,18 @@ func validateMoveset(filePath string, heroName string, skillsStruct *map[string]
 func main() {
 	// dumpSkills()
 	var jsonStruct = make(map[string]SkillData)
-	var byteJSON, _ = os.ReadFile("dump.json")
-	json.Unmarshal(byteJSON, &jsonStruct)
+	var jsonByteDump, _ = os.ReadFile("dump.json")
+	var jsonSubsetDump, _ = os.ReadFile("subset.json")
+	var subset []string = []string{}
+	json.Unmarshal(jsonSubsetDump, &subset)
+	json.Unmarshal(jsonByteDump, &jsonStruct)
 	movesetsPath := "../../data/movesets"
 	var wg = sync.WaitGroup{}
 	var dir, _ = os.ReadDir(movesetsPath)
 	for _, file := range dir {
 		var name = file.Name()
 		wg.Add(1)
-		go validateMoveset(movesetsPath+"/"+name, strings.Replace(strings.Replace(file.Name(), "_", ": ", -1), ".json", "", -1), &jsonStruct, &wg)
+		go validateMoveset(movesetsPath+"/"+name, strings.Replace(strings.Replace(file.Name(), "_", ": ", -1), ".json", "", -1), &jsonStruct, &subset, &wg)
 	}
 	wg.Wait()
 }

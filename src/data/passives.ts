@@ -29,6 +29,7 @@ interface PassivesDict {
         slot: PassiveSlot;
         allowedMovementTypes?: MovementType[];
         allowedWeaponTypes?: WeaponType[];
+        extraAllowedWeapons?: (`${WeaponColor}-${WeaponType}`)[];
         allowedColors?: WeaponColor[];
         protects?: (MovementType | WeaponType)[];
         exclusiveTo?: (keyof typeof Characters)[];
@@ -1108,7 +1109,6 @@ const PASSIVES: PassivesDict = {
     "Steady Stance 1": {
         slot: "A",
         isSacredSeal: true,
-        allowedWeaponTypes: exceptStaves,
         description: "If foe initiates combat, grants Def+2 during combat.",
         onCombatDefense() {
             this.entity.addComponent({
@@ -1120,7 +1120,6 @@ const PASSIVES: PassivesDict = {
     "Steady Stance 2": {
         slot: "A",
         isSacredSeal: true,
-        allowedWeaponTypes: exceptStaves,
         description: "If foe initiates combat, grants Def+4 during combat.",
         onCombatDefense() {
             this.entity.addComponent({
@@ -1132,7 +1131,6 @@ const PASSIVES: PassivesDict = {
     "Steady Stance 3": {
         slot: "A",
         isSacredSeal: true,
-        allowedWeaponTypes: exceptStaves,
         description: "If foe initiates combat, grants Def+6 during combat.",
         onCombatDefense() {
             this.entity.addComponent({
@@ -1849,7 +1847,6 @@ const PASSIVES: PassivesDict = {
     "Heavy Blade 1": {
         slot: "A",
         isSacredSeal: true,
-        allowedMovementTypes: ["armored", "infantry"],
         allowedWeaponTypes: exceptStaves,
         description: "If unit's Atk ≥ foe's Atk+5, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)",
         onCombatRoundAttack(target) {
@@ -1865,7 +1862,6 @@ const PASSIVES: PassivesDict = {
     "Heavy Blade 2": {
         slot: "A",
         isSacredSeal: true,
-        allowedMovementTypes: ["armored", "infantry"],
         allowedWeaponTypes: exceptStaves,
         description: "If unit's Atk ≥ foe's Atk+3, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)",
         onCombatRoundAttack(target) {
@@ -1881,7 +1877,6 @@ const PASSIVES: PassivesDict = {
     "Heavy Blade 3": {
         slot: "A",
         isSacredSeal: true,
-        allowedMovementTypes: ["armored", "infantry"],
         allowedWeaponTypes: exceptStaves,
         description: "If unit's Atk > foe's Atk, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)",
         onCombatRoundAttack(target) {
@@ -2267,6 +2262,7 @@ const PASSIVES: PassivesDict = {
     "Cancel Affinity 1": {
         slot: "B",
         allowedWeaponTypes: closeRange,
+        extraAllowedWeapons: ["colorless-bow", "colorless-dagger"],
         description: "Neutralizes all weapon-triangle advantage granted by unit's and foe's skills.",
         onCombatStart(state, target) {
             this.entity.addComponent({
@@ -2281,6 +2277,7 @@ const PASSIVES: PassivesDict = {
     "Cancel Affinity 2": {
         slot: "B",
         allowedWeaponTypes: closeRange,
+        extraAllowedWeapons: ["colorless-bow", "colorless-dagger"],
         description: "Neutralizes weapon-triangle advantage granted by unit's skills. If unit has weapon-triangle disadvantage, neutralizes weapon-triangle advantage granted by foe's skills.",
         onCombatStart(state, target) {
             target.addComponent({
@@ -2296,8 +2293,9 @@ const PASSIVES: PassivesDict = {
     },
     "Cancel Affinity 3": {
         slot: "B",
+        extraAllowedWeapons: ["colorless-bow", "colorless-dagger"],
         allowedWeaponTypes: closeRange,
-        description: "Neutralizes weapon-triangle advantage granted by unit's skills. If unit has weapon-triangle disadvantage, neutralizes weapon-triangle advantage granted by foe's skills.",
+        description: "Neutralizes weapon-triangle advantage granted by unit's skills. If unit has weapon-triangle disadvantage, reverses weapon-triangle advantage granted by foe's skills.",
         onCombatStart(state, target) {
             target.addComponent({
                 type: "NeutralizeAffinity",
@@ -2454,7 +2452,7 @@ const PASSIVES: PassivesDict = {
             breaker(this, target, "lance", 0.7);
         },
         slot: "B",
-        allowedWeaponTypes: ["lance", "lance", "beast", "bow", "dagger", "breath", "tome", "staff"],
+        allowedWeaponTypes: ["lance", "axe", "beast", "bow", "dagger", "breath", "tome", "staff"],
         allowedColors: ["colorless", "green", "blue"],
         description: "If unit's HP ≥ 70% in combat against a lance foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
     },

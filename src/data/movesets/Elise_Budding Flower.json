@@ -452,6 +452,18 @@
         "description": "Grants Speed +3."
       },
       {
+        "name": "Steady Stance 1",
+        "description": "If foe initiates combat, grants Def+2 during combat."
+      },
+      {
+        "name": "Steady Stance 2",
+        "description": "If foe initiates combat, grants Def+4 during combat."
+      },
+      {
+        "name": "Steady Stance 3",
+        "description": "If foe initiates combat, grants Def+6 during combat."
+      },
+      {
         "name": "Water Boost 1",
         "description": "At start of combat, if unit's HP ≥ foe's HP+3, grants Res+2 during combat."
       },
@@ -1612,6 +1624,18 @@
       {
         "name": "Spur Spd/Def 2",
         "description": "Grants Spd/Def+3 to adjacent allies during combat."
+      },
+      {
+        "name": "Steady Stance 1",
+        "description": "If foe initiates combat, grants Def+2 during combat."
+      },
+      {
+        "name": "Steady Stance 2",
+        "description": "If foe initiates combat, grants Def+4 during combat."
+      },
+      {
+        "name": "Steady Stance 3",
+        "description": "If foe initiates combat, grants Def+6 during combat."
       },
       {
         "name": "Threaten Atk 2",

@@ -3324,7 +3324,6 @@ const WEAPONS: WeaponDict = {
         description: "Effective against infantry foes.&lt;br>After combat, if unit attacked, inflicts Def/Res-4 on infantry foe through its next action.",
         might: 2,
         type: "dagger",
-        exclusiveTo: ["Kagero: Honorable Ninja"],
         effectiveAgainst: ["infantry"],
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage") && target.getOne("MovementType").value === "infantry") {
@@ -3339,7 +3338,6 @@ const WEAPONS: WeaponDict = {
         description: "Effective against infantry foes.&lt;br>After combat, if unit attacked, inflicts Def/Res-4 on infantry foe through its next action.",
         might: 5,
         type: "dagger",
-        exclusiveTo: ["Kagero: Honorable Ninja"],
         effectiveAgainst: ["infantry"],
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage") && target.getOne("MovementType").value === "infantry") {

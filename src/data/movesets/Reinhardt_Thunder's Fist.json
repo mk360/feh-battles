@@ -631,6 +631,18 @@
         "description": "Neutralizes \"effective against cavalry\" bonuses."
       },
       {
+        "name": "Heavy Blade 1",
+        "description": "If unit's Atk ≥ foe's Atk+5, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)"
+      },
+      {
+        "name": "Heavy Blade 2",
+        "description": "If unit's Atk ≥ foe's Atk+3, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)"
+      },
+      {
+        "name": "Heavy Blade 3",
+        "description": "If unit's Atk > foe's Atk, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)"
+      },
+      {
         "name": "HP +3",
         "description": "Grants HP +3."
       },
@@ -1899,6 +1911,18 @@
       {
         "name": "Gale Dance 3",
         "description": "If Sing or Dance is used, grants Spd+4 to target."
+      },
+      {
+        "name": "Heavy Blade 1",
+        "description": "If unit's Atk ≥ foe's Atk+5, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)"
+      },
+      {
+        "name": "Heavy Blade 2",
+        "description": "If unit's Atk ≥ foe's Atk+3, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)"
+      },
+      {
+        "name": "Heavy Blade 3",
+        "description": "If unit's Atk > foe's Atk, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)"
       },
       {
         "name": "Hone Atk 1",

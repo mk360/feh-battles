@@ -641,6 +641,18 @@
         "description": "Neutralizes \"effective against cavalry\" bonuses."
       },
       {
+        "name": "Heavy Blade 1",
+        "description": "If unit's Atk ≥ foe's Atk+5, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)"
+      },
+      {
+        "name": "Heavy Blade 2",
+        "description": "If unit's Atk ≥ foe's Atk+3, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)"
+      },
+      {
+        "name": "Heavy Blade 3",
+        "description": "If unit's Atk > foe's Atk, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)"
+      },
+      {
         "name": "HP +3",
         "description": "Grants HP +3."
       },
@@ -885,6 +897,18 @@
       {
         "name": "Brash Assault 3",
         "description": "If unit initiates combat against a foe that can counter and unit's HP ≤ 50%, unit makes a guaranteed follow-up attack."
+      },
+      {
+        "name": "Cancel Affinity 1",
+        "description": "Neutralizes all weapon-triangle advantage granted by unit's and foe's skills."
+      },
+      {
+        "name": "Cancel Affinity 2",
+        "description": "Neutralizes weapon-triangle advantage granted by unit's skills. If unit has weapon-triangle disadvantage, neutralizes weapon-triangle advantage granted by foe's skills."
+      },
+      {
+        "name": "Cancel Affinity 3",
+        "description": "Neutralizes weapon-triangle advantage granted by unit's skills. If unit has weapon-triangle disadvantage, reverses weapon-triangle advantage granted by foe's skills."
       },
       {
         "name": "Daggerbreaker 1",
@@ -1921,6 +1945,18 @@
       {
         "name": "Gale Dance 3",
         "description": "If Sing or Dance is used, grants Spd+4 to target."
+      },
+      {
+        "name": "Heavy Blade 1",
+        "description": "If unit's Atk ≥ foe's Atk+5, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)"
+      },
+      {
+        "name": "Heavy Blade 2",
+        "description": "If unit's Atk ≥ foe's Atk+3, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)"
+      },
+      {
+        "name": "Heavy Blade 3",
+        "description": "If unit's Atk > foe's Atk, grants Special cooldown charge +1 per unit's attack. (Only highest value applied. Does not stack.)"
       },
       {
         "name": "Hone Atk 1",

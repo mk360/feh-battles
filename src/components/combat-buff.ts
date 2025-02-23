@@ -1,5 +1,8 @@
 import { Component } from "ape-ecs";
 
+/**
+ * Stackable stat buffs that apply for a combat
+ */
 export default class CombatBuff extends Component { };
 
 CombatBuff.properties = {

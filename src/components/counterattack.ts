@@ -1,7 +1,7 @@
 import { Component } from "ape-ecs";
 
 /**
- * Assign this component to the defender, since an attacker cannot counterattack.
+ * Allow the defender to counterattack and bypass any limiting check.
  */
 class Counterattack extends Component { };
 

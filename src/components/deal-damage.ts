@@ -1,5 +1,8 @@
 import { Component, EntityRef } from "ape-ecs";
 
+/**
+ * Main Component used to report a Combat round outcome
+ */
 class DealDamage extends Component {
     static properties = {
         round: 0,

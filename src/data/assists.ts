@@ -566,6 +566,12 @@ const ASSISTS: AssistsDict = {
             });
 
             this.entity.addComponent({
+                type: "Move",
+                x: firstPosition.x,
+                y: firstPosition.y,
+            });
+
+            this.entity.addComponent({
                 type: "Reposition",
                 targetEntity: ally,
                 x: newAllyPosition.x,

@@ -1,5 +1,8 @@
 import { Component } from "ape-ecs";
 
-class Battling extends Component {};
+/**
+ * Denotes a Hero that is currently in combat.
+ */
+class Battling extends Component { };
 
 export default Battling;

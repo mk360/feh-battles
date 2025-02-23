@@ -1,6 +1,9 @@
 import { Component } from "ape-ecs";
 
-export default class CombatDebuff extends Component {};
+/**
+ * Stackable stat debuffs that apply for a combat
+ */
+export default class CombatDebuff extends Component { };
 
 CombatDebuff.properties = {
     atk: 0,

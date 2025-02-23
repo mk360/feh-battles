@@ -1,5 +1,8 @@
 import { Component, EntityRef } from "ape-ecs";
 
+/**
+ * Runs the Swap effect. Hero and target swap tiles.
+ */
 class Swap extends Component {
     static properties = {
         assistTarget: {

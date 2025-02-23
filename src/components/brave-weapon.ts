@@ -1,5 +1,8 @@
 import { Component } from "ape-ecs";
 
-class BraveWeapon extends Component {};
+/**
+ * Allows a Hero to attack twice uninterrupted before the Spd check
+ */
+class BraveWeapon extends Component { };
 
 export default BraveWeapon;

@@ -1,5 +1,8 @@
 import { Component } from "ape-ecs";
 
+/**
+ * The Assist skill of the hero
+ */
 class Assist extends Component {
     static properties = {
         name: "",

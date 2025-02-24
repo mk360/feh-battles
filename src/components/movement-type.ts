@@ -1,6 +1,9 @@
 import { Component } from "ape-ecs";
 
-class MovementType extends Component {};
+/**
+ * Movement Type from Hero's properties
+ */
+class MovementType extends Component { };
 
 MovementType.properties = {
     value: "",

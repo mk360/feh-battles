@@ -1,5 +1,8 @@
 import { Component } from "ape-ecs";
 
+/**
+ * Out-of-combat buffs that don't stack.
+ */
 class MapBuff extends Component { };
 
 // todo : le renommer peut-être en "MapMod" ou "StatMod"

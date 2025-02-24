@@ -6,6 +6,7 @@ const sourceFiles = dir.map((file) => (`./src/components/${file}`)).map((file) =
 });
 
 const commentedComponents: { component: string, comment: string }[] = [];
+const undocumentedComponents: string[] = [];
 
 for (let file of sourceFiles) {
     ts.forEachChild(file, (node) => {
@@ -15,6 +16,8 @@ for (let file of sourceFiles) {
             // @ts-ignore
             const comment = node.jsDoc?.[0].comment as string;
             if (!comment) {
+                // @ts-ignore
+                undocumentedComponents.push(componentName);
                 console.warn(`No comment found for component ${componentName}`)
             } else {
                 commentedComponents.push({
@@ -47,6 +50,8 @@ for (let i = 1; i < lines.length; i++) {
     const line = lines[i];
     finalString += writeTableLine(line);
 }
+
+finalString += `\nUndocumented components: ${undocumentedComponents.join(", ")}.`
 
 function writeTableLine(line: string[]) {
     return `| ${line[0]} | ${line[1]} |\n`;

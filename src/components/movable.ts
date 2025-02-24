@@ -1,5 +1,8 @@
 import { Component } from "ape-ecs";
 
-class Movable extends Component {};
+/**
+ * Marks a Hero whose movement and attack ranges are currently under computation.
+ */
+class Movable extends Component { };
 
 export default Movable;

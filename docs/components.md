@@ -54,8 +54,29 @@ These are the Component the Engine currently uses. This is an auto-generated doc
 | NeutralizeAffinity             | Always return a neutral affinity regardless of other modifiers.                                                                      |
 | NeutralizeMapBuffs             | Neutralize an opponent's Map Buffs in all of the stats, or in specified stats.                                                       |
 | NeutralizeNormalizeStaffDamage | If opponent has "calculate staff damage like other weapons" effect, neutralize it.                                                   |
+| NeutralizeSlowSpecial          | If Hero has this component and a "Slow Special" effect on them, remove them both.                                                    |
 | NormalizeStaffDamage           | Make the Hero deal staff damage like other weapons.                                                                                  |
+| Obstruct                       | One Component added to the Hero = one Tile they can't cross.                                                                         |
+| Pivot                          | Runs an effect similar to the Pivot assist (Hero moves past an ally by one tile).                                                    |
+| Position                       | Current coordinates for any Hero.                                                                                                    |
 | PreventCounterattack           | If attacker prevents a defender from counterattacking, assign this component to the attacker.                                        |
+| PreventDamageReduction         | Disables any DamageReduction the opponent may have.                                                                                  |
+| PreventEnemyAlliesInteraction  | Prevent enemy allies from applying their skills to opponent.                                                                         |
+| PreventFollowup                | Disable any effect allowing the opponent to make a follow-up, or neutralizes a Guaranteed Follow-up.                                 |
+| PreventTargetLowestDefense     | Disables a "Target Lowest Defense" effect the opponent might have.                                                                   |
+| PreviewAssist                  | Heroes who run an Assist Preview                                                                                                     |
+| PreviewHP                      | HP post-assist preview.                                                                                                              |
+| PreviewingBattle               | Denotes Heroes that participate in a combat preview.                                                                                 |
+| Refresher                      | A Hero who has a skill that grants another action (Dance, Sing and their variants).                                                  |
+| Reposition                     | Applies an effect similar to the Reposition assist. Hero moves another to their opposite side.                                       |
+| RoundDamageIncrease            | Increases damage just for one round (either an absolute value or a % of the initial damage amount)                                   |
+| RoundDamageReduction           | Decreases damage just for one round (either an absolute value or a % of the initial damage amount)                                   |
+| Side                           | A Hero's team.                                                                                                                       |
+| Skill                          | Generic Skill slot                                                                                                                   |
+| SlowSpecial                    | Reduces special cooldown by 1 (usually only applies once).                                                                           |
+| Special                        | A Hero's Special.                                                                                                                    |
+| StartingHP                     | Hero's HP at the start of a combat.                                                                                                  |
+| Stats                          | Hero's current Stats.                                                                                                                |
 | Status                         | Generic component that denotes a Status. Used by the UI to simplify Status display.                                                  |
 | Swap                           | Runs the Swap effect. Hero and target swap tiles.                                                                                    |
 | TargetLowestDefense            | Assign to attacker. Uses defender's lowest defense regardless of weapon type.                                                        |
@@ -64,4 +85,4 @@ These are the Component the Engine currently uses. This is an auto-generated doc
 | WarpTile                       | Tile where a Hero could potentially warp to.                                                                                         |
 | Weapon                         | Technical properties of the Hero's Weapon.                                                                                           |
 
-Undocumented components: NeutralizeSlowSpecial, Obstruct, Pivot, Position, PreventDamageReduction, PreventEnemyAlliesInteraction, PreventFollowup, PreventTargetLowestDefense, PreviewAssist, PreviewHP, PreviewingBattle, Refresher, Reposition, RoundDamageIncrease, RoundDamageReduction, SacrificeHP, Shove, Side, Skill, SlowSpecial, Special, StartingHP, Stats.
+Undocumented components: SacrificeHP, Shove.

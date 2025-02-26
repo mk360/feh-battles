@@ -1,5 +1,8 @@
 import { Component } from "ape-ecs";
 
+/**
+ * A Hero's Special.
+ */
 class Special extends Component {
     static properties = {
         name: "",

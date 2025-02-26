@@ -1,5 +1,8 @@
 import { Component } from "ape-ecs";
 
-class SlowSpecial extends Component {};
+/**
+ * Reduces special cooldown by 1 (usually only applies once).
+ */
+class SlowSpecial extends Component { };
 
 export default SlowSpecial;

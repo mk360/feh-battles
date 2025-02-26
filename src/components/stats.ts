@@ -1,7 +1,11 @@
 import { Component } from "ape-ecs";
 
+/**
+ * Hero's current Stats.
+ */
 export default class Stats extends Component {
-}
+};
+
 Stats.properties = {
     maxHP: 0,
     hp: 0,

@@ -100,16 +100,10 @@ const ASSISTS: AssistsDict = {
             const { x, y } = position;
             const currentMapTile = state.map[y][x];
             const allyCanMove = canReachTile(ally, currentMapTile, true);
-            return retreat(state, this.entity, ally).checker() && allyCanMove;
+            return allyCanMove && retreat(state, this.entity, ally).checker();
         },
         onApply(state, ally) {
-            const { x, y } = getPosition(this.entity);
-            retreat(state, this.entity, ally);
-            ally.addComponent({
-                type: "Move",
-                x,
-                y
-            });
+            retreat(state, this.entity, ally).runner();
         },
     },
     "Harsh Command": {

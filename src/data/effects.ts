@@ -351,19 +351,37 @@ export function retreat(state: GameState, target: Entity, referencePoint: Entity
     const pos2 = getPosition(referencePoint);
 
     const direction = new Direction(pos1.x - pos2.x, pos1.y - pos2.y);
+    const newPos1 = new Direction(pos1.x, pos1.y).add(direction.x, direction.y);
+    const newPos2 = { x: pos1.x, y: pos2.y };
 
     return {
         checker() {
-            const newTile = state.map[direction.y]?.[direction.x];
-            if (!newTile) return false;
-            const isValid = canReachTile(target, newTile) && ((newTile[0] & tileBitmasks.occupation) === 0)
+            const newTile1 = state.map[newPos1.y]?.[newPos1.x];
+            if (!newTile1) return false;
+            const isValid1 = canReachTile(target, newTile1) && ((newTile1[0] & tileBitmasks.occupation) === 0);
+            const isValid2 = canReachTile(referencePoint, state.map[pos1.y]?.[pos1.x], true);
 
-            return isValid;
+            return isValid1 && isValid2;
         },
         runner() {
+            // target.addComponent({
+            //     type: "DrawBack",
+            //     ...newPos1,
+            // });
+
+            // referencePoint.addComponent({
+            //     type: "DrawBack",
+            //     ...newPos2,
+            // });
+
             target.addComponent({
-                type: "DrawBack",
-                ...direction,
+                type: "Move",
+                ...newPos1,
+            });
+
+            referencePoint.addComponent({
+                type: "Move",
+                ...newPos2,
             });
         }
     }

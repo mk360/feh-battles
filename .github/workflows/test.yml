@@ -15,4 +15,4 @@ jobs:
       - run: npm i -q
 
       - name: Run tests
-        run: node --test --require ts-node/register ./src/__tests__/*.ts
+        run: node --test --require ts-node/register ./src/__tests__/**/*.ts

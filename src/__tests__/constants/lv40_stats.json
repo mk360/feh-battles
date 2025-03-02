@@ -1,0 +1,5051 @@
+{
+  "Abel: The Panther": {
+    "hp": {
+      "bane": 35,
+      "standard": 39,
+      "boon": 42
+    },
+    "atk": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "spd": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "def": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 28
+    },
+    "res": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    }
+  },
+  "Alfonse: Prince of Askr": {
+    "hp": {
+      "bane": 40,
+      "standard": 43,
+      "boon": 46
+    },
+    "atk": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "spd": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "def": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "res": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    }
+  },
+  "Alm: Hero of Prophecy": {
+    "hp": {
+      "bane": 42,
+      "standard": 45,
+      "boon": 48
+    },
+    "atk": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "spd": {
+      "bane": 27,
+      "standard": 30,
+      "boon": 33
+    },
+    "def": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    },
+    "res": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    }
+  },
+  "Amelia: Rose of the War": {
+    "hp": {
+      "bane": 44,
+      "standard": 47,
+      "boon": 50
+    },
+    "atk": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "spd": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "def": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "res": {
+      "bane": 20,
+      "standard": 23,
+      "boon": 27
+    }
+  },
+  "Anna: Commander": {
+    "hp": {
+      "bane": 37,
+      "standard": 41,
+      "boon": 44
+    },
+    "atk": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    },
+    "spd": {
+      "bane": 35,
+      "standard": 38,
+      "boon": 41
+    },
+    "def": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    },
+    "res": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    }
+  },
+  "Arden: Strong and Tough": {
+    "hp": {
+      "bane": 57,
+      "standard": 60,
+      "boon": 63
+    },
+    "atk": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 39
+    },
+    "spd": {
+      "bane": 12,
+      "standard": 16,
+      "boon": 19
+    },
+    "def": {
+      "bane": 38,
+      "standard": 41,
+      "boon": 44
+    },
+    "res": {
+      "bane": 12,
+      "standard": 16,
+      "boon": 19
+    }
+  },
+  "Arthur: Hapless Hero": {
+    "hp": {
+      "bane": 40,
+      "standard": 43,
+      "boon": 46
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    },
+    "def": {
+      "bane": 26,
+      "standard": 30,
+      "boon": 33
+    },
+    "res": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 28
+    }
+  },
+  "Arvis: Emperor of Flame": {
+    "hp": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "atk": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "spd": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "def": {
+      "bane": 13,
+      "standard": 17,
+      "boon": 20
+    },
+    "res": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    }
+  },
+  "Athena: Borderland Sword": {
+    "hp": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 40
+    },
+    "atk": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "spd": {
+      "bane": 35,
+      "standard": 38,
+      "boon": 41
+    },
+    "def": {
+      "bane": 24,
+      "standard": 27,
+      "boon": 31
+    },
+    "res": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 28
+    }
+  },
+  "Ayra: Astra's Wielder": {
+    "hp": {
+      "bane": 37,
+      "standard": 41,
+      "boon": 44
+    },
+    "atk": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "spd": {
+      "bane": 34,
+      "standard": 37,
+      "boon": 40
+    },
+    "def": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "res": {
+      "bane": 18,
+      "standard": 21,
+      "boon": 24
+    }
+  },
+  "Azama: Carefree Monk": {
+    "hp": {
+      "bane": 40,
+      "standard": 43,
+      "boon": 46
+    },
+    "atk": {
+      "bane": 18,
+      "standard": 21,
+      "boon": 24
+    },
+    "spd": {
+      "bane": 23,
+      "standard": 26,
+      "boon": 30
+    },
+    "def": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "res": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    }
+  },
+  "Azura: Lady of Ballads": {
+    "hp": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 39
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "def": {
+      "bane": 17,
+      "standard": 20,
+      "boon": 23
+    },
+    "res": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    }
+  },
+  "Azura: Lady of the Lake": {
+    "hp": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 40
+    },
+    "atk": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "spd": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "def": {
+      "bane": 18,
+      "standard": 21,
+      "boon": 24
+    },
+    "res": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    }
+  },
+  "Barst: The Hatchet": {
+    "hp": {
+      "bane": 43,
+      "standard": 46,
+      "boon": 49
+    },
+    "atk": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "spd": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "def": {
+      "bane": 27,
+      "standard": 30,
+      "boon": 33
+    },
+    "res": {
+      "bane": 13,
+      "standard": 17,
+      "boon": 20
+    }
+  },
+  "Bartre: Fearless Warrior": {
+    "hp": {
+      "bane": 46,
+      "standard": 49,
+      "boon": 52
+    },
+    "atk": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 39
+    },
+    "spd": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "def": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "res": {
+      "bane": 10,
+      "standard": 13,
+      "boon": 17
+    }
+  },
+  "Berkut: Prideful Prince": {
+    "hp": {
+      "bane": 40,
+      "standard": 43,
+      "boon": 46
+    },
+    "atk": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "spd": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    },
+    "def": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "res": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 27
+    }
+  },
+  "Beruka: Quiet Assassin": {
+    "hp": {
+      "bane": 43,
+      "standard": 46,
+      "boon": 49
+    },
+    "atk": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    },
+    "spd": {
+      "bane": 20,
+      "standard": 23,
+      "boon": 26
+    },
+    "def": {
+      "bane": 34,
+      "standard": 37,
+      "boon": 40
+    },
+    "res": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    }
+  },
+  "Black Knight: Sinister General": {
+    "hp": {
+      "bane": 45,
+      "standard": 48,
+      "boon": 51
+    },
+    "atk": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "spd": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "def": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "res": {
+      "bane": 14,
+      "standard": 18,
+      "boon": 21
+    }
+  },
+  "Boey: Skillful Survivor": {
+    "hp": {
+      "bane": 40,
+      "standard": 43,
+      "boon": 46
+    },
+    "atk": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    },
+    "spd": {
+      "bane": 23,
+      "standard": 27,
+      "boon": 30
+    },
+    "def": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "res": {
+      "bane": 14,
+      "standard": 18,
+      "boon": 21
+    }
+  },
+  "Caeda: Talys's Bride": {
+    "hp": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "atk": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    },
+    "spd": {
+      "bane": 34,
+      "standard": 37,
+      "boon": 40
+    },
+    "def": {
+      "bane": 16,
+      "standard": 19,
+      "boon": 22
+    },
+    "res": {
+      "bane": 26,
+      "standard": 30,
+      "boon": 33
+    }
+  },
+  "Caeda: Talys's Heart": {
+    "hp": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 40
+    },
+    "atk": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "spd": {
+      "bane": 34,
+      "standard": 37,
+      "boon": 40
+    },
+    "def": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 28
+    },
+    "res": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    }
+  },
+  "Cain: The Bull": {
+    "hp": {
+      "bane": 39,
+      "standard": 42,
+      "boon": 45
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "def": {
+      "bane": 24,
+      "standard": 27,
+      "boon": 31
+    },
+    "res": {
+      "bane": 18,
+      "standard": 21,
+      "boon": 24
+    }
+  },
+  "Camilla: Bewitching Beauty": {
+    "hp": {
+      "bane": 34,
+      "standard": 37,
+      "boon": 41
+    },
+    "atk": {
+      "bane": 26,
+      "standard": 30,
+      "boon": 33
+    },
+    "spd": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "def": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    },
+    "res": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    }
+  },
+  "Camilla: Spring Princess": {
+    "hp": {
+      "bane": 35,
+      "standard": 39,
+      "boon": 42
+    },
+    "atk": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "spd": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "def": {
+      "bane": 26,
+      "standard": 30,
+      "boon": 33
+    },
+    "res": {
+      "bane": 16,
+      "standard": 19,
+      "boon": 22
+    }
+  },
+  "Camus: Sable Knight": {
+    "hp": {
+      "bane": 39,
+      "standard": 42,
+      "boon": 45
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "def": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "res": {
+      "bane": 13,
+      "standard": 17,
+      "boon": 20
+    }
+  },
+  "Catria: Middle Whitewing": {
+    "hp": {
+      "bane": 35,
+      "standard": 39,
+      "boon": 42
+    },
+    "atk": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "spd": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "def": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    },
+    "res": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    }
+  },
+  "Cecilia: Etrurian General": {
+    "hp": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 40
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "def": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    },
+    "res": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    }
+  },
+  "Celica: Caring Princess": {
+    "hp": {
+      "bane": 35,
+      "standard": 39,
+      "boon": 42
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "def": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    },
+    "res": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    }
+  },
+  "Charlotte: Money Maiden": {
+    "hp": {
+      "bane": 43,
+      "standard": 46,
+      "boon": 49
+    },
+    "atk": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 39
+    },
+    "spd": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "def": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 28
+    },
+    "res": {
+      "bane": 16,
+      "standard": 19,
+      "boon": 22
+    }
+  },
+  "Cherche: Wyvern Friend": {
+    "hp": {
+      "bane": 43,
+      "standard": 46,
+      "boon": 49
+    },
+    "atk": {
+      "bane": 35,
+      "standard": 38,
+      "boon": 41
+    },
+    "spd": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "def": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "res": {
+      "bane": 12,
+      "standard": 16,
+      "boon": 19
+    }
+  },
+  "Chrom: Exalted Prince": {
+    "hp": {
+      "bane": 44,
+      "standard": 47,
+      "boon": 50
+    },
+    "atk": {
+      "bane": 34,
+      "standard": 37,
+      "boon": 40
+    },
+    "spd": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "def": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "res": {
+      "bane": 13,
+      "standard": 17,
+      "boon": 20
+    }
+  },
+  "Chrom: Spring Exalt": {
+    "hp": {
+      "bane": 40,
+      "standard": 43,
+      "boon": 46
+    },
+    "atk": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "spd": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "def": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    },
+    "res": {
+      "bane": 17,
+      "standard": 20,
+      "boon": 23
+    }
+  },
+  "Clair: Highborn Flier": {
+    "hp": {
+      "bane": 34,
+      "standard": 37,
+      "boon": 41
+    },
+    "atk": {
+      "bane": 23,
+      "standard": 26,
+      "boon": 30
+    },
+    "spd": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 39
+    },
+    "def": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 28
+    },
+    "res": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    }
+  },
+  "Clarine: Refined Noble": {
+    "hp": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 39
+    },
+    "atk": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "spd": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "def": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    },
+    "res": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    }
+  },
+  "Clarisse: Sniper in the Dark": {
+    "hp": {
+      "bane": 34,
+      "standard": 37,
+      "boon": 41
+    },
+    "atk": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "spd": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "def": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "res": {
+      "bane": 17,
+      "standard": 20,
+      "boon": 23
+    }
+  },
+  "Clive: Idealistic Knight": {
+    "hp": {
+      "bane": 42,
+      "standard": 45,
+      "boon": 48
+    },
+    "atk": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "spd": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "def": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "res": {
+      "bane": 16,
+      "standard": 19,
+      "boon": 22
+    }
+  },
+  "Cordelia: Knight Paragon": {
+    "hp": {
+      "bane": 36,
+      "standard": 40,
+      "boon": 43
+    },
+    "atk": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "spd": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "def": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    },
+    "res": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    }
+  },
+  "Cordelia: Perfect Bride": {
+    "hp": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 40
+    },
+    "atk": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "spd": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "def": {
+      "bane": 16,
+      "standard": 19,
+      "boon": 22
+    },
+    "res": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    }
+  },
+  "Corrin: Fateful Prince": {
+    "hp": {
+      "bane": 38,
+      "standard": 42,
+      "boon": 45
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "def": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    },
+    "res": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 28
+    }
+  },
+  "Corrin: Fateful Princess": {
+    "hp": {
+      "bane": 37,
+      "standard": 41,
+      "boon": 44
+    },
+    "atk": {
+      "bane": 24,
+      "standard": 27,
+      "boon": 31
+    },
+    "spd": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "def": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "res": {
+      "bane": 18,
+      "standard": 21,
+      "boon": 24
+    }
+  },
+  "Corrin: Novice Vacationer": {
+    "hp": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "atk": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "spd": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "def": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    },
+    "res": {
+      "bane": 23,
+      "standard": 26,
+      "boon": 30
+    }
+  },
+  "Deirdre: Lady of the Forest": {
+    "hp": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 40
+    },
+    "atk": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "spd": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    },
+    "def": {
+      "bane": 12,
+      "standard": 16,
+      "boon": 19
+    },
+    "res": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    }
+  },
+  "Delthea: Free Spirit": {
+    "hp": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "atk": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 39
+    },
+    "spd": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "def": {
+      "bane": 10,
+      "standard": 13,
+      "boon": 17
+    },
+    "res": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    }
+  },
+  "Donnel: Village Hero": {
+    "hp": {
+      "bane": 40,
+      "standard": 43,
+      "boon": 46
+    },
+    "atk": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "spd": {
+      "bane": 26,
+      "standard": 29,
+      "boon": 32
+    },
+    "def": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "res": {
+      "bane": 20,
+      "standard": 23,
+      "boon": 27
+    }
+  },
+  "Dorcas: Serene Warrior": {
+    "hp": {
+      "bane": 42,
+      "standard": 45,
+      "boon": 48
+    },
+    "atk": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "spd": {
+      "bane": 20,
+      "standard": 23,
+      "boon": 26
+    },
+    "def": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "res": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 28
+    }
+  },
+  "Draug: Gentle Giant": {
+    "hp": {
+      "bane": 47,
+      "standard": 50,
+      "boon": 53
+    },
+    "atk": {
+      "bane": 26,
+      "standard": 30,
+      "boon": 33
+    },
+    "spd": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "def": {
+      "bane": 36,
+      "standard": 39,
+      "boon": 42
+    },
+    "res": {
+      "bane": 15,
+      "standard": 18,
+      "boon": 21
+    }
+  },
+  "Effie: Army of One": {
+    "hp": {
+      "bane": 47,
+      "standard": 50,
+      "boon": 53
+    },
+    "atk": {
+      "bane": 37,
+      "standard": 40,
+      "boon": 43
+    },
+    "spd": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    },
+    "def": {
+      "bane": 29,
+      "standard": 33,
+      "boon": 36
+    },
+    "res": {
+      "bane": 20,
+      "standard": 23,
+      "boon": 27
+    }
+  },
+  "Eirika: Restoration Lady": {
+    "hp": {
+      "bane": 39,
+      "standard": 42,
+      "boon": 45
+    },
+    "atk": {
+      "bane": 23,
+      "standard": 26,
+      "boon": 30
+    },
+    "spd": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "def": {
+      "bane": 23,
+      "standard": 26,
+      "boon": 30
+    },
+    "res": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    }
+  },
+  "Eldigan: Lionheart": {
+    "hp": {
+      "bane": 42,
+      "standard": 45,
+      "boon": 48
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 28
+    },
+    "def": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "res": {
+      "bane": 15,
+      "standard": 19,
+      "boon": 22
+    }
+  },
+  "Elincia: Lost Princess": {
+    "hp": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 39
+    },
+    "atk": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "spd": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 39
+    },
+    "def": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 28
+    },
+    "res": {
+      "bane": 24,
+      "standard": 27,
+      "boon": 31
+    }
+  },
+  "Elise: Budding Flower": {
+    "hp": {
+      "bane": 27,
+      "standard": 30,
+      "boon": 33
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "def": {
+      "bane": 16,
+      "standard": 19,
+      "boon": 22
+    },
+    "res": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    }
+  },
+  "Elise: Tropical Flower": {
+    "hp": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "atk": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 39
+    },
+    "spd": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "def": {
+      "bane": 15,
+      "standard": 18,
+      "boon": 21
+    },
+    "res": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    }
+  },
+  "Eliwood: Knight of Lycia": {
+    "hp": {
+      "bane": 35,
+      "standard": 39,
+      "boon": 42
+    },
+    "atk": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "spd": {
+      "bane": 26,
+      "standard": 30,
+      "boon": 33
+    },
+    "def": {
+      "bane": 20,
+      "standard": 23,
+      "boon": 26
+    },
+    "res": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    }
+  },
+  "Ephraim: Restoration Lord": {
+    "hp": {
+      "bane": 42,
+      "standard": 45,
+      "boon": 48
+    },
+    "atk": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "spd": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "def": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "res": {
+      "bane": 17,
+      "standard": 20,
+      "boon": 23
+    }
+  },
+  "Est: Junior Whitewing": {
+    "hp": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 40
+    },
+    "atk": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "spd": {
+      "bane": 26,
+      "standard": 30,
+      "boon": 33
+    },
+    "def": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 28
+    },
+    "res": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    }
+  },
+  "Fae: Divine Dragon": {
+    "hp": {
+      "bane": 43,
+      "standard": 46,
+      "boon": 50
+    },
+    "atk": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "spd": {
+      "bane": 25,
+      "standard": 28,
+      "boon": 31
+    },
+    "def": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "res": {
+      "bane": 26,
+      "standard": 30,
+      "boon": 33
+    }
+  },
+  "Faye: Devoted Heart": {
+    "hp": {
+      "bane": 39,
+      "standard": 42,
+      "boon": 45
+    },
+    "atk": {
+      "bane": 27,
+      "standard": 30,
+      "boon": 33
+    },
+    "spd": {
+      "bane": 21,
+      "standard": 25,
+      "boon": 28
+    },
+    "def": {
+      "bane": 22,
+      "standard": 26,
+      "boon": 29
+    },
+    "res": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    }
+  },
+  "Felicia: Maid Mayhem": {
+    "hp": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 38
+    },
+    "atk": {
+      "bane": 20,
+      "standard": 23,
+      "boon": 26
+    },
+    "spd": {
+      "bane": 34,
+      "standard": 37,
+      "boon": 40
+    },
+    "def": {
+      "bane": 15,
+      "standard": 18,
+      "boon": 21
+    },
+    "res": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    }
+  },
+  "Fir: Sword Student": {
+    "hp": {
+      "bane": 37,
+      "standard": 41,
+      "boon": 44
+    },
+    "atk": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "spd": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 39
+    },
+    "def": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 28
+    },
+    "res": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    }
+  },
+  "Florina: Lovely Flier": {
+    "hp": {
+      "bane": 39,
+      "standard": 42,
+      "boon": 45
+    },
+    "atk": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    },
+    "spd": {
+      "bane": 24,
+      "standard": 27,
+      "boon": 31
+    },
+    "def": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "res": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    }
+  },
+  "Frederick: Horizon Watcher": {
+    "hp": {
+      "bane": 36,
+      "standard": 40,
+      "boon": 43
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "def": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    },
+    "res": {
+      "bane": 14,
+      "standard": 18,
+      "boon": 21
+    }
+  },
+  "Frederick: Polite Knight": {
+    "hp": {
+      "bane": 40,
+      "standard": 43,
+      "boon": 46
+    },
+    "atk": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "spd": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "def": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 39
+    },
+    "res": {
+      "bane": 11,
+      "standard": 14,
+      "boon": 18
+    }
+  },
+  "Gaius: Candy Stealer": {
+    "hp": {
+      "bane": 39,
+      "standard": 42,
+      "boon": 45
+    },
+    "atk": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    },
+    "spd": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 39
+    },
+    "def": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    },
+    "res": {
+      "bane": 16,
+      "standard": 19,
+      "boon": 22
+    }
+  },
+  "Gaius: Thief Exposed": {
+    "hp": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "atk": {
+      "bane": 26,
+      "standard": 30,
+      "boon": 33
+    },
+    "spd": {
+      "bane": 34,
+      "standard": 37,
+      "boon": 40
+    },
+    "def": {
+      "bane": 16,
+      "standard": 19,
+      "boon": 22
+    },
+    "res": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    }
+  },
+  "Genny: Endearing Ally": {
+    "hp": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "atk": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "spd": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "def": {
+      "bane": 18,
+      "standard": 21,
+      "boon": 24
+    },
+    "res": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    }
+  },
+  "Gordin: Altean Archer": {
+    "hp": {
+      "bane": 40,
+      "standard": 43,
+      "boon": 46
+    },
+    "atk": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "spd": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "def": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "res": {
+      "bane": 13,
+      "standard": 17,
+      "boon": 20
+    }
+  },
+  "Gray: Wry Comrade": {
+    "hp": {
+      "bane": 40,
+      "standard": 43,
+      "boon": 46
+    },
+    "atk": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "spd": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "def": {
+      "bane": 27,
+      "standard": 30,
+      "boon": 33
+    },
+    "res": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 26
+    }
+  },
+  "Gunter: Inveterate Soldier": {
+    "hp": {
+      "bane": 39,
+      "standard": 43,
+      "boon": 46
+    },
+    "atk": {
+      "bane": 28,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 27
+    },
+    "def": {
+      "bane": 29,
+      "standard": 33,
+      "boon": 36
+    },
+    "res": {
+      "bane": 14,
+      "standard": 18,
+      "boon": 21
+    }
+  },
+  "Gwendolyn: Adorable Knight": {
+    "hp": {
+      "bane": 46,
+      "standard": 49,
+      "boon": 52
+    },
+    "atk": {
+      "bane": 26,
+      "standard": 30,
+      "boon": 33
+    },
+    "spd": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 28
+    },
+    "def": {
+      "bane": 35,
+      "standard": 38,
+      "boon": 41
+    },
+    "res": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    }
+  },
+  "Hana: Focused Samurai": {
+    "hp": {
+      "bane": 34,
+      "standard": 37,
+      "boon": 41
+    },
+    "atk": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "spd": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 39
+    },
+    "def": {
+      "bane": 20,
+      "standard": 23,
+      "boon": 26
+    },
+    "res": {
+      "bane": 22,
+      "standard": 26,
+      "boon": 29
+    }
+  },
+  "Hawkeye: Desert Guardian": {
+    "hp": {
+      "bane": 42,
+      "standard": 45,
+      "boon": 48
+    },
+    "atk": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "spd": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    },
+    "def": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    },
+    "res": {
+      "bane": 27,
+      "standard": 30,
+      "boon": 33
+    }
+  },
+  "Hector: General of Ostia": {
+    "hp": {
+      "bane": 49,
+      "standard": 52,
+      "boon": 55
+    },
+    "atk": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 39
+    },
+    "spd": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 28
+    },
+    "def": {
+      "bane": 34,
+      "standard": 37,
+      "boon": 40
+    },
+    "res": {
+      "bane": 16,
+      "standard": 19,
+      "boon": 22
+    }
+  },
+  "Henry: Happy Vampire": {
+    "hp": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 40
+    },
+    "atk": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "spd": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "def": {
+      "bane": 22,
+      "standard": 26,
+      "boon": 29
+    },
+    "res": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 39
+    }
+  },
+  "Henry: Twisted Mind": {
+    "hp": {
+      "bane": 42,
+      "standard": 45,
+      "boon": 48
+    },
+    "atk": {
+      "bane": 20,
+      "standard": 23,
+      "boon": 26
+    },
+    "spd": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    },
+    "def": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "res": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    }
+  },
+  "Hinata: Wild Samurai": {
+    "hp": {
+      "bane": 44,
+      "standard": 47,
+      "boon": 50
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 28
+    },
+    "def": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 39
+    },
+    "res": {
+      "bane": 15,
+      "standard": 18,
+      "boon": 21
+    }
+  },
+  "Hinoka: Warrior Princess": {
+    "hp": {
+      "bane": 37,
+      "standard": 41,
+      "boon": 44
+    },
+    "atk": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "spd": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "def": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "res": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 27
+    }
+  },
+  "Ike: Brave Mercenary": {
+    "hp": {
+      "bane": 40,
+      "standard": 43,
+      "boon": 46
+    },
+    "atk": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 39
+    },
+    "spd": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    },
+    "def": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "res": {
+      "bane": 17,
+      "standard": 20,
+      "boon": 23
+    }
+  },
+  "Ike: Young Mercenary": {
+    "hp": {
+      "bane": 39,
+      "standard": 42,
+      "boon": 45
+    },
+    "atk": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "spd": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "def": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "res": {
+      "bane": 14,
+      "standard": 18,
+      "boon": 21
+    }
+  },
+  "Inigo: Indigo Dancer": {
+    "hp": {
+      "bane": 33,
+      "standard": 37,
+      "boon": 40
+    },
+    "atk": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    },
+    "spd": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "def": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    },
+    "res": {
+      "bane": 17,
+      "standard": 20,
+      "boon": 23
+    }
+  },
+  "Innes: Regal Strategician": {
+    "hp": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 39
+    },
+    "atk": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "spd": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "def": {
+      "bane": 11,
+      "standard": 14,
+      "boon": 18
+    },
+    "res": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    }
+  },
+  "Jaffar: Angel of Death": {
+    "hp": {
+      "bane": 38,
+      "standard": 41,
+      "boon": 44
+    },
+    "atk": {
+      "bane": 23,
+      "standard": 26,
+      "boon": 30
+    },
+    "spd": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "def": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "res": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    }
+  },
+  "Jagen: Veteran Knight": {
+    "hp": {
+      "bane": 34,
+      "standard": 37,
+      "boon": 40
+    },
+    "atk": {
+      "bane": 24,
+      "standard": 27,
+      "boon": 31
+    },
+    "spd": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 27
+    },
+    "def": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 28
+    },
+    "res": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    }
+  },
+  "Jakob: Devoted Monster": {
+    "hp": {
+      "bane": 38,
+      "standard": 42,
+      "boon": 45
+    },
+    "atk": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "spd": {
+      "bane": 20,
+      "standard": 23,
+      "boon": 26
+    },
+    "def": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "res": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    }
+  },
+  "Jakob: Devoted Servant": {
+    "hp": {
+      "bane": 35,
+      "standard": 39,
+      "boon": 42
+    },
+    "atk": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    },
+    "spd": {
+      "bane": 27,
+      "standard": 31,
+      "boon": 34
+    },
+    "def": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "res": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 28
+    }
+  },
+  "Jeorge: Perfect Shot": {
+    "hp": {
+      "bane": 34,
+      "standard": 37,
+      "boon": 41
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "def": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 28
+    },
+    "res": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    }
+  },
+  "Joshua: Tempest King": {
+    "hp": {
+      "bane": 36,
+      "standard": 40,
+      "boon": 43
+    },
+    "atk": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "spd": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "def": {
+      "bane": 26,
+      "standard": 30,
+      "boon": 33
+    },
+    "res": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    }
+  },
+  "Julia: Naga's Blood": {
+    "hp": {
+      "bane": 34,
+      "standard": 38,
+      "boon": 41
+    },
+    "atk": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "spd": {
+      "bane": 23,
+      "standard": 26,
+      "boon": 30
+    },
+    "def": {
+      "bane": 13,
+      "standard": 17,
+      "boon": 20
+    },
+    "res": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    }
+  },
+  "Kagero: Honorable Ninja": {
+    "hp": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "atk": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "spd": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "def": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    },
+    "res": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    }
+  },
+  "Karel: Sword Demon": {
+    "hp": {
+      "bane": 44,
+      "standard": 47,
+      "boon": 50
+    },
+    "atk": {
+      "bane": 26,
+      "standard": 30,
+      "boon": 33
+    },
+    "spd": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "def": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "res": {
+      "bane": 17,
+      "standard": 20,
+      "boon": 23
+    }
+  },
+  "Katarina: Wayward One": {
+    "hp": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "def": {
+      "bane": 12,
+      "standard": 15,
+      "boon": 19
+    },
+    "res": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    }
+  },
+  "Klein: Silver Nobleman": {
+    "hp": {
+      "bane": 36,
+      "standard": 40,
+      "boon": 43
+    },
+    "atk": {
+      "bane": 27,
+      "standard": 31,
+      "boon": 34
+    },
+    "spd": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "def": {
+      "bane": 17,
+      "standard": 20,
+      "boon": 23
+    },
+    "res": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 28
+    }
+  },
+  "Lachesis: Lionheart's Sister": {
+    "hp": {
+      "bane": 35,
+      "standard": 39,
+      "boon": 42
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 28
+    },
+    "def": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    },
+    "res": {
+      "bane": 26,
+      "standard": 30,
+      "boon": 33
+    }
+  },
+  "Laslow: Dancing Duelist": {
+    "hp": {
+      "bane": 41,
+      "standard": 44,
+      "boon": 47
+    },
+    "atk": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "spd": {
+      "bane": 23,
+      "standard": 26,
+      "boon": 30
+    },
+    "def": {
+      "bane": 27,
+      "standard": 30,
+      "boon": 33
+    },
+    "res": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    }
+  },
+  "Legion: Masked Maniac": {
+    "hp": {
+      "bane": 43,
+      "standard": 46,
+      "boon": 49
+    },
+    "atk": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 39
+    },
+    "spd": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "def": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    },
+    "res": {
+      "bane": 15,
+      "standard": 18,
+      "boon": 21
+    }
+  },
+  "Leo: Seashore's Prince": {
+    "hp": {
+      "bane": 34,
+      "standard": 37,
+      "boon": 41
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 23,
+      "standard": 27,
+      "boon": 30
+    },
+    "def": {
+      "bane": 13,
+      "standard": 16,
+      "boon": 20
+    },
+    "res": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    }
+  },
+  "Leo: Sorcerous Prince": {
+    "hp": {
+      "bane": 35,
+      "standard": 39,
+      "boon": 42
+    },
+    "atk": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    },
+    "spd": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    },
+    "def": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "res": {
+      "bane": 26,
+      "standard": 30,
+      "boon": 33
+    }
+  },
+  "Leon: True of Heart": {
+    "hp": {
+      "bane": 35,
+      "standard": 39,
+      "boon": 42
+    },
+    "atk": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "spd": {
+      "bane": 27,
+      "standard": 30,
+      "boon": 33
+    },
+    "def": {
+      "bane": 26,
+      "standard": 30,
+      "boon": 33
+    },
+    "res": {
+      "bane": 12,
+      "standard": 15,
+      "boon": 19
+    }
+  },
+  "Lilina: Delightful Noble": {
+    "hp": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 39
+    },
+    "atk": {
+      "bane": 34,
+      "standard": 37,
+      "boon": 40
+    },
+    "spd": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "def": {
+      "bane": 16,
+      "standard": 19,
+      "boon": 22
+    },
+    "res": {
+      "bane": 27,
+      "standard": 31,
+      "boon": 34
+    }
+  },
+  "Linde: Light Mage": {
+    "hp": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 39
+    },
+    "atk": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "spd": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 39
+    },
+    "def": {
+      "bane": 11,
+      "standard": 14,
+      "boon": 18
+    },
+    "res": {
+      "bane": 23,
+      "standard": 27,
+      "boon": 30
+    }
+  },
+  "Lissa: Sprightly Cleric": {
+    "hp": {
+      "bane": 35,
+      "standard": 39,
+      "boon": 42
+    },
+    "atk": {
+      "bane": 23,
+      "standard": 26,
+      "boon": 30
+    },
+    "spd": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "def": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    },
+    "res": {
+      "bane": 26,
+      "standard": 30,
+      "boon": 33
+    }
+  },
+  "Lloyd: White Wolf": {
+    "hp": {
+      "bane": 38,
+      "standard": 41,
+      "boon": 44
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "def": {
+      "bane": 17,
+      "standard": 20,
+      "boon": 23
+    },
+    "res": {
+      "bane": 26,
+      "standard": 30,
+      "boon": 33
+    }
+  },
+  "Lon'qu: Solitary Blade": {
+    "hp": {
+      "bane": 42,
+      "standard": 45,
+      "boon": 48
+    },
+    "atk": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    },
+    "spd": {
+      "bane": 36,
+      "standard": 39,
+      "boon": 42
+    },
+    "def": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    },
+    "res": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    }
+  },
+  "Lucina: Brave Princess": {
+    "hp": {
+      "bane": 38,
+      "standard": 41,
+      "boon": 44
+    },
+    "atk": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "spd": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 39
+    },
+    "def": {
+      "bane": 24,
+      "standard": 27,
+      "boon": 31
+    },
+    "res": {
+      "bane": 16,
+      "standard": 19,
+      "boon": 22
+    }
+  },
+  "Lucina: Future Witness": {
+    "hp": {
+      "bane": 40,
+      "standard": 43,
+      "boon": 46
+    },
+    "atk": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "spd": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 39
+    },
+    "def": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "res": {
+      "bane": 16,
+      "standard": 19,
+      "boon": 22
+    }
+  },
+  "Lucina: Spring Exalt": {
+    "hp": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 39
+    },
+    "atk": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    },
+    "spd": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 39
+    },
+    "def": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    },
+    "res": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    }
+  },
+  "Lucius: The Light": {
+    "hp": {
+      "bane": 34,
+      "standard": 37,
+      "boon": 41
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 26,
+      "standard": 30,
+      "boon": 33
+    },
+    "def": {
+      "bane": 10,
+      "standard": 13,
+      "boon": 17
+    },
+    "res": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    }
+  },
+  "Lukas: Sharp Soldier": {
+    "hp": {
+      "bane": 42,
+      "standard": 45,
+      "boon": 48
+    },
+    "atk": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "spd": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    },
+    "def": {
+      "bane": 35,
+      "standard": 38,
+      "boon": 41
+    },
+    "res": {
+      "bane": 13,
+      "standard": 17,
+      "boon": 20
+    }
+  },
+  "Luke: Rowdy Squire": {
+    "hp": {
+      "bane": 40,
+      "standard": 43,
+      "boon": 46
+    },
+    "atk": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "spd": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    },
+    "def": {
+      "bane": 26,
+      "standard": 30,
+      "boon": 33
+    },
+    "res": {
+      "bane": 17,
+      "standard": 20,
+      "boon": 23
+    }
+  },
+  "Lute: Prodigy": {
+    "hp": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "atk": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 39
+    },
+    "spd": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "def": {
+      "bane": 12,
+      "standard": 16,
+      "boon": 19
+    },
+    "res": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    }
+  },
+  "Lyn: Brave Lady": {
+    "hp": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 39
+    },
+    "atk": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "spd": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "def": {
+      "bane": 14,
+      "standard": 18,
+      "boon": 21
+    },
+    "res": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    }
+  },
+  "Lyn: Bride of the Plains": {
+    "hp": {
+      "bane": 35,
+      "standard": 39,
+      "boon": 42
+    },
+    "atk": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    },
+    "spd": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "def": {
+      "bane": 20,
+      "standard": 23,
+      "boon": 26
+    },
+    "res": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 28
+    }
+  },
+  "Lyn: Lady of the Plains": {
+    "hp": {
+      "bane": 34,
+      "standard": 37,
+      "boon": 41
+    },
+    "atk": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    },
+    "spd": {
+      "bane": 34,
+      "standard": 37,
+      "boon": 40
+    },
+    "def": {
+      "bane": 23,
+      "standard": 26,
+      "boon": 30
+    },
+    "res": {
+      "bane": 26,
+      "standard": 29,
+      "boon": 32
+    }
+  },
+  "Mae: Bundle of Energy": {
+    "hp": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 39
+    },
+    "atk": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 39
+    },
+    "spd": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "def": {
+      "bane": 12,
+      "standard": 16,
+      "boon": 19
+    },
+    "res": {
+      "bane": 26,
+      "standard": 30,
+      "boon": 33
+    }
+  },
+  "Marth: Altean Prince": {
+    "hp": {
+      "bane": 37,
+      "standard": 41,
+      "boon": 44
+    },
+    "atk": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "spd": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "def": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    },
+    "res": {
+      "bane": 20,
+      "standard": 23,
+      "boon": 26
+    }
+  },
+  "Marth: Enigmatic Blade": {
+    "hp": {
+      "bane": 40,
+      "standard": 43,
+      "boon": 46
+    },
+    "atk": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "spd": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 39
+    },
+    "def": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "res": {
+      "bane": 16,
+      "standard": 19,
+      "boon": 22
+    }
+  },
+  "Mathilda: Legendary Knight": {
+    "hp": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 39
+    },
+    "atk": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    },
+    "spd": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "def": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 27
+    },
+    "res": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    }
+  },
+  "Matthew: Faithful Spy": {
+    "hp": {
+      "bane": 38,
+      "standard": 41,
+      "boon": 44
+    },
+    "atk": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "spd": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "def": {
+      "bane": 27,
+      "standard": 30,
+      "boon": 33
+    },
+    "res": {
+      "bane": 14,
+      "standard": 18,
+      "boon": 21
+    }
+  },
+  "Merric: Wind Mage": {
+    "hp": {
+      "bane": 40,
+      "standard": 43,
+      "boon": 46
+    },
+    "atk": {
+      "bane": 23,
+      "standard": 26,
+      "boon": 30
+    },
+    "spd": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "def": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    },
+    "res": {
+      "bane": 16,
+      "standard": 19,
+      "boon": 22
+    }
+  },
+  "Mia: Lady of Blades": {
+    "hp": {
+      "bane": 34,
+      "standard": 38,
+      "boon": 41
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 37,
+      "standard": 40,
+      "boon": 43
+    },
+    "def": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    },
+    "res": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    }
+  },
+  "Michalis: Ambitious King": {
+    "hp": {
+      "bane": 40,
+      "standard": 43,
+      "boon": 46
+    },
+    "atk": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "spd": {
+      "bane": 23,
+      "standard": 26,
+      "boon": 30
+    },
+    "def": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "res": {
+      "bane": 16,
+      "standard": 19,
+      "boon": 22
+    }
+  },
+  "Minerva: Red Dragoon": {
+    "hp": {
+      "bane": 36,
+      "standard": 40,
+      "boon": 43
+    },
+    "atk": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "spd": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "def": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "res": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    }
+  },
+  "Mist: Helpful Sister": {
+    "hp": {
+      "bane": 35,
+      "standard": 39,
+      "boon": 42
+    },
+    "atk": {
+      "bane": 24,
+      "standard": 27,
+      "boon": 31
+    },
+    "spd": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    },
+    "def": {
+      "bane": 17,
+      "standard": 20,
+      "boon": 23
+    },
+    "res": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    }
+  },
+  "Narcian: Wyvern General": {
+    "hp": {
+      "bane": 39,
+      "standard": 42,
+      "boon": 45
+    },
+    "atk": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    },
+    "spd": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    },
+    "def": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "res": {
+      "bane": 23,
+      "standard": 26,
+      "boon": 30
+    }
+  },
+  "Navarre: Scarlet Sword": {
+    "hp": {
+      "bane": 39,
+      "standard": 42,
+      "boon": 45
+    },
+    "atk": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "spd": {
+      "bane": 34,
+      "standard": 37,
+      "boon": 40
+    },
+    "def": {
+      "bane": 20,
+      "standard": 23,
+      "boon": 26
+    },
+    "res": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 28
+    }
+  },
+  "Nephenee: Fierce Halberdier": {
+    "hp": {
+      "bane": 34,
+      "standard": 37,
+      "boon": 41
+    },
+    "atk": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "spd": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "def": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "res": {
+      "bane": 17,
+      "standard": 20,
+      "boon": 23
+    }
+  },
+  "Niles: Cruel to Be Kind": {
+    "hp": {
+      "bane": 34,
+      "standard": 37,
+      "boon": 41
+    },
+    "atk": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "spd": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "def": {
+      "bane": 13,
+      "standard": 17,
+      "boon": 20
+    },
+    "res": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    }
+  },
+  "Ninian: Oracle of Destiny": {
+    "hp": {
+      "bane": 39,
+      "standard": 42,
+      "boon": 45
+    },
+    "atk": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 28
+    },
+    "spd": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "def": {
+      "bane": 20,
+      "standard": 23,
+      "boon": 26
+    },
+    "res": {
+      "bane": 23,
+      "standard": 27,
+      "boon": 30
+    }
+  },
+  "Nino: Pious Mage": {
+    "hp": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "atk": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "spd": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 39
+    },
+    "def": {
+      "bane": 16,
+      "standard": 19,
+      "boon": 22
+    },
+    "res": {
+      "bane": 23,
+      "standard": 26,
+      "boon": 30
+    }
+  },
+  "Nowi: Eternal Witch": {
+    "hp": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "atk": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "spd": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "def": {
+      "bane": 17,
+      "standard": 20,
+      "boon": 23
+    },
+    "res": {
+      "bane": 24,
+      "standard": 27,
+      "boon": 31
+    }
+  },
+  "Nowi: Eternal Youth": {
+    "hp": {
+      "bane": 42,
+      "standard": 45,
+      "boon": 48
+    },
+    "atk": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "spd": {
+      "bane": 23,
+      "standard": 27,
+      "boon": 30
+    },
+    "def": {
+      "bane": 27,
+      "standard": 30,
+      "boon": 33
+    },
+    "res": {
+      "bane": 23,
+      "standard": 27,
+      "boon": 30
+    }
+  },
+  "Oboro: Fierce Fighter": {
+    "hp": {
+      "bane": 36,
+      "standard": 40,
+      "boon": 43
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 23,
+      "standard": 26,
+      "boon": 30
+    },
+    "def": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "res": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 28
+    }
+  },
+  "Odin: Potent Force": {
+    "hp": {
+      "bane": 40,
+      "standard": 43,
+      "boon": 46
+    },
+    "atk": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    },
+    "spd": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "def": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "res": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    }
+  },
+  "Ogma: Loyal Blade": {
+    "hp": {
+      "bane": 44,
+      "standard": 47,
+      "boon": 50
+    },
+    "atk": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "spd": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "def": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    },
+    "res": {
+      "bane": 10,
+      "standard": 13,
+      "boon": 17
+    }
+  },
+  "Olivia: Blushing Beauty": {
+    "hp": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 40
+    },
+    "atk": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    },
+    "spd": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "def": {
+      "bane": 23,
+      "standard": 27,
+      "boon": 30
+    },
+    "res": {
+      "bane": 22,
+      "standard": 26,
+      "boon": 29
+    }
+  },
+  "Olivia: Festival Dancer": {
+    "hp": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 38
+    },
+    "atk": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    },
+    "spd": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "def": {
+      "bane": 12,
+      "standard": 16,
+      "boon": 19
+    },
+    "res": {
+      "bane": 25,
+      "standard": 28,
+      "boon": 31
+    }
+  },
+  "Olwen: Blue Mage Knight": {
+    "hp": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "atk": {
+      "bane": 23,
+      "standard": 26,
+      "boon": 30
+    },
+    "spd": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "def": {
+      "bane": 17,
+      "standard": 20,
+      "boon": 23
+    },
+    "res": {
+      "bane": 27,
+      "standard": 30,
+      "boon": 33
+    }
+  },
+  "Oscar: Agile Horseman": {
+    "hp": {
+      "bane": 36,
+      "standard": 40,
+      "boon": 43
+    },
+    "atk": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "spd": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "def": {
+      "bane": 23,
+      "standard": 26,
+      "boon": 30
+    },
+    "res": {
+      "bane": 18,
+      "standard": 21,
+      "boon": 24
+    }
+  },
+  "Palla: Eldest Whitewing": {
+    "hp": {
+      "bane": 39,
+      "standard": 42,
+      "boon": 45
+    },
+    "atk": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "spd": {
+      "bane": 27,
+      "standard": 31,
+      "boon": 34
+    },
+    "def": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    },
+    "res": {
+      "bane": 23,
+      "standard": 26,
+      "boon": 30
+    }
+  },
+  "Priscilla: Delicate Princess": {
+    "hp": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 40
+    },
+    "atk": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    },
+    "spd": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    },
+    "def": {
+      "bane": 16,
+      "standard": 19,
+      "boon": 22
+    },
+    "res": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    }
+  },
+  "Raigh: Dark Child": {
+    "hp": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 40
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    },
+    "def": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    },
+    "res": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    }
+  },
+  "Raven: Peerless Fighter": {
+    "hp": {
+      "bane": 37,
+      "standard": 41,
+      "boon": 44
+    },
+    "atk": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "spd": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "def": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "res": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    }
+  },
+  "Rebecca: Wildflower": {
+    "hp": {
+      "bane": 34,
+      "standard": 37,
+      "boon": 41
+    },
+    "atk": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    },
+    "spd": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "def": {
+      "bane": 18,
+      "standard": 21,
+      "boon": 24
+    },
+    "res": {
+      "bane": 23,
+      "standard": 27,
+      "boon": 30
+    }
+  },
+  "Reinhardt: Thunder's Fist": {
+    "hp": {
+      "bane": 34,
+      "standard": 38,
+      "boon": 41
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 20,
+      "standard": 23,
+      "boon": 26
+    },
+    "def": {
+      "bane": 23,
+      "standard": 27,
+      "boon": 30
+    },
+    "res": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 28
+    }
+  },
+  "Robin: High Deliverer": {
+    "hp": {
+      "bane": 36,
+      "standard": 40,
+      "boon": 43
+    },
+    "atk": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    },
+    "spd": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    },
+    "def": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    },
+    "res": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    }
+  },
+  "Robin: Mystery Tactician": {
+    "hp": {
+      "bane": 36,
+      "standard": 40,
+      "boon": 43
+    },
+    "atk": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    },
+    "spd": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    },
+    "def": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    },
+    "res": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    }
+  },
+  "Robin: Seaside Tactician": {
+    "hp": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "def": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    },
+    "res": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    }
+  },
+  "Roderick: Steady Squire": {
+    "hp": {
+      "bane": 36,
+      "standard": 40,
+      "boon": 43
+    },
+    "atk": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "spd": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "def": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "res": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 27
+    }
+  },
+  "Roy: Brave Lion": {
+    "hp": {
+      "bane": 34,
+      "standard": 38,
+      "boon": 41
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "def": {
+      "bane": 23,
+      "standard": 26,
+      "boon": 30
+    },
+    "res": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 27
+    }
+  },
+  "Ryoma: Peerless Samurai": {
+    "hp": {
+      "bane": 37,
+      "standard": 41,
+      "boon": 44
+    },
+    "atk": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "spd": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "def": {
+      "bane": 23,
+      "standard": 27,
+      "boon": 30
+    },
+    "res": {
+      "bane": 18,
+      "standard": 21,
+      "boon": 24
+    }
+  },
+  "Saber: Driven Mercenary": {
+    "hp": {
+      "bane": 36,
+      "standard": 40,
+      "boon": 43
+    },
+    "atk": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "spd": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "def": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "res": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    }
+  },
+  "Saizo: Angry Ninja": {
+    "hp": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 40
+    },
+    "atk": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    },
+    "spd": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "def": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "res": {
+      "bane": 12,
+      "standard": 16,
+      "boon": 19
+    }
+  },
+  "Sakura: Gentle Nekomata": {
+    "hp": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "def": {
+      "bane": 11,
+      "standard": 14,
+      "boon": 18
+    },
+    "res": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    }
+  },
+  "Sakura: Loving Priestess": {
+    "hp": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 40
+    },
+    "atk": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    },
+    "spd": {
+      "bane": 26,
+      "standard": 30,
+      "boon": 33
+    },
+    "def": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 28
+    },
+    "res": {
+      "bane": 26,
+      "standard": 30,
+      "boon": 33
+    }
+  },
+  "Sanaki: Begnion's Apostle": {
+    "hp": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "atk": {
+      "bane": 34,
+      "standard": 37,
+      "boon": 40
+    },
+    "spd": {
+      "bane": 23,
+      "standard": 26,
+      "boon": 30
+    },
+    "def": {
+      "bane": 13,
+      "standard": 17,
+      "boon": 20
+    },
+    "res": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    }
+  },
+  "Selena: Cutting Wit": {
+    "hp": {
+      "bane": 34,
+      "standard": 37,
+      "boon": 41
+    },
+    "atk": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "spd": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "def": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "res": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    }
+  },
+  "Seliph: Heir of Light": {
+    "hp": {
+      "bane": 44,
+      "standard": 47,
+      "boon": 50
+    },
+    "atk": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "spd": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 27
+    },
+    "def": {
+      "bane": 26,
+      "standard": 30,
+      "boon": 33
+    },
+    "res": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    }
+  },
+  "Serra: Outspoken Cleric": {
+    "hp": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "atk": {
+      "bane": 27,
+      "standard": 30,
+      "boon": 33
+    },
+    "spd": {
+      "bane": 27,
+      "standard": 31,
+      "boon": 34
+    },
+    "def": {
+      "bane": 18,
+      "standard": 21,
+      "boon": 24
+    },
+    "res": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    }
+  },
+  "Seth: Silver Knight": {
+    "hp": {
+      "bane": 34,
+      "standard": 37,
+      "boon": 41
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "def": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "res": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    }
+  },
+  "Setsuna: Absent Archer": {
+    "hp": {
+      "bane": 34,
+      "standard": 37,
+      "boon": 41
+    },
+    "atk": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    },
+    "spd": {
+      "bane": 34,
+      "standard": 37,
+      "boon": 40
+    },
+    "def": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    },
+    "res": {
+      "bane": 20,
+      "standard": 23,
+      "boon": 26
+    }
+  },
+  "Shanna: Sprightly Flier": {
+    "hp": {
+      "bane": 35,
+      "standard": 39,
+      "boon": 42
+    },
+    "atk": {
+      "bane": 26,
+      "standard": 30,
+      "boon": 33
+    },
+    "spd": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "def": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "res": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    }
+  },
+  "Sharena: Princess of Askr": {
+    "hp": {
+      "bane": 40,
+      "standard": 43,
+      "boon": 46
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "def": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    },
+    "res": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    }
+  },
+  "Sheena: Princess of Gra": {
+    "hp": {
+      "bane": 42,
+      "standard": 45,
+      "boon": 48
+    },
+    "atk": {
+      "bane": 26,
+      "standard": 30,
+      "boon": 33
+    },
+    "spd": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "def": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 39
+    },
+    "res": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    }
+  },
+  "Shigure: Dark Sky Singer": {
+    "hp": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 38
+    },
+    "atk": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "spd": {
+      "bane": 26,
+      "standard": 29,
+      "boon": 32
+    },
+    "def": {
+      "bane": 18,
+      "standard": 21,
+      "boon": 24
+    },
+    "res": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 28
+    }
+  },
+  "Sigurd: Holy Knight": {
+    "hp": {
+      "bane": 37,
+      "standard": 41,
+      "boon": 44
+    },
+    "atk": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "spd": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "def": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "res": {
+      "bane": 13,
+      "standard": 17,
+      "boon": 20
+    }
+  },
+  "Sonya: Vengeful Mage": {
+    "hp": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 40
+    },
+    "atk": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "spd": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "def": {
+      "bane": 12,
+      "standard": 15,
+      "boon": 19
+    },
+    "res": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    }
+  },
+  "Sophia: Nabata Prophet": {
+    "hp": {
+      "bane": 36,
+      "standard": 40,
+      "boon": 43
+    },
+    "atk": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "spd": {
+      "bane": 16,
+      "standard": 19,
+      "boon": 22
+    },
+    "def": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    },
+    "res": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    }
+  },
+  "Soren: Shrewd Strategist": {
+    "hp": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 40
+    },
+    "atk": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "spd": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "def": {
+      "bane": 13,
+      "standard": 17,
+      "boon": 20
+    },
+    "res": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    }
+  },
+  "Stahl: Viridian Knight": {
+    "hp": {
+      "bane": 42,
+      "standard": 45,
+      "boon": 48
+    },
+    "atk": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "spd": {
+      "bane": 23,
+      "standard": 26,
+      "boon": 30
+    },
+    "def": {
+      "bane": 26,
+      "standard": 30,
+      "boon": 33
+    },
+    "res": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    }
+  },
+  "Subaki: Perfect Expert": {
+    "hp": {
+      "bane": 36,
+      "standard": 40,
+      "boon": 43
+    },
+    "atk": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "spd": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "def": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "res": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    }
+  },
+  "Sully: Crimson Knight": {
+    "hp": {
+      "bane": 39,
+      "standard": 42,
+      "boon": 45
+    },
+    "atk": {
+      "bane": 23,
+      "standard": 26,
+      "boon": 30
+    },
+    "spd": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "def": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 27
+    },
+    "res": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    }
+  },
+  "Tailtiu: Thunder Noble": {
+    "hp": {
+      "bane": 35,
+      "standard": 39,
+      "boon": 42
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "def": {
+      "bane": 13,
+      "standard": 17,
+      "boon": 20
+    },
+    "res": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    }
+  },
+  "Takumi: Wild Card": {
+    "hp": {
+      "bane": 36,
+      "standard": 40,
+      "boon": 43
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "def": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "res": {
+      "bane": 14,
+      "standard": 18,
+      "boon": 21
+    }
+  },
+  "Tana: Winged Princess": {
+    "hp": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 40
+    },
+    "atk": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "spd": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 39
+    },
+    "def": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "res": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    }
+  },
+  "Tharja: Dark Shadow": {
+    "hp": {
+      "bane": 35,
+      "standard": 39,
+      "boon": 42
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "def": {
+      "bane": 20,
+      "standard": 23,
+      "boon": 26
+    },
+    "res": {
+      "bane": 17,
+      "standard": 20,
+      "boon": 23
+    }
+  },
+  "Tiki: Dragon Scion": {
+    "hp": {
+      "bane": 38,
+      "standard": 41,
+      "boon": 44
+    },
+    "atk": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "spd": {
+      "bane": 27,
+      "standard": 30,
+      "boon": 33
+    },
+    "def": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "res": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    }
+  },
+  "Tiki: Naga's Voice": {
+    "hp": {
+      "bane": 36,
+      "standard": 40,
+      "boon": 43
+    },
+    "atk": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "spd": {
+      "bane": 20,
+      "standard": 23,
+      "boon": 26
+    },
+    "def": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "res": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 27
+    }
+  },
+  "Tiki: Summering Scion": {
+    "hp": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "atk": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 39
+    },
+    "spd": {
+      "bane": 27,
+      "standard": 30,
+      "boon": 33
+    },
+    "def": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "res": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 27
+    }
+  },
+  "Titania: Mighty Mercenary": {
+    "hp": {
+      "bane": 34,
+      "standard": 37,
+      "boon": 41
+    },
+    "atk": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    },
+    "spd": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "def": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "res": {
+      "bane": 26,
+      "standard": 30,
+      "boon": 33
+    }
+  },
+  "Tobin: The Clueless One": {
+    "hp": {
+      "bane": 43,
+      "standard": 46,
+      "boon": 49
+    },
+    "atk": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "spd": {
+      "bane": 23,
+      "standard": 27,
+      "boon": 30
+    },
+    "def": {
+      "bane": 30,
+      "standard": 33,
+      "boon": 36
+    },
+    "res": {
+      "bane": 22,
+      "standard": 26,
+      "boon": 29
+    }
+  },
+  "Ursula: Blue Crow": {
+    "hp": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 39
+    },
+    "atk": {
+      "bane": 25,
+      "standard": 29,
+      "boon": 32
+    },
+    "spd": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "def": {
+      "bane": 16,
+      "standard": 19,
+      "boon": 22
+    },
+    "res": {
+      "bane": 26,
+      "standard": 30,
+      "boon": 33
+    }
+  },
+  "Valter: Dark Moonstone": {
+    "hp": {
+      "bane": 39,
+      "standard": 42,
+      "boon": 45
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 27,
+      "standard": 31,
+      "boon": 34
+    },
+    "def": {
+      "bane": 31,
+      "standard": 34,
+      "boon": 37
+    },
+    "res": {
+      "bane": 16,
+      "standard": 19,
+      "boon": 22
+    }
+  },
+  "Virion: Elite Archer": {
+    "hp": {
+      "bane": 43,
+      "standard": 46,
+      "boon": 49
+    },
+    "atk": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "spd": {
+      "bane": 28,
+      "standard": 31,
+      "boon": 34
+    },
+    "def": {
+      "bane": 23,
+      "standard": 26,
+      "boon": 30
+    },
+    "res": {
+      "bane": 10,
+      "standard": 13,
+      "boon": 17
+    }
+  },
+  "Wrys: Kindly Priest": {
+    "hp": {
+      "bane": 39,
+      "standard": 42,
+      "boon": 45
+    },
+    "atk": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 28
+    },
+    "spd": {
+      "bane": 20,
+      "standard": 23,
+      "boon": 26
+    },
+    "def": {
+      "bane": 19,
+      "standard": 22,
+      "boon": 25
+    },
+    "res": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 39
+    }
+  },
+  "Xander: Paragon Knight": {
+    "hp": {
+      "bane": 41,
+      "standard": 44,
+      "boon": 47
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 28
+    },
+    "def": {
+      "bane": 34,
+      "standard": 37,
+      "boon": 40
+    },
+    "res": {
+      "bane": 13,
+      "standard": 17,
+      "boon": 20
+    }
+  },
+  "Xander: Spring Prince": {
+    "hp": {
+      "bane": 36,
+      "standard": 40,
+      "boon": 43
+    },
+    "atk": {
+      "bane": 22,
+      "standard": 25,
+      "boon": 29
+    },
+    "spd": {
+      "bane": 24,
+      "standard": 28,
+      "boon": 31
+    },
+    "def": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "res": {
+      "bane": 23,
+      "standard": 26,
+      "boon": 30
+    }
+  },
+  "Xander: Student Swimmer": {
+    "hp": {
+      "bane": 40,
+      "standard": 43,
+      "boon": 46
+    },
+    "atk": {
+      "bane": 29,
+      "standard": 32,
+      "boon": 35
+    },
+    "spd": {
+      "bane": 27,
+      "standard": 30,
+      "boon": 33
+    },
+    "def": {
+      "bane": 33,
+      "standard": 36,
+      "boon": 39
+    },
+    "res": {
+      "bane": 13,
+      "standard": 16,
+      "boon": 20
+    }
+  },
+  "Zephiel: The Liberator": {
+    "hp": {
+      "bane": 52,
+      "standard": 55,
+      "boon": 59
+    },
+    "atk": {
+      "bane": 32,
+      "standard": 35,
+      "boon": 38
+    },
+    "spd": {
+      "bane": 12,
+      "standard": 16,
+      "boon": 19
+    },
+    "def": {
+      "bane": 35,
+      "standard": 38,
+      "boon": 41
+    },
+    "res": {
+      "bane": 21,
+      "standard": 24,
+      "boon": 28
+    }
+  }
+}

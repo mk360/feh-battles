@@ -14,7 +14,9 @@
   },
   "scripts": {
     "movesets": "ts-node --project tsconfig.json ./src/scripts/generate-movesets",
-    "docs": "ts-node --project ./src/scripts/document-components/tsconfig.json ./src/scripts/document-components"
+    "docs": "ts-node --project ./src/scripts/document-components/tsconfig.json ./src/scripts/document-components",
+    "stats": "ts-node --project ./src/scripts/dump-stats/tsconfig.json ./src/scripts/dump-stats",
+    "test": "node --test --require ts-node/register ./src/__tests__/**/*.ts"
   },
   "license": "MIT",
   "dependencies": {

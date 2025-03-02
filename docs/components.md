@@ -44,7 +44,7 @@ These are the Component the Engine currently uses. This is an auto-generated doc
 | MapBuff                        | Out-of-combat buffs that don't stack.                                                                                                |
 | MapDamage                      | Damage that is inflicted outside of combat (AoE, Poison Strike, etc.).                                                               |
 | MapDebuff                      | Out-of-combat buffs that don't stack.                                                                                                |
-| ModifySpecialCooldown          | Change the special cooldown cap (e.g. with skills that accelerate or slow special cooldowns).                                        |
+| ModifySpecialCooldown          | Change the special cooldown value (e.g. with skills that accelerate or slow special cooldowns).                                      |
 | Movable                        | Marks a Hero whose movement and attack ranges are currently under computation.                                                       |
 | Move                           | Make a Hero move into specified coordinates.                                                                                         |
 | MovementTile                   | Set of coordinates where a Hero can move.                                                                                            |

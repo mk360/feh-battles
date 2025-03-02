@@ -19,14 +19,9 @@ class TurnStartSystem extends System {
     update() {
         const entities = Array.from(this.heroesQuery.refresh().execute());
         const teamMembers = entities.filter(entity => entity.getOne("Side").value === this.state.currentSide);
+
         for (let member of teamMembers) {
             const skillMap = this.state.skillMap.get(member);
-
-            const finishAction = member.getOne("FinishedAction");
-
-            if (finishAction) {
-                member.removeComponent(finishAction);
-            }
 
             if (skillMap.onTurnStartBefore) {
                 for (let skill of skillMap.onTurnStartBefore) {

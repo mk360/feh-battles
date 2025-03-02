@@ -36,12 +36,16 @@ function getLv40Stats(lv1Stats: MandatoryStats, growthRates: MandatoryStats, rar
 
     for (let stat in copy) {
         const growthRate = growthRateCopy[stat as Stat];
-        const masterGrowthRate = Math.floor(growthRate * (0.79 + 0.07 * rarity));
-        const growthValue = Math.floor(39 * masterGrowthRate / 100);
-        copy[stat] += growthValue;
+        copy[stat] = getSingleStatValue(copy[stat], growthRate, rarity);
     }
 
     return copy;
+};
+
+export function getSingleStatValue(initialStat: number, initialGrowthRate: number, rarity: number) {
+    const masterGrowthRate = Math.floor(initialGrowthRate * (0.79 + 0.07 * rarity));
+    const growthValue = Math.floor(39 * masterGrowthRate / 100);
+    return initialStat + growthValue;
 };
 
 function getRarityChanges(sortedStats: { stat: Stat, value: number }[], rarity: number) {

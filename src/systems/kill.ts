@@ -13,22 +13,24 @@ class KillSystem extends System {
     };
 
     update() {
-        const [deadUnit] = this.query.refresh().execute();
+        const deadUnits = this.query.refresh().execute();
 
-        if (deadUnit) {
-            const { value } = deadUnit.getOne("Side");
-            const { value: movementType } = deadUnit.getOne("MovementType");
-            const { weaponType } = deadUnit.getOne("Weapon");
-            const position = deadUnit.getOne(Position);
-            const mapTile = this.state.map[position.y][position.x];
-            this.state.occupiedTilesMap.delete(mapTile);
-            this.state.skillMap.delete(deadUnit);
-            clearTile(mapTile);
-            this.state.teams[value].delete(deadUnit);
-            this.state.teamsByMovementTypes[value][movementType]--;
-            this.state.teamsByWeaponTypes[value][weaponType]--;
-            deadUnit.destroy();
-        }
+        deadUnits.forEach((deadUnit) => {
+            if (deadUnit) {
+                const { value } = deadUnit.getOne("Side");
+                const { value: movementType } = deadUnit.getOne("MovementType");
+                const { weaponType } = deadUnit.getOne("Weapon");
+                const position = deadUnit.getOne(Position);
+                const mapTile = this.state.map[position.y][position.x];
+                this.state.occupiedTilesMap.delete(mapTile);
+                this.state.skillMap.delete(deadUnit);
+                clearTile(mapTile);
+                this.state.teams[value].delete(deadUnit);
+                this.state.teamsByMovementTypes[value][movementType]--;
+                this.state.teamsByWeaponTypes[value][weaponType]--;
+                deadUnit.destroy();
+            }
+        });
     }
 };
 

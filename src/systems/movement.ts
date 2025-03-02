@@ -10,6 +10,7 @@ import TileBitshifts from "../data/tile-bitshifts";
 import getTileCoordinates from "./get-tile-coordinates";
 import getDistance from "./get-distance";
 import ASSISTS from "../data/assists";
+import WEAPONS from "../data/weapons";
 
 function findCommonInSets(set1: Uint16Array[], set2: Uint16Array[]) {
     const setElements: {
@@ -75,10 +76,17 @@ class MovementSystem extends System {
             });
         });
 
+        if (this.state.skillMap.get(unit).onTurnCheckRange) {
+            for (let skill of this.state.skillMap.get(unit).onTurnCheckRange) {
+                const skillData = PASSIVES[skill.name] ?? WEAPONS[skill.name];
+                skillData.onTurnCheckRange.call(skill, this.state, unit);
+            }
+        }
+
         for (let ally of allies) {
             if (this.state.skillMap.get(ally).onTurnAllyCheckRange) {
                 for (let skill of this.state.skillMap.get(ally).onTurnAllyCheckRange) {
-                    const skillData = PASSIVES[skill.name];
+                    const skillData = PASSIVES[skill.name] ?? WEAPONS[skill.name];
                     skillData.onTurnAllyCheckRange.call(skill, this.state, unit);
                 }
             }

@@ -37,6 +37,7 @@ interface WeaponDict {
         onCombatRoundAttack?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): void;
         onCombatRoundDefense?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): void;
         onEquip?(this: Skill): any;
+        onTurnAllyCheckRange?(this: Skill, state: GameState, ally: Entity): void;
         onTurnCheckRange?(this: Skill, state: GameState): void;
         onTurnStart?(this: Skill, battleState: GameState): void;
         onTurnStartBefore?(this: Skill, battleState: GameState): void;
@@ -64,9 +65,9 @@ const WEAPONS: WeaponDict = {
         onTurnStart(battleState) {
             const enemies = getEnemies(battleState, this.entity);
             for (let enemy of enemies) {
-                if (HeroSystem.getDistance(enemy, this.entity)) {
+                if (HeroSystem.getDistance(enemy, this.entity) <= 2) {
                     enemy.addComponent({
-                        type: "MapBuff",
+                        type: "MapDebuff",
                         atk: -4
                     });
                 }
@@ -88,6 +89,7 @@ const WEAPONS: WeaponDict = {
                     const surroundings = getSurroundings(state.map, y, x);
                     surroundings.splice(surroundings.indexOf(tile), 1);
                     const validAllyTiles = surroundings.filter((tile) => canReachTile(this.entity, tile));
+                    console.log({ validAllyTiles });
                     for (let tile of validAllyTiles) {
                         const { x: tileX, y: tileY } = getTileCoordinates(tile);
                         this.entity.addComponent({

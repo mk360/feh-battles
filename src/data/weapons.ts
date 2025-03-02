@@ -66,10 +66,9 @@ const WEAPONS: WeaponDict = {
             const enemies = getEnemies(battleState, this.entity);
             for (let enemy of enemies) {
                 if (HeroSystem.getDistance(enemy, this.entity) <= 2) {
-                    enemy.addComponent({
-                        type: "MapDebuff",
-                        atk: -4
-                    });
+                    applyMapComponent(enemy, "MapDebuff", {
+                        atk: -4,
+                    }, this.entity);
                 }
             }
         },
@@ -89,7 +88,6 @@ const WEAPONS: WeaponDict = {
                     const surroundings = getSurroundings(state.map, y, x);
                     surroundings.splice(surroundings.indexOf(tile), 1);
                     const validAllyTiles = surroundings.filter((tile) => canReachTile(this.entity, tile));
-                    console.log({ validAllyTiles });
                     for (let tile of validAllyTiles) {
                         const { x: tileX, y: tileY } = getTileCoordinates(tile);
                         this.entity.addComponent({
@@ -148,17 +146,10 @@ const WEAPONS: WeaponDict = {
         might: 3,
         onCombatAfter(state, target) {
             if (this.entity.getOne("DealDamage")) {
-                target.addComponent({
-                    type: "MapDebuff",
+                applyMapComponent(target, "MapDebuff", {
                     def: -3,
                     res: -3
-                });
-
-                target.addComponent({
-                    type: "Status",
-                    value: "Penalty",
-                    source: this.entity,
-                });
+                }, this.entity);
             }
         },
         type: "dagger"
@@ -190,11 +181,10 @@ const WEAPONS: WeaponDict = {
         might: 5,
         onCombatAfter(state, target) {
             if (this.entity.getOne("DealDamage")) {
-                target.addComponent({
-                    type: "MapDebuff",
+                applyMapComponent(target, "MapDebuff", {
                     def: -3,
                     res: -3
-                });
+                }, this.entity);
             }
         }
     },
@@ -223,11 +213,10 @@ const WEAPONS: WeaponDict = {
         description: "After combat, if unit attacked, inflicts Def/Res-5 on foe through its next action.",
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
-                target.addComponent({
-                    type: "MapDebuff",
+                applyMapComponent(target, "MapDebuff", {
                     def: -5,
                     res: -5
-                });
+                }, this.entity);
             }
         },
         might: 7,
@@ -258,16 +247,10 @@ const WEAPONS: WeaponDict = {
         description: "After combat, if unit attacked, inflicts Def/Res-7 on foe through its next action.",
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
-                target.addComponent({
-                    type: "MapDebuff",
+                applyMapComponent(target, "MapDebuff", {
                     def: -7,
                     res: -7
-                });
-                target.addComponent({
-                    type: "Status",
-                    value: "Penalty",
-                    source: this.entity,
-                });
+                }, this.entity);
             }
         },
         might: 10,
@@ -1301,17 +1284,10 @@ const WEAPONS: WeaponDict = {
                 const enemies = getAllies(battleState, target);
                 for (let enemy of enemies) {
                     if (HeroSystem.getDistance(enemy, target) <= 2) {
-                        target.addComponent({
-                            type: "MapDebuff",
+                        applyMapComponent(target, "MapDebuff", {
                             atk: -5,
-                            spd: -5
-                        });
-
-                        target.addComponent({
-                            type: "Status",
-                            value: "Penalty",
-                            source: this.entity
-                        });
+                            spd: -5,
+                        }, this.entity);
                     }
                 }
             }
@@ -1326,17 +1302,10 @@ const WEAPONS: WeaponDict = {
                 const enemies = getAllies(battleState, target);
                 for (let enemy of enemies) {
                     if (HeroSystem.getDistance(enemy, target) <= 2) {
-                        target.addComponent({
-                            type: "MapDebuff",
+                        applyMapComponent(target, "MapDebuff", {
                             atk: -5,
                             spd: -5
-                        });
-
-                        target.addComponent({
-                            type: "Status",
-                            value: "Penalty",
-                            source: this.entity
-                        });
+                        }, this.entity);
                     }
                 }
             }
@@ -1938,16 +1907,9 @@ const WEAPONS: WeaponDict = {
         type: "staff",
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
-                target.addComponent({
-                    type: "MapDebuff",
-                    atk: -6,
-                });
-
-                target.addComponent({
-                    type: "Status",
-                    value: "Penalty",
-                    source: this.entity
-                });
+                applyMapComponent(target, "MapDebuff", {
+                    atk: -6
+                }, this.entity);
             }
         },
     },
@@ -2094,10 +2056,9 @@ const WEAPONS: WeaponDict = {
 
             const [highestRes] = enemies.sort((hero1, hero2) => hero2.getOne("Stats").res - hero1.getOne("Stats").res);
 
-            highestRes.addComponent({
-                type: "MapDebuff",
-                res: -7
-            });
+            applyMapComponent(highestRes, "MapDebuff", {
+                res: -7,
+            }, this.entity);
         },
         might: 14
     },
@@ -2599,11 +2560,10 @@ const WEAPONS: WeaponDict = {
                 }
 
                 for (let target of targets) {
-                    target.addComponent({
-                        type: "MapDebuff",
-                        atk: -5,
-                        def: -5
-                    });
+                    applyMapComponent(target, "MapDebuff", {
+                        def: -5,
+                        atk: -5
+                    }, this.entity);
                 }
             }
         },
@@ -4402,11 +4362,10 @@ const WEAPONS: WeaponDict = {
             for (let enemy of enemies) {
                 const enemyPos = enemy.getOne("Position");
                 if ((enemyPos.x === position.x || enemyPos.y === position.y) && enemy.getOne("Stats").res < this.entity.getOne("Stats").res) {
-                    enemy.addComponent({
-                        type: "MapDebuff",
+                    applyMapComponent(enemy, "MapDebuff", {
                         atk: -4,
                         res: -4
-                    });
+                    }, this.entity);
                 }
             }
         },
@@ -4478,16 +4437,10 @@ const WEAPONS: WeaponDict = {
                 const { x, y } = enemy.getOne("Position");
                 const { res } = enemy.getOne("Stats");
                 if ((selfPosition.x === x || selfPosition.y === y) && selfStats.res > res) {
-                    enemy.addComponent({
-                        type: "MapDebuff",
-                        spd: -5
-                    });
 
-                    enemy.addComponent({
-                        type: "Status",
-                        value: "Penalty",
-                        source: this.entity
-                    });
+                    applyMapComponent(enemy, "MapDebuff", {
+                        spd: -5,
+                    }, this.entity);
                 }
             }
         },
@@ -4536,16 +4489,9 @@ const WEAPONS: WeaponDict = {
             const highestAtk = getUnitsWithHighestValue(enemies, (entity) => entity.getOne("Stats").atk);
 
             for (let hero of highestAtk) {
-                hero.addComponent({
-                    type: "MapDebuff",
-                    atk: -7
-                });
-
-                hero.addComponent({
-                    type: "Status",
-                    value: "Penalty",
-                    source: this.entity,
-                });
+                applyMapComponent(hero, "MapDebuff", {
+                    atk: -7,
+                }, this.entity);
             }
         },
     },

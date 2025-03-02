@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 import collectMapMods from "../../systems/collect-map-mods";
 import TEAM_IDS from "../constants/teamIds";
 import TEST_GAME_WORLD from "../constants/world";
+import getSurroundings from "../../systems/get-surroundings";
 
 describe("Nóatún", () => {
     it("should allow unit to teleport near an ally", () => {
@@ -43,8 +44,20 @@ describe("Nóatún", () => {
         }, false);
 
         const movement = TEST_GAME_WORLD.getUnitMovement(anna.id);
-        console.log(movement);
+        const warpTiles = Array.from(movement.warpTiles).map((comp) => {
+            return TEST_GAME_WORLD.state.map[comp.y][comp.x];
+        });
 
+        const allyCoordinates = ally.getOne("Position");
+
+        const surroundings = getSurroundings(TEST_GAME_WORLD.state.map, allyCoordinates.y, allyCoordinates.x).filter((t) => {
+            return t !== TEST_GAME_WORLD.state.map[allyCoordinates.y][allyCoordinates.x];
+        });
+        assert.equal(warpTiles.length, surroundings.length);
+
+        for (let tile of surroundings) {
+            assert(warpTiles.includes(tile));
+        }
 
         anna.addComponent({
             type: "Kill"

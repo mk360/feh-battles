@@ -1,9 +1,10 @@
-import { describe, it } from "node:test";
+import { after, describe, it } from "node:test";
 import assert from "node:assert";
 import Teams from "../data/teams";
 import tileBitmasks from "../data/tile-bitmasks";
 import canReachTile from "../systems/can-reach-tile";
 import TEST_GAME_WORLD from "./constants/world";
+import killUnits from "./utils/kill-units";
 
 describe("canReachTile", () => {
     const unit = TEST_GAME_WORLD.createHero({
@@ -19,6 +20,8 @@ describe("canReachTile", () => {
         },
         rarity: 5
     }, TEST_GAME_WORLD.state.teamIds[0], 1);
+
+    after(killUnits([unit]));
 
     it("can cross a valid tile", () => {
         const plains = new Uint16Array(1);

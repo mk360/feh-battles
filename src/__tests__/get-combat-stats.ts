@@ -3,8 +3,9 @@ import CHARACTERS from "../data/characters";
 import getCombatStats from "../systems/get-combat-stats";
 import getLv40Stats from "../systems/unit-stats";
 import TEST_GAME_WORLD from "./constants/world";
-import { describe, it } from "node:test";
+import { after, describe, it } from "node:test";
 import assert from "node:assert";
+import killUnits from "./utils/kill-units";
 
 describe("get-combat-stats", () => {
     const dexData = CHARACTERS["Ryoma: Peerless Samurai"];
@@ -21,6 +22,8 @@ describe("get-combat-stats", () => {
             S: ""
         }
     }, TEST_GAME_WORLD.state.teamIds[0], 4);
+
+    after(killUnits([entity]));
 
     it("should match level 40 stats if no modifier is applied", () => {
         const { hp, ...rest } = getLv40Stats(dexData.stats, dexData.growthRates, 5);

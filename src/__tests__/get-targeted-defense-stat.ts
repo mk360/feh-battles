@@ -1,8 +1,9 @@
 import getCombatStats from "../systems/get-combat-stats";
 import getTargetedDefenseStat from "../systems/get-targeted-defense-stat";
 import TEST_GAME_WORLD from "./constants/world";
-import { describe, it } from "node:test";
+import { after, describe, it } from "node:test";
 import assert from "node:assert";
+import killUnits from "./utils/kill-units";
 
 describe("get-targeted-defense-stat", () => {
     const magicUser = TEST_GAME_WORLD.createHero({
@@ -32,6 +33,8 @@ describe("get-targeted-defense-stat", () => {
         },
         weapon: "",
     }, TEST_GAME_WORLD.state.teamIds[1], 1);
+
+    after(killUnits([physicalWeaponUser, magicUser]));
 
     it("should target Defense when using a physical weapon", () => {
         assert.strictEqual(getTargetedDefenseStat(physicalWeaponUser, magicUser, getCombatStats(magicUser)), "def");

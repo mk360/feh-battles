@@ -2,8 +2,9 @@ import { Component } from "ape-ecs";
 import generateTurns from "../systems/generate-turns";
 import getCombatStats from "../systems/get-combat-stats";
 import TEST_GAME_WORLD from "./constants/world";
-import { describe, it } from "node:test";
+import { after, describe, it } from "node:test";
 import assert from "node:assert";
+import killUnits from "./utils/kill-units";
 
 describe("generate-turns", () => {
     const hero1 = TEST_GAME_WORLD.createHero({
@@ -47,6 +48,8 @@ describe("generate-turns", () => {
             S: "",
         }
     }, TEST_GAME_WORLD.state.teamIds[1], 2);
+
+    after(killUnits([hero1, hero2, hero3]));
 
     it("should generate a single turn for each in case of a mirror match", () => {
         const stats1 = getCombatStats(hero1);

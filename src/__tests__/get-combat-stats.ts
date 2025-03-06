@@ -23,7 +23,7 @@ describe("get-combat-stats", () => {
         }
     }, TEST_GAME_WORLD.state.teamIds[0], 4);
 
-    after(killUnits([entity]));
+    after(() => killUnits([entity]));
 
     it("should match level 40 stats if no modifier is applied", () => {
         const { hp, ...rest } = getLv40Stats(dexData.stats, dexData.growthRates, 5);

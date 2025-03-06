@@ -346,11 +346,6 @@ const WEAPONS: WeaponDict = {
         type: "tome",
         color: "green"
     },
-    "Assault": {
-        type: "staff",
-        description: "",
-        might: 10
-    },
     "Absorb": {
         type: "staff",
         might: 4,
@@ -365,7 +360,7 @@ const WEAPONS: WeaponDict = {
     "Absorb+": {
         type: "staff",
         might: 7,
-        description: "Restores HP = 50% of damage dealt.&lt;br>After combat, if unit attacked, restores 7 HP to allies within 2 spaces of unit.",
+        description: "Restores HP = 50% of damage dealt. After combat, if unit attacked, restores 7 HP to allies within 2 spaces of unit.",
         onCombatRoundAttack() {
             this.entity.addComponent({
                 type: "CombatHeal",
@@ -477,6 +472,11 @@ const WEAPONS: WeaponDict = {
                 });
             }
         }
+    },
+    "Assault": {
+        type: "staff",
+        description: "",
+        might: 10
     },
     "Assassin's Bow": {
         type: "bow",
@@ -4409,18 +4409,6 @@ const WEAPONS: WeaponDict = {
         might: 16,
         exclusiveTo: ["Tana: Winged Princess"]
     },
-    "Yato": {
-        description: "If unit initiates combat, grants Spd+4 during combat.",
-        exclusiveTo: ["Corrin: Fateful Prince"],
-        might: 16,
-        type: "sword",
-        onCombatInitiate() {
-            this.entity.addComponent({
-                type: "CombatBuff",
-                spd: 4
-            });
-        },
-    },
     "Weirding Tome": {
         type: "tome",
         might: 14,
@@ -4444,6 +4432,60 @@ const WEAPONS: WeaponDict = {
                 }
             }
         },
+    },
+    "Whitewing Blade": {
+        might: 16,
+        type: "sword",
+        description: "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
+        onCombatStart() {
+            this.entity.addComponent({
+                type: "ApplyAffinity",
+                value: 20
+            });
+        },
+        exclusiveTo: ["Palla: Eldest Whitewing"]
+    },
+    "Whitewing Lance": {
+        description: "Accelerates Special trigger (cooldown count-1).",
+        might: 16,
+        exclusiveTo: ["Catria: Middle Whitewing"],
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        },
+        type: "lance"
+    },
+    "Whitewing Spear": {
+        description: "Effective against armored and cavalry foes.",
+        type: "lance",
+        might: 16,
+        effectiveAgainst: ["armored"],
+        exclusiveTo: ["Est: Junior Whitewing"],
+    },
+    "Wind's Brand": {
+        description: "At start of turn, inflicts Atk-7 on foe on the enemy team with the highest Atk through its next action.",
+        might: 14,
+        exclusiveTo: ["Soren: Shrewd Strategist"],
+        type: "tome",
+        onTurnStart(battleState) {
+            const enemies = getEnemies(battleState, this.entity);
+            const highestAtk = getUnitsWithHighestValue(enemies, (entity) => entity.getOne("Stats").atk);
+
+            for (let hero of highestAtk) {
+                applyMapComponent(hero, "MapDebuff", {
+                    atk: -7,
+                }, this.entity);
+            }
+        },
+    },
+    "Wing Sword": {
+        description: "Effective against armored and cavalry foes.",
+        effectiveAgainst: ["armored", "cavalry"],
+        might: 16,
+        exclusiveTo: ["Caeda: Talys's Heart"],
+        type: "sword"
     },
     "Wo Dao": {
         might: 9,
@@ -4479,59 +4521,17 @@ const WEAPONS: WeaponDict = {
             }
         }
     },
-    "Wind's Brand": {
-        description: "At start of turn, inflicts Atk-7 on foe on the enemy team with the highest Atk through its next action.",
-        might: 14,
-        exclusiveTo: ["Soren: Shrewd Strategist"],
-        type: "tome",
-        onTurnStart(battleState) {
-            const enemies = getEnemies(battleState, this.entity);
-            const highestAtk = getUnitsWithHighestValue(enemies, (entity) => entity.getOne("Stats").atk);
-
-            for (let hero of highestAtk) {
-                applyMapComponent(hero, "MapDebuff", {
-                    atk: -7,
-                }, this.entity);
-            }
-        },
-    },
-    "Wing Sword": {
-        description: "Effective against armored and cavalry foes.",
-        effectiveAgainst: ["armored", "cavalry"],
-        might: 16,
-        exclusiveTo: ["Caeda: Talys's Heart"],
-        type: "sword"
-    },
-    "Whitewing Blade": {
+    "Yato": {
+        description: "If unit initiates combat, grants Spd+4 during combat.",
+        exclusiveTo: ["Corrin: Fateful Prince"],
         might: 16,
         type: "sword",
-        description: "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
-        onCombatStart() {
+        onCombatInitiate() {
             this.entity.addComponent({
-                type: "ApplyAffinity",
-                value: 20
+                type: "CombatBuff",
+                spd: 4
             });
         },
-        exclusiveTo: ["Palla: Eldest Whitewing"]
-    },
-    "Whitewing Lance": {
-        description: "Accelerates Special trigger (cooldown count-1).",
-        might: 16,
-        exclusiveTo: ["Catria: Middle Whitewing"],
-        onEquip() {
-            this.entity.addComponent({
-                type: "ModifySpecialCooldown",
-                value: -1
-            });
-        },
-        type: "lance"
-    },
-    "Whitewing Spear": {
-        description: "Effective against armored and cavalry foes.",
-        type: "lance",
-        might: 16,
-        effectiveAgainst: ["armored"],
-        exclusiveTo: ["Est: Junior Whitewing"],
     },
     "Zanbato": {
         description: "Effective against cavalry foes.",

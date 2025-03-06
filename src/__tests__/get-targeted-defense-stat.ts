@@ -34,7 +34,7 @@ describe("get-targeted-defense-stat", () => {
         weapon: "",
     }, TEST_GAME_WORLD.state.teamIds[1], 1);
 
-    after(killUnits([physicalWeaponUser, magicUser]));
+    after(() => killUnits([physicalWeaponUser, magicUser]));
 
     it("should target Defense when using a physical weapon", () => {
         assert.strictEqual(getTargetedDefenseStat(physicalWeaponUser, magicUser, getCombatStats(magicUser)), "def");

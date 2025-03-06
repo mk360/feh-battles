@@ -49,7 +49,7 @@ describe("generate-turns", () => {
         }
     }, TEST_GAME_WORLD.state.teamIds[1], 2);
 
-    after(killUnits([hero1, hero2, hero3]));
+    after(() => killUnits([hero1, hero2, hero3]));
 
     it("should generate a single turn for each in case of a mirror match", () => {
         const stats1 = getCombatStats(hero1);

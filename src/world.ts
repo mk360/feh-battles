@@ -1009,6 +1009,8 @@ class GameWorld extends World {
             this.state.teams[team].add(entity);
 
             return entity;
+        } else {
+            throw new Error(`Character not found: "${member.name}"`);
         }
     }
 

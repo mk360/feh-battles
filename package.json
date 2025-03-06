@@ -16,7 +16,8 @@
     "movesets": "ts-node --project tsconfig.json ./src/scripts/generate-movesets",
     "docs": "ts-node --project ./src/scripts/document-components/tsconfig.json ./src/scripts/document-components",
     "stats": "ts-node --project ./src/scripts/dump-stats/tsconfig.json ./src/scripts/dump-stats",
-    "test": "node --test --require ts-node/register ./src/__tests__/**/*.ts"
+    "test": "node ./src/scripts/run-tests",
+    "validate": "cd ./src/scripts/validate-movesets && go run ."
   },
   "license": "MIT",
   "dependencies": {
@@ -27,6 +28,7 @@
   "devDependencies": {
     "@types/node": "^22.13.5",
     "@types/shortid": "^2.2.0",
+    "fast-glob": "^3.3.3",
     "siege": "^0.2.0",
     "table": "^6.9.0",
     "ts-node": "^10.9.2",

@@ -21,7 +21,7 @@ describe("canReachTile", () => {
         rarity: 5
     }, TEST_GAME_WORLD.state.teamIds[0], 1);
 
-    after(killUnits([unit]));
+    after(() => killUnits([unit]));
 
     it("can cross a valid tile", () => {
         const plains = new Uint16Array(1);

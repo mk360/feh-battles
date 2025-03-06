@@ -48,7 +48,7 @@ describe("Get-units-with-highest-value", () => {
         weapon: "Silver Axe+",
     }, TEAM_IDS[0], 3);
 
-    after(killUnits([anna, ally, ally2]));
+    after(() => killUnits([anna, ally, ally2]));
 
     it("should find more than one unit", () => {
         anna.getOne("Stats").spd = 36;

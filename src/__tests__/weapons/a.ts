@@ -1,15 +1,15 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
+import SPECIALS from "../../data/specials";
+import WEAPONS from "../../data/weapons";
+import checkBattleEffectiveness from "../../systems/effectiveness";
 import generateTurns from "../../systems/generate-turns";
 import getCombatStats from "../../systems/get-combat-stats";
+import getMapStats from "../../systems/get-map-stats";
 import level40Stats from "../constants/lv40_stats.json";
 import TEAM_IDS from "../constants/teamIds";
 import TEST_GAME_WORLD from "../constants/world";
 import killUnits from "../utils/kill-units";
-import checkBattleEffectiveness from "../../systems/effectiveness";
-import getMapStats from "../../systems/get-map-stats";
-import WEAPONS from "../../data/weapons";
-import SPECIALS from "../../data/specials";
 
 describe("A", () => {
     it("Absorb", () => {
@@ -40,7 +40,6 @@ describe("A", () => {
             weapon: "Iron Sword",
             rarity: 5
         }, TEAM_IDS[1], 2);
-        const attackerPosition = staff.getOne("Position") as null as { x: number; y: number };
         staff.addComponent({
             type: "InitiateCombat"
         });
@@ -50,7 +49,6 @@ describe("A", () => {
         opponent.addComponent({
             type: "Battling"
         });
-        TEST_GAME_WORLD.moveUnit(opponent.id, { x: attackerPosition.x + 1, y: attackerPosition.y + 1 }, false);
         TEST_GAME_WORLD.runSystems("before-combat");
         TEST_GAME_WORLD.runSystems("combat");
         TEST_GAME_WORLD.runSystems("after-combat");
@@ -114,7 +112,6 @@ describe("A", () => {
         opponent.addComponent({
             type: "Battling"
         });
-        TEST_GAME_WORLD.moveUnit(opponent.id, { x: attackerPosition.x + 1, y: attackerPosition.y + 1 }, false);
         TEST_GAME_WORLD.runSystems("before-combat");
         TEST_GAME_WORLD.runSystems("combat");
         TEST_GAME_WORLD.runSystems("after-combat");
@@ -164,7 +161,6 @@ describe("A", () => {
         blackKnight.addComponent({
             type: "Battling"
         });
-        TEST_GAME_WORLD.moveUnit(blackKnight.id, { x: attackerPosition.x + 1, y: attackerPosition.y + 1 }, false);
         TEST_GAME_WORLD.runSystems("before-combat");
         TEST_GAME_WORLD.runSystems("combat");
         TEST_GAME_WORLD.runSystems("after-combat");
@@ -215,8 +211,6 @@ describe("A", () => {
         opponent.addComponent({
             type: "Battling"
         });
-
-        TEST_GAME_WORLD.moveUnit(opponent.id, { x: attackerPosition.x + 1, y: attackerPosition.y }, false);
         TEST_GAME_WORLD.runSystems("before-combat");
         TEST_GAME_WORLD.runSystems("combat");
 
@@ -272,8 +266,6 @@ describe("A", () => {
         opponent.addComponent({
             type: "Battling"
         });
-
-        TEST_GAME_WORLD.moveUnit(opponent.id, { x: attackerPosition.x + 1, y: attackerPosition.y }, false);
         TEST_GAME_WORLD.runSystems("before-combat");
         TEST_GAME_WORLD.runSystems("combat");
 
@@ -332,8 +324,6 @@ describe("A", () => {
         opponent.addComponent({
             type: "Battling"
         });
-
-        TEST_GAME_WORLD.moveUnit(opponent.id, { x: attackerPosition.x + 1, y: attackerPosition.y + 1 }, false);
         TEST_GAME_WORLD.runSystems("before-combat");
         TEST_GAME_WORLD.runSystems("combat");
 
@@ -392,8 +382,6 @@ describe("A", () => {
         opponent.addComponent({
             type: "Battling"
         });
-
-        TEST_GAME_WORLD.moveUnit(opponent.id, { x: defenderPosition.x + 1, y: defenderPosition.y + 1 }, false);
         TEST_GAME_WORLD.runSystems("before-combat");
         TEST_GAME_WORLD.runSystems("combat");
 
@@ -439,8 +427,6 @@ describe("A", () => {
         }, TEAM_IDS[1], 4);
 
         opponent2.getOne("Stats").spd = hector2.getOne("Stats").spd;
-
-        TEST_GAME_WORLD.moveUnit(opponent.id, { x: defenderPosition.x + 1, y: defenderPosition.y + 1 }, false);
         TEST_GAME_WORLD.runSystems("before-combat");
         TEST_GAME_WORLD.runSystems("combat");
 
@@ -542,8 +528,6 @@ describe("A", () => {
         opponent.addComponent({
             type: "Battling"
         });
-
-        TEST_GAME_WORLD.moveUnit(opponent.id, { x: defenderPosition.x + 1, y: defenderPosition.y + 1 }, false);
         TEST_GAME_WORLD.runSystems("before-combat");
         TEST_GAME_WORLD.runSystems("combat");
 
@@ -629,8 +613,6 @@ describe("A", () => {
         opponent.addComponent({
             type: "Battling"
         });
-
-        TEST_GAME_WORLD.moveUnit(opponent.id, { x: attackerPosition.x + 1, y: attackerPosition.y + 1 }, false);
         TEST_GAME_WORLD.runSystems("before-combat");
         TEST_GAME_WORLD.runSystems("combat");
 
@@ -668,6 +650,71 @@ describe("A", () => {
         assert.equal(joshua.getOne("Special").maxCooldown, SPECIALS["Aether"].cooldown - 1);
 
         killUnits([joshua]);
+    });
+
+    it("Aura", () => {
+        const linde = TEST_GAME_WORLD.createHero({
+            name: "Linde: Light Mage",
+            skills: {
+                A: "",
+                assist: "",
+                B: "",
+                C: "",
+                S: "",
+                special: "",
+            },
+            rarity: 5,
+            weapon: "Aura",
+        }, TEAM_IDS[0], 1);
+
+        const opponent = TEST_GAME_WORLD.createHero({
+            name: "Cecilia: Etrurian General",
+            skills: {
+                A: "",
+                B: "",
+                C: "",
+                S: "",
+                special: "",
+                assist: "",
+            },
+            weapon: "Gronnblade",
+            rarity: 5
+        }, TEAM_IDS[1], 2);
+
+        const ally = TEST_GAME_WORLD.createHero({
+            name: "Lucina: Future Witness",
+            skills: {
+                A: "",
+                assist: "",
+                B: "",
+                C: "",
+                S: "",
+                special: "",
+            },
+            rarity: 5,
+            weapon: "Silver Sword+",
+        }, TEAM_IDS[0], 2);
+
+        ally.getOne("Stats").hp = 1;
+
+        const attackerPosition = linde.getOne("Position") as null as { x: number; y: number };
+        ally.getOne("Position").x = attackerPosition.x + 1;
+        ally.getOne("Position").y = attackerPosition.y;
+        linde.addComponent({
+            type: "InitiateCombat"
+        });
+        linde.addComponent({
+            type: "Battling"
+        });
+        opponent.addComponent({
+            type: "Battling"
+        });
+        TEST_GAME_WORLD.runSystems("before-combat");
+        TEST_GAME_WORLD.runSystems("combat");
+        TEST_GAME_WORLD.runSystems("after-combat");
+        assert.equal(ally.getOne("Stats").hp, 6);
+
+        killUnits([linde, opponent, ally]);
     });
 
     it("Axe of Virility", () => {
@@ -746,8 +793,6 @@ describe("A", () => {
         });
 
         assert.equal(ayra.getOne("Stats").spd, level40Stats["Ayra: Astra's Wielder"].spd.standard + 3);
-
-        TEST_GAME_WORLD.moveUnit(opponent.id, { x: attackerPosition.x + 1, y: attackerPosition.y + 1 }, false);
         TEST_GAME_WORLD.runSystems("before-combat");
         TEST_GAME_WORLD.runSystems("combat");
         const turns = generateTurns(ayra, opponent, getCombatStats(ayra), getCombatStats(opponent));

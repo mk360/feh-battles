@@ -268,8 +268,12 @@ class CombatSystem extends System {
             let healingAmount = 0;
 
             if (heal) {
-                healingAmount += heal.value;
-                combatMap.get(turn).hp = Math.min(maxHP, combatMap.get(turn).hp + heal.value);
+                if (heal.amount) {
+                    healingAmount += heal.amount;
+                    combatMap.get(turn).hp = Math.min(maxHP, combatMap.get(turn).hp + heal.amount);
+                } else {
+                    healingAmount += damageAfterReduction * heal.percentage / 100;
+                }
                 turn.removeComponent(heal);
             }
 
@@ -279,7 +283,7 @@ class CombatSystem extends System {
 
             if (defenderHeal) {
                 defenderHealingAmount += heal.value;
-                combatMap.get(turn).hp = Math.min(defenderMaxHP, combatMap.get(defender).hp + heal.value);
+                combatMap.get(turn).hp = Math.min(defenderMaxHP, combatMap.get(defender).hp + heal.amount);
                 defender.removeComponent(heal);
             }
 
@@ -287,19 +291,19 @@ class CombatSystem extends System {
                 type: "DealDamage",
                 round,
                 attacker: {
-                    hp: Math.min(combatMap.get(turn).hp + healingAmount, turn.getOne("Stats").maxHP),
+                    hp: Math.floor(Math.min(combatMap.get(turn).hp + healingAmount, turn.getOne("Stats").maxHP)),
                     entity: turn,
                     damage: damageAfterReduction,
-                    heal: healingAmount,
+                    heal: Math.floor(healingAmount),
                     triggerSpecial: !!turnData.attackerTriggeredSpecial,
                     specialCooldown: turnData.attackerSpecialCooldown,
                     turn: turnData.consecutiveTurnNumber,
                 },
                 target: {
-                    hp: Math.min(Math.max(combatMap.get(target).hp + defenderHealingAmount, 0), defender.getOne("Stats").maxHP),
+                    hp: Math.floor(Math.min(Math.max(combatMap.get(target).hp + defenderHealingAmount, 0), defender.getOne("Stats").maxHP)),
                     entity: defender,
                     damage: 0,
-                    heal: defenderHealingAmount,
+                    heal: Math.floor(defenderHealingAmount),
                     triggerSpecial: !!turnData.defenderTriggeredSpecial,
                     specialCooldown: turnData.defenderSpecialCooldown,
                     turn: 0

@@ -353,7 +353,7 @@ const WEAPONS: WeaponDict = {
         onCombatRoundAttack() {
             this.entity.addComponent({
                 type: "CombatHeal",
-                percentage: 0.5
+                percentage: 50
             });
         }
     },
@@ -364,7 +364,7 @@ const WEAPONS: WeaponDict = {
         onCombatRoundAttack() {
             this.entity.addComponent({
                 type: "CombatHeal",
-                percentage: 0.5
+                percentage: 50
             });
         },
         onCombatAfter(state) {
@@ -409,6 +409,9 @@ const WEAPONS: WeaponDict = {
         might: 10,
         type: "sword",
         exclusiveTo: ["Arden: Strong and Tough"],
+        onEquip() {
+            this.entity.getOne("Stats").spd -= 5;
+        },
         onCombatStart() {
             this.entity.addComponent({
                 type: "BraveWeapon"

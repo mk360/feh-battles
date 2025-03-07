@@ -2,36 +2,37 @@ import { Entity } from "ape-ecs";
 import { Stats } from "../interfaces/types";
 
 function generateTurns(attacker: Entity, defender: Entity, attackerCombatStats: Stats, defenderCombatStats: Stats) {
-    const turns: Entity[] = [];
+    let turns: Entity[] = [];
     const defenderIsAllowed = defenderCanDefend(attacker, defender);
 
     if (defender.getOne("Vantage") && defenderIsAllowed) {
-        turns.push(defender);
+        turns = turns.concat(generateRoundUnit(defender));
     }
 
-    turns.push(attacker);
-
-    if (attacker.getOne("BraveWeapon")) {
-        turns.push(attacker);
-    }
+    turns = turns.concat(generateRoundUnit(attacker));
 
     if (defenderIsAllowed) {
-        turns.push(defender);
-
-        if (defender.getOne("BraveWeapon")) {
-            turns.push(defender);
-        }
+        turns = turns.concat(generateRoundUnit(defender));
     }
 
-    if (attackerCombatStats.spd >= defenderCombatStats.spd + 5 && !defender.getOne("PreventFollowup")) {
-        turns.push(attacker);
+    if ((attackerCombatStats.spd >= defenderCombatStats.spd + 5 || attacker.getOne("GuaranteedFollowup")) && !defender.getOne("PreventFollowup")) {
+        turns = turns.concat(generateRoundUnit(attacker));
     }
 
-    if (defenderIsAllowed && attackerCombatStats.spd + 5 <= defenderCombatStats.spd && !attacker.getOne("PreventFollowup")) {
-        turns.push(defender);
+    if (defenderIsAllowed && (attackerCombatStats.spd + 5 <= defenderCombatStats.spd || defender.getOne("GuaranteedFollowup")) && !attacker.getOne("PreventFollowup")) {
+        turns = turns.concat(generateRoundUnit(defender));
     }
 
     return turns;
+};
+
+function generateRoundUnit(entity: Entity) {
+    const subTurn = [entity];
+    if (entity.getOne("BraveWeapon")) {
+        subTurn.push(entity);
+    }
+
+    return subTurn;
 };
 
 export function defenderCanDefend(attacker: Entity, defender: Entity) {

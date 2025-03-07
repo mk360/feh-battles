@@ -7,7 +7,7 @@ import killUnits from "../utils/kill-units";
 import getSurroundings from "../../systems/get-surroundings";
 
 describe("Askr Weapons", () => {
-    it("should run Fensalir's turn start effect", () => {
+    it("Fensalir", () => {
         const lance = TEST_GAME_WORLD.createHero({
             name: "Sharena: Princess of Askr",
             skills: {
@@ -49,7 +49,7 @@ describe("Askr Weapons", () => {
         killUnits([enemy1, lance]);
     });
 
-    it("should run Fólkvangr's turn start effect", () => {
+    it("Fólkvangr", () => {
         const sword = TEST_GAME_WORLD.createHero({
             name: "Alfonse: Prince of Askr",
             skills: {
@@ -72,7 +72,7 @@ describe("Askr Weapons", () => {
         killUnits([sword]);
     });
 
-    it("should make Nóatún teleport to an ally", () => {
+    it("Nóatún", () => {
         const anna = TEST_GAME_WORLD.createHero({
             name: "Anna: Commander",
             skills: {

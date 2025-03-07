@@ -212,7 +212,6 @@ class GameWorld extends World {
             const attackActions = dealDamageActions.map((damageAction) => {
                 const comp = this.getComponent(damageAction.component);
                 const parsed = comp.getObject(false);
-
                 return `attack ${parsed.attacker.entity.id} ${parsed.attacker.hp} ${parsed.attacker.specialCooldown} ${parsed.attacker.triggerSpecial} ${parsed.attacker.damage} ${parsed.attacker.heal} ${parsed.target.entity.id} ${parsed.target.hp} ${parsed.target.specialCooldown} ${+parsed.target.triggerSpecial} ${parsed.target.damage} ${parsed.target.heal}`;
             }).join("|");
 

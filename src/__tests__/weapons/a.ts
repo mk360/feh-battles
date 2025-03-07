@@ -9,6 +9,7 @@ import killUnits from "../utils/kill-units";
 import checkBattleEffectiveness from "../../systems/effectiveness";
 import getMapStats from "../../systems/get-map-stats";
 import WEAPONS from "../../data/weapons";
+import SPECIALS from "../../data/specials";
 
 describe("A", () => {
     it("Absorb", () => {
@@ -452,7 +453,7 @@ describe("A", () => {
         killUnits([hector, opponent, hector2, opponent2]);
     });
 
-    it("Armorslayer", () => {
+    it("Armorslayer & Armorslayer+", () => {
         const gray = TEST_GAME_WORLD.createHero({
             name: "Gray: Wry Comrade",
             skills: {
@@ -584,5 +585,176 @@ describe("A", () => {
         assert.equal(staff.getOne("Stats").atk, level40Stats["Priscilla: Delicate Princess"].atk.standard + WEAPONS["Assault"].might);
 
         killUnits([staff]);
-    })
+    });
+
+    it("Assassin's Bow & Assassin's Bow+", () => {
+        const clarisse = TEST_GAME_WORLD.createHero({
+            name: "Clarisse: Sniper in the Dark",
+            skills: {
+                A: "",
+                assist: "",
+                B: "",
+                C: "",
+                S: "",
+                special: "",
+            },
+            rarity: 5,
+            weapon: "Assassin's Bow",
+        }, TEAM_IDS[0], 1);
+
+        const opponent = TEST_GAME_WORLD.createHero({
+            name: "Saizo: Angry Ninja",
+            skills: {
+                A: "",
+                B: "",
+                C: "",
+                S: "",
+                special: "",
+                assist: "",
+            },
+            weapon: "Iron Bow",
+            rarity: 5
+        }, TEAM_IDS[1], 2);
+
+        opponent.getOne("Stats").spd = 99;
+
+        const attackerPosition = clarisse.getOne("Position") as null as { x: number; y: number };
+        clarisse.addComponent({
+            type: "Battling"
+        });
+
+        clarisse.addComponent({
+            type: "InitiateCombat"
+        });
+        opponent.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.moveUnit(opponent.id, { x: attackerPosition.x + 1, y: attackerPosition.y + 1 }, false);
+        TEST_GAME_WORLD.runSystems("before-combat");
+        TEST_GAME_WORLD.runSystems("combat");
+
+        assert(clarisse.getOne("GuaranteedFollowup"));
+        assert(clarisse.getOne("PreventFollowup"));
+
+        const turns = generateTurns(clarisse, opponent, getCombatStats(clarisse), getCombatStats(opponent));
+
+        assert.equal(turns[0], clarisse);
+        assert.equal(turns[1], opponent);
+        assert.equal(turns[2], clarisse);
+
+        TEST_GAME_WORLD.runSystems("after-combat");
+
+        killUnits([clarisse, opponent]);
+    });
+
+    it("Audhulma", () => {
+        const joshua = TEST_GAME_WORLD.createHero({
+            name: "Joshua: Tempest King",
+            weapon: "Audhulma",
+            skills: {
+                A: "",
+                B: "",
+                C: "",
+                S: "",
+                assist: "",
+                special: "Aether",
+            },
+            rarity: 5,
+        }, TEAM_IDS[0], 1);
+
+        assert.equal(joshua.getOne("Stats").res, level40Stats["Joshua: Tempest King"].res.standard + 5);
+
+        assert.equal(joshua.getOne("Special").maxCooldown, SPECIALS["Aether"].cooldown - 1);
+
+        killUnits([joshua]);
+    });
+
+    it("Axe of Virility", () => {
+        const bartre = TEST_GAME_WORLD.createHero({
+            name: "Bartre: Fearless Warrior",
+            skills: {
+                A: "",
+                assist: "",
+                B: "",
+                C: "",
+                S: "",
+                special: "",
+            },
+            rarity: 5,
+            weapon: "Axe of Virility",
+        }, TEAM_IDS[0], 1);
+
+        const opponent = TEST_GAME_WORLD.createHero({
+            name: "Arden: Strong and Tough",
+            skills: {
+                A: "",
+                B: "",
+                C: "",
+                S: "",
+                special: "",
+                assist: "",
+            },
+            weapon: "Silver Sword+",
+            rarity: 5
+        }, TEAM_IDS[1], 2);
+
+        assert(checkBattleEffectiveness(bartre, opponent));
+
+        killUnits([opponent, bartre]);
+    });
+
+    it("Ayra's Blade", () => {
+        const ayra = TEST_GAME_WORLD.createHero({
+            name: "Ayra: Astra's Wielder",
+            skills: {
+                A: "",
+                assist: "",
+                B: "",
+                C: "",
+                S: "",
+                special: "Aether",
+            },
+            rarity: 5,
+            weapon: "Ayra's Blade",
+        }, TEAM_IDS[0], 1);
+
+        const opponent = TEST_GAME_WORLD.createHero({
+            name: "Arden: Strong and Tough",
+            skills: {
+                A: "",
+                B: "",
+                C: "",
+                S: "",
+                special: "",
+                assist: "",
+            },
+            weapon: "Iron Sword",
+            rarity: 5
+        }, TEAM_IDS[1], 2);
+
+        const attackerPosition = ayra.getOne("Position") as null as { x: number; y: number };
+        ayra.addComponent({
+            type: "Battling"
+        });
+
+        ayra.addComponent({
+            type: "InitiateCombat"
+        });
+        opponent.addComponent({
+            type: "Battling"
+        });
+
+        assert.equal(ayra.getOne("Stats").spd, level40Stats["Ayra: Astra's Wielder"].spd.standard + 3);
+
+        TEST_GAME_WORLD.moveUnit(opponent.id, { x: attackerPosition.x + 1, y: attackerPosition.y + 1 }, false);
+        TEST_GAME_WORLD.runSystems("before-combat");
+        TEST_GAME_WORLD.runSystems("combat");
+        const turns = generateTurns(ayra, opponent, getCombatStats(ayra), getCombatStats(opponent));
+        TEST_GAME_WORLD.runSystems("after-combat");
+
+        assert.equal(ayra.getOne("Special").cooldown, Math.max(SPECIALS["Aether"].cooldown - turns.filter((i) => ayra === i).length * 2 - turns.filter((i) => ayra !== i).length, 0));
+
+        killUnits([ayra, opponent]);
+    });
 });

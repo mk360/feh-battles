@@ -132,7 +132,7 @@ class CombatSystem extends System {
             const attackerSkills = this.state.skillMap.get(turn);
             attackerSkills.onCombatRoundAttack?.forEach((skill) => {
                 const dexData = SKILLS[skill.name];
-                dexData.onCombatRoundAttack.call(skill, turn, turnData);
+                dexData.onCombatRoundAttack.call(skill, defender, turnData);
             });
 
             const attackerSpecial = turn.getOne("Special");

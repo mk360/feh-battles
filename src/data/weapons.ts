@@ -506,7 +506,7 @@ const WEAPONS: WeaponDict = {
         }
     },
     "Audhulma": {
-        description: "Accelerates Special trigger (cooldown count-1).&lt;br>Grants Res+5.",
+        description: "Accelerates Special trigger (cooldown count-1). Grants Res+5.",
         type: "sword",
         might: 16,
         exclusiveTo: ["Joshua: Tempest King"],

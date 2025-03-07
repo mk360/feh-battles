@@ -103,7 +103,7 @@ describe("generate-turns", () => {
         hero1.removeComponent(cmp);
         hero2.getOne("Stats")!.spd -= 10;
 
-        const cmp2 = hero2.addComponent({
+        hero2.addComponent({
             type: "PreventFollowup"
         }) as Component;
 
@@ -115,5 +115,20 @@ describe("generate-turns", () => {
 
         hero2.removeComponent(cmp);
         hero1.getOne("Stats")!.spd -= 10;
+    });
+
+    it("should guarantee a followup if the proper component is applied", () => {
+        hero1.addComponent({
+            type: "GuaranteedFollowup"
+        }) as Component;
+
+        hero1.getOne("Stats").spd = 0;
+        hero2.getOne("Stats").spd = 90;
+
+        const turns = generateTurns(hero1, hero2, getCombatStats(hero1), getCombatStats(hero2));
+        assert.strictEqual(turns[0], hero1);
+        assert.strictEqual(turns[1], hero2);
+        assert.strictEqual(turns[2], hero1);
+        assert.strictEqual(turns[3], hero2);
     });
 });

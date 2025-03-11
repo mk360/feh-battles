@@ -85,6 +85,9 @@ export function dodgeStat(skill: Skill, enemy: Entity, comparedStat: Stat) {
     }
 }
 
+/**
+ * Unconditionally apply a Combat Buff if there's an ally within the specified range
+ */
 export function combatBuffByRange(skill: Skill, ally: Entity, range: number, buffs: Stats) {
     if (HeroSystem.getDistance(ally, skill.entity) <= range) {
         ally.addComponent({
@@ -215,10 +218,10 @@ export function counterattack(skill: Skill) {
 };
 
 /**
- * Add Combat Buffs to all stats matching 2 * adjacent units count
+ * Add Combat Buffs to all stats matching 2 * adjacent allies count
  */
 export function owl(skill: Skill, state: GameState) {
-    const allies = getAllies(state, this.entity).filter((ally) => HeroSystem.getDistance(ally, this.entity) === 1);
+    const allies = getAllies(state, skill.entity).filter((ally) => HeroSystem.getDistance(ally, skill.entity) === 1);
     const buff = allies.length * 2;
 
     skill.entity.addComponent({

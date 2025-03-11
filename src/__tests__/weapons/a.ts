@@ -780,7 +780,6 @@ describe("A", () => {
             rarity: 5
         }, TEAM_IDS[1], 2);
 
-        const attackerPosition = ayra.getOne("Position") as null as { x: number; y: number };
         ayra.addComponent({
             type: "Battling"
         });

@@ -1,7 +1,7 @@
 import { Component } from "ape-ecs";
 
 /**
- * Out-of-combat buffs that don't stack.
+ * Out-of-combat debuffs that don't stack.
  */
 class MapDebuff extends Component {
     static properties = {

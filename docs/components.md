@@ -34,6 +34,7 @@ These are the Component the Engine currently uses. This is an auto-generated doc
 | Galeforce                      | The Hero can consume this Component to act again.                                                                                    |
 | Galeforced                     | The Hero has acted again using Galeforce. Prevents Galeforce from activating again for this turn.                                    |
 | GravityComponent               | Component that applies the "Gravity" status effect.                                                                                  |
+| GuaranteedAdvantage            | Guarantees a unit's advantage when computing weapon-triangle affinity.                                                               |
 | GuaranteedAffinity             | Skip Affinity calculation and hit with the highest Affinity possible.                                                                |
 | GuaranteedFollowup             | Skip follow-up calculations and guarantee a follow-up (not a counterattack).                                                         |
 | Heal                           | Standard Heal effect outside of combat.                                                                                              |

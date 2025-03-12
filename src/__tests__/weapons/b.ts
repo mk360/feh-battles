@@ -1,14 +1,16 @@
-import { describe, it } from "node:test";
-import TEST_GAME_WORLD from "../constants/world";
-import TEAM_IDS from "../constants/teamIds";
 import assert from "assert";
+import { describe, it } from "node:test";
 import SPECIALS from "../../data/specials";
-import killUnits from "../utils/kill-units";
+import { applyMapComponent } from "../../systems/apply-map-effect";
+import checkBattleEffectiveness from "../../systems/effectiveness";
+import generateTurns from "../../systems/generate-turns";
+import getAttackerAdvantage from "../../systems/get-attacker-advantage";
 import getCombatStats from "../../systems/get-combat-stats";
 import getMapStats from "../../systems/get-map-stats";
-import generateTurns from "../../systems/generate-turns";
-import level40Stats from "../constants/lv40_stats.json";
-import { applyMapComponent } from "../../systems/apply-map-effect";
+import TEAM_IDS from "../constants/teamIds";
+import TEST_GAME_WORLD from "../constants/world";
+import killUnits from "../utils/kill-units";
+import { kill } from "process";
 
 describe("B", () => {
     it("Basilikos", () => {
@@ -491,5 +493,357 @@ describe("B", () => {
         TEST_GAME_WORLD.runSystems("after-combat");
 
         killUnits([ally1, ally2, robin, opponent]);
+    });
+
+    it("Blárraven", () => {
+        const robin = TEST_GAME_WORLD.createHero({
+            name: "Robin: High Deliverer",
+            skills: {
+                A: "",
+                B: "",
+                C: "",
+                S: "",
+                special: "Ignis",
+                assist: "",
+            },
+            weapon: "Blárraven",
+            rarity: 5
+        }, TEAM_IDS[0], 1);
+
+        const opponent = TEST_GAME_WORLD.createHero({
+            name: "Clarisse: Sniper in the Dark",
+            skills: {
+                A: "",
+                B: "",
+                C: "",
+                S: "",
+                special: "Ignis",
+                assist: "",
+            },
+            weapon: "Silver Bow+",
+            rarity: 5
+        }, TEAM_IDS[1], 1);
+
+        robin.addComponent({
+            type: "InitiateCombat"
+        });
+        robin.addComponent({
+            type: "Battling"
+        });
+        const cmp = opponent.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        TEST_GAME_WORLD.runSystems("combat");
+
+        assert(robin.getOne("GuaranteedAdvantage"));
+        assert.equal(getAttackerAdvantage(robin, opponent), 0.2);
+
+        TEST_GAME_WORLD.runSystems("after-combat");
+        opponent.removeComponent(cmp);
+        const otherColor = TEST_GAME_WORLD.createHero({
+            name: "Alfonse: Prince of Askr",
+            skills: {
+                A: "",
+                B: "",
+                C: "",
+                S: "",
+                special: "Ignis",
+                assist: "",
+            },
+            weapon: "Silver Sword+",
+            rarity: 5
+        }, TEAM_IDS[1], 2);
+
+        otherColor.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        TEST_GAME_WORLD.runSystems("combat");
+
+        assert(!robin.getOne("GuaranteedAdvantage"));
+        assert.equal(getAttackerAdvantage(robin, opponent), 0);
+
+        killUnits([robin, opponent, otherColor]);
+    });
+
+    it("Blárraven+", () => {
+        const robin = TEST_GAME_WORLD.createHero({
+            name: "Robin: High Deliverer",
+            skills: {
+                A: "",
+                B: "",
+                C: "",
+                S: "",
+                special: "Ignis",
+                assist: "",
+            },
+            weapon: "Blárraven+",
+            rarity: 5
+        }, TEAM_IDS[0], 1);
+
+        const opponent = TEST_GAME_WORLD.createHero({
+            name: "Clarisse: Sniper in the Dark",
+            skills: {
+                A: "",
+                B: "",
+                C: "",
+                S: "",
+                special: "Ignis",
+                assist: "",
+            },
+            weapon: "Silver Bow+",
+            rarity: 5
+        }, TEAM_IDS[1], 1);
+
+        robin.addComponent({
+            type: "InitiateCombat"
+        });
+        robin.addComponent({
+            type: "Battling"
+        });
+        const cmp = opponent.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        TEST_GAME_WORLD.runSystems("combat");
+
+        assert(robin.getOne("GuaranteedAdvantage"));
+        assert.equal(getAttackerAdvantage(robin, opponent), 0.2);
+
+        TEST_GAME_WORLD.runSystems("after-combat");
+        opponent.removeComponent(cmp);
+        const otherColor = TEST_GAME_WORLD.createHero({
+            name: "Alfonse: Prince of Askr",
+            skills: {
+                A: "",
+                B: "",
+                C: "",
+                S: "",
+                special: "Ignis",
+                assist: "",
+            },
+            weapon: "Silver Sword+",
+            rarity: 5
+        }, TEAM_IDS[1], 2);
+
+        otherColor.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        TEST_GAME_WORLD.runSystems("combat");
+
+        assert(!robin.getOne("GuaranteedAdvantage"));
+        assert.equal(getAttackerAdvantage(robin, opponent), 0);
+
+        killUnits([robin, opponent, otherColor]);
+    });
+
+    it("Blárwolf", () => {
+        const mae = TEST_GAME_WORLD.createHero({
+            name: "Mae: Bundle of Energy",
+            rarity: 5,
+            weapon: "Blárwolf",
+            skills: {
+                S: "",
+                special: "",
+                A: "",
+                assist: "",
+                B: "",
+                C: "",
+            },
+        }, TEAM_IDS[0], 1);
+
+        const cain = TEST_GAME_WORLD.createHero({
+            name: "Cain: The Bull",
+            rarity: 5,
+            weapon: "Brave Sword+",
+            skills: {
+                S: "",
+                special: "",
+                A: "",
+                assist: "",
+                B: "",
+                C: "",
+            },
+        }, TEAM_IDS[1], 1);
+
+        assert(checkBattleEffectiveness(mae, cain));
+
+        const anna = TEST_GAME_WORLD.createHero({
+            name: "Anna: Commander",
+            rarity: 5,
+            weapon: "Brave Axe+",
+            skills: {
+                S: "",
+                special: "",
+                A: "",
+                assist: "",
+                B: "",
+                C: "",
+            },
+        }, TEAM_IDS[1], 4);
+
+        assert(!checkBattleEffectiveness(mae, anna));
+
+        killUnits([mae, anna, cain]);
+    });
+
+    it("Blárwolf+", () => {
+        const mae = TEST_GAME_WORLD.createHero({
+            name: "Mae: Bundle of Energy",
+            rarity: 5,
+            weapon: "Blárwolf+",
+            skills: {
+                S: "",
+                special: "",
+                A: "",
+                assist: "",
+                B: "",
+                C: "",
+            },
+        }, TEAM_IDS[0], 1);
+
+        const cain = TEST_GAME_WORLD.createHero({
+            name: "Cain: The Bull",
+            rarity: 5,
+            weapon: "Brave Sword+",
+            skills: {
+                S: "",
+                special: "",
+                A: "",
+                assist: "",
+                B: "",
+                C: "",
+            },
+        }, TEAM_IDS[1], 1);
+
+        assert(checkBattleEffectiveness(mae, cain));
+
+        const anna = TEST_GAME_WORLD.createHero({
+            name: "Anna: Commander",
+            rarity: 5,
+            weapon: "Brave Axe+",
+            skills: {
+                S: "",
+                special: "",
+                A: "",
+                assist: "",
+                B: "",
+                C: "",
+            },
+        }, TEAM_IDS[1], 4);
+
+        assert(!checkBattleEffectiveness(mae, anna));
+
+        killUnits([anna, cain, mae]);
+    });
+
+    it("Blue Egg", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Shigure: Dark Sky Singer",
+            weapon: "Blue Egg",
+            skills: {
+                A: "",
+                B: "",
+                C: "",
+                S: "",
+                assist: "",
+                special: "",
+            },
+            rarity: 5
+        }, TEAM_IDS[0], 1);
+
+        unit.getOne("Stats").hp = 10;
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Arden: Strong and Tough",
+            weapon: "",
+            skills: {
+                A: "",
+                assist: "",
+                S: "",
+                special: "",
+                B: "",
+                C: "",
+            },
+            rarity: 5,
+        }, TEAM_IDS[1], 1);
+
+        enemy.addComponent({
+            type: "Battling"
+        });
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+
+        unit.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        TEST_GAME_WORLD.runSystems("combat");
+        TEST_GAME_WORLD.runSystems("after-combat");
+
+        assert.equal(unit.getOne("Stats").hp, 14);
+
+        killUnits([unit, enemy]);
+    });
+
+    it("Blue Egg+", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Shigure: Dark Sky Singer",
+            weapon: "Blue Egg+",
+            skills: {
+                A: "",
+                B: "",
+                C: "",
+                S: "",
+                assist: "",
+                special: "",
+            },
+            rarity: 5
+        }, TEAM_IDS[0], 1);
+
+        unit.getOne("Stats").hp = 10;
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Arden: Strong and Tough",
+            weapon: "",
+            skills: {
+                A: "",
+                assist: "",
+                S: "",
+                special: "",
+                B: "",
+                C: "",
+            },
+            rarity: 5,
+        }, TEAM_IDS[1], 1);
+
+        enemy.addComponent({
+            type: "Battling"
+        });
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+
+        unit.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        TEST_GAME_WORLD.runSystems("combat");
+        TEST_GAME_WORLD.runSystems("after-combat");
+
+        assert.equal(unit.getOne("Stats").hp, 14);
+
+        killUnits([unit, enemy]);
     });
 });

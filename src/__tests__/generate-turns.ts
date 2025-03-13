@@ -131,4 +131,20 @@ describe("generate-turns", () => {
         assert.strictEqual(turns[2], hero1);
         assert.strictEqual(turns[3], hero2);
     });
+
+    it("should generate 4 consecutive turns if a Brave Weapon can follow-up", () => {
+        hero1.getOne("Stats").spd = 90;
+        hero2.getOne("Stats").spd = 0;
+        hero1.addComponent({
+            type: "BraveWeapon"
+        });
+
+        const turns = generateTurns(hero1, hero2, getCombatStats(hero1), getCombatStats(hero2));
+
+        assert.strictEqual(turns[0], hero1);
+        assert.strictEqual(turns[1], hero1);
+        assert.strictEqual(turns[2], hero2);
+        assert.strictEqual(turns[3], hero1);
+        assert.strictEqual(turns[4], hero1);
+    });
 });

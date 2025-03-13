@@ -28,6 +28,7 @@ function generateTurns(attacker: Entity, defender: Entity, attackerCombatStats: 
 
 function generateRoundUnit(entity: Entity) {
     const subTurn = [entity];
+
     if (entity.getOne("BraveWeapon")) {
         subTurn.push(entity);
     }
@@ -37,8 +38,9 @@ function generateRoundUnit(entity: Entity) {
 
 export function defenderCanDefend(attacker: Entity, defender: Entity) {
     const attackerPreventedCounterattacks = attacker.getOne("PreventCounterattack");
-    const isCounterattackAllowed = Boolean(defender.getOne("Counterattack")) && !attackerPreventedCounterattacks;
-    const rangeIsTheSame = attacker.getOne("Weapon").range === defender.getOne("Weapon").range;
+    const defenderHasWeapon = !!Array.from(defender.getComponents("Skill")).find((i) => i.slot === "weapon");
+    const isCounterattackAllowed = Boolean(defender.getOne("Counterattack")) && !attackerPreventedCounterattacks && defenderHasWeapon;
+    const rangeIsTheSame = defenderHasWeapon && attacker.getOne("Weapon").range === defender.getOne("Weapon").range;
 
     if (rangeIsTheSame) {
         return !attackerPreventedCounterattacks;

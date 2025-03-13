@@ -10,7 +10,8 @@ import getMapStats from "../../systems/get-map-stats";
 import TEAM_IDS from "../constants/teamIds";
 import TEST_GAME_WORLD from "../constants/world";
 import killUnits from "../utils/kill-units";
-import { kill } from "process";
+import level40Stats from "../constants/lv40_stats.json";
+import WEAPONS from "../../data/weapons";
 
 describe("B", () => {
     it("Basilikos", () => {
@@ -846,4 +847,370 @@ describe("B", () => {
 
         killUnits([unit, enemy]);
     });
+
+    it("Book of Orchids", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Mae: Bundle of Energy",
+            weapon: "Book of Orchids",
+            skills: {
+                A: "",
+                B: "",
+                C: "",
+                S: "",
+                assist: "",
+                special: "",
+            },
+            rarity: 5
+        }, TEAM_IDS[0], 1);
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Arden: Strong and Tough",
+            weapon: "",
+            skills: {
+                A: "",
+                assist: "",
+                S: "",
+                special: "",
+                B: "",
+                C: "",
+            },
+            rarity: 5,
+        }, TEAM_IDS[1], 1);
+
+        enemy.addComponent({
+            type: "Battling"
+        });
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+
+        unit.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        TEST_GAME_WORLD.runSystems("combat");
+        const buffs = unit.getOne("CombatBuff");
+        assert.equal(buffs.atk, 6);
+        TEST_GAME_WORLD.runSystems("after-combat");
+
+        killUnits([unit, enemy]);
+    });
+
+    it("Bow of Beauty", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Leon: True of Heart",
+            weapon: "Bow of Beauty",
+            skills: {
+                A: "",
+                B: "",
+                C: "",
+                S: "",
+                assist: "",
+                special: "Aether",
+            },
+            rarity: 5
+        }, TEAM_IDS[0], 1);
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Arden: Strong and Tough",
+            weapon: "",
+            skills: {
+                A: "",
+                assist: "",
+                S: "",
+                special: "",
+                B: "",
+                C: "",
+            },
+            rarity: 5,
+        }, TEAM_IDS[1], 1);
+
+        enemy.addComponent({
+            type: "Battling"
+        });
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+
+        unit.addComponent({
+            type: "Battling"
+        });
+
+        assert.equal(unit.getOne("Special").maxCooldown, SPECIALS[unit.getOne("Special").name].cooldown - 1);
+
+        killUnits([unit, enemy]);
+    });
+
+    for (let rank of ["", "+"]) {
+        it(`Brave Lance${rank}`, () => {
+            const lanceUnit = TEST_GAME_WORLD.createHero({
+                name: "Abel: The Panther",
+                skills: {
+                    A: "",
+                    B: "",
+                    C: "",
+                    S: "",
+                    assist: "",
+                    special: "",
+                },
+                weapon: `Brave Lance${rank}`,
+                rarity: 5,
+            }, TEAM_IDS[0], 1);
+
+            assert.equal(lanceUnit.getOne("Stats").atk, level40Stats["Abel: The Panther"].atk.standard + WEAPONS[`Brave Lance${rank}`].might);
+
+            const enemy = TEST_GAME_WORLD.createHero({
+                name: "Abel: The Panther",
+                weapon: "",
+                skills: {
+                    A: "",
+                    assist: "",
+                    S: "",
+                    special: "",
+                    B: "",
+                    C: "",
+                },
+                rarity: 5,
+            }, TEAM_IDS[1], 1);
+
+            enemy.addComponent({
+                type: "Battling"
+            });
+
+            enemy.getOne("Stats").hp = 999;
+
+            lanceUnit.addComponent({
+                type: "InitiateCombat"
+            });
+
+            lanceUnit.addComponent({
+                type: "Battling"
+            });
+
+            TEST_GAME_WORLD.runSystems("before-combat");
+            TEST_GAME_WORLD.runSystems("combat");
+            assert(lanceUnit.getOne("BraveWeapon"));
+            const turns = generateTurns(lanceUnit, enemy, getCombatStats(lanceUnit), getCombatStats(enemy));
+            assert.equal(turns[0], lanceUnit);
+            assert.equal(turns[1], lanceUnit);
+            TEST_GAME_WORLD.runSystems("after-combat");
+
+            lanceUnit.removeComponent(lanceUnit.getOne("InitiateCombat"));
+
+            enemy.addComponent({
+                type: "InitiateCombat"
+            });
+
+            TEST_GAME_WORLD.runSystems("before-combat");
+            TEST_GAME_WORLD.runSystems("combat");
+            assert(!lanceUnit.getOne("BraveWeapon"));
+            TEST_GAME_WORLD.runSystems("after-combat");
+
+            killUnits([lanceUnit, enemy]);
+        });
+
+        it(`Brave Sword${rank}`, () => {
+            const swordUnit = TEST_GAME_WORLD.createHero({
+                name: "Cain: The Bull",
+                skills: {
+                    A: "",
+                    B: "",
+                    C: "",
+                    S: "",
+                    assist: "",
+                    special: "",
+                },
+                weapon: `Brave Sword${rank}`,
+                rarity: 5,
+            }, TEAM_IDS[0], 1);
+
+            assert.equal(swordUnit.getOne("Stats").atk, level40Stats["Cain: The Bull"].atk.standard + WEAPONS[`Brave Sword${rank}`].might);
+
+            const enemy = TEST_GAME_WORLD.createHero({
+                name: "Cain: The Bull",
+                weapon: "",
+                skills: {
+                    A: "",
+                    assist: "",
+                    S: "",
+                    special: "",
+                    B: "",
+                    C: "",
+                },
+                rarity: 5,
+            }, TEAM_IDS[1], 1);
+
+            enemy.addComponent({
+                type: "Battling"
+            });
+
+            enemy.getOne("Stats").hp = 999;
+
+            swordUnit.addComponent({
+                type: "InitiateCombat"
+            });
+
+            swordUnit.addComponent({
+                type: "Battling"
+            });
+
+            TEST_GAME_WORLD.runSystems("before-combat");
+            TEST_GAME_WORLD.runSystems("combat");
+            assert(swordUnit.getOne("BraveWeapon"));
+            const turns = generateTurns(swordUnit, enemy, getCombatStats(swordUnit), getCombatStats(enemy));
+            assert.equal(turns[0], swordUnit);
+            assert.equal(turns[1], swordUnit);
+            TEST_GAME_WORLD.runSystems("after-combat");
+
+            swordUnit.removeComponent(swordUnit.getOne("InitiateCombat"));
+
+            enemy.addComponent({
+                type: "InitiateCombat"
+            });
+
+            TEST_GAME_WORLD.runSystems("before-combat");
+            TEST_GAME_WORLD.runSystems("combat");
+            assert(!swordUnit.getOne("BraveWeapon"));
+            TEST_GAME_WORLD.runSystems("after-combat");
+
+            killUnits([swordUnit, enemy]);
+        });
+
+        it(`Brave Axe${rank}`, () => {
+            const axeUnit = TEST_GAME_WORLD.createHero({
+                name: "Ike: Brave Mercenary",
+                skills: {
+                    A: "",
+                    B: "",
+                    C: "",
+                    S: "",
+                    assist: "",
+                    special: "",
+                },
+                weapon: `Brave Axe${rank}`,
+                rarity: 5,
+            }, TEAM_IDS[0], 1);
+
+            assert.equal(axeUnit.getOne("Stats").atk, level40Stats["Ike: Brave Mercenary"].atk.standard + WEAPONS[`Brave Axe${rank}`].might);
+
+            const enemy = TEST_GAME_WORLD.createHero({
+                name: "Ike: Brave Mercenary",
+                weapon: "",
+                skills: {
+                    A: "",
+                    assist: "",
+                    S: "",
+                    special: "",
+                    B: "",
+                    C: "",
+                },
+                rarity: 5,
+            }, TEAM_IDS[1], 1);
+
+            enemy.addComponent({
+                type: "Battling"
+            });
+
+            enemy.getOne("Stats").hp = 999;
+
+            axeUnit.addComponent({
+                type: "InitiateCombat"
+            });
+
+            axeUnit.addComponent({
+                type: "Battling"
+            });
+
+            TEST_GAME_WORLD.runSystems("before-combat");
+            TEST_GAME_WORLD.runSystems("combat");
+            assert(axeUnit.getOne("BraveWeapon"));
+            const turns = generateTurns(axeUnit, enemy, getCombatStats(axeUnit), getCombatStats(enemy));
+            assert.equal(turns[0], axeUnit);
+            assert.equal(turns[1], axeUnit);
+            TEST_GAME_WORLD.runSystems("after-combat");
+
+            axeUnit.removeComponent(axeUnit.getOne("InitiateCombat"));
+
+            enemy.addComponent({
+                type: "InitiateCombat"
+            });
+
+            TEST_GAME_WORLD.runSystems("before-combat");
+            TEST_GAME_WORLD.runSystems("combat");
+            assert(!axeUnit.getOne("BraveWeapon"));
+            TEST_GAME_WORLD.runSystems("after-combat");
+
+            killUnits([axeUnit, enemy]);
+        });
+
+        it(`Brave Bow${rank}`, () => {
+            const bowUnit = TEST_GAME_WORLD.createHero({
+                name: "Klein: Silver Nobleman",
+                skills: {
+                    A: "",
+                    B: "",
+                    C: "",
+                    S: "",
+                    assist: "",
+                    special: "",
+                },
+                weapon: `Brave Bow${rank}`,
+                rarity: 5,
+            }, TEAM_IDS[0], 1);
+
+            assert.equal(bowUnit.getOne("Stats").atk, level40Stats["Klein: Silver Nobleman"].atk.standard + WEAPONS[`Brave Bow${rank}`].might);
+
+            const enemy = TEST_GAME_WORLD.createHero({
+                name: "Klein: Silver Nobleman",
+                weapon: "",
+                skills: {
+                    A: "",
+                    assist: "",
+                    S: "",
+                    special: "",
+                    B: "",
+                    C: "",
+                },
+                rarity: 5,
+            }, TEAM_IDS[1], 1);
+
+            enemy.addComponent({
+                type: "Battling"
+            });
+
+            enemy.getOne("Stats").hp = 999;
+
+            bowUnit.addComponent({
+                type: "InitiateCombat"
+            });
+
+            bowUnit.addComponent({
+                type: "Battling"
+            });
+
+            TEST_GAME_WORLD.runSystems("before-combat");
+            TEST_GAME_WORLD.runSystems("combat");
+            assert(bowUnit.getOne("BraveWeapon"));
+            const turns = generateTurns(bowUnit, enemy, getCombatStats(bowUnit), getCombatStats(enemy));
+            assert.equal(turns[0], bowUnit);
+            assert.equal(turns[1], bowUnit);
+            TEST_GAME_WORLD.runSystems("after-combat");
+
+            bowUnit.removeComponent(bowUnit.getOne("InitiateCombat"));
+
+            enemy.addComponent({
+                type: "InitiateCombat"
+            });
+
+            TEST_GAME_WORLD.runSystems("before-combat");
+            TEST_GAME_WORLD.runSystems("combat");
+            assert(!bowUnit.getOne("BraveWeapon"));
+            TEST_GAME_WORLD.runSystems("after-combat");
+
+            killUnits([bowUnit, enemy]);
+        });
+    }
 });

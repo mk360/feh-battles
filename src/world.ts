@@ -35,6 +35,7 @@ import { removeStatuses } from "./systems/apply-map-effect";
 import SpecialCooldownSystem from "./systems/mechanics/special-cooldown";
 import shortid from "shortid";
 import movesetManager from "./moveset-manager";
+import Debugger from "./debugger";
 
 /**
  * TODO:
@@ -73,6 +74,7 @@ interface InitialLineup {
 
 class GameWorld extends World {
     static validator = movesetManager;
+    debugger: Debugger;
     id = shortid();
     state: GameState = {
         teamIds: ["", ""],
@@ -136,6 +138,9 @@ class GameWorld extends World {
         this.registerSystem("after-combat", AfterCombatSystem, [this.state]);
         this.registerSystem("assist", AssistSystem, [this.state]);
         this.registerSystem("special-cooldown", SpecialCooldownSystem);
+        if (process.env.DEBUG === "1") {
+            this.debugger = new Debugger(this);
+        }
     }
 
     switchSides() {
@@ -826,169 +831,76 @@ class GameWorld extends World {
     createHero(member: HeroData, team: string, teamIndex: number) {
         const dexData = CHARACTERS[member.name];
         if (dexData) {
-            const entity = this.createEntity({
-                components: [{
-                    type: "Name",
-                    value: member.name,
-                    description: dexData.description
-                }]
-            });
-
-            if (member.bane && member.boon && member.bane !== member.boon) {
-                entity.addComponent({
-                    type: "Bane",
-                    value: member.bane
+            try {
+                const entity = this.createEntity({
+                    components: [{
+                        type: "Name",
+                        value: member.name,
+                        description: dexData.description
+                    }]
                 });
+
+                if (member.bane && member.boon && member.bane !== member.boon) {
+                    entity.addComponent({
+                        type: "Bane",
+                        value: member.bane
+                    });
+                    entity.addComponent({
+                        type: "Boon",
+                        value: member.boon
+                    });
+                }
+
+                const components = this.createCharacterComponents(entity, team, member.rarity, member.merges);
+
+                for (let component of components) {
+                    entity.addComponent(component);
+                }
+                const tilePlacement = this.state.topology.spawnLocations[team][teamIndex - 1];
+                const { x, y } = tilePlacement;
+
                 entity.addComponent({
-                    type: "Boon",
-                    value: member.boon
+                    type: "Position",
+                    ...tilePlacement
                 });
-            }
 
-            const components = this.createCharacterComponents(entity, team, member.rarity, member.merges);
+                const mapCell = this.state.map[y][x];
 
-            for (let component of components) {
-                entity.addComponent(component);
-            }
-            const tilePlacement = this.state.topology.spawnLocations[team][teamIndex - 1];
-            const { x, y } = tilePlacement;
-
-            entity.addComponent({
-                type: "Position",
-                ...tilePlacement
-            });
-
-            const mapCell = this.state.map[y][x];
-
-            if (mapCell & tileBitmasks.occupation) {
-                throw new Error("Tile is already occupied");
-            }
-
-            this.state.map[y][x][0] |= Teams[this.state.teamIds.indexOf(team)];
-
-            this.state.occupiedTilesMap.set(this.state.map[y][x], entity);
-
-            const entitySkillDict: { [k: string]: Set<Component> } = {};
-
-            if (member.weapon) {
-                const skillData = WEAPONS[member.weapon];
-                const stats = entity.getOne("Stats");
-                stats.atk += skillData.might;
-
-                const weaponComponentData = {
-                    type: "Skill",
-                    description: skillData.description,
-                    slot: "weapon",
-                    name: member.weapon,
-                    displayName: skillData.displayName,
-                    might: skillData.might,
-                };
-
-                const weaponComponent = entity.addComponent(weaponComponentData);
-
-                for (let hook in skillData) {
-                    const castHook = hook as keyof typeof skillData;
-                    if (castHook === "onEquip") {
-                        skillData.onEquip.call(weaponComponent);
-                    } else if (typeof skillData[castHook] === "function") {
-                        entitySkillDict[castHook] = entitySkillDict[castHook] || new Set();
-                        entitySkillDict[castHook].add(weaponComponent);
-                    }
+                if (mapCell[0] & tileBitmasks.occupation) {
+                    console.log((mapCell[0] & tileBitmasks.occupation).toString(2))
+                    const occupied = this.state.occupiedTilesMap.get(mapCell);
+                    throw new Error("Tile is already occupied by " + occupied.getOne("Name").value);
                 }
 
-                if (skillData.effectiveAgainst) {
-                    for (let effectiveness of skillData.effectiveAgainst) {
-                        entity.addComponent({
-                            type: "Effectiveness",
-                            value: effectiveness
-                        });
-                    }
-                }
+                this.state.map[y][x][0] |= Teams[this.state.teamIds.indexOf(team)];
 
-                if (skillData.protects) {
-                    for (let effectiveness of skillData.protects) {
-                        entity.addComponent({
-                            type: "Immunity",
-                            value: effectiveness
-                        });
-                    }
-                }
-            }
+                this.state.occupiedTilesMap.set(this.state.map[y][x], entity);
 
-            if (member.skills.assist) {
-                const skillData = ASSISTS[member.skills.assist];
-                if (skillData) {
-                    const assistComponent = {
-                        type: "Assist",
-                        description: skillData.description,
-                        name: member.skills.assist,
-                        range: skillData.range
-                    };
+                const entitySkillDict: { [k: string]: Set<Component> } = {};
 
-                    entity.addComponent(assistComponent);
+                if (member.weapon) {
+                    const skillData = WEAPONS[member.weapon];
+                    const stats = entity.getOne("Stats");
+                    stats.atk += skillData.might;
 
-                    if (skillData.type.includes("refresh")) {
-                        entity.addComponent({
-                            type: "Refresher"
-                        });
-                    }
-                }
-            }
-
-            if (member.skills.special) {
-                const skillData = SPECIALS[member.skills.special];
-                if (skillData) {
-                    const specialComponent = {
-                        type: "Special",
-                        description: skillData.description,
-                        slot: "special",
-                        name: member.skills.special,
-                        baseCooldown: skillData.cooldown,
-                        maxCooldown: skillData.cooldown,
-                        cooldown: skillData.cooldown
-                    };
-
-                    const modifiedCooldown = entity.getOne("ModifySpecialCooldown");
-
-                    if (modifiedCooldown) {
-                        specialComponent.maxCooldown += modifiedCooldown.value;
-                        specialComponent.cooldown += modifiedCooldown.value;
-                        entity.removeComponent(modifiedCooldown);
-                    }
-
-                    entity.addComponent(specialComponent);
-                }
-            }
-
-            for (let skill in member.skills) {
-                const skillName = member.skills[skill];
-                const skillData = PASSIVES[skillName];
-                if (skillData) {
-                    const skillComponent = {
+                    const weaponComponentData = {
                         type: "Skill",
                         description: skillData.description,
-                        slot: skill,
-                        name: skillName,
+                        slot: "weapon",
+                        name: member.weapon,
+                        displayName: skillData.displayName,
+                        might: skillData.might,
                     };
 
-                    const internalComponent = entity.addComponent(skillComponent);
+                    const weaponComponent = entity.addComponent(weaponComponentData);
 
                     for (let hook in skillData) {
                         const castHook = hook as keyof typeof skillData;
                         if (castHook === "onEquip") {
-                            skillData.onEquip.call(internalComponent);
+                            skillData.onEquip.call(weaponComponent);
                         } else if (typeof skillData[castHook] === "function") {
                             entitySkillDict[castHook] = entitySkillDict[castHook] || new Set();
-                            entitySkillDict[castHook].add(internalComponent);
-                        }
-                    }
-
-                    if (skillData.protects) {
-                        for (let immunity of skillData.protects) {
-                            entity.addComponent({
-                                type: "Immunity",
-                                value: immunity
-                            });
+                            entitySkillDict[castHook].add(weaponComponent);
                         }
                     }
 
@@ -1000,14 +912,113 @@ class GameWorld extends World {
                             });
                         }
                     }
+
+                    if (skillData.protects) {
+                        for (let effectiveness of skillData.protects) {
+                            entity.addComponent({
+                                type: "Immunity",
+                                value: effectiveness
+                            });
+                        }
+                    }
                 }
+
+                if (member.skills.assist) {
+                    const skillData = ASSISTS[member.skills.assist];
+                    if (skillData) {
+                        const assistComponent = {
+                            type: "Assist",
+                            description: skillData.description,
+                            name: member.skills.assist,
+                            range: skillData.range
+                        };
+
+                        entity.addComponent(assistComponent);
+
+                        if (skillData.type.includes("refresh")) {
+                            entity.addComponent({
+                                type: "Refresher"
+                            });
+                        }
+                    }
+                }
+
+                if (member.skills.special) {
+                    const skillData = SPECIALS[member.skills.special];
+                    if (skillData) {
+                        const specialComponent = {
+                            type: "Special",
+                            description: skillData.description,
+                            slot: "special",
+                            name: member.skills.special,
+                            baseCooldown: skillData.cooldown,
+                            maxCooldown: skillData.cooldown,
+                            cooldown: skillData.cooldown
+                        };
+
+                        const modifiedCooldown = entity.getOne("ModifySpecialCooldown");
+
+                        if (modifiedCooldown) {
+                            specialComponent.maxCooldown += modifiedCooldown.value;
+                            specialComponent.cooldown += modifiedCooldown.value;
+                            entity.removeComponent(modifiedCooldown);
+                        }
+
+                        entity.addComponent(specialComponent);
+                    }
+                }
+
+                for (let skill in member.skills) {
+                    const skillName = member.skills[skill];
+                    const skillData = PASSIVES[skillName];
+                    if (skillData) {
+                        const skillComponent = {
+                            type: "Skill",
+                            description: skillData.description,
+                            slot: skill,
+                            name: skillName,
+                        };
+
+                        const internalComponent = entity.addComponent(skillComponent);
+
+                        for (let hook in skillData) {
+                            const castHook = hook as keyof typeof skillData;
+                            if (castHook === "onEquip") {
+                                skillData.onEquip.call(internalComponent);
+                            } else if (typeof skillData[castHook] === "function") {
+                                entitySkillDict[castHook] = entitySkillDict[castHook] || new Set();
+                                entitySkillDict[castHook].add(internalComponent);
+                            }
+                        }
+
+                        if (skillData.protects) {
+                            for (let immunity of skillData.protects) {
+                                entity.addComponent({
+                                    type: "Immunity",
+                                    value: immunity
+                                });
+                            }
+                        }
+
+                        if (skillData.effectiveAgainst) {
+                            for (let effectiveness of skillData.effectiveAgainst) {
+                                entity.addComponent({
+                                    type: "Effectiveness",
+                                    value: effectiveness
+                                });
+                            }
+                        }
+                    }
+                }
+
+                this.state.skillMap.set(entity, entitySkillDict);
+
+                this.state.teams[team].add(entity);
+
+                return entity;
+            } catch (e) {
+                throw new Error(`Error creating the Hero ${member.name}: ${e}`);
             }
-
-            this.state.skillMap.set(entity, entitySkillDict);
-
-            this.state.teams[team].add(entity);
-
-            return entity;
         } else {
             throw new Error(`Character not found: "${member.name}"`);
         }

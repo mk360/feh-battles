@@ -43,6 +43,7 @@ class TurnStartSystem extends System {
         }
 
         this.world.runSystems("special-cooldown");
+        this.world.runSystems("hp-mod");
     }
 };
 

@@ -12,6 +12,7 @@ import TEST_GAME_WORLD from "../constants/world";
 import killUnits from "../utils/kill-units";
 import level40Stats from "../constants/lv40_stats.json";
 import WEAPONS from "../../data/weapons";
+import getAffinity from "../../systems/get-affinity";
 
 describe("B", () => {
     it("Basilikos", () => {
@@ -1213,4 +1214,280 @@ describe("B", () => {
             killUnits([bowUnit, enemy]);
         });
     }
+
+    it("Breath of Fog", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Tiki: Naga's Voice",
+            weapon: "Breath of Fog",
+            skills: {
+                A: "",
+                B: "",
+                C: "",
+                S: "",
+                assist: "",
+                special: "",
+            },
+            rarity: 5
+        }, TEAM_IDS[0], 1);
+
+        unit.getOne("Stats").hp = 1;
+        TEST_GAME_WORLD.state.turn = 1;
+        TEST_GAME_WORLD.state.currentSide = TEAM_IDS[0];
+        TEST_GAME_WORLD.runSystems("every-turn");
+        assert.equal(unit.getOne("Stats").hp, 11);
+        unit.getOne("Stats").hp = 999;
+
+        const combatStats = getCombatStats(unit);
+        const opponent = TEST_GAME_WORLD.createHero({
+            name: "Lilina: Delightful Noble",
+            weapon: "Forblaze",
+            skills: {
+                A: "",
+                assist: "",
+                S: "",
+                special: "",
+                B: "",
+                C: "",
+            },
+            rarity: 5,
+        }, TEAM_IDS[1], 1);
+
+        const enemyCombatStats = getCombatStats(opponent);
+
+        unit.addComponent({
+            type: "Battling"
+        });
+
+        opponent.addComponent({
+            type: "Battling"
+        });
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        TEST_GAME_WORLD.runSystems("combat");
+        const { attacker: { damage } } = unit.getOne("DealDamage");
+        assert.equal(damage, combatStats.atk - Math.min(enemyCombatStats.res, enemyCombatStats.def));
+
+        killUnits([unit, opponent]);
+    });
+
+    it("Brynhildr", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Leo: Sorcerous Prince",
+            weapon: "Brynhildr",
+            skills: {
+                A: "",
+                B: "",
+                C: "",
+                S: "",
+                assist: "",
+                special: "",
+            },
+            rarity: 5
+        }, TEAM_IDS[0], 1);
+
+        const opponent = TEST_GAME_WORLD.createHero({
+            name: "Lilina: Delightful Noble",
+            weapon: "Forblaze",
+            skills: {
+                A: "",
+                assist: "",
+                S: "",
+                special: "",
+                B: "",
+                C: "",
+            },
+            rarity: 5,
+        }, TEAM_IDS[1], 1);
+
+        unit.addComponent({
+            type: "Battling"
+        });
+
+        opponent.addComponent({
+            type: "Battling"
+        });
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        TEST_GAME_WORLD.runSystems("combat");
+        TEST_GAME_WORLD.runSystems("after-combat");
+        assert.equal(opponent.getOne("Status").value, "Gravity");
+        assert(opponent.getOne("GravityComponent"));
+
+        killUnits([unit, opponent]);
+    });
+
+    it("Bull Blade", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Cain: The Bull",
+            weapon: "Bull Blade",
+            skills: {
+                A: "",
+                B: "",
+                C: "",
+                S: "",
+                assist: "",
+                special: "",
+            },
+            rarity: 5
+        }, TEAM_IDS[0], 1);
+
+        const opponent = TEST_GAME_WORLD.createHero({
+            name: "Leo: Sorcerous Prince",
+            skills: {
+                assist: "",
+                S: "",
+                A: "",
+                B: "",
+                C: "",
+                special: "",
+            },
+            weapon: "",
+            rarity: 5
+        }, TEAM_IDS[1], 1);
+
+        const ally = TEST_GAME_WORLD.createHero({
+            name: "Cain: The Bull",
+            weapon: "Bull Blade",
+            skills: {
+                A: "",
+                B: "",
+                C: "",
+                S: "",
+                assist: "",
+                special: "",
+            },
+            rarity: 5
+        }, TEAM_IDS[0], 2);
+
+        console.log(ally.getOne("Position").getObject(false));
+
+        const currentPos = unit.getOne("Position");
+        TEST_GAME_WORLD.moveUnit(ally.id, {
+            x: currentPos.x,
+            y: currentPos.y + 1
+        }, false);
+
+        opponent.addComponent({
+            type: "Battling"
+        });
+        unit.addComponent({
+            type: "Battling"
+        });
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+
+        unit.getOne("Stats").hp = 999;
+        opponent.getOne("Stats").hp = 999;
+
+        TEST_GAME_WORLD.runSystems("combat");
+
+        const combatBuff = unit.getOne("CombatBuff");
+        assert.equal(combatBuff.atk, 2);
+        assert.equal(combatBuff.def, 2);
+
+        TEST_GAME_WORLD.runSystems("after-combat");
+
+        const ally2 = TEST_GAME_WORLD.createHero({
+            name: "Roy: Brave Lion",
+            weapon: "Silver Sword+",
+            skills: {
+                A: "",
+                B: "",
+                C: "",
+                S: "",
+                assist: "",
+                special: "",
+            },
+            rarity: 5
+        }, TEAM_IDS[0], 2);
+
+        TEST_GAME_WORLD.runSystems("combat");
+
+        const secondCombatBuff = unit.getOne("CombatBuff");
+        assert.equal(secondCombatBuff.atk, 4);
+        assert.equal(secondCombatBuff.def, 4);
+
+        TEST_GAME_WORLD.runSystems("after-combat");
+
+
+        killUnits([unit, ally, ally2, opponent]);
+    });
+
+    it("Bull Spear", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Sully: Crimson Knight",
+            weapon: "Bull Spear",
+            skills: {
+                A: "",
+                B: "",
+                C: "",
+                S: "",
+                assist: "",
+                special: "",
+            },
+            rarity: 5
+        }, TEAM_IDS[0], 1);
+
+        const opponent = TEST_GAME_WORLD.createHero({
+            name: "Leo: Sorcerous Prince",
+            skills: {
+                assist: "",
+                S: "",
+                A: "",
+                B: "",
+                C: "",
+                special: "",
+            },
+            weapon: "",
+            rarity: 5
+        }, TEAM_IDS[1], 1);
+
+        opponent.addComponent({
+            type: "Battling"
+        });
+        unit.addComponent({
+            type: "Battling"
+        });
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+
+        unit.getOne("Stats").hp = 999;
+        opponent.getOne("Stats").hp = 999;
+
+        TEST_GAME_WORLD.runSystems("combat");
+
+        assert.equal(getAffinity(unit, opponent), 0.2);
+
+        const otherOpponent = TEST_GAME_WORLD.createHero({
+            name: "Cecilia: Etrurian General",
+            skills: {
+                assist: "",
+                S: "",
+                A: "",
+                B: "",
+                C: "",
+                special: "",
+            },
+            weapon: "",
+            rarity: 5
+        }, TEAM_IDS[1], 2);
+
+        assert.equal(getAffinity(unit, otherOpponent), -0.2);
+
+        TEST_GAME_WORLD.runSystems("after-combat");
+
+        killUnits([unit, opponent, otherOpponent]);
+    });
 });

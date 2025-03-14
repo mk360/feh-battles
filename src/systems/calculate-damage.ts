@@ -31,14 +31,12 @@ export function calculateDamageBeforeReductions({ atkStat, effectiveness, advant
         damageWithoutReduction = Math.trunc(damageWithoutReduction * 0.5);
     }
 
-    return damageWithoutReduction;
+    return Math.max(damageWithoutReduction, 0);
 }
 
 export function calculateFinalDamage({ netDamage, flatReduction, damagePercentage }: { netDamage: number, flatReduction: number, damagePercentage: number }) {
+    let newNetDamage = Math.ceil(netDamage * damagePercentage / 100);
 
-
-    netDamage = Math.ceil(netDamage * damagePercentage / 100);
-
-    return Math.max(0, netDamage - Math.floor(flatReduction));
+    return Math.max(0, newNetDamage - Math.floor(flatReduction));
 }
 

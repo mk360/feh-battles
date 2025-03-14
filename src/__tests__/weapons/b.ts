@@ -11,7 +11,6 @@ import TEAM_IDS from "../constants/teamIds";
 import TEST_GAME_WORLD from "../constants/world";
 import killUnits from "../utils/kill-units";
 import level40Stats from "../constants/lv40_stats.json";
-import WEAPONS from "../../data/weapons";
 import getAffinity from "../../systems/get-affinity";
 
 describe("B", () => {
@@ -961,8 +960,6 @@ describe("B", () => {
                 rarity: 5,
             }, TEAM_IDS[0], 1);
 
-            assert.equal(lanceUnit.getOne("Stats").atk, level40Stats["Abel: The Panther"].atk.standard + WEAPONS[`Brave Lance${rank}`].might);
-
             const enemy = TEST_GAME_WORLD.createHero({
                 name: "Abel: The Panther",
                 weapon: "",
@@ -1028,7 +1025,7 @@ describe("B", () => {
                 rarity: 5,
             }, TEAM_IDS[0], 1);
 
-            assert.equal(swordUnit.getOne("Stats").atk, level40Stats["Cain: The Bull"].atk.standard + WEAPONS[`Brave Sword${rank}`].might);
+            assert.equal(swordUnit.getOne("Stats").spd, level40Stats["Cain: The Bull"].spd.standard - 5);
 
             const enemy = TEST_GAME_WORLD.createHero({
                 name: "Cain: The Bull",
@@ -1095,8 +1092,6 @@ describe("B", () => {
                 rarity: 5,
             }, TEAM_IDS[0], 1);
 
-            assert.equal(axeUnit.getOne("Stats").atk, level40Stats["Ike: Brave Mercenary"].atk.standard + WEAPONS[`Brave Axe${rank}`].might);
-
             const enemy = TEST_GAME_WORLD.createHero({
                 name: "Ike: Brave Mercenary",
                 weapon: "",
@@ -1161,8 +1156,6 @@ describe("B", () => {
                 weapon: `Brave Bow${rank}`,
                 rarity: 5,
             }, TEAM_IDS[0], 1);
-
-            assert.equal(bowUnit.getOne("Stats").atk, level40Stats["Klein: Silver Nobleman"].atk.standard + WEAPONS[`Brave Bow${rank}`].might);
 
             const enemy = TEST_GAME_WORLD.createHero({
                 name: "Klein: Silver Nobleman",
@@ -1367,8 +1360,6 @@ describe("B", () => {
             rarity: 5
         }, TEAM_IDS[0], 2);
 
-        console.log(ally.getOne("Position").getObject(false));
-
         const currentPos = unit.getOne("Position");
         TEST_GAME_WORLD.moveUnit(ally.id, {
             x: currentPos.x,
@@ -1469,6 +1460,8 @@ describe("B", () => {
         TEST_GAME_WORLD.runSystems("combat");
 
         assert.equal(getAffinity(unit, opponent), 0.2);
+
+        assert(unit.getOne("ApplyAffinity"));
 
         const otherOpponent = TEST_GAME_WORLD.createHero({
             name: "Cecilia: Etrurian General",

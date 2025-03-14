@@ -989,7 +989,7 @@ const WEAPONS: WeaponDict = {
         exclusiveTo: ["Gaius: Candy Stealer"],
         might: 14,
         type: "dagger",
-        description: "If unit initiates combat, grants Spd+4 and deals damage = 10% of unit's Spd during combat.&lt;br>Effect:\u3010Dagger \uff17\u3011",
+        description: "If unit initiates combat, grants Spd+4 and deals damage = 10% of unit's Spd during combat. Effect:【Dagger ７】",
         onCombatInitiate(state, target) {
             this.entity.addComponent({
                 type: "CombatBuff",
@@ -1000,7 +1000,7 @@ const WEAPONS: WeaponDict = {
 
             this.entity.addComponent({
                 type: "DamageIncrease",
-                value: Math.floor(spd * 0.1)
+                amount: Math.floor(spd * 0.1)
             });
         },
         onCombatAfter(battleState, target) {
@@ -1029,9 +1029,10 @@ const WEAPONS: WeaponDict = {
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
                 const allies = getAllies(battleState, target);
+                applyMapComponent(target, "PreventCounterattack", {}, this.entity);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, target) <= 2) {
-                        applyMapComponent(target, "PreventCounterattack", {}, this.entity);
+                        applyMapComponent(ally, "PreventCounterattack", {}, this.entity);
                     }
                 }
             }
@@ -1104,7 +1105,7 @@ const WEAPONS: WeaponDict = {
         }
     },
     "Clarisse's Bow": {
-        description: "Effective against flying foes. &lt;br/>If unit initiates combat, inflicts Atk/Spd-5 on foes within 2 spaces of target through their next actions after combat.",
+        description: "Effective against flying foes. If unit initiates combat, inflicts Atk/Spd-5 on foes within 2 spaces of target through their next actions after combat.",
         type: "bow",
         might: 7,
         effectiveAgainst: ["flier"],
@@ -1263,16 +1264,9 @@ const WEAPONS: WeaponDict = {
                 const allies = getAllies(state, this.entity);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                        ally.addComponent({
-                            type: "MapBuff",
-                            atk: 4,
-                        });
-
-                        ally.addComponent({
-                            type: "Status",
-                            value: "Bonus",
-                            source: this.entity
-                        });
+                        applyMapComponent(ally, "MapBuff", {
+                            atk: 4
+                        }, this.entity);
                     }
                 }
             }

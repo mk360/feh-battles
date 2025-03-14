@@ -157,11 +157,11 @@ class CombatSystem extends System {
             let flatExtraDamage = 0;
             let damageIncreasePercentage = 100;
             attacker.getComponents("DamageIncrease").forEach((damageIncrease) => {
-                flatExtraDamage += damageIncrease.value;
+                flatExtraDamage += damageIncrease.amount;
             });
             attacker.getComponents("RoundDamageIncrease").forEach((damageIncrease) => {
-                if (damageIncrease.value) {
-                    flatExtraDamage += damageIncrease.value;
+                if (damageIncrease.amount) {
+                    flatExtraDamage += damageIncrease.amount;
                 }
                 if (damageIncrease.percentage) {
                     damageIncreasePercentage *= damageIncrease.percentage / 100;
@@ -252,7 +252,7 @@ class CombatSystem extends System {
 
             const damageAfterReduction = calculateFinalDamage({
                 netDamage: damageBeforeReduction,
-                flatReduction: flatExtraDamage,
+                flatReduction: 0,
                 damagePercentage
             });
 

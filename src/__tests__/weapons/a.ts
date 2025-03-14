@@ -102,7 +102,7 @@ describe("A", () => {
             weapon: "Iron Sword",
             rarity: 5
         }, TEAM_IDS[1], 2);
-        const attackerPosition = staff.getOne("Position") as null as { x: number; y: number };
+
         staff.addComponent({
             type: "InitiateCombat"
         });
@@ -151,7 +151,6 @@ describe("A", () => {
             rarity: 5
         }, TEAM_IDS[0], 1);
 
-        const attackerPosition = attacker.getOne("Position") as null as { x: number; y: number };
         attacker.addComponent({
             type: "InitiateCombat"
         });
@@ -201,7 +200,6 @@ describe("A", () => {
 
         assert.equal(elincia.getOne("Stats").spd, level40Stats["Elincia: Lost Princess"].spd.standard - 2);
 
-        const attackerPosition = elincia.getOne("Position") as null as { x: number; y: number };
         elincia.addComponent({
             type: "InitiateCombat"
         });
@@ -256,7 +254,6 @@ describe("A", () => {
 
         assert.equal(arden.getOne("Stats").spd, level40Stats["Arden: Strong and Tough"].spd.standard - 5);
 
-        const attackerPosition = arden.getOne("Position") as null as { x: number; y: number };
         arden.addComponent({
             type: "InitiateCombat"
         });
@@ -314,7 +311,6 @@ describe("A", () => {
 
         assert.equal(klein.getOne("Stats").spd, level40Stats["Klein: Silver Nobleman"].spd.standard - 2);
 
-        const attackerPosition = klein.getOne("Position") as null as { x: number; y: number };
         klein.addComponent({
             type: "InitiateCombat"
         });
@@ -602,7 +598,6 @@ describe("A", () => {
 
         opponent.getOne("Stats").spd = 99;
 
-        const attackerPosition = clarisse.getOne("Position") as null as { x: number; y: number };
         clarisse.addComponent({
             type: "Battling"
         });

@@ -20,7 +20,7 @@ export function calculateDamageBeforeReductions({ atkStat, effectiveness, advant
     let damageWithoutReduction = damageWithEffectiveness - netDefense;
 
     if (specialIncreasePercentage) {
-        damageWithoutReduction = Math.trunc(damageWithoutReduction * specialIncreasePercentage);
+        damageWithoutReduction = Math.trunc(damageWithoutReduction + damageWithoutReduction * specialIncreasePercentage / 100);
     }
 
     if (flatIncrease) {

@@ -167,9 +167,21 @@ class CombatSystem extends System {
             }
 
             let flatExtraDamage = 0;
-            let damageIncreasePercentage = 100;
+            let damageIncreasePercentage = 0;
+            const percentageIncreases = Array.from(attacker.getComponents("DamageIncrease")).concat(Array.from(attacker.getComponents("RoundDamageIncrease"))).filter((i) => !!i.percentage);
+
+            if (percentageIncreases.length) {
+                damageIncreasePercentage = 100;
+            }
+
             attacker.getComponents("DamageIncrease").forEach((damageIncrease) => {
-                flatExtraDamage += damageIncrease.amount;
+                if (damageIncrease.amount) {
+                    flatExtraDamage += damageIncrease.amount;
+                    // if (attacker.getOne(""))
+                }
+                if (damageIncrease.percentage) {
+                    damageIncreasePercentage *= damageIncrease.percentage / 100;
+                }
             });
 
             attacker.getComponents("RoundDamageIncrease").forEach((damageIncrease) => {
@@ -217,7 +229,7 @@ class CombatSystem extends System {
                 effectiveness: effectivenessMultiplier,
                 defenseStat,
                 defensiveTerrain: combatMap.get(defender).defensiveTile,
-                specialIncreasePercentage: 0,
+                specialIncreasePercentage: damageIncreasePercentage,
                 flatIncrease: flatExtraDamage,
                 staffPenalty: turn.getOne("Weapon").weaponType === "staff" && !turn.getOne("NormalizeStaffDamage")
             });

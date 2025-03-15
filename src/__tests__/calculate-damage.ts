@@ -114,4 +114,20 @@ describe("calculateDamage", () => {
 
         assert.strictEqual(damage, 41);
     });
+
+    it("should take flat damage increases into account", () => {
+        const damage = calculateDamageBeforeReductions({
+            atkStat: 47,
+            advantage: 0,
+            affinity: 0,
+            defenseStat: 40,
+            effectiveness: 1,
+            defensiveTerrain: false,
+            specialIncreasePercentage: 0,
+            flatIncrease: 10,
+            staffPenalty: false,
+        });
+
+        assert.strictEqual(damage, 17);
+    });
 });

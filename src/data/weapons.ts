@@ -1124,7 +1124,7 @@ const WEAPONS: WeaponDict = {
         },
     },
     "Clarisse's Bow+": {
-        description: "Effective against flying foes. &lt;br/>If unit initiates combat, inflicts Atk/Spd-5 on foes within 2 spaces of target through their next actions after combat.",
+        description: "Effective against flying foes. If unit initiates combat, inflicts Atk/Spd-5 on foes within 2 spaces of target through their next actions after combat.",
         type: "bow",
         might: 11,
         effectiveAgainst: ["flier"],
@@ -1178,7 +1178,7 @@ const WEAPONS: WeaponDict = {
                 if (specialData.onCombatRoundAttack) {
                     this.entity.addComponent({
                         type: "RoundDamageIncrease",
-                        value: 10
+                        amount: 10
                     });
                 }
             }
@@ -1320,7 +1320,7 @@ const WEAPONS: WeaponDict = {
                 if (specialData.onCombatRoundAttack) {
                     this.entity.addComponent({
                         type: "RoundDamageIncrease",
-                        value: 10
+                        amount: 10
                     });
                 }
             }
@@ -3514,7 +3514,7 @@ const WEAPONS: WeaponDict = {
                 if (specialData.onCombatRoundAttack) {
                     this.entity.addComponent({
                         type: "RoundDamageIncrease",
-                        value: 10
+                        amount: 10
                     });
                 }
             }
@@ -4271,7 +4271,7 @@ const WEAPONS: WeaponDict = {
             if (specialData.onCombatRoundAttack && hp / maxHP <= 0.75) {
                 this.entity.addComponent({
                     type: "RoundDamageIncrease",
-                    value: 10
+                    amount: 10
                 });
             }
         },
@@ -4495,7 +4495,7 @@ const WEAPONS: WeaponDict = {
                 if (specialData.onCombatRoundAttack) {
                     this.entity.addComponent({
                         type: "RoundDamageIncrease",
-                        value: 10
+                        amount: 10
                     });
                 }
             }
@@ -4512,7 +4512,7 @@ const WEAPONS: WeaponDict = {
                 if (specialData.onCombatRoundAttack) {
                     this.entity.addComponent({
                         type: "RoundDamageIncrease",
-                        value: 10
+                        amount: 10
                     });
                 }
             }

@@ -85,7 +85,7 @@ const SPECIALS: SpecialsDict = {
             const stat = combatStats[defenseStat];
             this.entity.addComponent({
                 type: "RoundDamageIncrease",
-                value: Math.floor(stat * 0.5)
+                amount: Math.floor(stat * 0.5)
             });
 
             this.entity.addComponent({
@@ -114,7 +114,7 @@ const SPECIALS: SpecialsDict = {
 
             this.entity.addComponent({
                 type: "RoundDamageIncrease",
-                value: Math.floor(def * 0.5)
+                amount: Math.floor(def * 0.5)
             });
         }
     },
@@ -126,7 +126,7 @@ const SPECIALS: SpecialsDict = {
             const defStat = getTargetedDefenseStat(this.entity, target, combatStats);
             this.entity.addComponent({
                 type: "RoundDamageIncrease",
-                value: Math.floor(combatStats[defStat] * 0.8)
+                amount: Math.floor(combatStats[defStat] * 0.8)
             });
         },
         allowedWeaponTypes: exceptStaves,
@@ -238,7 +238,7 @@ const SPECIALS: SpecialsDict = {
             const { res } = getCombatStats(this.entity);
             this.entity.addComponent({
                 type: "RoundDamageIncrease",
-                value: Math.floor(res * 0.5)
+                amount: Math.floor(res * 0.5)
             })
         },
         allowedWeaponTypes: exceptStaves
@@ -261,7 +261,7 @@ const SPECIALS: SpecialsDict = {
             const { atk } = getCombatStats(this.entity);
             this.entity.addComponent({
                 type: "RoundDamageIncrease",
-                value: Math.floor(atk * 0.3)
+                amount: Math.floor(atk * 0.3)
             })
         },
         allowedWeaponTypes: exceptStaves
@@ -273,7 +273,7 @@ const SPECIALS: SpecialsDict = {
             const { atk } = getCombatStats(this.entity);
             this.entity.addComponent({
                 type: "RoundDamageIncrease",
-                value: Math.floor(atk / 2)
+                amount: Math.floor(atk / 2)
             });
         },
         allowedWeaponTypes: exceptStaves
@@ -317,7 +317,7 @@ const SPECIALS: SpecialsDict = {
             const { res } = getCombatStats(this.entity);
             this.entity.addComponent({
                 type: "RoundDamageIncrease",
-                value: Math.floor(res * 0.8)
+                amount: Math.floor(res * 0.8)
             });
         }
     },
@@ -341,7 +341,7 @@ const SPECIALS: SpecialsDict = {
 
             this.entity.addComponent({
                 type: "RoundDamageIncrease",
-                value: Math.floor(def * 0.5)
+                amount: Math.floor(def * 0.5)
             });
         }
     },
@@ -486,7 +486,7 @@ const SPECIALS: SpecialsDict = {
             const { res } = getCombatStats(this.entity);
             this.entity.addComponent({
                 type: "RoundDamageIncrease",
-                value: Math.floor(res / 2)
+                amount: Math.floor(res / 2)
             });
         },
         allowedWeaponTypes: exceptStaves
@@ -500,7 +500,7 @@ const SPECIALS: SpecialsDict = {
 
             this.entity.addComponent({
                 type: "RoundDamageIncrease",
-                value: Math.floor(def * 0.8)
+                amount: Math.floor(def * 0.8)
             });
         }
     },
@@ -526,7 +526,7 @@ const SPECIALS: SpecialsDict = {
             const { [defStat]: def } = getCombatStats(target);
             this.entity.addComponent({
                 type: "RoundDamageIncrease",
-                value: Math.floor(def * 0.5)
+                amount: Math.floor(def * 0.5)
             });
         },
         allowedWeaponTypes: exceptStaves
@@ -584,7 +584,7 @@ const SPECIALS: SpecialsDict = {
             const { [defStat]: def } = getCombatStats(target);
             this.entity.addComponent({
                 type: "RoundDamageIncrease",
-                value: Math.floor(def * 0.3)
+                amount: Math.floor(def * 0.3)
             });
         }
     },
@@ -597,7 +597,7 @@ const SPECIALS: SpecialsDict = {
             const { [defStat]: def } = getCombatStats(target);
             this.entity.addComponent({
                 type: "RoundDamageIncrease",
-                value: Math.floor(def * 0.3)
+                amount: Math.floor(def * 0.3)
             });
         }
     },
@@ -685,7 +685,7 @@ const SPECIALS: SpecialsDict = {
             const { spd } = getCombatStats(this.entity);
             this.entity.addComponent({
                 type: "RoundDamageIncrease",
-                value: Math.floor(spd * 0.4)
+                amount: Math.floor(spd * 0.4)
             });
         },
         allowedWeaponTypes: exceptStaves,
@@ -700,7 +700,7 @@ const SPECIALS: SpecialsDict = {
             const diff = maxHP - hp;
             this.entity.addComponent({
                 type: "RoundDamageIncrease",
-                value: Math.floor(diff * 0.3)
+                amount: Math.floor(diff * 0.3)
             });
         }
     },
@@ -713,7 +713,7 @@ const SPECIALS: SpecialsDict = {
             const diff = maxHP - hp;
             this.entity.addComponent({
                 type: "RoundDamageIncrease",
-                value: Math.floor(diff * 0.3)
+                amount: Math.floor(diff * 0.3)
             });
         }
     },
@@ -832,7 +832,7 @@ const SPECIALS: SpecialsDict = {
             const diff = maxHP - hp;
             this.entity.addComponent({
                 type: "RoundDamageIncrease",
-                value: Math.floor(diff * 0.5)
+                amount: Math.floor(diff * 0.5)
             });
         }
     },

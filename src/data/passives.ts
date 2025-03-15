@@ -632,7 +632,7 @@ const PASSIVES: PassivesDict = {
             if (hp / maxHP <= 0.25 && specialData.onCombatRoundAttack) {
                 this.entity.addComponent({
                     type: "RoundDamageIncrease",
-                    value: 10
+                    amount: 10
                 });
             }
         }
@@ -658,7 +658,7 @@ const PASSIVES: PassivesDict = {
             if (hp / maxHP <= 0.5 && specialData.onCombatRoundAttack) {
                 this.entity.addComponent({
                     type: "RoundDamageIncrease",
-                    value: 10
+                    amount: 10
                 });
             }
         }
@@ -685,7 +685,7 @@ const PASSIVES: PassivesDict = {
             if (hp / maxHP <= 0.75 && specialData.onCombatRoundAttack) {
                 this.entity.addComponent({
                     type: "RoundDamageIncrease",
-                    value: 10
+                    amount: 10
                 });
             }
 

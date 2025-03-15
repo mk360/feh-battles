@@ -136,21 +136,33 @@ class CombatSystem extends System {
             });
 
             const attackerSpecial = turn.getOne("Special");
-            if (attackerSpecial && combatMap.get(turn).cooldown === 0) {
+            if (attackerSpecial) {
+                const currentCooldown = combatMap.get(turn).cooldown;
                 const attackerSpecialData = SPECIALS[attackerSpecial.name];
-                if (attackerSpecialData.onCombatRoundAttack) {
-                    attackerSkills.onSpecialTrigger?.forEach((skill) => {
-                        const dexData = SKILLS[skill.name];
-                        dexData.onSpecialTrigger.call(skill, turn, turnData);
-                        attackerSpecial.update({
-                            cooldown: attackerSpecial.maxCooldown
+                if (currentCooldown === 0) {
+                    if (attackerSpecialData.onCombatRoundAttack) {
+                        attackerSkills.onSpecialTrigger?.forEach((skill) => {
+                            const dexData = SKILLS[skill.name];
+                            dexData.onSpecialTrigger.call(skill, turn, turnData);
                         });
-                    });
-                    attackerSpecialData.onCombatRoundAttack?.call(attackerSpecial, defender);
-                    turnData.attackerTriggeredSpecial = true;
-                    attackerSpecial.update({
-                        cooldown: attackerSpecial.maxCooldown
-                    });
+                        attackerSpecialData.onCombatRoundAttack?.call(attackerSpecial, defender);
+                        turnData.attackerTriggeredSpecial = true;
+                        if (turn.getOne("Battling")) {
+                            attackerSpecial.update({
+                                cooldown: attackerSpecial.maxCooldown
+                            });
+                        }
+                        combatMap.get(turn).cooldown = attackerSpecial.maxCooldown;
+                    }
+                } else {
+                    const decrease = getSpecialDecrease(turn);
+                    combatMap.get(turn).cooldown = Math.max(0, currentCooldown - decrease);
+                    turnData.attackerSpecialCooldown = combatMap.get(turn).cooldown;
+                    if (turn.getOne("Battling")) {
+                        turn.getOne("Special").update({
+                            cooldown: combatMap.get(turn).cooldown
+                        });
+                    }
                 }
             }
 
@@ -159,6 +171,7 @@ class CombatSystem extends System {
             attacker.getComponents("DamageIncrease").forEach((damageIncrease) => {
                 flatExtraDamage += damageIncrease.amount;
             });
+
             attacker.getComponents("RoundDamageIncrease").forEach((damageIncrease) => {
                 if (damageIncrease.amount) {
                     flatExtraDamage += damageIncrease.amount;
@@ -226,18 +239,6 @@ class CombatSystem extends System {
                 }
             }
 
-            if (turn.getOne("Special")) {
-                const decrease = getSpecialDecrease(turn);
-                const currentCooldown = combatMap.get(turn).cooldown;
-                combatMap.get(turn).cooldown = Math.max(0, currentCooldown - decrease);
-                turnData.attackerSpecialCooldown = combatMap.get(turn).cooldown;
-                if (turn.getOne("Battling")) {
-                    turn.getOne("Special").update({
-                        cooldown: combatMap.get(turn).cooldown
-                    });
-                }
-            }
-
             if (defender.getOne("Special")) {
                 const decrease = getSpecialDecrease(defender);
                 const currentCooldown = combatMap.get(defender).cooldown;
@@ -256,8 +257,11 @@ class CombatSystem extends System {
                 damagePercentage
             });
 
-            if (defender.getOne("ForceSurvival") && damageAfterReduction >= combatMap.get(defender).hp) {
+            if (defender.getOne("ForceSurvival") && !defender.getOne("ForcedSurvival") && damageAfterReduction >= combatMap.get(defender).hp) {
                 defender.removeComponent(defender.getOne("ForceSurvival"));
+                defender.addComponent({
+                    type: "ForcedSurvival"
+                });
                 combatMap.get(defender).hp = 1;
             } else {
                 combatMap.get(defender).hp -= damageAfterReduction;

@@ -5,7 +5,7 @@ import { Component } from "ape-ecs";
  */
 class RoundDamageIncrease extends Component {
     static properties = {
-        value: 0,
+        amount: 0,
         percentage: 0,
     }
 };

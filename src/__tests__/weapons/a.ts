@@ -11,6 +11,11 @@ import TEAM_IDS from "../constants/teamIds";
 import TEST_GAME_WORLD from "../constants/world";
 import killUnits from "../utils/kill-units";
 
+// const worker = new Worker("../constants/game-world-worker.ts");
+// worker.on("message", (world) => {
+//     globalThis.__gameWorld = world;
+// });
+
 describe("A", () => {
     it("Absorb", () => {
         const staff = TEST_GAME_WORLD.createHero({

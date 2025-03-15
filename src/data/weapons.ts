@@ -1199,7 +1199,7 @@ const WEAPONS: WeaponDict = {
     "Cupid Arrow": {
         type: "bow",
         effectiveAgainst: ["flier"],
-        description: "Effective against flying foes.&lt;br>If unit initiates combat, grants Def/Res+2 to allies within 2 spaces for 1 turn after combat.",
+        description: "Effective against flying foes. If unit initiates combat, grants Def/Res+2 to allies within 2 spaces for 1 turn after combat.",
         might: 8,
         onCombatAfter(battleState) {
             if (this.entity.getOne("InitiateCombat")) {
@@ -1249,7 +1249,7 @@ const WEAPONS: WeaponDict = {
         },
         onCombatAfter() {
             this.entity.addComponent({
-                type: "AoEDamage",
+                type: "MapDamage",
                 value: 4
             });
         },

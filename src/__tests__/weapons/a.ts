@@ -1,5 +1,5 @@
 import assert from "node:assert";
-import { describe, it } from "node:test";
+import { afterEach, describe, it } from "node:test";
 import SPECIALS from "../../data/specials";
 import WEAPONS from "../../data/weapons";
 import checkBattleEffectiveness from "../../systems/effectiveness";
@@ -17,6 +17,9 @@ import killUnits from "../utils/kill-units";
 // });
 
 describe("A", () => {
+    afterEach(() => {
+        killUnits(Array.from(TEST_GAME_WORLD.getEntities("Side")));
+    });
     it("Absorb", () => {
         const staff = TEST_GAME_WORLD.createHero({
             name: "Priscilla: Delicate Princess",
@@ -59,8 +62,6 @@ describe("A", () => {
         TEST_GAME_WORLD.runSystems("after-combat");
         const dealDamage = staff.getOne("DealDamage");
         assert.equal(dealDamage.attacker.heal, Math.floor(dealDamage.attacker.damage / 2));
-
-        killUnits([staff, opponent]);
     });
 
     it("Absorb+", () => {
@@ -123,8 +124,6 @@ describe("A", () => {
         const dealDamage = staff.getOne("DealDamage");
         assert.equal(dealDamage.attacker.heal, Math.floor(dealDamage.attacker.damage / 2));
         assert.equal(ally.getOne("Stats").hp, 8);
-
-        killUnits([staff, opponent, ally]);
     });
 
     it("Alondite", () => {
@@ -170,8 +169,6 @@ describe("A", () => {
         TEST_GAME_WORLD.runSystems("after-combat");
         const dealDamage = blackKnight.getOne("DealDamage");
         assert(dealDamage);
-
-        killUnits([blackKnight, attacker]);
     });
 
     it("Amiti", () => {
@@ -224,8 +221,6 @@ describe("A", () => {
         assert.equal(turns[1], elincia);
 
         TEST_GAME_WORLD.runSystems("after-combat");
-
-        killUnits([elincia, opponent]);
     });
 
     it("Arden's Blade", () => {
@@ -281,8 +276,6 @@ describe("A", () => {
         assert.equal(turns[3], opponent);
 
         TEST_GAME_WORLD.runSystems("after-combat");
-
-        killUnits([arden, opponent]);
     });
 
     it("Argent Bow", () => {
@@ -339,8 +332,6 @@ describe("A", () => {
         assert(!turns.includes(opponent));
 
         TEST_GAME_WORLD.runSystems("after-combat");
-
-        killUnits([klein, opponent]);
     });
 
     it("Armads", () => {
@@ -372,7 +363,6 @@ describe("A", () => {
             rarity: 5
         }, TEAM_IDS[1], 2);
 
-        const defenderPosition = hector.getOne("Position") as null as { x: number; y: number };
         hector.addComponent({
             type: "Battling"
         });
@@ -436,8 +426,6 @@ describe("A", () => {
         assert.equal(turns2[0], opponent2);
         assert.equal(turns2[1], hector2);
         assert.equal(turns2[2], undefined);
-
-        killUnits([hector, opponent, hector2, opponent2]);
     });
 
     it("Armorslayer & Armorslayer+", () => {
@@ -485,8 +473,6 @@ describe("A", () => {
 
         assert(checkBattleEffectiveness(gray, opponent));
         assert(checkBattleEffectiveness(gray2, opponent));
-
-        killUnits([gray, opponent, gray2]);
     });
 
     it("Arthur's Axe", () => {
@@ -548,8 +534,6 @@ describe("A", () => {
         assert.equal(combatBuff.spd, 3);
         assert.equal(combatBuff.def, 3);
         assert.equal(combatBuff.res, 3);
-
-        killUnits([arthur, opponent]);
     });
 
     it("Assault", () => {
@@ -568,8 +552,6 @@ describe("A", () => {
         }, TEAM_IDS[0], 1);
 
         assert.equal(staff.getOne("Stats").atk, level40Stats["Priscilla: Delicate Princess"].atk.standard + WEAPONS["Assault"].might);
-
-        killUnits([staff]);
     });
 
     it("Assassin's Bow & Assassin's Bow+", () => {
@@ -626,8 +608,6 @@ describe("A", () => {
         assert.equal(turns[2], clarisse);
 
         TEST_GAME_WORLD.runSystems("after-combat");
-
-        killUnits([clarisse, opponent]);
     });
 
     it("Audhulma", () => {
@@ -648,8 +628,6 @@ describe("A", () => {
         assert.equal(joshua.getOne("Stats").res, level40Stats["Joshua: Tempest King"].res.standard + 5);
 
         assert.equal(joshua.getOne("Special").maxCooldown, SPECIALS["Aether"].cooldown - 1);
-
-        killUnits([joshua]);
     });
 
     it("Aura", () => {
@@ -713,8 +691,6 @@ describe("A", () => {
         TEST_GAME_WORLD.runSystems("combat");
         TEST_GAME_WORLD.runSystems("after-combat");
         assert.equal(ally.getOne("Stats").hp, 6);
-
-        killUnits([linde, opponent, ally]);
     });
 
     it("Axe of Virility", () => {
@@ -747,8 +723,6 @@ describe("A", () => {
         }, TEAM_IDS[1], 2);
 
         assert(checkBattleEffectiveness(bartre, opponent));
-
-        killUnits([opponent, bartre]);
     });
 
     it("Ayra's Blade", () => {
@@ -798,7 +772,5 @@ describe("A", () => {
         TEST_GAME_WORLD.runSystems("after-combat");
 
         assert.equal(ayra.getOne("Special").cooldown, Math.max(SPECIALS["Aether"].cooldown - turns.filter((i) => ayra === i).length * 2 - turns.filter((i) => ayra !== i).length, 0));
-
-        killUnits([ayra, opponent]);
     });
 });

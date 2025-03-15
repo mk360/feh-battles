@@ -1281,7 +1281,7 @@ const WEAPONS: WeaponDict = {
                 const enemies = getAllies(battleState, target);
                 for (let enemy of enemies) {
                     if (HeroSystem.getDistance(enemy, target) <= 2) {
-                        applyMapComponent(target, "MapDebuff", {
+                        applyMapComponent(enemy, "MapDebuff", {
                             atk: -5,
                             spd: -5,
                         }, this.entity);
@@ -1299,7 +1299,7 @@ const WEAPONS: WeaponDict = {
                 const enemies = getAllies(battleState, target);
                 for (let enemy of enemies) {
                     if (HeroSystem.getDistance(enemy, target) <= 2) {
-                        applyMapComponent(target, "MapDebuff", {
+                        applyMapComponent(enemy, "MapDebuff", {
                             atk: -5,
                             spd: -5
                         }, this.entity);

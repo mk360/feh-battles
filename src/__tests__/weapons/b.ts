@@ -1,5 +1,5 @@
 import assert from "assert";
-import { describe, it } from "node:test";
+import { describe, it, afterEach } from "node:test";
 import SPECIALS from "../../data/specials";
 import { applyMapComponent } from "../../systems/apply-map-effect";
 import checkBattleEffectiveness from "../../systems/effectiveness";
@@ -14,6 +14,9 @@ import level40Stats from "../constants/lv40_stats.json";
 import getAffinity from "../../systems/get-affinity";
 
 describe("B", () => {
+    afterEach(() => {
+        killUnits(Array.from(TEST_GAME_WORLD.getEntities("Side")));
+    });
     it("Basilikos", () => {
         const raymond = TEST_GAME_WORLD.createHero({
             name: "Raven: Peerless Fighter",
@@ -30,8 +33,6 @@ describe("B", () => {
         }, TEAM_IDS[0], 1);
 
         assert.equal(raymond.getOne("Special").maxCooldown, SPECIALS[raymond.getOne("Special").name].cooldown - 1);
-
-        killUnits([raymond]);
     });
 
     it("Berkut's Lance && Berkut's Lance+", () => {
@@ -84,7 +85,7 @@ describe("B", () => {
         TEST_GAME_WORLD.runSystems("combat");
         assert.equal(getCombatStats(berkut1).res, getMapStats(berkut1).res + 4);
         TEST_GAME_WORLD.runSystems("after-combat");
-        killUnits([berkut1, berkut2]);
+
     });
 
     it("Beruka's Axe", () => {
@@ -104,7 +105,7 @@ describe("B", () => {
 
         assert.equal(beruka.getOne("Special").maxCooldown, SPECIALS[beruka.getOne("Special").name].cooldown - 1);
 
-        killUnits([beruka]);
+
     });
 
     it("Blazing Durandal", () => {
@@ -187,7 +188,7 @@ describe("B", () => {
 
         assert.equal(roy2.getOne("Special").cooldown, Math.max(SPECIALS["Aether"].cooldown - turns2.filter((i) => roy2 === i).length * 2 - turns2.filter((i) => roy2 !== i).length, 0));
 
-        killUnits([roy2, opponent]);
+
     });
 
     it("Blárblade & Blárblade+", () => {
@@ -289,7 +290,7 @@ describe("B", () => {
 
         TEST_GAME_WORLD.runSystems("after-combat");
 
-        killUnits([robin2, opponent]);
+
     });
 
     it("Blárowl", () => {
@@ -391,7 +392,7 @@ describe("B", () => {
 
         TEST_GAME_WORLD.runSystems("after-combat");
 
-        killUnits([ally1, ally2, robin, opponent]);
+
     });
 
     it("Blárowl+", () => {
@@ -493,7 +494,7 @@ describe("B", () => {
 
         TEST_GAME_WORLD.runSystems("after-combat");
 
-        killUnits([ally1, ally2, robin, opponent]);
+
     });
 
     it("Blárraven", () => {
@@ -567,7 +568,7 @@ describe("B", () => {
         assert(!robin.getOne("GuaranteedAdvantage"));
         assert.equal(getAttackerAdvantage(robin, opponent), 0);
 
-        killUnits([robin, opponent, otherColor]);
+
     });
 
     it("Blárraven+", () => {
@@ -641,7 +642,7 @@ describe("B", () => {
         assert(!robin.getOne("GuaranteedAdvantage"));
         assert.equal(getAttackerAdvantage(robin, opponent), 0);
 
-        killUnits([robin, opponent, otherColor]);
+
     });
 
     it("Blárwolf", () => {
@@ -691,7 +692,7 @@ describe("B", () => {
 
         assert(!checkBattleEffectiveness(mae, anna));
 
-        killUnits([mae, anna, cain]);
+
     });
 
     it("Blárwolf+", () => {
@@ -741,7 +742,7 @@ describe("B", () => {
 
         assert(!checkBattleEffectiveness(mae, anna));
 
-        killUnits([anna, cain, mae]);
+
     });
 
     it("Blue Egg", () => {
@@ -793,7 +794,7 @@ describe("B", () => {
 
         assert.equal(unit.getOne("Stats").hp, 14);
 
-        killUnits([unit, enemy]);
+
     });
 
     it("Blue Egg+", () => {
@@ -845,7 +846,7 @@ describe("B", () => {
 
         assert.equal(unit.getOne("Stats").hp, 14);
 
-        killUnits([unit, enemy]);
+
     });
 
     it("Book of Orchids", () => {
@@ -895,7 +896,7 @@ describe("B", () => {
         assert.equal(buffs.atk, 6);
         TEST_GAME_WORLD.runSystems("after-combat");
 
-        killUnits([unit, enemy]);
+
     });
 
     it("Bow of Beauty", () => {
@@ -941,7 +942,7 @@ describe("B", () => {
 
         assert.equal(unit.getOne("Special").maxCooldown, SPECIALS[unit.getOne("Special").name].cooldown - 1);
 
-        killUnits([unit, enemy]);
+
     });
 
     for (let rank of ["", "+"]) {
@@ -1007,7 +1008,7 @@ describe("B", () => {
             assert(!lanceUnit.getOne("BraveWeapon"));
             TEST_GAME_WORLD.runSystems("after-combat");
 
-            killUnits([lanceUnit, enemy]);
+
         });
 
         it(`Brave Sword${rank}`, () => {
@@ -1074,7 +1075,7 @@ describe("B", () => {
             assert(!swordUnit.getOne("BraveWeapon"));
             TEST_GAME_WORLD.runSystems("after-combat");
 
-            killUnits([swordUnit, enemy]);
+
         });
 
         it(`Brave Axe${rank}`, () => {
@@ -1139,7 +1140,7 @@ describe("B", () => {
             assert(!axeUnit.getOne("BraveWeapon"));
             TEST_GAME_WORLD.runSystems("after-combat");
 
-            killUnits([axeUnit, enemy]);
+
         });
 
         it(`Brave Bow${rank}`, () => {
@@ -1204,7 +1205,7 @@ describe("B", () => {
             assert(!bowUnit.getOne("BraveWeapon"));
             TEST_GAME_WORLD.runSystems("after-combat");
 
-            killUnits([bowUnit, enemy]);
+
         });
     }
 
@@ -1264,7 +1265,7 @@ describe("B", () => {
         const { attacker: { damage } } = unit.getOne("DealDamage");
         assert.equal(damage, combatStats.atk - Math.min(enemyCombatStats.res, enemyCombatStats.def));
 
-        killUnits([unit, opponent]);
+
     });
 
     it("Brynhildr", () => {
@@ -1314,7 +1315,7 @@ describe("B", () => {
         assert.equal(opponent.getOne("Status").value, "Gravity");
         assert(opponent.getOne("GravityComponent"));
 
-        killUnits([unit, opponent]);
+
     });
 
     it("Bull Blade", () => {
@@ -1411,7 +1412,7 @@ describe("B", () => {
         TEST_GAME_WORLD.runSystems("after-combat");
 
 
-        killUnits([unit, ally, ally2, opponent]);
+
     });
 
     it("Bull Spear", () => {
@@ -1481,6 +1482,6 @@ describe("B", () => {
 
         TEST_GAME_WORLD.runSystems("after-combat");
 
-        killUnits([unit, opponent, otherOpponent]);
+
     });
 });

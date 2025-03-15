@@ -1,9 +1,9 @@
 import { describe, it, after } from "node:test";
-import TEST_GAME_WORLD from "./constants/world";
-import TEAM_IDS from "./constants/teamIds";
-import { getUnitsWithHighestValue } from "../systems/value-matchers";
+import TEST_GAME_WORLD from "../constants/world";
+import TEAM_IDS from "../constants/teamIds";
+import { getUnitsWithHighestValue } from "../../systems/value-matchers";
 import assert from "assert";
-import killUnits from "./utils/kill-units";
+import killUnits from "../utils/kill-units";
 
 describe("Get-units-with-highest-value", () => {
     const ally = TEST_GAME_WORLD.createHero({

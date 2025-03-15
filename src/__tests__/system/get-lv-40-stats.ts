@@ -1,9 +1,9 @@
-import getLv40Stats, { getSingleStatValue } from "../systems/unit-stats";
+import getLv40Stats, { getSingleStatValue } from "../../systems/unit-stats";
 import { describe, it } from "node:test";
 import assert from "node:assert";
-import characterData from "../data/characters.json";
-import correctLevel40Stats from "./constants/lv40_stats.json";
-import { Stat } from "../interfaces/types";
+import characterData from "../../data/characters.json";
+import correctLevel40Stats from "../constants/lv40_stats.json";
+import { Stat } from "../../interfaces/types";
 
 const STATS_ARRAY: Stat[] = ["hp", "atk", "spd", "def", "res"];
 

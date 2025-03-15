@@ -1,11 +1,11 @@
 import { Component } from "ape-ecs";
-import CHARACTERS from "../data/characters";
-import getCombatStats from "../systems/get-combat-stats";
-import getLv40Stats from "../systems/unit-stats";
-import TEST_GAME_WORLD from "./constants/world";
+import CHARACTERS from "../../data/characters";
+import getCombatStats from "../../systems/get-combat-stats";
+import getLv40Stats from "../../systems/unit-stats";
+import TEST_GAME_WORLD from "../constants/world";
 import { after, describe, it } from "node:test";
 import assert from "node:assert";
-import killUnits from "./utils/kill-units";
+import killUnits from "../utils/kill-units";
 
 describe("get-combat-stats", () => {
     const dexData = CHARACTERS["Ryoma: Peerless Samurai"];

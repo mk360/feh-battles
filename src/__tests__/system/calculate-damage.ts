@@ -1,4 +1,4 @@
-import { calculateDamageBeforeReductions } from "../systems/calculate-damage";
+import { calculateDamageBeforeReductions } from "../../systems/calculate-damage";
 import { describe, it } from "node:test";
 import assert from "node:assert";
 

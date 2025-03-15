@@ -1,9 +1,9 @@
-import getCombatStats from "../systems/get-combat-stats";
-import getTargetedDefenseStat from "../systems/get-targeted-defense-stat";
-import TEST_GAME_WORLD from "./constants/world";
+import getCombatStats from "../../systems/get-combat-stats";
+import getTargetedDefenseStat from "../../systems/get-targeted-defense-stat";
+import TEST_GAME_WORLD from "../constants/world";
 import { after, describe, it } from "node:test";
 import assert from "node:assert";
-import killUnits from "./utils/kill-units";
+import killUnits from "../utils/kill-units";
 
 describe("get-targeted-defense-stat", () => {
     const magicUser = TEST_GAME_WORLD.createHero({

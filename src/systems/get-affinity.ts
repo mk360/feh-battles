@@ -10,11 +10,9 @@ function getAffinity(unit1: Entity, unit2: Entity) {
     const { color: color2 } = unit2.getOne("Weapon");
     let colorRelationship: "advantage" | "disadvantage" | "neutral" = getColorRelationship(color1, color2);
 
-    if (unit1.getOne("ReverseAffinity") && colorRelationship === "disadvantage") {
+    if ((unit1.getOne("ReverseAffinity") || unit2.getOne("ReverseAffinity")) && colorRelationship === "disadvantage") {
         colorRelationship = "advantage";
-    }
-
-    if (unit2.getOne("ReverseAffinity") && colorRelationship === "advantage") {
+    } else if ((unit1.getOne("ReverseAffinity") || unit2.getOne("ReverseAffinity")) && colorRelationship === "advantage") {
         colorRelationship = "disadvantage";
     }
 

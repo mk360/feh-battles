@@ -1,10 +1,10 @@
 import { after, describe, it } from "node:test";
 import assert from "node:assert";
-import Teams from "../data/teams";
-import tileBitmasks from "../data/tile-bitmasks";
-import canReachTile from "../systems/can-reach-tile";
-import TEST_GAME_WORLD from "./constants/world";
-import killUnits from "./utils/kill-units";
+import Teams from "../../data/teams";
+import tileBitmasks from "../../data/tile-bitmasks";
+import canReachTile from "../../systems/can-reach-tile";
+import TEST_GAME_WORLD from "./../constants/world";
+import killUnits from "./../utils/kill-units";
 
 describe("canReachTile", () => {
     const unit = TEST_GAME_WORLD.createHero({

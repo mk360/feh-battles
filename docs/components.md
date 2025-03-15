@@ -70,6 +70,7 @@ These are the Component the Engine currently uses. This is an auto-generated doc
 | PreviewingBattle               | Denotes Heroes that participate in a combat preview.                                                                                 |
 | Refresher                      | A Hero who has a skill that grants another action (Dance, Sing and their variants).                                                  |
 | Reposition                     | Applies an effect similar to the Reposition assist. Hero moves another to their opposite side.                                       |
+| ReverseAffinity                | Reverse the color triangle affinity (red > blue for example)                                                                         |
 | RoundDamageIncrease            | Increases damage just for one round (either an absolute value or a % of the initial damage amount)                                   |
 | RoundDamageReduction           | Decreases damage just for one round (either an absolute value or a % of the initial damage amount)                                   |
 | Side                           | A Hero's team.                                                                                                                       |

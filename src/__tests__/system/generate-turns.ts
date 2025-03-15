@@ -1,10 +1,10 @@
 import { Component } from "ape-ecs";
-import generateTurns from "../systems/generate-turns";
-import getCombatStats from "../systems/get-combat-stats";
-import TEST_GAME_WORLD from "./constants/world";
+import generateTurns from "../../systems/generate-turns";
+import getCombatStats from "../../systems/get-combat-stats";
+import TEST_GAME_WORLD from "../constants/world";
 import { after, describe, it } from "node:test";
 import assert from "node:assert";
-import killUnits from "./utils/kill-units";
+import killUnits from "../utils/kill-units";
 
 describe("generate-turns", () => {
     const hero1 = TEST_GAME_WORLD.createHero({

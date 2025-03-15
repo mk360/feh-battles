@@ -1462,10 +1462,9 @@ const WEAPONS: WeaponDict = {
             const allies = getAllies(battleState, this.entity);
             for (let ally of allies) {
                 if (HeroSystem.getDistance(this.entity, ally) === 1 && ["sword", "lance", "axe", "breath", "beast"].includes(ally.getOne("Weapon").weaponType)) {
-                    ally.addComponent({
-                        type: "MapBuff",
+                    applyMapComponent(ally, "MapBuff", {
                         atk: 6
-                    });
+                    }, this.entity);
                 }
             }
         },
@@ -1521,13 +1520,13 @@ const WEAPONS: WeaponDict = {
         },
     },
     "Deathly Dagger": {
-        description: "After combat, if unit attacked, inflicts Def/Res-7 on foe through its next action.&lt;br>If unit initiates combat, deals 7 damage to foe after combat.",
+        description: "After combat, if unit attacked, inflicts Def/Res-7 on foe through its next action. If unit initiates combat, deals 7 damage to foe after combat.",
         type: "dagger",
         might: 11,
         exclusiveTo: ["Jaffar: Angel of Death"],
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
-                Effects.dagger(this, battleState, target, {
+                applyMapComponent(target, "MapDebuff", {
                     def: -7,
                     res: -7
                 });
@@ -1535,7 +1534,7 @@ const WEAPONS: WeaponDict = {
 
             if (this.entity.getOne("InitiateCombat")) {
                 target.addComponent({
-                    type: "AoEDamage",
+                    type: "MapDamage",
                     value: 7
                 });
             }

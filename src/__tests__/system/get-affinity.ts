@@ -5,7 +5,7 @@ import killUnits from "../utils/kill-units";
 import assert from "assert";
 import getAffinity from "../../systems/get-affinity";
 
-describe.only("get-affinity", () => {
+describe("get-affinity", () => {
     const unit1 = TEST_GAME_WORLD.createHero({
         name: "Chrom: Exalted Prince",
         weapon: "",

@@ -946,138 +946,6 @@ describe("B", () => {
     });
 
     for (let rank of ["", "+"]) {
-        it(`Brave Lance${rank}`, () => {
-            const lanceUnit = TEST_GAME_WORLD.createHero({
-                name: "Abel: The Panther",
-                skills: {
-                    A: "",
-                    B: "",
-                    C: "",
-                    S: "",
-                    assist: "",
-                    special: "",
-                },
-                weapon: `Brave Lance${rank}`,
-                rarity: 5,
-            }, TEAM_IDS[0], 1);
-
-            const enemy = TEST_GAME_WORLD.createHero({
-                name: "Abel: The Panther",
-                weapon: "",
-                skills: {
-                    A: "",
-                    assist: "",
-                    S: "",
-                    special: "",
-                    B: "",
-                    C: "",
-                },
-                rarity: 5,
-            }, TEAM_IDS[1], 1);
-
-            enemy.addComponent({
-                type: "Battling"
-            });
-
-            enemy.getOne("Stats").hp = 999;
-
-            lanceUnit.addComponent({
-                type: "InitiateCombat"
-            });
-
-            lanceUnit.addComponent({
-                type: "Battling"
-            });
-
-            TEST_GAME_WORLD.runSystems("before-combat");
-            TEST_GAME_WORLD.runSystems("combat");
-            assert(lanceUnit.getOne("BraveWeapon"));
-            const turns = generateTurns(lanceUnit, enemy, getCombatStats(lanceUnit), getCombatStats(enemy));
-            assert.equal(turns[0], lanceUnit);
-            assert.equal(turns[1], lanceUnit);
-            TEST_GAME_WORLD.runSystems("after-combat");
-
-            lanceUnit.removeComponent(lanceUnit.getOne("InitiateCombat"));
-
-            enemy.addComponent({
-                type: "InitiateCombat"
-            });
-
-            TEST_GAME_WORLD.runSystems("before-combat");
-            TEST_GAME_WORLD.runSystems("combat");
-            assert(!lanceUnit.getOne("BraveWeapon"));
-            TEST_GAME_WORLD.runSystems("after-combat");
-
-
-        });
-
-        it(`Brave Sword${rank}`, () => {
-            const swordUnit = TEST_GAME_WORLD.createHero({
-                name: "Cain: The Bull",
-                skills: {
-                    A: "",
-                    B: "",
-                    C: "",
-                    S: "",
-                    assist: "",
-                    special: "",
-                },
-                weapon: `Brave Sword${rank}`,
-                rarity: 5,
-            }, TEAM_IDS[0], 1);
-
-            assert.equal(swordUnit.getOne("Stats").spd, level40Stats["Cain: The Bull"].spd.standard - 5);
-
-            const enemy = TEST_GAME_WORLD.createHero({
-                name: "Cain: The Bull",
-                weapon: "",
-                skills: {
-                    A: "",
-                    assist: "",
-                    S: "",
-                    special: "",
-                    B: "",
-                    C: "",
-                },
-                rarity: 5,
-            }, TEAM_IDS[1], 1);
-
-            enemy.addComponent({
-                type: "Battling"
-            });
-
-            enemy.getOne("Stats").hp = 999;
-
-            swordUnit.addComponent({
-                type: "InitiateCombat"
-            });
-
-            swordUnit.addComponent({
-                type: "Battling"
-            });
-
-            TEST_GAME_WORLD.runSystems("before-combat");
-            TEST_GAME_WORLD.runSystems("combat");
-            assert(swordUnit.getOne("BraveWeapon"));
-            const turns = generateTurns(swordUnit, enemy, getCombatStats(swordUnit), getCombatStats(enemy));
-            assert.equal(turns[0], swordUnit);
-            assert.equal(turns[1], swordUnit);
-            TEST_GAME_WORLD.runSystems("after-combat");
-
-            swordUnit.removeComponent(swordUnit.getOne("InitiateCombat"));
-
-            enemy.addComponent({
-                type: "InitiateCombat"
-            });
-
-            TEST_GAME_WORLD.runSystems("before-combat");
-            TEST_GAME_WORLD.runSystems("combat");
-            assert(!swordUnit.getOne("BraveWeapon"));
-            TEST_GAME_WORLD.runSystems("after-combat");
-
-
-        });
-
         it(`Brave Axe${rank}`, () => {
             const axeUnit = TEST_GAME_WORLD.createHero({
                 name: "Ike: Brave Mercenary",
@@ -1124,24 +992,13 @@ describe("B", () => {
             TEST_GAME_WORLD.runSystems("before-combat");
             TEST_GAME_WORLD.runSystems("combat");
             assert(axeUnit.getOne("BraveWeapon"));
+            assert(!enemy.getOne("BraveWeapon"));
             const turns = generateTurns(axeUnit, enemy, getCombatStats(axeUnit), getCombatStats(enemy));
             assert.equal(turns[0], axeUnit);
             assert.equal(turns[1], axeUnit);
             TEST_GAME_WORLD.runSystems("after-combat");
-
-            axeUnit.removeComponent(axeUnit.getOne("InitiateCombat"));
-
-            enemy.addComponent({
-                type: "InitiateCombat"
-            });
-
-            TEST_GAME_WORLD.runSystems("before-combat");
-            TEST_GAME_WORLD.runSystems("combat");
-            assert(!axeUnit.getOne("BraveWeapon"));
-            TEST_GAME_WORLD.runSystems("after-combat");
-
-
         });
+
 
         it(`Brave Bow${rank}`, () => {
             const bowUnit = TEST_GAME_WORLD.createHero({
@@ -1160,7 +1017,7 @@ describe("B", () => {
 
             const enemy = TEST_GAME_WORLD.createHero({
                 name: "Klein: Silver Nobleman",
-                weapon: "",
+                weapon: `Brave Bow${rank}`,
                 skills: {
                     A: "",
                     assist: "",
@@ -1189,23 +1046,119 @@ describe("B", () => {
             TEST_GAME_WORLD.runSystems("before-combat");
             TEST_GAME_WORLD.runSystems("combat");
             assert(bowUnit.getOne("BraveWeapon"));
+            assert(!enemy.getOne("BraveWeapon"));
             const turns = generateTurns(bowUnit, enemy, getCombatStats(bowUnit), getCombatStats(enemy));
             assert.equal(turns[0], bowUnit);
             assert.equal(turns[1], bowUnit);
             TEST_GAME_WORLD.runSystems("after-combat");
+        });
 
-            bowUnit.removeComponent(bowUnit.getOne("InitiateCombat"));
+        it(`Brave Lance${rank}`, () => {
+            const lanceUnit = TEST_GAME_WORLD.createHero({
+                name: "Abel: The Panther",
+                skills: {
+                    A: "",
+                    B: "",
+                    C: "",
+                    S: "",
+                    assist: "",
+                    special: "",
+                },
+                weapon: `Brave Lance${rank}`,
+                rarity: 5,
+            }, TEAM_IDS[0], 1);
+
+            const enemy = TEST_GAME_WORLD.createHero({
+                name: "Abel: The Panther",
+                weapon: `Brave Lance${rank}`,
+                skills: {
+                    A: "",
+                    assist: "",
+                    S: "",
+                    special: "",
+                    B: "",
+                    C: "",
+                },
+                rarity: 5,
+            }, TEAM_IDS[1], 1);
 
             enemy.addComponent({
+                type: "Battling"
+            });
+
+            enemy.getOne("Stats").hp = 999;
+
+            lanceUnit.addComponent({
                 type: "InitiateCombat"
+            });
+
+            lanceUnit.addComponent({
+                type: "Battling"
             });
 
             TEST_GAME_WORLD.runSystems("before-combat");
             TEST_GAME_WORLD.runSystems("combat");
-            assert(!bowUnit.getOne("BraveWeapon"));
+            assert(lanceUnit.getOne("BraveWeapon"));
+            assert(!enemy.getOne("BraveWeapon"));
+            const turns = generateTurns(lanceUnit, enemy, getCombatStats(lanceUnit), getCombatStats(enemy));
+            assert.equal(turns[0], lanceUnit);
+            assert.equal(turns[1], lanceUnit);
             TEST_GAME_WORLD.runSystems("after-combat");
+        });
 
+        it(`Brave Sword${rank}`, () => {
+            const swordUnit = TEST_GAME_WORLD.createHero({
+                name: "Cain: The Bull",
+                skills: {
+                    A: "",
+                    B: "",
+                    C: "",
+                    S: "",
+                    assist: "",
+                    special: "",
+                },
+                weapon: `Brave Sword${rank}`,
+                rarity: 5,
+            }, TEAM_IDS[0], 1);
 
+            assert.equal(swordUnit.getOne("Stats").spd, level40Stats["Cain: The Bull"].spd.standard - 5);
+
+            const enemy = TEST_GAME_WORLD.createHero({
+                name: "Cain: The Bull",
+                weapon: `Brave Sword${rank}`,
+                skills: {
+                    A: "",
+                    assist: "",
+                    S: "",
+                    special: "",
+                    B: "",
+                    C: "",
+                },
+                rarity: 5,
+            }, TEAM_IDS[1], 1);
+
+            enemy.addComponent({
+                type: "Battling"
+            });
+
+            enemy.getOne("Stats").hp = 999;
+
+            swordUnit.addComponent({
+                type: "InitiateCombat"
+            });
+
+            swordUnit.addComponent({
+                type: "Battling"
+            });
+
+            TEST_GAME_WORLD.runSystems("before-combat");
+            TEST_GAME_WORLD.runSystems("combat");
+            assert(swordUnit.getOne("BraveWeapon"));
+            assert(!enemy.getOne("BraveWeapon"));
+            const turns = generateTurns(swordUnit, enemy, getCombatStats(swordUnit), getCombatStats(enemy));
+            assert.equal(turns[0], swordUnit);
+            assert.equal(turns[1], swordUnit);
+            TEST_GAME_WORLD.runSystems("after-combat");
         });
     }
 
@@ -1381,6 +1334,7 @@ describe("B", () => {
         unit.getOne("Stats").hp = 999;
         opponent.getOne("Stats").hp = 999;
 
+        TEST_GAME_WORLD.runSystems("before-combat");
         TEST_GAME_WORLD.runSystems("combat");
 
         const combatBuff = unit.getOne("CombatBuff");
@@ -1403,6 +1357,7 @@ describe("B", () => {
             rarity: 5
         }, TEAM_IDS[0], 2);
 
+        TEST_GAME_WORLD.runSystems("before-combat");
         TEST_GAME_WORLD.runSystems("combat");
 
         const secondCombatBuff = unit.getOne("CombatBuff");
@@ -1410,9 +1365,6 @@ describe("B", () => {
         assert.equal(secondCombatBuff.def, 4);
 
         TEST_GAME_WORLD.runSystems("after-combat");
-
-
-
     });
 
     it("Bull Spear", () => {
@@ -1458,6 +1410,7 @@ describe("B", () => {
         unit.getOne("Stats").hp = 999;
         opponent.getOne("Stats").hp = 999;
 
+        TEST_GAME_WORLD.runSystems("before-combat");
         TEST_GAME_WORLD.runSystems("combat");
 
         assert.equal(getAffinity(unit, opponent), 0.2);

@@ -192,7 +192,7 @@ const PASSIVES: PassivesDict = {
         slot: "B",
         description: `Neutralizes cavalry and flying foes' bonuses (from skills like Fortify, Rally, etc.) during combat. (Skill cannot be inherited.)`,
         onCombatStart(state, target) {
-            if (target.has("Panic")) return;
+            if (target.has("PanicComponent")) return;
             if (["flier", "cavalry"].includes(target.getOne("MovementType").value)) {
                 target.addComponent({
                     type: "NeutralizeMapBuffs",
@@ -3122,7 +3122,7 @@ const PASSIVES: PassivesDict = {
                 if (enemyPosition.x === x || enemyPosition.y === y) {
                     const { hp: enemyHp } = enemy.getOne("Stats");
                     if (enemyHp <= hp - 5) {
-                        applyMapComponent(enemy, "Panic", {}, this.entity);
+                        applyMapComponent(enemy, "PanicComponent", {}, this.entity);
                     }
                 }
             }
@@ -3142,7 +3142,7 @@ const PASSIVES: PassivesDict = {
                 if (enemyPosition.x === x || enemyPosition.y === y) {
                     const { hp: enemyHp } = enemy.getOne("Stats");
                     if (enemyHp <= hp - 3) {
-                        applyMapComponent(enemy, "Panic", {}, this.entity);
+                        applyMapComponent(enemy, "PanicComponent", {}, this.entity);
                     }
                 }
             }
@@ -3162,7 +3162,7 @@ const PASSIVES: PassivesDict = {
                 if (enemyPosition.x === x || enemyPosition.y === y) {
                     const { hp: enemyHp } = enemy.getOne("Stats");
                     if (enemyHp < hp) {
-                        applyMapComponent(enemy, "Panic", {}, this.entity);
+                        applyMapComponent(enemy, "PanicComponent", {}, this.entity);
                     }
                 }
             }

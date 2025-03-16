@@ -7,11 +7,11 @@ type WithSource<Status extends typeof STATUSES[number], T = {}> = { status: Stat
 interface MapComponentsDict {
     MapBuff: WithSource<"Bonus", Stats>;
     MapDebuff: WithSource<"Penalty", Stats>;
-    Panic: WithSource<"Panic">;
     GravityComponent: WithSource<"Gravity">;
     Guidance: WithSource<"Guidance">;
     IncreasedMovement: WithSource<"Increased Movement">;
     Guard: WithSource<"Guard">;
+    PanicComponent: WithSource<"Panic">;
     PreventCounterattack: WithSource<"Prevent Counterattack">;
 }
 
@@ -24,7 +24,7 @@ const StatusesDict: {
     MapDebuff: "Penalty",
     IncreasedMovement: "Increased Movement",
     Guidance: "Guidance",
-    Panic: "Panic",
+    PanicComponent: "Panic",
     "PreventCounterattack": "Prevent Counterattack"
 }
 
@@ -35,7 +35,7 @@ const ReverseStatusesDict = {
     Penalty: "MapDebuff",
     "Increased Movement": "IncreasedMovement",
     Guidance: "Guidance",
-    Panic: "Panic",
+    Panic: "PanicComponent",
     "Prevent Counterattack": "PreventCounterattack"
 };
 

@@ -1562,7 +1562,7 @@ const WEAPONS: WeaponDict = {
             const { value: startingHP } = this.entity.getOne("StartingHP");
             if (hp === startingHP && hp === maxHP) {
                 this.entity.addComponent({
-                    type: "AoEDamage",
+                    type: "MapDamage",
                     value: 2
                 });
             }
@@ -1588,15 +1588,15 @@ const WEAPONS: WeaponDict = {
         onCombatAfter() {
             const { hp, maxHP } = this.entity.getOne("Stats");
             const { value: startingHP } = this.entity.getOne("StartingHP");
-            if (hp === startingHP && hp === maxHP) {
+            if (hp === startingHP && hp === maxHP && this.entity.getOne("DealDamage")) {
                 this.entity.addComponent({
-                    type: "AoEDamage",
+                    type: "MapDamage",
                     value: 2
                 });
             }
         }
     },
-    "Devil's Axe": {
+    "Devil Axe": {
         type: "axe",
         exclusiveTo: ["Barst: The Hatchet"],
         might: 16,
@@ -1613,30 +1613,34 @@ const WEAPONS: WeaponDict = {
         onCombatAfter() {
             if (this.entity.getOne("DealDamage")) {
                 this.entity.addComponent({
-                    type: "AoEDamage",
+                    type: "MapDamage",
                     value: 4
                 });
             }
         },
     },
     "Dignified Bow": {
-        description: "Effective against flying foes. At start of turn, if any foe's HP ≤ unit's HP-1 and that foe is adjacent to another foe, inflicts\u3010Panic\u3011on that foe.",
+        description: "Effective against flying foes. At start of turn, if any foe's HP ≤ unit's HP-1 and that foe is adjacent to another foe, inflicts【Panic】on that foe.",
         might: 14,
         effectiveAgainst: ["flier"],
         exclusiveTo: ["Virion: Elite Archer"],
         type: "bow",
         onTurnStart(state) {
-            const targetIds: string[] = [];
+            const targets: Entity[] = [];
             const enemies = getEnemies(state, this.entity);
             const { hp } = this.entity.getOne("Stats");
             for (let enemy of enemies) {
                 const { hp: enemyHP } = enemy.getOne("Stats");
-                if (enemyHP > hp - 1 || targetIds.includes(enemy.id)) continue;
-                const allies = getAllies(state, enemy).filter((ally) => HeroSystem.getDistance(ally, enemy) === 1 && !targetIds.includes(ally.id));
-                targetIds.push(enemy.id);
+                if (enemyHP > hp - 1 || targets.includes(enemy)) continue;
+                const allies = getAllies(state, enemy).filter((ally) => HeroSystem.getDistance(ally, enemy) === 1 && !targets.includes(ally));
+                targets.push(enemy);
                 for (let ally of allies) {
-                    targetIds.push(ally.id);
+                    targets.push(ally);
                 }
+            }
+
+            for (let target of targets) {
+                applyMapComponent(target, "PanicComponent", null, this.entity);
             }
         },
     },
@@ -1676,8 +1680,8 @@ const WEAPONS: WeaponDict = {
         onCombatRoundDefense(enemy, combatRound) {
             if (combatRound.turnNumber === 1 && enemy.getOne("Weapon").weaponType === "tome") {
                 this.entity.addComponent({
-                    type: "DamageReduction",
-                    percentage: 0.5
+                    type: "RoundDamageReduction",
+                    percentage: 50
                 });
             }
         },
@@ -1754,7 +1758,7 @@ const WEAPONS: WeaponDict = {
         },
     },
     "Elise's Staff": {
-        description: "Grants Spd+3. Calculates damage from staff like other weapons. After combat, if unit attacked, inflicts \u3010Gravity\u3011on target and foes within 1 space of target.",
+        description: "Grants Spd+3. Calculates damage from staff like other weapons. After combat, if unit attacked, inflicts 【Gravity】on target and foes within 1 space of target.",
         exclusiveTo: ["Elise: Budding Flower"],
         type: "staff",
         might: 14,
@@ -1769,19 +1773,11 @@ const WEAPONS: WeaponDict = {
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
                 const enemyAllies = getAllies(battleState, target);
-                target.addComponent({
-                    type: "Status",
-                    value: "Gravity",
-                    source: this.entity
-                });
+                applyMapComponent(target, "GravityComponent", null, this.entity);
 
                 for (let enemy of enemyAllies) {
                     if (HeroSystem.getDistance(enemy, target) === 1) {
-                        enemy.addComponent({
-                            type: "Status",
-                            value: "Gravity",
-                            source: this.entity
-                        });
+                        applyMapComponent(enemy, "GravityComponent", null, this.entity);
                     }
                 }
             }
@@ -1943,7 +1939,7 @@ const WEAPONS: WeaponDict = {
         description: "Effective against flying foes. Unit and foe cannot counterattack.",
         might: 7,
         type: "bow",
-        onCombatStart() {
+        onCombatInitiate() {
             this.entity.addComponent({
                 type: "PreventCounterattack"
             });
@@ -1959,7 +1955,7 @@ const WEAPONS: WeaponDict = {
         description: "Effective against flying foes. Unit and foe cannot counterattack.",
         might: 11,
         type: "bow",
-        onCombatStart() {
+        onCombatInitiate() {
             this.entity.addComponent({
                 type: "PreventCounterattack"
             });
@@ -1974,7 +1970,7 @@ const WEAPONS: WeaponDict = {
         description: "Unit and foe cannot counterattack.",
         might: 11,
         type: "lance",
-        onCombatStart() {
+        onCombatInitiate() {
             this.entity.addComponent({
                 type: "PreventCounterattack"
             });
@@ -1989,7 +1985,7 @@ const WEAPONS: WeaponDict = {
         description: "Unit and foe cannot counterattack.",
         might: 15,
         type: "lance",
-        onCombatStart() {
+        onCombatInitiate() {
             this.entity.addComponent({
                 type: "PreventCounterattack"
             });
@@ -2049,12 +2045,13 @@ const WEAPONS: WeaponDict = {
         exclusiveTo: ["Lilina: Delightful Noble"],
         onTurnStart(battleState) {
             const enemies = getEnemies(battleState, this.entity);
+            const highestRes = getUnitsWithHighestValue(enemies, (enemy) => enemy.getOne("Stats").res);
 
-            const [highestRes] = enemies.sort((hero1, hero2) => hero2.getOne("Stats").res - hero1.getOne("Stats").res);
-
-            applyMapComponent(highestRes, "MapDebuff", {
-                res: -7,
-            }, this.entity);
+            for (let enemy of highestRes) {
+                applyMapComponent(enemy, "MapDebuff", {
+                    res: -7,
+                }, this.entity);
+            }
         },
         might: 14
     },
@@ -2106,7 +2103,7 @@ const WEAPONS: WeaponDict = {
         onEquip() {
             this.entity.getOne("Stats").atk += 3;
         },
-        onCombatRoundAttack(enemy) {
+        onCombatStart(state, enemy) {
             const { atk } = getCombatStats(enemy);
             const { atk: selfAtk } = getCombatStats(this.entity);
             if (selfAtk > atk) {
@@ -2215,8 +2212,8 @@ const WEAPONS: WeaponDict = {
             });
         },
         onCombatStart(battleState, target) {
-            const foeAtk = getCombatStats(target).atk;
-            const selfAtk = getCombatStats(this.entity).atk;
+            const foeAtk = getMapStats(target).atk;
+            const selfAtk = getMapStats(this.entity).atk;
             if (foeAtk >= selfAtk + 3) {
                 this.entity.addComponent({
                     type: "CombatBuff",
@@ -2256,19 +2253,11 @@ const WEAPONS: WeaponDict = {
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
                 const enemyAllies = getAllies(battleState, target);
-                target.addComponent({
-                    type: "Status",
-                    value: "Gravity",
-                    source: this.entity
-                });
+                applyMapComponent(target, "GravityComponent", null, this.entity);
 
                 for (let enemy of enemyAllies) {
                     if (HeroSystem.getDistance(enemy, target) === 1) {
-                        enemy.addComponent({
-                            type: "Status",
-                            value: "Gravity",
-                            source: this.entity
-                        });
+                        applyMapComponent(enemy, "GravityComponent", null, this.entity);
                     }
                 }
             }
@@ -2281,19 +2270,11 @@ const WEAPONS: WeaponDict = {
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
                 const enemyAllies = getAllies(battleState, target);
-                target.addComponent({
-                    type: "Status",
-                    value: "Gravity",
-                    source: this.entity
-                });
+                applyMapComponent(target, "GravityComponent", null, this.entity);
 
                 for (let enemy of enemyAllies) {
                     if (HeroSystem.getDistance(enemy, target) === 1) {
-                        enemy.addComponent({
-                            type: "Status",
-                            value: "Gravity",
-                            source: this.entity
-                        });
+                        applyMapComponent(enemy, "GravityComponent", null, this.entity);
                     }
                 }
             }
@@ -2542,18 +2523,7 @@ const WEAPONS: WeaponDict = {
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp / maxHP >= 0.5) {
                 const enemies = getEnemies(battleState, this.entity);
-                let lowestSpeed = 99;
-                let targets: Entity[] = [];
-                for (let enemy of enemies) {
-                    const { spd } = getMapStats(enemy);
-                    if (spd === lowestSpeed) {
-                        targets.push(enemy);
-                    }
-                    if (spd < lowestSpeed) {
-                        lowestSpeed = spd;
-                        targets = [enemy];
-                    }
-                }
+                let targets = getUnitsWithLowestValue(enemies, (unit) => unit.getOne("Stats").spd);
 
                 for (let target of targets) {
                     applyMapComponent(target, "MapDebuff", {
@@ -2578,7 +2548,7 @@ const WEAPONS: WeaponDict = {
         exclusiveTo: ["Jakob: Devoted Servant"],
         type: "dagger",
         might: 14,
-        description: "If unit initiates combat, inflicts Atk/Spd/Def/Res-4 on foe during combat.&lt;br>Effect:\u3010Dagger \uff17\u3011&lt;br>&lt;br>\u3010Dagger \uff17\u3011&lt;br>After combat, if unit attacked, inflicts Def/Res-\uff17 on target and foes within 2 spaces of target through their next actions.",
+        description: "If unit initiates combat, inflicts Atk/Spd/Def/Res-4 on foe during combat. Effect:【Dagger ７】\n【Dagger ７】\n After combat, if unit attacked, inflicts Def/Res-７ on target and foes within 2 spaces of target through their next actions.",
         onCombatInitiate(state, target) {
             target.addComponent({
                 type: "CombatDebuff",
@@ -2605,7 +2575,7 @@ const WEAPONS: WeaponDict = {
         type: "sword"
     },
     "Kagero's Dart": {
-        description: "At start of combat, if unit's Atk > foe's Atk, grants Atk/Spd+4 during combat.&lt;br>Effect:\u3010Dagger \uff17\u3011",
+        description: "At start of combat, if unit's Atk > foe's Atk, grants Atk/Spd+4 during combat.&lt;br>Effect:【Dagger ７】",
         might: 14,
         type: "dagger",
         exclusiveTo: ["Kagero: Honorable Ninja"],
@@ -2852,7 +2822,7 @@ const WEAPONS: WeaponDict = {
         description: "After combat, if unit attacked, converts bonuses on foe into penalties through its next action.",
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
-                applyMapComponent(target, "Panic", {}, this.entity);
+                applyMapComponent(target, "PanicComponent", {}, this.entity);
             }
         },
     },
@@ -2862,7 +2832,7 @@ const WEAPONS: WeaponDict = {
         description: "After combat, if unit attacked, converts bonuses on foe into penalties through its next action.",
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
-                applyMapComponent(target, "Panic", {}, this.entity);
+                applyMapComponent(target, "PanicComponent", {}, this.entity);
             }
         },
     },
@@ -3061,7 +3031,7 @@ const WEAPONS: WeaponDict = {
                 const allies = getAllies(battleState, target);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, target) <= 2) {
-                        applyMapComponent(ally, "Panic", {}, this.entity);
+                        applyMapComponent(ally, "PanicComponent", {}, this.entity);
                     }
                 }
             }
@@ -3077,7 +3047,7 @@ const WEAPONS: WeaponDict = {
                 const allies = getAllies(battleState, target);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, target) <= 2) {
-                        applyMapComponent(ally, "Panic", {}, this.entity);
+                        applyMapComponent(ally, "PanicComponent", {}, this.entity);
                     }
                 }
             }
@@ -3210,7 +3180,7 @@ const WEAPONS: WeaponDict = {
         description: "After combat, if unit attacked, converts bonuses on foe into penalties through its next action.",
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
-                applyMapComponent(target, "Panic", {}, this.entity);
+                applyMapComponent(target, "PanicComponent", {}, this.entity);
             }
         },
     },
@@ -3220,11 +3190,11 @@ const WEAPONS: WeaponDict = {
         description: "After combat, if unit attacked, converts bonuses on target and foes within 2 spaces of target into penalties through their next actions.",
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
-                applyMapComponent(target, "Panic", {}, this.entity);
+                applyMapComponent(target, "PanicComponent", {}, this.entity);
                 const allies = getAllies(battleState, target);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, target) <= 2) {
-                        applyMapComponent(ally, "Panic", {}, this.entity);
+                        applyMapComponent(ally, "PanicComponent", {}, this.entity);
                     }
                 }
             }
@@ -4036,7 +4006,7 @@ const WEAPONS: WeaponDict = {
                 const allies = getAllies(battleState, target);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, target) <= 2) {
-                        applyMapComponent(ally, "Panic", {}, this.entity);
+                        applyMapComponent(ally, "PanicComponent", {}, this.entity);
                     }
                 }
             }
@@ -4052,7 +4022,7 @@ const WEAPONS: WeaponDict = {
                 const allies = getAllies(battleState, target);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, target) <= 2) {
-                        applyMapComponent(ally, "Panic", {}, this.entity);
+                        applyMapComponent(ally, "PanicComponent", {}, this.entity);
                     }
                 }
             }
@@ -4070,7 +4040,7 @@ const WEAPONS: WeaponDict = {
         },
         type: "staff",
         might: 14,
-        description: "Grants Atk+3. Foe cannot counterattack. After combat, if unit attacked, inflicts \u3010Gravity\u3011on target and foes within 1 space of target.",
+        description: "Grants Atk+3. Foe cannot counterattack. After combat, if unit attacked, inflicts 【Gravity】on target and foes within 1 space of target.",
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
                 const enemies = getAllies(battleState, target).filter((enemy) => HeroSystem.getDistance(enemy, target) === 1);
@@ -4094,7 +4064,7 @@ const WEAPONS: WeaponDict = {
         exclusiveTo: ["Matthew: Faithful Spy"],
         might: 14,
         type: "dagger",
-        description: "After combat, if unit attacked, grants Def/Res+6 to unit and allies within 2 spaces of unit for 1 turn.&lt;br>Effect:\u3010Dagger \uff16\u3011",
+        description: "After combat, if unit attacked, grants Def/Res+6 to unit and allies within 2 spaces of unit for 1 turn. Effect:【Dagger ６】",
         onCombatAfter(state, target) {
             if (this.entity.getOne("DealDamage")) {
                 Effects.dagger(this, state, target, {

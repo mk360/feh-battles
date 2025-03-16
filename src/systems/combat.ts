@@ -1,24 +1,20 @@
 import { Entity, System } from "ape-ecs";
-import GameState from "./state";
-import getAllies from "../utils/get-allies";
-import { Stats } from "../interfaces/types";
-import checkBattleEffectiveness from "./effectiveness";
-import getTargetedDefenseStat from "./get-targeted-defense-stat";
-import generateTurns from "./generate-turns";
-import PreventEnemyAlliesInteraction from "../components/prevent-enemy-allies-interaction";
-import CombatTurnOutcome from "../interfaces/combat-turn-outcome";
 import SKILLS from "../data/skill-dex";
-import getAttackerAdvantage from "./get-attacker-advantage";
-import getAffinity from "./get-affinity";
-import getCombatStats from "./get-combat-stats";
-import { calculateDamageBeforeReductions, calculateFinalDamage } from "./calculate-damage";
-import TileBitshifts from "../data/tile-bitshifts";
 import SPECIALS from "../data/specials";
-import getPosition from "./get-position";
+import TileBitshifts from "../data/tile-bitshifts";
+import CombatTurnOutcome from "../interfaces/combat-turn-outcome";
+import { Stats } from "../interfaces/types";
 import battlingEntitiesQuery from "./battling-entities-query";
+import { calculateDamageBeforeReductions, calculateFinalDamage } from "./calculate-damage";
+import checkBattleEffectiveness from "./effectiveness";
+import generateTurns from "./generate-turns";
+import getAffinity from "./get-affinity";
+import getAttackerAdvantage from "./get-attacker-advantage";
+import getCombatStats from "./get-combat-stats";
+import getPosition from "./get-position";
 import getSpecialDecrease from "./get-special-decrease";
-import COMBAT_COMPONENTS from "./combat-components";
-
+import getTargetedDefenseStat from "./get-targeted-defense-stat";
+import GameState from "./state";
 
 class CombatSystem extends System {
     private state: GameState;
@@ -27,40 +23,13 @@ class CombatSystem extends System {
     init(state: GameState) {
         this.state = state;
 
-        for (let comp of COMBAT_COMPONENTS.concat(["DealDamage", "Kill"])) {
+        for (let comp of ["DealDamage", "Kill"]) {
             this.subscribe(comp);
         }
     }
 
     update() {
         const { attacker, defender: target } = this.battlingQuery();
-
-        if (!target.getOne(PreventEnemyAlliesInteraction)) {
-            this.runAllySkills(attacker);
-        }
-
-        if (!attacker.getOne(PreventEnemyAlliesInteraction)) {
-            this.runAllySkills(target);
-        }
-
-        const attackerSkills = this.state.skillMap.get(attacker);
-        const defenderSkills = this.state.skillMap.get(target);
-
-        attackerSkills.onCombatStart?.forEach((skill) => {
-            SKILLS[skill.name].onCombatStart.call(skill, this.state, target);
-        });
-
-        attackerSkills.onCombatInitiate?.forEach((skill) => {
-            SKILLS[skill.name].onCombatInitiate.call(skill, this.state, target);
-        });
-
-        defenderSkills.onCombatStart?.forEach((skill) => {
-            SKILLS[skill.name].onCombatStart.call(skill, this.state, attacker);
-        });
-
-        defenderSkills.onCombatDefense?.forEach((skill) => {
-            SKILLS[skill.name].onCombatDefense.call(skill, this.state, attacker);
-        });
 
         const combatMap = new Map<Entity, {
             stats: Stats,
@@ -125,6 +94,7 @@ class CombatSystem extends System {
             const turnData: Partial<CombatTurnOutcome> = {
                 attacker: turn,
                 defender,
+                turnNumber: combatMap.get(turn).turns,
                 consecutiveTurnNumber: combatMap.get(turn).consecutiveTurns,
                 attackerSpecialCooldown: turn.getOne("Special")?.cooldown || 0,
                 defenderSpecialCooldown: defender.getOne("Special")?.cooldown || 0,
@@ -205,6 +175,7 @@ class CombatSystem extends System {
             const effectivenessMultiplier = combatMap.get(turn).effective ? 1.5 : 1;
             const atkStat = combatMap.get(turn).stats.atk;
             const damageReductionComponents = defender.getComponents("DamageReduction");
+            const roundDamageReductions = defender.getComponents("RoundDamageReduction");
             let flatReduction = 0;
             let damagePercentage = 100;
             damageReductionComponents.forEach((comp) => {
@@ -214,6 +185,16 @@ class CombatSystem extends System {
                 if (comp.amount) {
                     flatReduction += comp.amount;
                 }
+            });
+
+            roundDamageReductions.forEach((comp) => {
+                if (comp.percentage) {
+                    damagePercentage *= (100 - comp.percentage) / 100;
+                }
+                if (comp.amount) {
+                    flatReduction += comp.amount;
+                }
+                defender.removeComponent(comp);
             });
 
             const advantage = getAttackerAdvantage(turn, defender);
@@ -340,15 +321,6 @@ class CombatSystem extends System {
                 break;
             }
             lastAttacker = turn;
-        }
-    }
-
-    runAllySkills(entity: Entity) {
-        const allies = getAllies(this.state, entity);
-        for (let ally of allies) {
-            this.state.skillMap.get(ally).onCombatAllyStart?.forEach((skill) => {
-                SKILLS[skill.name].onCombatAllyStart.call(skill, this.state, entity);
-            });
         }
     }
 }

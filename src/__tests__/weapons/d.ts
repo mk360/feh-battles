@@ -1,19 +1,18 @@
 import assert from "node:assert";
 import { afterEach, describe, it } from "node:test";
 import SPECIALS from "../../data/specials";
+import { applyMapComponent } from "../../systems/apply-map-effect";
+import collectCombatMods from "../../systems/collect-combat-mods";
 import collectMapMods from "../../systems/collect-map-mods";
+import checkBattleEffectiveness from "../../systems/effectiveness";
 import generateTurns from "../../systems/generate-turns";
-import getAttackerAdvantage from "../../systems/get-attacker-advantage";
+import getAffinity from "../../systems/get-affinity";
 import getCombatStats from "../../systems/get-combat-stats";
 import level40Stats from "../constants/lv40_stats.json";
 import TEAM_IDS from "../constants/teamIds";
-import TEST_GAME_WORLD from "../constants/world"
-import killUnits from "../utils/kill-units";
-import collectCombatMods from "../../systems/collect-combat-mods";
-import checkBattleEffectiveness from "../../systems/effectiveness";
+import TEST_GAME_WORLD from "../constants/world";
 import blankKit from "../utils/blank-kit";
-import { applyMapComponent } from "../../systems/apply-map-effect";
-import getAffinity from "../../systems/get-affinity";
+import killUnits from "../utils/kill-units";
 
 describe("D", () => {
     afterEach(() => {

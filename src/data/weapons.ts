@@ -1739,13 +1739,12 @@ const WEAPONS: WeaponDict = {
         onTurnStart(battleState) {
             const enemies = getEnemies(battleState, this.entity);
             const nearestIn4Spaces = getUnitsLowerThanOrEqualingValue(enemies, (unit) => HeroSystem.getDistance(this.entity, unit), 4);
-            const nearest = getUnitsWithLowestValue(nearestIn4Spaces, (unit) => HeroSystem.getDistance(this.entity, unit));
 
-            for (let nearEnemy of nearest) {
-                Effects.dagger(this, battleState, nearEnemy, {
+            for (let nearEnemy of nearestIn4Spaces) {
+                applyMapComponent(nearEnemy, "MapDebuff", {
                     atk: -7,
                     spd: -7
-                });
+                }, this.entity);
             }
         },
         onCombatAfter(battleState, target) {

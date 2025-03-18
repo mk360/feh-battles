@@ -59,6 +59,7 @@ These are the Component the Engine currently uses. This is an auto-generated doc
 | NormalizeStaffDamage           | Make the Hero deal staff damage like other weapons.                                                                                  |
 | Obstruct                       | One Component added to the Hero = one Tile they can't cross.                                                                         |
 | PanicComponent                 | Converts Bonuses to Penalties                                                                                                        |
+| Pass                           | If an enemy stands in the way of a character while calculating their movement range, bypass said enemy.                              |
 | Pivot                          | Runs an effect similar to the Pivot assist (Hero moves past an ally by one tile).                                                    |
 | Position                       | Current coordinates for any Hero.                                                                                                    |
 | PreventCounterattack           | If attacker prevents a defender from counterattacking, assign this component to the attacker.                                        |

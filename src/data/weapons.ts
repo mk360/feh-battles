@@ -2251,14 +2251,7 @@ const WEAPONS: WeaponDict = {
         might: 6,
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
-                const enemyAllies = getAllies(battleState, target);
                 applyMapComponent(target, "GravityComponent", null, this.entity);
-
-                for (let enemy of enemyAllies) {
-                    if (HeroSystem.getDistance(enemy, target) === 1) {
-                        applyMapComponent(enemy, "GravityComponent", null, this.entity);
-                    }
-                }
             }
         },
     },
@@ -2268,14 +2261,7 @@ const WEAPONS: WeaponDict = {
         might: 10,
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
-                const enemyAllies = getAllies(battleState, target);
                 applyMapComponent(target, "GravityComponent", null, this.entity);
-
-                for (let enemy of enemyAllies) {
-                    if (HeroSystem.getDistance(enemy, target) === 1) {
-                        applyMapComponent(enemy, "GravityComponent", null, this.entity);
-                    }
-                }
             }
         },
     },
@@ -2318,6 +2304,15 @@ const WEAPONS: WeaponDict = {
             Effects.owl(this, battleState);
         },
     },
+    "Gronnowl+": {
+        description: "During combat, boosts unit's Atk/Spd/Def/Res by number of adjacent allies × 2.",
+        type: "tome",
+        color: "green",
+        might: 10,
+        onCombatStart(battleState) {
+            Effects.owl(this, battleState);
+        },
+    },
     "Gronnraven": {
         description: "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
         type: "tome",
@@ -2335,15 +2330,6 @@ const WEAPONS: WeaponDict = {
         onCombatStart(state, target) {
             Effects.raven(this, target);
         }
-    },
-    "Gronnowl+": {
-        description: "During combat, boosts unit's Atk/Spd/Def/Res by number of adjacent allies × 2.",
-        type: "tome",
-        color: "green",
-        might: 10,
-        onCombatStart(battleState) {
-            Effects.owl(this, battleState);
-        },
     },
     "Gronnwolf": {
         effectiveAgainst: ["cavalry"],

@@ -2479,7 +2479,7 @@ const WEAPONS: WeaponDict = {
         onCombatStart(state) {
             const allies = getAllies(state, this.entity);
             for (let ally of allies) {
-                if (HeroSystem.getDistance(this.entity, ally) <= 2) {
+                if (HeroSystem.getDistance(this.entity, ally) <= 2 && ["flier", "infantry"].includes(ally.getOne("MovementType").value)) {
                     this.entity.addComponent({
                         type: "CombatBuff",
                         atk: 4,
@@ -2675,7 +2675,7 @@ const WEAPONS: WeaponDict = {
         might: 11,
     },
     "Kitty Paddle": {
-        description: "Effective against magic foes.&lt;br />After combat, if unit attacked and if foe uses magic, inflicts Def/Res-5 on foe through its next action.",
+        description: "Effective against magic foes. After combat, if unit attacked and if foe uses magic, inflicts Def/Res-5 on foe through its next action.",
         might: 5,
         type: "dagger",
         effectiveAgainst: ["tome"],
@@ -2689,7 +2689,7 @@ const WEAPONS: WeaponDict = {
         },
     },
     "Kitty Paddle+": {
-        description: "Effective against magic foes.&lt;br />After combat, if unit attacked and if foe uses magic, inflicts Def/Res-7 on foe through its next action.",
+        description: "Effective against magic foes. After combat, if unit attacked and if foe uses magic, inflicts Def/Res-7 on foe through its next action.",
         might: 8,
         type: "dagger",
         effectiveAgainst: ["tome"],
@@ -4029,18 +4029,10 @@ const WEAPONS: WeaponDict = {
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
                 const enemies = getAllies(battleState, target).filter((enemy) => HeroSystem.getDistance(enemy, target) === 1);
-                target.addComponent({
-                    type: "Status",
-                    value: "Gravity",
-                    source: this.entity
-                });
+                applyMapComponent(target, "GravityComponent", null, this.entity);
 
                 for (let enemy of enemies) {
-                    enemy.addComponent({
-                        type: "Status",
-                        value: "Gravity",
-                        source: this.entity
-                    });
+                    applyMapComponent(enemy, "GravityComponent", null, this.entity);
                 }
             }
         },
@@ -4058,31 +4050,17 @@ const WEAPONS: WeaponDict = {
                 });
 
                 const allies = getAllies(state, this.entity);
-                this.entity.addComponent({
-                    type: "MapBuff",
+                applyMapComponent(this.entity, "MapBuff", {
                     def: 6,
-                    res: 6,
-                });
-
-                this.entity.addComponent({
-                    type: "Status",
-                    value: "Bonus",
-                    source: this.entity
-                });
+                    res: 6
+                }, this.entity);
 
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, this.entity) <= 2) {
-                        ally.addComponent({
-                            type: "MapBuff",
+                        applyMapComponent(ally, "MapBuff", {
                             def: 6,
-                            res: 6,
-                        });
-
-                        ally.addComponent({
-                            type: "Status",
-                            value: "Bonus",
-                            source: this.entity
-                        });
+                            res: 6
+                        }, this.entity);
                     }
                 }
             }
@@ -4266,19 +4244,12 @@ const WEAPONS: WeaponDict = {
         onAssistAfter(battleState, ally, skill) {
             const assistDex = ASSISTS[skill.name];
             if (assistDex.type.includes("refresh")) {
-                ally.addComponent({
-                    type: "MapBuff",
+                applyMapComponent(ally, "MapBuff", {
                     atk: 3,
                     spd: 3,
                     def: 3,
                     res: 3
-                });
-
-                ally.addComponent({
-                    type: "Status",
-                    value: "Bonus",
-                    source: this.entity
-                });
+                }, this.entity);
             }
         },
     },

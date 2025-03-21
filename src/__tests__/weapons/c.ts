@@ -770,7 +770,6 @@ describe("C", () => {
         TEST_GAME_WORLD.runSystems("after-combat");
         assert.equal(getAttackerAdvantage(unit, enemy2), 0);
         assert.equal(getAttackerAdvantage(enemy2, unit), 0);
-
     });
 
     it("Concealed Blade", () => {

@@ -36,6 +36,7 @@ import SpecialCooldownSystem from "./systems/mechanics/special-cooldown";
 import shortid from "shortid";
 import movesetManager from "./moveset-manager";
 import Debugger from "./debugger";
+import AfterAssist from "./systems/mechanics/after-assist";
 
 /**
  * TODO:
@@ -136,6 +137,7 @@ class GameWorld extends World {
         this.registerSystem("aoe", AoESystem, [this.state]);
         this.registerSystem("hp-mod", HPModSystem);
         this.registerSystem("after-combat", AfterCombatSystem, [this.state]);
+        this.registerSystem("after-assist", AfterAssist, [this.state]);
         this.registerSystem("assist", AssistSystem, [this.state]);
         this.registerSystem("special-cooldown", SpecialCooldownSystem);
         if (process.env.DEBUG === "1") {
@@ -589,12 +591,13 @@ class GameWorld extends World {
                 type: "Assisted"
             });
 
-            this.runSystems("assist");
+            assistSource.addComponent({
+                type: "Move",
+                x: actionCoordinates.x,
+                y: actionCoordinates.y
+            })
 
-            this.systems.get("move").forEach((system) => {
-                // @ts-ignore
-                console.dir(system._stagedChanges);
-            });
+            this.runSystems("assist");
 
             this.systems.get("assist").forEach((system) => {
                 // @ts-ignore
@@ -645,7 +648,7 @@ class GameWorld extends World {
     generateMap() {
         // const randomMapIndex = (1 + Math.floor(Math.random() * 90)).toString().padStart(4, "0");
         const randomMapIndex = "0011";
-        console.log({ randomMapIndex });
+        // console.log({ randomMapIndex });
         const mapId = `Z${randomMapIndex}`;
         this.state.mapId = mapId;
         this.state.topology = require(`../maps/${mapId}.json`);
@@ -867,7 +870,7 @@ class GameWorld extends World {
                 const mapCell = this.state.map[y][x];
 
                 if (mapCell[0] & tileBitmasks.occupation) {
-                    console.log((mapCell[0] & tileBitmasks.occupation).toString(2))
+                    console.log(this.state.occupiedTilesMap);
                     const occupied = this.state.occupiedTilesMap.get(mapCell);
                     throw new Error("Tile is already occupied by " + occupied.getOne("Name").value);
                 }
@@ -1017,7 +1020,8 @@ class GameWorld extends World {
 
                 return entity;
             } catch (e) {
-                throw new Error(`Error creating the Hero ${member.name}: ${e}`);
+                console.error(`Error creating the Hero ${member.name}`);
+                throw e;
             }
         } else {
             throw new Error(`Character not found: "${member.name}"`);

@@ -2560,13 +2560,14 @@ const WEAPONS: WeaponDict = {
         type: "sword"
     },
     "Kagero's Dart": {
-        description: "At start of combat, if unit's Atk > foe's Atk, grants Atk/Spd+4 during combat.&lt;br>Effect:【Dagger ７】",
+        description: "At start of combat, if unit's Atk > foe's Atk, grants Atk/Spd+4 during combat. Effect:【Dagger ７】",
         might: 14,
         type: "dagger",
         exclusiveTo: ["Kagero: Honorable Ninja"],
         onCombatStart(state, target) {
-            const { atk: currentAtk } = this.entity.getOne("Stats").atk;
-            const { atk: opponentAtk } = target.getOne("Stats").atk;
+            const { atk: currentAtk } = getMapStats(this.entity);
+            const { atk: opponentAtk } = getMapStats(target);
+
             if (currentAtk > opponentAtk) {
                 this.entity.addComponent({
                     type: "CombatBuff",
@@ -2740,8 +2741,7 @@ const WEAPONS: WeaponDict = {
         description: "If a movement Assist skill (like Reposition, Shove, Pivot, etc.) is used by unit or targets unit, grants Atk/Spd/Def/Res+4 to target or targeting ally and allies within 2 spaces of unit and target or targeting ally for 1 turn after movement. (Excludes unit.)",
         onAssistAfter(battleState, ally, assistSkill) {
             const targetedEntities = new Set<Entity>().add(ally);
-            const assistData = ASSISTS[assistSkill.name];
-            if (assistData.type.includes("movement")) {
+            if (assistSkill.type.includes("movement")) {
                 const allies = getAllies(battleState, this.entity);
                 for (let validAlly of allies) {
                     if (HeroSystem.getDistance(validAlly, this.entity) <= 2) {
@@ -2769,9 +2769,8 @@ const WEAPONS: WeaponDict = {
                 }
             }
         },
-        onAllyAssistAfter(battleState, sourceAlly, assistSkill) {
+        onAllyAssistAfter(battleState, sourceAlly, assistData) {
             const targetedEntities = new Set<Entity>().add(sourceAlly);
-            const assistData = ASSISTS[assistSkill.name];
             if (assistData.type.includes("movement")) {
                 const allies = getAllies(battleState, this.entity);
                 for (let validAlly of allies) {
@@ -2858,7 +2857,7 @@ const WEAPONS: WeaponDict = {
         },
     },
     "Lightning Breath": {
-        description: "Slows Special trigger (cooldown count+1).&lt;br>Unit can counterattack regardless of foe's range.",
+        description: "Slows Special trigger (cooldown count+1). Unit can counterattack regardless of foe's range.",
         might: 7,
         type: "breath",
         onEquip() {
@@ -2874,7 +2873,7 @@ const WEAPONS: WeaponDict = {
         },
     },
     "Lightning Breath+": {
-        description: "Slows Special trigger (cooldown count+1).&lt;br>Unit can counterattack regardless of foe's range.",
+        description: "Slows Special trigger (cooldown count+1). Unit can counterattack regardless of foe's range.",
         might: 11,
         type: "breath",
         onEquip() {
@@ -2958,7 +2957,7 @@ const WEAPONS: WeaponDict = {
             const { value: startingHP } = this.entity.getOne("StartingHP");
             if (hp === startingHP && hp === maxHP) {
                 this.entity.addComponent({
-                    type: "AoEDamage",
+                    type: "MapDamage",
                     value: 2
                 });
             }

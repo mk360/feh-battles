@@ -2,7 +2,7 @@ import { Entity, Query, System } from "ape-ecs";
 import GameState from "./state";
 import ASSISTS from "../data/assists";
 
-const SUBSCRIBED_COMPONENTS = ["MapBuff", "MapDebuff", "Stats", "PreviewHP", "SacrificeHP", "Swap", "Reposition", "Pivot", "Move"];
+const SUBSCRIBED_COMPONENTS = ["MapBuff", "MapDebuff", "Stats", "PreviewHP", "SacrificeHP", "Swap", "Reposition", "Pivot", "Move", "Status"];
 
 class AssistSystem extends System {
     private state: GameState;
@@ -36,8 +36,9 @@ class AssistSystem extends System {
                     value: newAssistedHealth,
                 });
             } else {
-                this.world.runSystems("hp-mod");
                 this.world.runSystems("move");
+                this.world.runSystems("after-assist");
+                this.world.runSystems("hp-mod");
             }
         }
     }

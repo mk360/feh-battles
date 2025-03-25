@@ -2992,7 +2992,7 @@ const WEAPONS: WeaponDict = {
             const { value: startingHP } = this.entity.getOne("StartingHP");
             if (hp === startingHP && hp === maxHP) {
                 this.entity.addComponent({
-                    type: "AoEDamage",
+                    type: "MapDamage",
                     value: 2
                 });
             }
@@ -3009,7 +3009,7 @@ const WEAPONS: WeaponDict = {
         type: "bow",
         effectiveAgainst: ["flier"],
         might: 8,
-        description: "Effective against flying foes.&lt;br>After combat, if unit attacked, converts bonuses on foes within 2 spaces of target into penalties through their next actions.",
+        description: "Effective against flying foes. After combat, if unit attacked, converts bonuses on foes within 2 spaces of target into penalties through their next actions.",
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
                 const allies = getAllies(battleState, target);
@@ -3025,7 +3025,7 @@ const WEAPONS: WeaponDict = {
         type: "bow",
         effectiveAgainst: ["flier"],
         might: 12,
-        description: "Effective against flying foes.&lt;br>After combat, if unit attacked, converts bonuses on foes within 2 spaces of target into penalties through their next actions.",
+        description: "Effective against flying foes. After combat, if unit attacked, converts bonuses on foes within 2 spaces of target into penalties through their next actions.",
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
                 const allies = getAllies(battleState, target);
@@ -3040,6 +3040,9 @@ const WEAPONS: WeaponDict = {
     "Mulagir": {
         description: "Effective against flying foes. Grants Spd+3. Neutralizes magic foe's bonuses (from skills like Fortify, Rally, etc.) during combat.",
         effectiveAgainst: ["flier"],
+        onEquip() {
+            this.entity.getOne("Stats").spd += 3;
+        },
         onCombatStart() {
             this.entity.addComponent({
                 type: "NeutralizeMapBuffs"

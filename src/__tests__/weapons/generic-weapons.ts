@@ -5,62 +5,35 @@ import lv40Stats from "../constants/lv40_stats.json";
 import TEAM_IDS from "../constants/teamIds";
 import TEST_GAME_WORLD from "../constants/world";
 import killUnits from "../utils/kill-units";
+import blankKit from "../utils/blank-kit";
 
 describe("Generic Weapons", () => {
     it("Physical Weapons should be equipped", () => {
         for (let quality of ["Iron", "Steel", "Silver"]) {
             const sword = TEST_GAME_WORLD.createHero({
                 name: "Chrom: Exalted Prince",
-                skills: {
-                    A: "",
-                    B: "",
-                    C: "",
-                    S: "",
-                    assist: "",
-                    special: "",
-                },
+                skills: blankKit(),
                 weapon: `${quality} Sword`,
                 rarity: 5,
             }, TEAM_IDS[0], 1);
 
             const lance = TEST_GAME_WORLD.createHero({
                 name: "Lukas: Sharp Soldier",
-                skills: {
-                    A: "",
-                    B: "",
-                    C: "",
-                    S: "",
-                    assist: "",
-                    special: "",
-                },
+                skills: blankKit(),
                 weapon: `${quality} Lance`,
                 rarity: 5,
             }, TEAM_IDS[0], 2);
 
             const axe = TEST_GAME_WORLD.createHero({
                 name: "Amelia: Rose of the War",
-                skills: {
-                    A: "",
-                    B: "",
-                    C: "",
-                    S: "",
-                    assist: "",
-                    special: "",
-                },
+                skills: blankKit(),
                 weapon: `${quality} Axe`,
                 rarity: 5,
             }, TEAM_IDS[0], 3);
 
             const bow = TEST_GAME_WORLD.createHero({
                 name: "Virion: Elite Archer",
-                skills: {
-                    A: "",
-                    B: "",
-                    C: "",
-                    S: "",
-                    assist: "",
-                    special: "",
-                },
+                skills: blankKit(),
                 weapon: `${quality} Bow`,
                 rarity: 5,
             }, TEAM_IDS[0], 4);
@@ -68,14 +41,7 @@ describe("Generic Weapons", () => {
             const dagger = TEST_GAME_WORLD.createHero({
                 name: "Saizo: Angry Ninja",
                 weapon: `${quality} Dagger`,
-                skills: {
-                    A: "",
-                    B: "",
-                    C: "",
-                    S: "",
-                    assist: "",
-                    special: "",
-                },
+                skills: blankKit(),
                 rarity: 5
             }, TEAM_IDS[1], 1);
 
@@ -164,14 +130,7 @@ describe("Generic Weapons", () => {
         for (let tome of greenTomes) {
             const tomeUnit = TEST_GAME_WORLD.createHero({
                 name: "Soren: Shrewd Strategist",
-                skills: {
-                    A: "",
-                    B: "",
-                    C: "",
-                    S: "",
-                    assist: "",
-                    special: "",
-                },
+                skills: blankKit(),
                 weapon: tome,
                 rarity: 5,
             }, TEAM_IDS[0], 1);
@@ -184,14 +143,7 @@ describe("Generic Weapons", () => {
         for (let tome of redTomes) {
             const tomeUnit = TEST_GAME_WORLD.createHero({
                 name: "Celica: Caring Princess",
-                skills: {
-                    A: "",
-                    B: "",
-                    C: "",
-                    S: "",
-                    assist: "",
-                    special: "",
-                },
+                skills: blankKit(),
                 weapon: tome,
                 rarity: 5,
             }, TEAM_IDS[0], 2);
@@ -204,14 +156,7 @@ describe("Generic Weapons", () => {
         for (let tome of blueTomes) {
             const tomeUnit = TEST_GAME_WORLD.createHero({
                 name: "Ursula: Blue Crow",
-                skills: {
-                    A: "",
-                    B: "",
-                    C: "",
-                    S: "",
-                    assist: "",
-                    special: "",
-                },
+                skills: blankKit(),
                 weapon: tome,
                 rarity: 5,
             }, TEAM_IDS[0], 3);
@@ -226,14 +171,7 @@ describe("Generic Weapons", () => {
         for (let breath of ["Fire Breath", "Fire Breath+", "Flametongue", "Flametongue+"]) {
             const breathUnit = TEST_GAME_WORLD.createHero({
                 name: "Tiki: Dragon Scion",
-                skills: {
-                    A: "",
-                    B: "",
-                    C: "",
-                    S: "",
-                    assist: "",
-                    special: "",
-                },
+                skills: blankKit(),
                 weapon: breath,
                 rarity: 5,
             }, TEAM_IDS[0], 1);

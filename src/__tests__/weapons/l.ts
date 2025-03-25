@@ -7,6 +7,7 @@ import TEAM_IDS from "../constants/teamIds";
 import TEST_GAME_WORLD from "../constants/world";
 import blankKit from "../utils/blank-kit";
 import killUnits from "../utils/kill-units";
+import SPECIALS from "../../data/specials";
 
 describe("L", () => {
     afterEach(() => {
@@ -215,5 +216,75 @@ describe("L", () => {
 
             TEST_GAME_WORLD.runSystems("before-combat");
         });
+
+        it(`Lilith Floatie${grade}`, () => {
+            const unit = TEST_GAME_WORLD.createHero({
+                name: "Ike: Brave Mercenary",
+                rarity: 5,
+                skills: blankKit(),
+                weapon: `Lilith Floatie${grade}`
+            }, TEAM_IDS[0], 1);
+
+            const unitAlly = TEST_GAME_WORLD.createHero({
+                name: "Ike: Brave Mercenary",
+                rarity: 5,
+                skills: blankKit(),
+                weapon: "Brave Axe+"
+            }, TEAM_IDS[0], 2);
+
+            const enemy = TEST_GAME_WORLD.createHero({
+                name: "Cain: The Bull",
+                rarity: 5,
+                skills: blankKit(),
+                weapon: "Brave Sword+"
+            }, TEAM_IDS[1], 1);
+
+            unitAlly.addComponent({
+                type: "Battling"
+            });
+            unitAlly.addComponent({
+                type: "InitiateCombat"
+            });
+            enemy.addComponent({
+                type: "Battling"
+            });
+
+            TEST_GAME_WORLD.runSystems("before-combat");
+            const buffs = collectCombatMods(unitAlly);
+            assert.equal(buffs.atk, 1);
+            assert.equal(buffs.spd, 1);
+        });
     }
+
+    it("Lordly Lance", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Clive: Idealistic Knight",
+            rarity: 5,
+            skills: blankKit(),
+            weapon: "Lordly Lance"
+        }, TEAM_IDS[0], 1);
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Arden: Strong and Tough",
+            rarity: 5,
+            skills: blankKit(),
+            weapon: "Iron Sword"
+        }, TEAM_IDS[1], 1);
+
+        assert(checkBattleEffectiveness(unit, enemy));
+    });
+
+    it("Loyal Greatlance", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Oscar: Agile Horseman",
+            rarity: 5,
+            skills: {
+                ...blankKit(),
+                special: "Aether"
+            },
+            weapon: "Loyal Greatlance"
+        }, TEAM_IDS[0], 1);
+
+        assert.equal(unit.getOne("Special").cooldown, SPECIALS.Aether.cooldown - 1);
+    });
 });

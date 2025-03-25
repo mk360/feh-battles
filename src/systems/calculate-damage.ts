@@ -17,7 +17,7 @@ export function calculateDamageBeforeReductions({ atkStat, effectiveness, advant
     const damageWithEffectiveness = Math.trunc(damageWithAdvantage * effectiveness);
     const defensiveTerrainBonus = defensiveTerrain ? Math.trunc(defenseStat * 0.3) : 0;
     const netDefense = defenseStat + defensiveTerrainBonus;
-    let damageWithoutReduction = damageWithEffectiveness - netDefense;
+    let damageWithoutReduction = Math.max(damageWithEffectiveness - netDefense, 0);
 
     if (specialIncreasePercentage) {
         damageWithoutReduction = Math.trunc(damageWithoutReduction + damageWithoutReduction * specialIncreasePercentage / 100);

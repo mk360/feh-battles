@@ -3102,7 +3102,7 @@ const WEAPONS: WeaponDict = {
             if (def >= res + 5) {
                 this.entity.addComponent({
                     type: "DamageIncrease",
-                    value: 7
+                    amount: 7
                 });
             }
         },
@@ -3736,8 +3736,8 @@ const WEAPONS: WeaponDict = {
         effectiveAgainst: ["armored"],
         exclusiveTo: ["Selena: Cutting Wit"],
         onCombatStart(state, target) {
-            const { atk: unitAtk } = this.entity.getOne("Stats");
-            const { atk: enemyAtk } = target.getOne("Stats");
+            const { atk: unitAtk } = getMapStats(this.entity)
+            const { atk: enemyAtk } = getMapStats(target);
             if (enemyAtk >= unitAtk + 3) {
                 this.entity.addComponent({
                     type: "CombatBuff",

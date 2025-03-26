@@ -1,18 +1,16 @@
 import assert from "assert";
 import { afterEach, describe, it } from "node:test";
 import SPECIALS from "../../data/specials";
-import { applyMapComponent } from "../../systems/apply-map-effect";
 import collectCombatMods from "../../systems/collect-combat-mods";
+import collectMapMods from "../../systems/collect-map-mods";
 import checkBattleEffectiveness from "../../systems/effectiveness";
-import level40Stats from "../constants/lv40_stats.json";
+import generateTurns from "../../systems/generate-turns";
+import getAffinity from "../../systems/get-affinity";
+import getCombatStats from "../../systems/get-combat-stats";
 import TEAM_IDS from "../constants/teamIds";
 import TEST_GAME_WORLD from "../constants/world";
 import blankKit from "../utils/blank-kit";
 import killUnits from "../utils/kill-units";
-import getAffinity from "../../systems/get-affinity";
-import collectMapMods from "../../systems/collect-map-mods";
-import generateTurns from "../../systems/generate-turns";
-import getCombatStats from "../../systems/get-combat-stats";
 
 describe("P", () => {
     afterEach(() => {
@@ -364,7 +362,7 @@ describe("P", () => {
         TEST_GAME_WORLD.runSystems("before-combat");
         const enemyCombatStats = getCombatStats(enemy);
         const combatStats = getCombatStats(unit);
-        const turns = generateTurns(enemy, unit, enemyCombatStats, combatStats);
+        const turns = generateTurns(enemy, unit);
         assert.equal(turns[2], unit);
         TEST_GAME_WORLD.runSystems("combat");
         const dealDamage = unit.getOne("DealDamage");

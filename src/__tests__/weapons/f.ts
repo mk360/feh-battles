@@ -207,7 +207,7 @@ describe("F", () => {
 
             TEST_GAME_WORLD.runSystems("before-combat");
 
-            const turns = generateTurns(bow1, bow2, getCombatStats(bow1), getCombatStats(bow2));
+            const turns = generateTurns(bow1, bow2);
             assert.equal(turns[0], bow1);
             assert.equal(turns[1], undefined);
             bow1.removeComponent(c1);
@@ -218,7 +218,7 @@ describe("F", () => {
             TEST_GAME_WORLD.runSystems("after-combat");
 
             TEST_GAME_WORLD.runSystems("before-combat");
-            const turns2 = generateTurns(bow2, bow1, getCombatStats(bow2), getCombatStats(bow1));
+            const turns2 = generateTurns(bow2, bow1);
             assert.equal(turns2[0], bow2);
             assert.equal(turns2[1], undefined);
 
@@ -252,7 +252,7 @@ describe("F", () => {
 
             TEST_GAME_WORLD.runSystems("before-combat");
 
-            const turns = generateTurns(lance1, lance2, getCombatStats(lance1), getCombatStats(lance2));
+            const turns = generateTurns(lance1, lance2);
             assert.equal(turns[0], lance1);
             assert.equal(turns[1], undefined);
             lance1.removeComponent(c1);
@@ -263,7 +263,7 @@ describe("F", () => {
             TEST_GAME_WORLD.runSystems("after-combat");
 
             TEST_GAME_WORLD.runSystems("before-combat");
-            const turns2 = generateTurns(lance2, lance1, getCombatStats(lance2), getCombatStats(lance1));
+            const turns2 = generateTurns(lance2, lance1);
             assert.equal(turns2[0], lance2);
             assert.equal(turns2[1], undefined);
 

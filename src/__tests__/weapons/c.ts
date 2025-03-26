@@ -476,7 +476,7 @@ describe("C", () => {
         TEST_GAME_WORLD.runSystems("before-combat");
         TEST_GAME_WORLD.runSystems("combat");
         assert(unit.getOne("BraveWeapon"));
-        const turns = generateTurns(unit, enemy, getCombatStats(unit), getCombatStats(enemy));
+        const turns = generateTurns(unit, enemy);
         assert.equal(turns[0], unit);
         assert.equal(turns[1], unit);
         TEST_GAME_WORLD.runSystems("after-combat");
@@ -688,7 +688,7 @@ describe("C", () => {
         TEST_GAME_WORLD.runSystems("before-combat");
         TEST_GAME_WORLD.runSystems("combat");
         assert(lanceUnit.getOne("BraveWeapon"));
-        const turns = generateTurns(lanceUnit, enemy, getCombatStats(lanceUnit), getCombatStats(enemy));
+        const turns = generateTurns(lanceUnit, enemy);
         assert.equal(turns[0], lanceUnit);
         assert.equal(turns[1], lanceUnit);
         TEST_GAME_WORLD.runSystems("after-combat");

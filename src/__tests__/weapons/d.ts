@@ -724,7 +724,7 @@ describe("D", () => {
         TEST_GAME_WORLD.runSystems("combat");
         assert(reinhardt1.getOne("BraveWeapon"));
         assert(!enemy.getOne("BraveWeapon"));
-        const turns = generateTurns(reinhardt1, enemy, getCombatStats(reinhardt1), getCombatStats(enemy));
+        const turns = generateTurns(reinhardt1, enemy);
         assert.equal(turns[0], reinhardt1);
         assert.equal(turns[1], reinhardt1);
         TEST_GAME_WORLD.runSystems("after-combat");

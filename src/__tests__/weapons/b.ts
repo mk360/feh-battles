@@ -151,7 +151,7 @@ describe("B", () => {
 
         TEST_GAME_WORLD.runSystems("before-combat");
         TEST_GAME_WORLD.runSystems("combat");
-        const turns = generateTurns(roy, opponent, getCombatStats(roy), getCombatStats(opponent));
+        const turns = generateTurns(roy, opponent);
         TEST_GAME_WORLD.runSystems("after-combat");
 
         assert.equal(roy.getOne("Special").cooldown, Math.max(SPECIALS["Aether"].cooldown - turns.filter((i) => roy === i).length * 2 - turns.filter((i) => roy !== i).length, 0));
@@ -183,7 +183,7 @@ describe("B", () => {
 
         TEST_GAME_WORLD.runSystems("before-combat");
         TEST_GAME_WORLD.runSystems("combat");
-        const turns2 = generateTurns(roy2, opponent, getCombatStats(roy2), getCombatStats(opponent));
+        const turns2 = generateTurns(roy2, opponent);
         TEST_GAME_WORLD.runSystems("after-combat");
 
         assert.equal(roy2.getOne("Special").cooldown, Math.max(SPECIALS["Aether"].cooldown - turns2.filter((i) => roy2 === i).length * 2 - turns2.filter((i) => roy2 !== i).length, 0));
@@ -993,7 +993,7 @@ describe("B", () => {
             TEST_GAME_WORLD.runSystems("combat");
             assert(axeUnit.getOne("BraveWeapon"));
             assert(!enemy.getOne("BraveWeapon"));
-            const turns = generateTurns(axeUnit, enemy, getCombatStats(axeUnit), getCombatStats(enemy));
+            const turns = generateTurns(axeUnit, enemy);
             assert.equal(turns[0], axeUnit);
             assert.equal(turns[1], axeUnit);
             TEST_GAME_WORLD.runSystems("after-combat");
@@ -1047,7 +1047,7 @@ describe("B", () => {
             TEST_GAME_WORLD.runSystems("combat");
             assert(bowUnit.getOne("BraveWeapon"));
             assert(!enemy.getOne("BraveWeapon"));
-            const turns = generateTurns(bowUnit, enemy, getCombatStats(bowUnit), getCombatStats(enemy));
+            const turns = generateTurns(bowUnit, enemy);
             assert.equal(turns[0], bowUnit);
             assert.equal(turns[1], bowUnit);
             TEST_GAME_WORLD.runSystems("after-combat");
@@ -1100,7 +1100,7 @@ describe("B", () => {
             TEST_GAME_WORLD.runSystems("combat");
             assert(lanceUnit.getOne("BraveWeapon"));
             assert(!enemy.getOne("BraveWeapon"));
-            const turns = generateTurns(lanceUnit, enemy, getCombatStats(lanceUnit), getCombatStats(enemy));
+            const turns = generateTurns(lanceUnit, enemy);
             assert.equal(turns[0], lanceUnit);
             assert.equal(turns[1], lanceUnit);
             TEST_GAME_WORLD.runSystems("after-combat");
@@ -1155,7 +1155,7 @@ describe("B", () => {
             TEST_GAME_WORLD.runSystems("combat");
             assert(swordUnit.getOne("BraveWeapon"));
             assert(!enemy.getOne("BraveWeapon"));
-            const turns = generateTurns(swordUnit, enemy, getCombatStats(swordUnit), getCombatStats(enemy));
+            const turns = generateTurns(swordUnit, enemy);
             assert.equal(turns[0], swordUnit);
             assert.equal(turns[1], swordUnit);
             TEST_GAME_WORLD.runSystems("after-combat");

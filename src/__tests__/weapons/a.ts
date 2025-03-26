@@ -214,7 +214,7 @@ describe("A", () => {
         TEST_GAME_WORLD.runSystems("before-combat");
         TEST_GAME_WORLD.runSystems("combat");
 
-        const turns = generateTurns(elincia, opponent, getCombatStats(elincia), getCombatStats(opponent));
+        const turns = generateTurns(elincia, opponent);
         assert(elincia.getOne("BraveWeapon"));
 
         assert.equal(turns[0], elincia);
@@ -266,7 +266,7 @@ describe("A", () => {
         TEST_GAME_WORLD.runSystems("before-combat");
         TEST_GAME_WORLD.runSystems("combat");
 
-        const turns = generateTurns(arden, opponent, getCombatStats(arden), getCombatStats(opponent));
+        const turns = generateTurns(arden, opponent);
         assert(arden.getOne("BraveWeapon"));
         assert(opponent.getOne("BraveWeapon"));
 
@@ -321,7 +321,7 @@ describe("A", () => {
         TEST_GAME_WORLD.runSystems("before-combat");
         TEST_GAME_WORLD.runSystems("combat");
 
-        const turns = generateTurns(klein, opponent, getCombatStats(klein), getCombatStats(opponent));
+        const turns = generateTurns(klein, opponent);
 
         assert(klein.getOne("BraveWeapon"));
 
@@ -378,7 +378,7 @@ describe("A", () => {
 
         assert(hector.getOne("GuaranteedFollowup"));
 
-        const turns = generateTurns(opponent, hector, getCombatStats(opponent), getCombatStats(hector));
+        const turns = generateTurns(opponent, hector);
 
         assert.equal(turns[0], opponent);
         assert.equal(turns[1], hector);
@@ -421,7 +421,7 @@ describe("A", () => {
         TEST_GAME_WORLD.runSystems("before-combat");
         TEST_GAME_WORLD.runSystems("combat");
 
-        const turns2 = generateTurns(opponent2, hector2, getCombatStats(opponent2), getCombatStats(hector2));
+        const turns2 = generateTurns(opponent2, hector2);
 
         assert.equal(turns2[0], opponent2);
         assert.equal(turns2[1], hector2);
@@ -601,7 +601,7 @@ describe("A", () => {
         assert(clarisse.getOne("GuaranteedFollowup"));
         assert(clarisse.getOne("PreventFollowup"));
 
-        const turns = generateTurns(clarisse, opponent, getCombatStats(clarisse), getCombatStats(opponent));
+        const turns = generateTurns(clarisse, opponent);
 
         assert.equal(turns[0], clarisse);
         assert.equal(turns[1], opponent);
@@ -768,7 +768,7 @@ describe("A", () => {
         assert.equal(ayra.getOne("Stats").spd, level40Stats["Ayra: Astra's Wielder"].spd.standard + 3);
         TEST_GAME_WORLD.runSystems("before-combat");
         TEST_GAME_WORLD.runSystems("combat");
-        const turns = generateTurns(ayra, opponent, getCombatStats(ayra), getCombatStats(opponent));
+        const turns = generateTurns(ayra, opponent);
         TEST_GAME_WORLD.runSystems("after-combat");
 
         assert.equal(ayra.getOne("Special").cooldown, Math.max(SPECIALS["Aether"].cooldown - turns.filter((i) => ayra === i).length * 2 - turns.filter((i) => ayra !== i).length, 0));

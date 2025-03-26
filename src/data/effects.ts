@@ -211,6 +211,9 @@ export function dagger(skill: Skill, state: GameState, target: Entity, debuffs: 
     }
 };
 
+/**
+ * Allow unit to counterattack, regardless of range, barring any other blocking effect.
+ */
 export function counterattack(skill: Skill) {
     skill.entity.addComponent({
         type: "Counterattack"

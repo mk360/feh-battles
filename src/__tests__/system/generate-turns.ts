@@ -52,9 +52,7 @@ describe("generate-turns", () => {
     after(() => killUnits([hero1, hero2, hero3]));
 
     it("should generate a single turn for each in case of a mirror match", () => {
-        const stats1 = getCombatStats(hero1);
-        const stats2 = getCombatStats(hero2);
-        const turns = generateTurns(hero1, hero2, stats1, stats2);
+        const turns = generateTurns(hero1, hero2);
 
         assert.strictEqual(turns.length, 2);
         assert.strictEqual(turns.indexOf(hero1), 0);
@@ -62,7 +60,7 @@ describe("generate-turns", () => {
     });
 
     it("should prevent a defender from fighting back if ranges don't match", () => {
-        const turns = generateTurns(hero3, hero1, getCombatStats(hero3), getCombatStats(hero1));
+        const turns = generateTurns(hero3, hero1);
         assert.strictEqual(turns.length, 1);
         assert.strictEqual(turns.indexOf(hero1), -1);
     });
@@ -71,7 +69,7 @@ describe("generate-turns", () => {
         const cmp = hero2.addComponent({
             type: "Counterattack"
         }) as Component;
-        const turns = generateTurns(hero3, hero2, getCombatStats(hero3), getCombatStats(hero2));
+        const turns = generateTurns(hero3, hero2);
         assert.strictEqual(turns.length, 2);
         assert.strictEqual(turns[1], hero2);
         hero2.removeComponent(cmp);
@@ -82,7 +80,7 @@ describe("generate-turns", () => {
             type: "BraveWeapon"
         }) as Component;
 
-        const turns = generateTurns(hero1, hero2, getCombatStats(hero1), getCombatStats(hero2));
+        const turns = generateTurns(hero1, hero2);
         assert.strictEqual(turns[0], hero1);
         assert.strictEqual(turns[1], hero1);
         assert.strictEqual(turns[2], hero2);
@@ -96,7 +94,7 @@ describe("generate-turns", () => {
 
         hero2.getOne("Stats")!.spd += 10;
 
-        const turns = generateTurns(hero1, hero2, getCombatStats(hero1), getCombatStats(hero2));
+        const turns = generateTurns(hero1, hero2);
         assert.strictEqual(turns[0], hero1);
         assert.strictEqual(turns[1], hero2);
 
@@ -109,7 +107,7 @@ describe("generate-turns", () => {
 
         hero1.getOne("Stats")!.spd += 10;
 
-        const turns2 = generateTurns(hero1, hero2, getCombatStats(hero1), getCombatStats(hero2));
+        const turns2 = generateTurns(hero1, hero2);
         assert.strictEqual(turns2[0], hero1);
         assert.strictEqual(turns2[1], hero2);
 
@@ -125,7 +123,7 @@ describe("generate-turns", () => {
         hero1.getOne("Stats").spd = 0;
         hero2.getOne("Stats").spd = 90;
 
-        const turns = generateTurns(hero1, hero2, getCombatStats(hero1), getCombatStats(hero2));
+        const turns = generateTurns(hero1, hero2);
         assert.strictEqual(turns[0], hero1);
         assert.strictEqual(turns[1], hero2);
         assert.strictEqual(turns[2], hero1);
@@ -139,7 +137,7 @@ describe("generate-turns", () => {
             type: "BraveWeapon"
         });
 
-        const turns = generateTurns(hero1, hero2, getCombatStats(hero1), getCombatStats(hero2));
+        const turns = generateTurns(hero1, hero2);
 
         assert.strictEqual(turns[0], hero1);
         assert.strictEqual(turns[1], hero1);

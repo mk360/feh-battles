@@ -126,7 +126,7 @@ describe("G", () => {
 
         TEST_GAME_WORLD.runSystems("before-combat");
         TEST_GAME_WORLD.runSystems("combat");
-        const turns = generateTurns(ogma, opponent, getCombatStats(ogma), getCombatStats(opponent));
+        const turns = generateTurns(ogma, opponent);
         TEST_GAME_WORLD.runSystems("after-combat");
 
         assert.equal(ogma.getOne("Special").cooldown, Math.max(SPECIALS["Aether"].cooldown - turns.filter((i) => ogma === i).length * 2 - turns.filter((i) => ogma !== i).length, 0));
@@ -343,7 +343,7 @@ describe("G", () => {
 
         TEST_GAME_WORLD.runSystems("before-combat");
         assert(unit.getOne("Counterattack"));
-        const turns = generateTurns(enemy, unit, getCombatStats(enemy), getCombatStats(unit));
+        const turns = generateTurns(enemy, unit);
         assert(turns.find((i) => i === unit));
     });
 

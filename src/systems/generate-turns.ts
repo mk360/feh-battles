@@ -1,8 +1,11 @@
 import { Entity } from "ape-ecs";
-import { Stats } from "../interfaces/types";
+import getCombatStats from "./get-combat-stats";
+import { MandatoryStats } from "../interfaces/types";
 
-function generateTurns(attacker: Entity, defender: Entity, attackerCombatStats: Stats, defenderCombatStats: Stats) {
+function generateTurns(attacker: Entity, defender: Entity, providedAttackerStats?: Partial<MandatoryStats>, providedDefenderStats?: Partial<MandatoryStats>) {
     let turns: Entity[] = [];
+    const attackerCombatStats = providedAttackerStats ?? getCombatStats(attacker);
+    const defenderCombatStats = providedDefenderStats ?? getCombatStats(defender);
     const defenderIsAllowed = defenderCanDefend(attacker, defender);
 
     if (defender.getOne("Vantage") && defenderIsAllowed) {

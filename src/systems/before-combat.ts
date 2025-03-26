@@ -36,7 +36,7 @@ class BeforeCombat extends System {
         });
 
         defenderSkills.onCombatStart?.forEach((skill) => {
-            SKILLS[skill.name].onCombatStart.call(skill, this.state, defender);
+            SKILLS[skill.name].onCombatStart.call(skill, this.state, attacker);
         });
 
         attackerSkills.onCombatInitiate?.forEach((skill) => {

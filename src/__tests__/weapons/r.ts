@@ -14,6 +14,7 @@ import collectMapMods from "../../systems/collect-map-mods";
 import generateTurns from "../../systems/generate-turns";
 import getCombatStats from "../../systems/get-combat-stats";
 import getAttackerAdvantage from "../../systems/get-attacker-advantage";
+import WEAPONS from "../../data/weapons";
 
 describe("R", () => {
     afterEach(() => {
@@ -255,5 +256,274 @@ describe("R", () => {
             TEST_GAME_WORLD.runSystems("before-combat");
             assert.equal(getAttackerAdvantage(unit, enemy), 0.2);
         });
+
+        it(`Rauðrwolf${grade}`, () => {
+            const unit = TEST_GAME_WORLD.createHero({
+                name: "Raigh: Dark Child",
+                weapon: `Rauðrwolf${grade}`,
+                rarity: 5,
+                skills: blankKit(),
+            }, TEAM_IDS[0], 1);
+            const enemy = TEST_GAME_WORLD.createHero({
+                name: "Reinhardt: Thunder's Fist",
+                skills: blankKit(),
+                weapon: "Dire Thunder",
+                rarity: 5,
+            }, TEAM_IDS[1], 1);
+            assert(checkBattleEffectiveness(unit, enemy));
+        });
     }
+
+    it("Rebecca's Bow", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Rebecca: Wildflower",
+            weapon: "Rebecca's Bow",
+            skills: {
+                ...blankKit(),
+                special: "Aether"
+            },
+            rarity: 5
+        }, TEAM_IDS[0], 1);
+
+        assert.equal(unit.getOne("Special").maxCooldown, SPECIALS.Aether.cooldown - 1);
+    });
+
+    it("Reese's Tome", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Katarina: Wayward One",
+            weapon: "Reese's Tome",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[0], 1);
+
+        const { x, y } = unit.getOne("Position");
+
+        const ally1 = TEST_GAME_WORLD.createHero({
+            name: "Julia: Naga's Blood",
+            weapon: "Naga",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[0], 2);
+
+        const ally2 = TEST_GAME_WORLD.createHero({
+            name: "Julia: Naga's Blood",
+            weapon: "Naga",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[0], 3);
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Julia: Naga's Blood",
+            weapon: "Naga",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[1], 1);
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+        unit.addComponent({
+            type: "Battling"
+        });
+        enemy.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        const combatBuffs = collectCombatMods(unit);
+        assert.equal(combatBuffs.atk, 2);
+        assert.equal(combatBuffs.def, 2);
+        assert.equal(combatBuffs.res, 2);
+        assert.equal(combatBuffs.spd, 2);
+        TEST_GAME_WORLD.runSystems("after-combat");
+
+        TEST_GAME_WORLD.moveUnit(ally2.id, {
+            x,
+            y: y + 1
+        }, false);
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        const otherCombatBuffs = collectCombatMods(unit);
+        assert.equal(otherCombatBuffs.atk, 4);
+        assert.equal(otherCombatBuffs.def, 4);
+        assert.equal(otherCombatBuffs.res, 4);
+        assert.equal(otherCombatBuffs.spd, 4);
+    });
+
+    it("Regal Blade", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Lloyd: White Wolf",
+            weapon: "Regal Blade",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[0], 1);
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Lloyd: White Wolf",
+            weapon: "Regal Blade",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[1], 1);
+
+        enemy.getOne("Stats").hp--;
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+        unit.addComponent({
+            type: "Battling"
+        });
+        enemy.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        assert(!unit.getOne("CombatBuff"));
+        const buffs = collectCombatMods(enemy);
+        assert.equal(buffs.atk, 2);
+        assert.equal(buffs.spd, 2);
+    });
+
+    it("Renowned Bow", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Gordin: Altean Archer",
+            skills: blankKit(),
+            weapon: "Renowned Bow",
+            rarity: 5,
+        }, TEAM_IDS[0], 1);
+
+        assert.equal(unit.getOne("Stats").spd, level40Stats["Gordin: Altean Archer"].spd.standard - 5);
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Gordin: Altean Archer",
+            weapon: "Renowned Bow",
+            skills: blankKit(),
+            rarity: 5,
+        }, TEAM_IDS[1], 1);
+
+        enemy.addComponent({
+            type: "Battling"
+        });
+
+        enemy.getOne("Stats").hp = 999;
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+
+        unit.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        TEST_GAME_WORLD.runSystems("combat");
+        assert(unit.getOne("BraveWeapon"));
+        assert(!enemy.getOne("BraveWeapon"));
+        const turns = generateTurns(unit, enemy);
+        assert.equal(turns[0], unit);
+        assert.equal(turns[1], unit);
+        TEST_GAME_WORLD.runSystems("after-combat");
+    });
+
+    it("Resolute Blade", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Mia: Lady of Blades",
+            skills: {
+                ...blankKit(),
+                special: "Moonbow"
+            },
+            weapon: "Resolute Blade",
+            rarity: 5,
+        }, TEAM_IDS[0], 1);
+        unit.getOne("Special").cooldown = 0;
+
+        assert.equal(unit.getOne("Stats").atk, WEAPONS["Resolute Blade"].might + level40Stats["Mia: Lady of Blades"].atk.standard + 3);
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Mia: Lady of Blades",
+            skills: blankKit(),
+            weapon: "Resolute Blade",
+            rarity: 5,
+        }, TEAM_IDS[1], 1);
+
+        enemy.getOne("Stats").def = 99;
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+        unit.addComponent({
+            type: "Battling"
+        });
+        enemy.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        TEST_GAME_WORLD.runSystems("combat");
+        const dealDamage = unit.getOne("DealDamage");
+        const enemyStats = getCombatStats(enemy);
+        assert.equal(dealDamage.attacker.damage, 0 + Math.floor(enemyStats.def * 0.3) + 10);
+    });
+
+    it("Rhomphaia", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Clair: Highborn Flier",
+            skills: blankKit(),
+            weapon: "Rhomphaia",
+            rarity: 5,
+        }, TEAM_IDS[0], 1);
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Reinhardt: Thunder's Fist",
+            skills: blankKit(),
+            weapon: "Dire Thunder",
+            rarity: 5,
+        }, TEAM_IDS[1], 1);
+
+        const enemy2 = TEST_GAME_WORLD.createHero({
+            name: "Arden: Strong and Tough",
+            skills: blankKit(),
+            weapon: "Brave Sword+",
+            rarity: 5,
+        }, TEAM_IDS[1], 2);
+
+        assert(checkBattleEffectiveness(unit, enemy));
+        assert(checkBattleEffectiveness(unit, enemy2));
+    });
+
+    it("Ridersbane", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Clair: Highborn Flier",
+            skills: blankKit(),
+            weapon: "Ridersbane",
+            rarity: 5,
+        }, TEAM_IDS[0], 1);
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Reinhardt: Thunder's Fist",
+            skills: blankKit(),
+            weapon: "Dire Thunder",
+            rarity: 5,
+        }, TEAM_IDS[1], 1);
+
+        assert(checkBattleEffectiveness(unit, enemy));
+    });
+
+    it("Ridersbane+", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Clair: Highborn Flier",
+            skills: blankKit(),
+            weapon: "Ridersbane+",
+            rarity: 5,
+        }, TEAM_IDS[0], 1);
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Reinhardt: Thunder's Fist",
+            skills: blankKit(),
+            weapon: "Dire Thunder",
+            rarity: 5,
+        }, TEAM_IDS[1], 1);
+
+        assert(checkBattleEffectiveness(unit, enemy));
+    });
 });

@@ -3133,7 +3133,7 @@ const WEAPONS: WeaponDict = {
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
                 target.addComponent({
-                    type: "AoEDamage",
+                    type: "MapDamage",
                     value: 10
                 });
             }
@@ -3146,14 +3146,14 @@ const WEAPONS: WeaponDict = {
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
                 target.addComponent({
-                    type: "AoEDamage",
+                    type: "MapDamage",
                     value: 10
                 });
                 const allies = getAllies(battleState, target);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, target) <= 2) {
                         ally.addComponent({
-                            type: "AoEDamage",
+                            type: "MapDamage",
                             value: 10
                         });
                     }
@@ -3236,21 +3236,21 @@ const WEAPONS: WeaponDict = {
         },
     },
     "Poison Dagger": {
-        description: "Effective against infantry foes.&lt;br>After combat, if unit attacked, inflicts Def/Res-4 on infantry foe through its next action.",
+        description: "Effective against infantry foes. After combat, if unit attacked, inflicts Def/Res-4 on infantry foe through its next action.",
         might: 2,
         type: "dagger",
         effectiveAgainst: ["infantry"],
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage") && target.getOne("MovementType").value === "infantry") {
-                Effects.dagger(this, battleState, target, {
+                applyMapComponent(target, "MapDebuff", {
                     def: -4,
                     res: -4
-                });
+                }, this.entity);
             }
         },
     },
     "Poison Dagger+": {
-        description: "Effective against infantry foes.&lt;br>After combat, if unit attacked, inflicts Def/Res-4 on infantry foe through its next action.",
+        description: "Effective against infantry foes. After combat, if unit attacked, inflicts Def/Res-4 on infantry foe through its next action.",
         might: 5,
         type: "dagger",
         effectiveAgainst: ["infantry"],
@@ -3299,8 +3299,22 @@ const WEAPONS: WeaponDict = {
                 });
             }
         },
-        onCombatAfter() {
+        onCombatAfter(state, target) {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            const { value: startingHP } = this.entity.getOne("StartingHP");
+            if (hp === startingHP && hp === maxHP) {
+                this.entity.addComponent({
+                    type: "MapDamage",
+                    value: 5
+                });
+            }
 
+            if (this.entity.getOne("DealDamage")) {
+                applyMapComponent(target, "MapDebuff", {
+                    def: -5,
+                    res: -5
+                }, this.entity);
+            }
         },
         exclusiveTo: ["Celica: Caring Princess"]
     },

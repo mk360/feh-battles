@@ -4,46 +4,26 @@ import TEAM_IDS from "../constants/teamIds";
 import { getUnitsWithHighestValue } from "../../systems/value-matchers";
 import assert from "assert";
 import killUnits from "../utils/kill-units";
+import blankKit from "../utils/blank-kit";
 
 describe("Get-units-with-highest-value", () => {
     const ally = TEST_GAME_WORLD.createHero({
         name: "Chrom: Exalted Prince",
-        skills: {
-            A: "",
-            assist: "",
-            B: "",
-            C: "",
-            S: "",
-            special: "",
-        },
+        skills: blankKit(),
         rarity: 5,
         weapon: "Falchion (Awakening)",
     }, TEAM_IDS[0], 2);
 
     const anna = TEST_GAME_WORLD.createHero({
         name: "Anna: Commander",
-        skills: {
-            A: "",
-            assist: "",
-            B: "",
-            C: "",
-            S: "",
-            special: "",
-        },
+        skills: blankKit(),
         rarity: 5,
         weapon: "Nóatún",
     }, TEAM_IDS[0], 1);
 
     const ally2 = TEST_GAME_WORLD.createHero({
         name: "Hector: General of Ostia",
-        skills: {
-            A: "",
-            assist: "",
-            B: "",
-            C: "",
-            S: "",
-            special: "",
-        },
+        skills: blankKit(),
         rarity: 5,
         weapon: "Silver Axe+",
     }, TEAM_IDS[0], 3);

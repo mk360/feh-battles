@@ -602,28 +602,14 @@ describe("D", () => {
         const unit = TEST_GAME_WORLD.createHero({
             name: "Virion: Elite Archer",
             weapon: "Dignified Bow",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                assist: "",
-                special: "",
-            },
+            skills: blankKit(),
             rarity: 5,
         }, TEAM_IDS[0], 1);
 
         const markableEnemy = TEST_GAME_WORLD.createHero({
             name: "Virion: Elite Archer",
             weapon: "Silver Bow+",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                assist: "",
-                special: "",
-            },
+            skills: blankKit(),
             rarity: 5,
         }, TEAM_IDS[1], 1);
 
@@ -633,14 +619,7 @@ describe("D", () => {
         const adjacentEnemy = TEST_GAME_WORLD.createHero({
             name: "Virion: Elite Archer",
             weapon: "Silver Bow+",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                assist: "",
-                special: "",
-            },
+            skills: blankKit(),
             rarity: 5,
         }, TEAM_IDS[1], 2);
 
@@ -652,14 +631,7 @@ describe("D", () => {
         const nonAdjacentEnemy = TEST_GAME_WORLD.createHero({
             name: "Virion: Elite Archer",
             weapon: "Silver Bow+",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                assist: "",
-                special: "",
-            },
+            skills: blankKit(),
             rarity: 5,
         }, TEAM_IDS[1], 3);
 
@@ -678,14 +650,7 @@ describe("D", () => {
     it("Dire Thunder", () => {
         const reinhardt1 = TEST_GAME_WORLD.createHero({
             name: "Reinhardt: Thunder's Fist",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                assist: "",
-                special: "",
-            },
+            skills: blankKit(),
             weapon: "Dire Thunder",
             rarity: 5,
         }, TEAM_IDS[0], 1);
@@ -695,14 +660,7 @@ describe("D", () => {
         const enemy = TEST_GAME_WORLD.createHero({
             name: "Reinhardt: Thunder's Fist",
             weapon: "Dire Thunder",
-            skills: {
-                A: "",
-                assist: "",
-                S: "",
-                special: "",
-                B: "",
-                C: "",
-            },
+            skills: blankKit(),
             rarity: 5,
         }, TEAM_IDS[1], 1);
 

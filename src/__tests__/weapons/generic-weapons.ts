@@ -59,14 +59,7 @@ describe("Generic Weapons", () => {
 
         const sword = TEST_GAME_WORLD.createHero({
             name: "Chrom: Exalted Prince",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                assist: "",
-                special: "",
-            },
+            skills: blankKit(),
             weapon: `Silver Sword+`,
             rarity: 5,
         }, TEAM_IDS[0], 1);
@@ -74,14 +67,7 @@ describe("Generic Weapons", () => {
 
         const lance = TEST_GAME_WORLD.createHero({
             name: "Azura: Lady of the Lake",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                assist: "",
-                special: "",
-            },
+            skills: blankKit(),
             weapon: `Silver Lance+`,
             rarity: 5,
         }, TEAM_IDS[0], 2);
@@ -89,14 +75,7 @@ describe("Generic Weapons", () => {
 
         const axe = TEST_GAME_WORLD.createHero({
             name: "Azura: Lady of Ballads",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                assist: "",
-                special: "",
-            },
+            skills: blankKit(),
             weapon: `Silver Lance+`,
             rarity: 5,
         }, TEAM_IDS[0], 3);
@@ -104,14 +83,7 @@ describe("Generic Weapons", () => {
 
         const bow = TEST_GAME_WORLD.createHero({
             name: "Clarisse: Sniper in the Dark",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                assist: "",
-                special: "",
-            },
+            skills: blankKit(),
             weapon: `Silver Bow+`,
             rarity: 5,
         }, TEAM_IDS[0], 4);

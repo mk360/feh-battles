@@ -138,14 +138,7 @@ describe("H", () => {
     it("Hewn Lance", () => {
         const lanceUnit = TEST_GAME_WORLD.createHero({
             name: "Donnel: Village Hero",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                assist: "",
-                special: "",
-            },
+            skills: blankKit(),
             weapon: "Hewn Lance",
             rarity: 5,
         }, TEAM_IDS[0], 1);
@@ -153,14 +146,7 @@ describe("H", () => {
         const enemy = TEST_GAME_WORLD.createHero({
             name: "Donnel: Village Hero",
             weapon: "Hewn Lance",
-            skills: {
-                A: "",
-                assist: "",
-                S: "",
-                special: "",
-                B: "",
-                C: "",
-            },
+            skills: blankKit(),
             rarity: 5,
         }, TEAM_IDS[1], 1);
 

@@ -4,33 +4,20 @@ import TEAM_IDS from "../constants/teamIds";
 import killUnits from "../utils/kill-units";
 import assert from "assert";
 import getAffinity from "../../systems/get-affinity";
+import blankKit from "../utils/blank-kit";
 
 describe("get-affinity", () => {
     const unit1 = TEST_GAME_WORLD.createHero({
         name: "Chrom: Exalted Prince",
         weapon: "",
-        skills: {
-            A: "",
-            B: "",
-            C: "",
-            S: "",
-            assist: "",
-            special: "",
-        },
+        skills: blankKit(),
         rarity: 5
     }, TEAM_IDS[0], 1);
 
     const unit2 = TEST_GAME_WORLD.createHero({
         name: "Azura: Lady of the Lake",
         weapon: "",
-        skills: {
-            A: "",
-            B: "",
-            C: "",
-            S: "",
-            assist: "",
-            special: "",
-        },
+        skills: blankKit(),
         rarity: 5
     }, TEAM_IDS[1], 1);
 

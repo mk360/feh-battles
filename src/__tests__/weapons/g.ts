@@ -101,14 +101,7 @@ describe("G", () => {
 
         const opponent = TEST_GAME_WORLD.createHero({
             name: "Arden: Strong and Tough",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                special: "",
-                assist: "",
-            },
+            skills: blankKit(),
             weapon: "Iron Sword",
             rarity: 5
         }, TEAM_IDS[1], 2);

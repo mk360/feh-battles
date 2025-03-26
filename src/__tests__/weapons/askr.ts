@@ -5,33 +5,20 @@ import TEAM_IDS from "../constants/teamIds";
 import TEST_GAME_WORLD from "../constants/world";
 import killUnits from "../utils/kill-units";
 import getSurroundings from "../../systems/get-surroundings";
+import blankKit from "../utils/blank-kit";
 
 describe("Askr Weapons", () => {
     it("Fensalir", () => {
         const lance = TEST_GAME_WORLD.createHero({
             name: "Sharena: Princess of Askr",
-            skills: {
-                A: "",
-                assist: "",
-                B: "",
-                C: "",
-                S: "",
-                special: "",
-            },
+            skills: blankKit(),
             rarity: 5,
             weapon: "Fensalir",
         }, TEAM_IDS[0], 1);
 
         const enemy1 = TEST_GAME_WORLD.createHero({
             name: "Chrom: Exalted Prince",
-            skills: {
-                A: "",
-                assist: "",
-                B: "",
-                C: "",
-                S: "",
-                special: "",
-            },
+            skills: blankKit(),
             rarity: 5,
             weapon: "Falchion (Awakening)",
         }, TEAM_IDS[1], 1);
@@ -52,14 +39,7 @@ describe("Askr Weapons", () => {
     it("Fólkvangr", () => {
         const sword = TEST_GAME_WORLD.createHero({
             name: "Alfonse: Prince of Askr",
-            skills: {
-                A: "",
-                assist: "",
-                B: "",
-                C: "",
-                S: "",
-                special: "",
-            },
+            skills: blankKit(),
             rarity: 5,
             weapon: "Fólkvangr",
         }, TEAM_IDS[0], 1);
@@ -75,14 +55,7 @@ describe("Askr Weapons", () => {
     it("Nóatún", () => {
         const anna = TEST_GAME_WORLD.createHero({
             name: "Anna: Commander",
-            skills: {
-                A: "",
-                assist: "",
-                B: "",
-                C: "",
-                S: "",
-                special: "",
-            },
+            skills: blankKit(),
             rarity: 5,
             weapon: "Nóatún",
         }, TEAM_IDS[0], 1);
@@ -91,14 +64,7 @@ describe("Askr Weapons", () => {
 
         const ally = TEST_GAME_WORLD.createHero({
             name: "Chrom: Exalted Prince",
-            skills: {
-                A: "",
-                assist: "",
-                B: "",
-                C: "",
-                S: "",
-                special: "",
-            },
+            skills: blankKit(),
             rarity: 5,
             weapon: "Falchion (Awakening)",
         }, TEAM_IDS[0], 2);

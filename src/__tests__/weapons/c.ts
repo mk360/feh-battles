@@ -9,6 +9,7 @@ import level40Stats from "../constants/lv40_stats.json";
 import TEAM_IDS from "../constants/teamIds";
 import TEST_GAME_WORLD from "../constants/world"
 import killUnits from "../utils/kill-units";
+import blankKit from "../utils/blank-kit";
 
 describe("C", () => {
     afterEach(() => {
@@ -33,42 +34,21 @@ describe("C", () => {
         const ally = TEST_GAME_WORLD.createHero({
             name: "Roy: Brave Lion",
             weapon: "",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                special: "",
-                assist: "",
-            },
+            skills: blankKit(),
             rarity: 5,
         }, TEAM_IDS[0], 2);
 
         const ally2 = TEST_GAME_WORLD.createHero({
             name: "Camilla: Bewitching Beauty",
             weapon: "",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                special: "",
-                assist: "",
-            },
+            skills: blankKit(),
             rarity: 5,
         }, TEAM_IDS[0], 3);
 
         const enemy = TEST_GAME_WORLD.createHero({
             name: "Roy: Brave Lion",
             weapon: "",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                special: "",
-                assist: "",
-            },
+            skills: blankKit(),
             rarity: 5,
         }, TEAM_IDS[1], 1);
 
@@ -131,28 +111,14 @@ describe("C", () => {
         const unit = TEST_GAME_WORLD.createHero({
             name: "Gaius: Candy Stealer",
             weapon: "Candied Dagger",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                assist: "",
-                special: "",
-            },
+            skills: blankKit(),
             rarity: 5
         }, TEAM_IDS[0], 1);
 
         const enemy = TEST_GAME_WORLD.createHero({
             name: "Roy: Brave Lion",
             weapon: "",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                special: "",
-                assist: "",
-            },
+            skills: blankKit(),
             rarity: 5,
         }, TEAM_IDS[1], 1);
 
@@ -172,14 +138,7 @@ describe("C", () => {
         const enemyAlly = TEST_GAME_WORLD.createHero({
             name: "Roy: Brave Lion",
             weapon: "",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                special: "",
-                assist: "",
-            },
+            skills: blankKit(),
             rarity: 5,
         }, TEAM_IDS[1], 2);
 
@@ -215,28 +174,14 @@ describe("C", () => {
         const unit = TEST_GAME_WORLD.createHero({
             name: "Sakura: Loving Priestess",
             weapon: "Candlelight",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                assist: "",
-                special: "",
-            },
+            skills: blankKit(),
             rarity: 5
         }, TEAM_IDS[0], 1);
 
         const enemy = TEST_GAME_WORLD.createHero({
             name: "Roy: Brave Lion",
             weapon: "",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                special: "",
-                assist: "",
-            },
+            skills: blankKit(),
             rarity: 5,
         }, TEAM_IDS[1], 1);
 
@@ -264,42 +209,21 @@ describe("C", () => {
         const unit = TEST_GAME_WORLD.createHero({
             name: "Sakura: Loving Priestess",
             weapon: "Candlelight+",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                assist: "",
-                special: "",
-            },
+            skills: blankKit(),
             rarity: 5
         }, TEAM_IDS[0], 1);
 
         const enemy = TEST_GAME_WORLD.createHero({
             name: "Roy: Brave Lion",
             weapon: "",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                special: "",
-                assist: "",
-            },
+            skills: blankKit(),
             rarity: 5,
         }, TEAM_IDS[1], 1);
 
         const enemyAlly = TEST_GAME_WORLD.createHero({
             name: "Ike: Brave Mercenary",
             weapon: "",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                special: "",
-                assist: "",
-            },
+            skills: blankKit(),
             rarity: 5
         }, TEAM_IDS[1], 2);
 
@@ -329,28 +253,14 @@ describe("C", () => {
             const axeUnit = TEST_GAME_WORLD.createHero({
                 name: "Ike: Brave Mercenary",
                 weapon: `Carrot Axe${grade}`,
-                skills: {
-                    A: "",
-                    B: "",
-                    C: "",
-                    S: "",
-                    special: "",
-                    assist: "",
-                },
+                skills: blankKit(),
                 rarity: 5
             }, TEAM_IDS[0], 1);
 
             const enemy = TEST_GAME_WORLD.createHero({
                 name: "Cecilia: Etrurian General",
                 weapon: "",
-                skills: {
-                    A: "",
-                    B: "",
-                    C: "",
-                    S: "",
-                    special: "",
-                    assist: "",
-                },
+                skills: blankKit(),
                 rarity: 5
             }, TEAM_IDS[1], 1);
 
@@ -380,28 +290,14 @@ describe("C", () => {
             const lanceUnit = TEST_GAME_WORLD.createHero({
                 name: "Cordelia: Knight Paragon",
                 weapon: `Carrot Lance${grade}`,
-                skills: {
-                    A: "",
-                    B: "",
-                    C: "",
-                    S: "",
-                    special: "",
-                    assist: "",
-                },
+                skills: blankKit(),
                 rarity: 5
             }, TEAM_IDS[0], 1);
 
             const enemy = TEST_GAME_WORLD.createHero({
                 name: "Cecilia: Etrurian General",
                 weapon: "",
-                skills: {
-                    A: "",
-                    B: "",
-                    C: "",
-                    S: "",
-                    special: "",
-                    assist: "",
-                },
+                skills: blankKit(),
                 rarity: 5
             }, TEAM_IDS[1], 1);
 
@@ -431,14 +327,7 @@ describe("C", () => {
     it("Cherche's Axe", () => {
         const unit = TEST_GAME_WORLD.createHero({
             name: "Cherche: Wyvern Friend",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                assist: "",
-                special: "",
-            },
+            skills: blankKit(),
             weapon: "Cherche's Axe",
             rarity: 5,
         }, TEAM_IDS[0], 1);
@@ -448,14 +337,7 @@ describe("C", () => {
         const enemy = TEST_GAME_WORLD.createHero({
             name: "Cain: The Bull",
             weapon: "",
-            skills: {
-                A: "",
-                assist: "",
-                S: "",
-                special: "",
-                B: "",
-                C: "",
-            },
+            skills: blankKit(),
             rarity: 5,
         }, TEAM_IDS[1], 1);
 
@@ -498,28 +380,14 @@ describe("C", () => {
         const unit = TEST_GAME_WORLD.createHero({
             name: "Clarisse: Sniper in the Dark",
             weapon: "Clarisse's Bow",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                special: "",
-                assist: "",
-            },
+            skills: blankKit(),
             rarity: 5,
         }, TEAM_IDS[0], 1);
 
         const enemy = TEST_GAME_WORLD.createHero({
             name: "Cain: The Bull",
             weapon: "",
-            skills: {
-                A: "",
-                assist: "",
-                S: "",
-                special: "",
-                B: "",
-                C: "",
-            },
+            skills: blankKit(),
             rarity: 5,
         }, TEAM_IDS[1], 1);
 
@@ -540,14 +408,7 @@ describe("C", () => {
         const enemyAlly = TEST_GAME_WORLD.createHero({
             name: "Clarisse: Sniper in the Dark",
             weapon: "Clarisse's Bow",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                special: "",
-                assist: "",
-            },
+            skills: blankKit(),
             rarity: 5,
         }, TEAM_IDS[1], 2);
 
@@ -571,28 +432,14 @@ describe("C", () => {
         const unit = TEST_GAME_WORLD.createHero({
             name: "Clarisse: Sniper in the Dark",
             weapon: "Clarisse's Bow+",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                special: "",
-                assist: "",
-            },
+            skills: blankKit(),
             rarity: 5,
         }, TEAM_IDS[0], 1);
 
         const enemy = TEST_GAME_WORLD.createHero({
             name: "Cain: The Bull",
             weapon: "",
-            skills: {
-                A: "",
-                assist: "",
-                S: "",
-                special: "",
-                B: "",
-                C: "",
-            },
+            skills: blankKit(),
             rarity: 5,
         }, TEAM_IDS[1], 1);
 
@@ -613,14 +460,7 @@ describe("C", () => {
         const enemyAlly = TEST_GAME_WORLD.createHero({
             name: "Clarisse: Sniper in the Dark",
             weapon: "Clarisse's Bow",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                special: "",
-                assist: "",
-            },
+            skills: blankKit(),
             rarity: 5,
         }, TEAM_IDS[1], 2);
 
@@ -643,14 +483,7 @@ describe("C", () => {
     it("Cordelia's Lance", () => {
         const lanceUnit = TEST_GAME_WORLD.createHero({
             name: "Cordelia: Knight Paragon",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                assist: "",
-                special: "",
-            },
+            skills: blankKit(),
             weapon: `Cordelia's Lance`,
             rarity: 5,
         }, TEAM_IDS[0], 1);
@@ -660,14 +493,7 @@ describe("C", () => {
         const enemy = TEST_GAME_WORLD.createHero({
             name: "Abel: The Panther",
             weapon: "",
-            skills: {
-                A: "",
-                assist: "",
-                S: "",
-                special: "",
-                B: "",
-                C: "",
-            },
+            skills: blankKit(),
             rarity: 5,
         }, TEAM_IDS[1], 1);
 
@@ -709,14 +535,7 @@ describe("C", () => {
     it("Corvus Tome", () => {
         const unit = TEST_GAME_WORLD.createHero({
             name: "Henry: Twisted Mind",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                assist: "",
-                special: "",
-            },
+            skills: blankKit(),
             weapon: "Corvus Tome",
             rarity: 5,
         }, TEAM_IDS[0], 1);
@@ -724,28 +543,14 @@ describe("C", () => {
         const enemy = TEST_GAME_WORLD.createHero({
             name: "Clarisse: Sniper in the Dark",
             weapon: "Clarisse's Bow+",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                special: "",
-                assist: "",
-            },
+            skills: blankKit(),
             rarity: 5,
         }, TEAM_IDS[1], 4);
 
         const enemy2 = TEST_GAME_WORLD.createHero({
             name: "Eliwood: Knight of Lycia",
             weapon: "",
-            skills: {
-                A: "",
-                assist: "",
-                S: "",
-                special: "",
-                B: "",
-                C: "",
-            },
+            skills: blankKit(),
             rarity: 5,
         }, TEAM_IDS[1], 1);
 
@@ -791,14 +596,7 @@ describe("C", () => {
 
         const opponent = TEST_GAME_WORLD.createHero({
             name: "Arden: Strong and Tough",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                special: "",
-                assist: "",
-            },
+            skills: blankKit(),
             weapon: "",
             rarity: 5
         }, TEAM_IDS[1], 1);
@@ -849,14 +647,7 @@ describe("C", () => {
     it("Cupid Arrow", () => {
         const unit = TEST_GAME_WORLD.createHero({
             name: "Cordelia: Perfect Bride",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                assist: "",
-                special: "",
-            },
+            skills: blankKit(),
             weapon: "Cupid Arrow",
             rarity: 5,
         }, TEAM_IDS[0], 1);
@@ -935,14 +726,7 @@ describe("C", () => {
     it("Cupid Arrow+", () => {
         const unit = TEST_GAME_WORLD.createHero({
             name: "Cordelia: Perfect Bride",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                assist: "",
-                special: "",
-            },
+            skills: blankKit(),
             weapon: "Cupid Arrow+",
             rarity: 5,
         }, TEAM_IDS[0], 1);
@@ -1038,14 +822,7 @@ describe("C", () => {
 
         const enemy = TEST_GAME_WORLD.createHero({
             name: "Valter: Dark Moonstone",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                assist: "",
-                special: "",
-            },
+            skills: blankKit(),
             weapon: "Cursed Lance",
             rarity: 5,
         }, TEAM_IDS[1], 1);
@@ -1114,14 +891,7 @@ describe("C", () => {
 
         const enemy = TEST_GAME_WORLD.createHero({
             name: "Valter: Dark Moonstone",
-            skills: {
-                A: "",
-                B: "",
-                C: "",
-                S: "",
-                assist: "",
-                special: "",
-            },
+            skills: blankKit(),
             weapon: "Cursed Lance",
             rarity: 5,
         }, TEAM_IDS[1], 1);

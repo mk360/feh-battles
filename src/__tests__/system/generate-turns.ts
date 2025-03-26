@@ -5,48 +5,28 @@ import TEST_GAME_WORLD from "../constants/world";
 import { after, describe, it } from "node:test";
 import assert from "node:assert";
 import killUnits from "../utils/kill-units";
+import blankKit from "../utils/blank-kit";
 
 describe("generate-turns", () => {
     const hero1 = TEST_GAME_WORLD.createHero({
         name: "Ryoma: Peerless Samurai",
         weapon: "Sieglinde",
         rarity: 5,
-        skills: {
-            A: "",
-            B: "",
-            C: "",
-            assist: "",
-            S: "",
-            special: "",
-        }
+        skills: blankKit()
     }, TEST_GAME_WORLD.state.teamIds[0], 1);
 
     const hero2 = TEST_GAME_WORLD.createHero({
         name: "Ryoma: Peerless Samurai",
         weapon: "Sieglinde",
         rarity: 5,
-        skills: {
-            A: "",
-            B: "",
-            C: "",
-            assist: "",
-            S: "",
-            special: "",
-        }
+        skills: blankKit()
     }, TEST_GAME_WORLD.state.teamIds[1], 1);
 
     const hero3 = TEST_GAME_WORLD.createHero({
         rarity: 5,
         name: "Klein: Silver Nobleman",
         weapon: "Silver Bow",
-        skills: {
-            assist: "",
-            special: "",
-            A: "",
-            B: "",
-            C: "",
-            S: "",
-        }
+        skills: blankKit()
     }, TEST_GAME_WORLD.state.teamIds[1], 2);
 
     after(() => killUnits([hero1, hero2, hero3]));

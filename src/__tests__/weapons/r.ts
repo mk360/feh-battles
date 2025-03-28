@@ -1,20 +1,20 @@
 import assert from "assert";
 import { afterEach, describe, it } from "node:test";
 import SPECIALS from "../../data/specials";
+import WEAPONS from "../../data/weapons";
 import { applyMapComponent } from "../../systems/apply-map-effect";
 import collectCombatMods from "../../systems/collect-combat-mods";
+import collectMapMods from "../../systems/collect-map-mods";
 import checkBattleEffectiveness from "../../systems/effectiveness";
+import generateTurns from "../../systems/generate-turns";
+import getAffinity from "../../systems/get-affinity";
+import getAttackerAdvantage from "../../systems/get-attacker-advantage";
+import getCombatStats from "../../systems/get-combat-stats";
 import level40Stats from "../constants/lv40_stats.json";
 import TEAM_IDS from "../constants/teamIds";
 import TEST_GAME_WORLD from "../constants/world";
 import blankKit from "../utils/blank-kit";
 import killUnits from "../utils/kill-units";
-import getAffinity from "../../systems/get-affinity";
-import collectMapMods from "../../systems/collect-map-mods";
-import generateTurns from "../../systems/generate-turns";
-import getCombatStats from "../../systems/get-combat-stats";
-import getAttackerAdvantage from "../../systems/get-attacker-advantage";
-import WEAPONS from "../../data/weapons";
 
 describe("R", () => {
     afterEach(() => {
@@ -525,5 +525,232 @@ describe("R", () => {
         }, TEAM_IDS[1], 1);
 
         assert(checkBattleEffectiveness(unit, enemy));
+    });
+
+    it("Rogue Dagger", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Matthew: Faithful Spy",
+            rarity: 5,
+            weapon: "Rogue Dagger",
+            skills: blankKit(),
+        }, TEAM_IDS[0], 1);
+
+        unit.addComponent({
+            type: "PreventCounterattack"
+        });
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+        unit.addComponent({
+            type: "Battling"
+        });
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Matthew: Faithful Spy",
+            rarity: 5,
+            weapon: "Rogue Dagger",
+            skills: blankKit(),
+        }, TEAM_IDS[1], 1);
+
+        enemy.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        TEST_GAME_WORLD.runSystems("combat");
+        TEST_GAME_WORLD.runSystems("after-combat");
+        const { buffs } = collectMapMods(unit);
+        assert.equal(buffs.def, 3);
+        assert.equal(buffs.res, 3);
+        const { debuffs } = collectMapMods(enemy);
+        assert.equal(debuffs.def, -3);
+        assert.equal(debuffs.res, -3);
+    });
+
+    it("Rogue Dagger+", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Matthew: Faithful Spy",
+            rarity: 5,
+            weapon: "Rogue Dagger+",
+            skills: blankKit(),
+        }, TEAM_IDS[0], 1);
+
+        unit.addComponent({
+            type: "PreventCounterattack"
+        });
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+        unit.addComponent({
+            type: "Battling"
+        });
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Matthew: Faithful Spy",
+            rarity: 5,
+            weapon: "Rogue Dagger",
+            skills: blankKit(),
+        }, TEAM_IDS[1], 1);
+
+        enemy.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        TEST_GAME_WORLD.runSystems("combat");
+        TEST_GAME_WORLD.runSystems("after-combat");
+        const { buffs } = collectMapMods(unit);
+        assert.equal(buffs.def, 5);
+        assert.equal(buffs.res, 5);
+        const { debuffs } = collectMapMods(enemy);
+        assert.equal(debuffs.def, -5);
+        assert.equal(debuffs.res, -5);
+    });
+
+    it("Rowdy Sword", () => {
+        const cain = TEST_GAME_WORLD.createHero({
+            name: "Cain: The Bull",
+            skills: blankKit(),
+            weapon: "Rowdy Sword",
+            rarity: 5,
+        }, TEAM_IDS[0], 1);
+
+        assert.equal(cain.getOne("Stats").spd, level40Stats["Cain: The Bull"].spd.standard - 5);
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Cain: The Bull",
+            weapon: "Rowdy Sword",
+            skills: blankKit(),
+            rarity: 5,
+        }, TEAM_IDS[1], 1);
+
+        enemy.addComponent({
+            type: "Battling"
+        });
+
+        enemy.getOne("Stats").hp = 999;
+
+        cain.addComponent({
+            type: "InitiateCombat"
+        });
+
+        cain.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        TEST_GAME_WORLD.runSystems("combat");
+        assert(cain.getOne("BraveWeapon"));
+        assert(!enemy.getOne("BraveWeapon"));
+        const turns = generateTurns(cain, enemy);
+        assert.equal(turns[0], cain);
+        assert.equal(turns[1], cain);
+        TEST_GAME_WORLD.runSystems("after-combat");
+    });
+
+    it("Ruby Sword", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Chrom: Exalted Prince",
+            weapon: "Ruby Sword",
+            skills: blankKit(),
+            rarity: 5,
+        }, TEAM_IDS[0], 1);
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Lukas: Sharp Soldier",
+            weapon: "",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[1], 1);
+
+        unit.addComponent({
+            type: "Battling"
+        });
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+
+        enemy.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        TEST_GAME_WORLD.runSystems("combat");
+        assert.equal(getAffinity(unit, enemy), -0.2);
+        TEST_GAME_WORLD.runSystems("after-combat");
+    });
+
+    it("Ruby Sword+", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Chrom: Exalted Prince",
+            weapon: "Ruby Sword+",
+            skills: blankKit(),
+            rarity: 5,
+        }, TEAM_IDS[0], 1);
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Lukas: Sharp Soldier",
+            weapon: "",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[1], 1);
+
+        unit.addComponent({
+            type: "Battling"
+        });
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+
+        enemy.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        TEST_GAME_WORLD.runSystems("combat");
+        assert.equal(getAffinity(unit, enemy), -0.2);
+        TEST_GAME_WORLD.runSystems("after-combat");
+    });
+
+    it("Runeaxe", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Narcian: Wyvern General",
+            weapon: "Runeaxe",
+            skills: blankKit(),
+            rarity: 5,
+        }, TEAM_IDS[0], 1);
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Narcian: Wyvern General",
+            weapon: "Runeaxe",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[1], 1);
+
+        unit.addComponent({
+            type: "Battling"
+        });
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+
+        unit.addComponent({
+            type: "PreventCounterattack"
+        });
+
+        enemy.addComponent({
+            type: "Battling"
+        });
+
+        unit.getOne("Stats").hp = unit.getOne("Stats").hp - 10;
+        const curHP = unit.getOne("Stats").hp;
+        TEST_GAME_WORLD.runSystems("before-combat");
+        TEST_GAME_WORLD.runSystems("combat");
+        assert.equal(unit.getOne("DealDamage").attacker.hp, curHP + 7);
     });
 });

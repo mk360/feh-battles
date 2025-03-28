@@ -286,7 +286,7 @@ class CombatSystem extends System {
                 type: "DealDamage",
                 round,
                 attacker: {
-                    hp: Math.floor(Math.min(combatMap.get(turn).hp + healingAmount, turn.getOne("Stats").maxHP)),
+                    hp: combatMap.get(turn).hp,
                     entity: turn,
                     damage: damageAfterReduction,
                     heal: Math.floor(healingAmount),

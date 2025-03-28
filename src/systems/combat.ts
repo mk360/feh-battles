@@ -295,7 +295,7 @@ class CombatSystem extends System {
                     turn: turnData.consecutiveTurnNumber,
                 },
                 target: {
-                    hp: Math.floor(Math.min(Math.max(combatMap.get(target).hp + defenderHealingAmount, 0), defender.getOne("Stats").maxHP)),
+                    hp: combatMap.get(defender).hp,
                     entity: defender,
                     damage: 0,
                     heal: Math.floor(defenderHealingAmount),

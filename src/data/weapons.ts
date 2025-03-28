@@ -3695,7 +3695,7 @@ const WEAPONS: WeaponDict = {
             const { value: startingHP } = this.entity.getOne("StartingHP");
             if (hp === startingHP && hp === maxHP) {
                 this.entity.addComponent({
-                    type: "AoEDamage",
+                    type: "MapDamage",
                     value: 2
                 });
             }
@@ -3730,7 +3730,7 @@ const WEAPONS: WeaponDict = {
             const { value: startingHP } = this.entity.getOne("StartingHP");
             if (hp === startingHP && hp === maxHP) {
                 this.entity.addComponent({
-                    type: "AoEDamage",
+                    type: "MapDamage",
                     value: 2
                 });
             }
@@ -3769,14 +3769,17 @@ const WEAPONS: WeaponDict = {
         might: 14,
         description: "Effective against flying foes. If foe uses bow, dagger, magic, or staff, grants Atk/Spd/Def/Res+4 during combat.",
         effectiveAgainst: ["flier"],
-        onCombatStart() {
-            this.entity.addComponent({
-                type: "CombatBuff",
-                atk: 4,
-                spd: 4,
-                def: 4,
-                res: 4
-            });
+        onCombatStart(state, target) {
+            const { range } = target.getOne("Weapon");
+            if (range === 2) {
+                this.entity.addComponent({
+                    type: "CombatBuff",
+                    atk: 4,
+                    spd: 4,
+                    def: 4,
+                    res: 4
+                });
+            }
         }
     },
     "Shanna's Lance": {

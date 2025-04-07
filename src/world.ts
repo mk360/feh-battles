@@ -322,7 +322,7 @@ class GameWorld extends World {
         const defender = this.state.occupiedTilesMap.get(targetTile);
         let bestTile = path.reverse().find((tile) => getDistance(tile, targetCoordinates) === range);
         if (!bestTile) {
-            const movementTiles = Array.from(attacker.getComponents("MovementTiles")).filter((tile) => getDistance(tile.getObject() as unknown as { x: number; y: number }, targetCoordinates) === range) as unknown as { x: number; y: number }[];
+            const movementTiles = Array.from(attacker.getComponents("MovementTile")).filter((tile) => getDistance(tile.getObject() as unknown as { x: number; y: number }, targetCoordinates) === range) as unknown as { x: number; y: number }[];
             bestTile = movementTiles[0];
         }
         const b1 = attacker.addComponent({
@@ -725,9 +725,10 @@ class GameWorld extends World {
         const mapTile = this.state.map[targetCoordinates.y][targetCoordinates.x];
         let bestTile = path.reverse().find((tile) => getDistance(tile, targetCoordinates) === range);
         if (!bestTile) {
-            const movementTiles = Array.from(attacker.getComponents("MovementTiles")).filter((tile) => getDistance(tile.getObject() as unknown as { x: number; y: number }, targetCoordinates) === range) as unknown as { x: number; y: number }[];
-            bestTile = movementTiles[0];
+            const movementTiles = Array.from(attacker.getComponents("MovementTile")).filter((tile) => getDistance(tile.getObject() as unknown as { x: number; y: number }, targetCoordinates) === range);
+            bestTile = movementTiles[0].getObject(false) as unknown as { x: number; y: number };
         }
+        console.log(bestTile);
         const defender = this.state.occupiedTilesMap.get(mapTile);
         const b1 = attacker.addComponent({
             type: "PreviewingBattle"

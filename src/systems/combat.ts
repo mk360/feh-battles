@@ -42,6 +42,7 @@ class CombatSystem extends System {
         }>();
 
         const attackerPosition = getPosition(attacker);
+        console.log(attackerPosition.getObject(false));
         const attackerTile = this.state.map[attackerPosition.y][attackerPosition.x];
 
         combatMap.set(attacker, {

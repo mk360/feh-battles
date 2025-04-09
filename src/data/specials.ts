@@ -481,9 +481,10 @@ const SPECIALS: SpecialsDict = {
     },
     "Iceberg": {
         description: "Boosts damage by 50% of unit's Res.",
-        cooldown: 3,
+        cooldown: 0,
         onCombatRoundAttack() {
             const { res } = getCombatStats(this.entity);
+            console.log("triggered");
             this.entity.addComponent({
                 type: "RoundDamageIncrease",
                 amount: Math.floor(res / 2)

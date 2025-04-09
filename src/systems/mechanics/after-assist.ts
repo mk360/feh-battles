@@ -18,15 +18,15 @@ class AfterAssist extends System {
         if (assisting) {
             const assistSkill = ASSISTS[assisting.getOne("Assist").name];
             const skillMap = this.state.skillMap.get(assisting).onAssistAfter;
-            skillMap.forEach((skill) => {
+            skillMap?.forEach((skill) => {
                 const assistData = SKILLS[skill.name];
                 assistData.onAssistAfter?.call(skill, this.state, assisted, assistSkill);
             });
 
             const assistedSkillMap = this.state.skillMap.get(assisted).onAllyAssistAfter;
-            assistedSkillMap.forEach((skill) => {
+            assistedSkillMap?.forEach((skill) => {
                 const assistData = SKILLS[skill.name];
-                assistData.onAllyAssistAfter?.call(skill, this.state, assisting, assistSkill);
+                assistData.onAllyAssistAfter.call(skill, this.state, assisting, assistSkill);
             });
 
             const allies = getAllies(this.state, assisting).filter((i) => i !== assisted);

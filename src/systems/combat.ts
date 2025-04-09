@@ -163,6 +163,10 @@ class CombatSystem extends System {
                 attacker.removeComponent(damageIncrease);
             });
 
+            if (flatExtraDamage) {
+                console.log({ flatExtraDamage, t: turn.getOne("Name").value });
+            }
+
             const defenderSkills = this.state.skillMap.get(defender);
             defenderSkills.onCombatRoundDefense?.forEach((skill) => {
                 const dexData = SKILLS[skill.name];

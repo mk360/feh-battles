@@ -318,6 +318,7 @@ class GameWorld extends World {
     runCombat(attackerId: string, movementCoordinates: { x: number, y: number }, targetCoordinates: { x: number, y: number }, path: { x: number, y: number }[]) {
         const attacker = this.getEntity(attackerId);
         const range = attacker.getOne("Weapon").range;
+        console.log({ targetCoordinates, pos: attacker.getOne("Position").getObject(false) });
         const targetTile = this.state.map[targetCoordinates.y][targetCoordinates.x];
         const defender = this.state.occupiedTilesMap.get(targetTile);
         let bestTile = path.reverse().find((tile) => getDistance(tile, targetCoordinates) === range);
@@ -470,6 +471,15 @@ class GameWorld extends World {
             actionStrings.push(assistString);
         }
 
+        const shove = actions.find((action) => action.type === "Shove") as (IComponentChange & { x: number, y: number; target: Entity });
+
+        if (shove) {
+            const cmp = this.getComponent(shove.component);
+            const targetCoords = cmp.x * 10 + cmp.y;
+            assistString = `assist-movement Shove ${cmp.entity.id} ${cmp.target.id} ${targetCoords}`;
+            actionStrings.push(assistString);
+        }
+
         const statuses = actions.filter((change) => change.type === "Status" && change.op === "add");
 
         const statusDealingMap: { [k: string]: { target: string, status: string }[] } = {};
@@ -568,7 +578,7 @@ class GameWorld extends World {
         return change;
     };
 
-    runAssist(source: string, target: { x: number; y: number }, actionCoordinates: { x: number, y: number }) {
+    runAssist(source: string, target: { x: number; y: number }, actionCoordinates: { x: number, y: number }, path: string[]) {
         let changes: string[] = [];
 
         const assistSource = this.getEntity(source);
@@ -651,7 +661,8 @@ class GameWorld extends World {
         // console.log({ randomMapIndex });
         const mapId = `Z${randomMapIndex}`;
         this.state.mapId = mapId;
-        this.state.topology = require(`../maps/${mapId}.json`);
+        this.state.topology = JSON.parse(JSON.stringify(require(`../maps/${mapId}.json`)));
+        // Each generated map binds this.state.topology to a new reference of the map. TODO find a better way to require a fresh copy of the map
         this.state.topology.spawnLocations[this.state.teamIds[0]] = this.state.topology.spawnLocations.team1;
         this.state.topology.spawnLocations[this.state.teamIds[1]] = this.state.topology.spawnLocations.team2;
         delete this.state.topology.spawnLocations.team1;
@@ -728,7 +739,6 @@ class GameWorld extends World {
             const movementTiles = Array.from(attacker.getComponents("MovementTile")).filter((tile) => getDistance(tile.getObject() as unknown as { x: number; y: number }, targetCoordinates) === range);
             bestTile = movementTiles[0].getObject(false) as unknown as { x: number; y: number };
         }
-        console.log(bestTile);
         const defender = this.state.occupiedTilesMap.get(mapTile);
         const b1 = attacker.addComponent({
             type: "PreviewingBattle"
@@ -871,7 +881,6 @@ class GameWorld extends World {
                 const mapCell = this.state.map[y][x];
 
                 if (mapCell[0] & tileBitmasks.occupation) {
-                    console.log(this.state.occupiedTilesMap);
                     const occupied = this.state.occupiedTilesMap.get(mapCell);
                     throw new Error("Tile is already occupied by " + occupied.getOne("Name").value);
                 }
@@ -1113,6 +1122,10 @@ class GameWorld extends World {
                 });
             }
         }
+    }
+
+    getActionableTile(unit: Entity, path: string[], range: number) {
+
     }
 };
 

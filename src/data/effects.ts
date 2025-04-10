@@ -307,6 +307,7 @@ export function shove(state: GameState, caller: Entity, shoved: Entity, range: n
     const direction = new Direction(0, 0);
 
     let atLeastOneTile = false;
+    let targetTile: Uint16Array;
 
     for (let i = 0; i < range; i++) {
         const cumulatedDirection = direction.add(pos2.x - pos1.x, pos2.y - pos1.y);
@@ -314,9 +315,10 @@ export function shove(state: GameState, caller: Entity, shoved: Entity, range: n
         if (!newTile) {
             atLeastOneTile = (i - 1) > 0; // if out of bounds, then surely last valid tile is correct?
             break;
-        };
+        }
         const isValid = canReachTile(shoved, newTile) && (newTile & tileBitmasks.occupation) === 0;
         atLeastOneTile = isValid;
+        targetTile = newTile;
         if (atLeastOneTile && i < range) continue;
         if (!atLeastOneTile) {
             atLeastOneTile = i > 0;
@@ -329,8 +331,7 @@ export function shove(state: GameState, caller: Entity, shoved: Entity, range: n
             return atLeastOneTile;
         },
         runner() {
-            const newTile = state.map[pos2.y + direction.y]?.[pos2.x + direction.x];
-            const { x, y } = getTileCoordinates(newTile);
+            const { x, y } = getTileCoordinates(targetTile);
 
             shoved.addComponent({
                 type: "Move",
@@ -349,7 +350,7 @@ export function shove(state: GameState, caller: Entity, shoved: Entity, range: n
 }
 
 /**
- * Unit moves 1 tile behind. In order to generate the "behind" tile, a second unit should be specified in order to create the "behind" vector.
+ * Unit moves 1 tile behind. A second unit should be specified in order to create the "behind" vector.
  * Before running the `runner` function, check if `checker` returns true.
  */
 export function retreat(state: GameState, target: Entity, referencePoint: Entity) {

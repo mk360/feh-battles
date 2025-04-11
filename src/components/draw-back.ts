@@ -7,6 +7,8 @@ class DrawBack extends Component {
     static properties = {
         x: 0,
         y: 0,
+        oldX: 0,
+        oldY: 0,
     };
 };
 

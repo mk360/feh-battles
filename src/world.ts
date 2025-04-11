@@ -37,6 +37,7 @@ import shortid from "shortid";
 import movesetManager from "./moveset-manager";
 import Debugger from "./debugger";
 import AfterAssist from "./systems/mechanics/after-assist";
+import getTileCoordinates from "./systems/get-tile-coordinates";
 
 /**
  * TODO:
@@ -476,8 +477,19 @@ class GameWorld extends World {
         if (shove) {
             const cmp = this.getComponent(shove.component);
             const targetCoords = cmp.x * 10 + cmp.y;
-            assistString = `assist-movement Shove ${cmp.entity.id} ${cmp.target.id} ${targetCoords}`;
+            const sourcePosition = cmp.entity.getOne("Position");
+            const sourceCoords = sourcePosition.x * 10 + sourcePosition.y;
+            assistString = `assist-movement Shove ${cmp.entity.id} ${cmp.target.id} ${sourceCoords} ${targetCoords}`;
             actionStrings.push(assistString);
+        }
+
+        const drawBack = actions.filter((action) => action.type === "DrawBack") as (IComponentChange & { x: number, y: number; })[];
+
+        if (drawBack.length) {
+            actionStrings.push(`assist-movement DrawBack ${drawBack.map((i) => {
+                const cmp = this.getComponent(i.component);
+                return `(${i.entity} ${cmp.oldX * 10 + cmp.oldY} ${cmp.x * 10 + cmp.y})`;
+            }).join(" ")}`);
         }
 
         const statuses = actions.filter((change) => change.type === "Status" && change.op === "add");
@@ -588,6 +600,7 @@ class GameWorld extends World {
         } else {
             const targetTile = this.state.map[target.y][target.x];
             const assistTarget = this.state.occupiedTilesMap.get(targetTile);
+            console.log("assistTarget", !!assistTarget, { targetTile: getTileCoordinates(targetTile) });
             const c1 = assistSource.addComponent({
                 type: "Assisting"
             });
@@ -601,11 +614,11 @@ class GameWorld extends World {
                 type: "Assisted"
             });
 
-            assistSource.addComponent({
-                type: "Move",
-                x: actionCoordinates.x,
-                y: actionCoordinates.y
-            })
+            // assistSource.addComponent({
+            //     type: "Move",
+            //     x: actionCoordinates.x,
+            //     y: actionCoordinates.y
+            // })
 
             this.runSystems("assist");
 
@@ -696,7 +709,7 @@ class GameWorld extends World {
     previewAssist(sourceId: string, targetCoordinates: { x: number, y: number }, temporaryCoordinates: { x: number, y: number }) {
         const mapTile = this.state.map[targetCoordinates.y][targetCoordinates.x];
         const source = this.getEntity(sourceId);
-        const assistSkill = source.getOne("Assist").name;
+        const assistSkill = source.getOne("Assist");
 
         const target = this.state.occupiedTilesMap.get(mapTile);
         const c1 = source.addComponent({

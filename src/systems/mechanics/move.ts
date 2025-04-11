@@ -9,7 +9,7 @@ class MoveSystem extends System {
 
     init(state: GameState) {
         this.state = state;
-        this.query = this.createQuery().fromAny("Move", "Swap");
+        this.query = this.createQuery().fromAny("Move");
 
         this.subscribe("Position");
     }
@@ -18,7 +18,9 @@ class MoveSystem extends System {
         const unitsToMove = this.query.refresh().execute();
 
         unitsToMove.forEach((entity) => {
-            const { x, y } = getPosition(entity);
+            const { x, y } = entity.getOne("Position");
+            // it should strictly be this Position and not the getPosition() fct, because
+            // then it will try to delete a tile that wasn't occupied in the first place
             const mapTile = this.state.map[y][x] as Uint16Array;
             this.state.occupiedTilesMap.delete(mapTile);
             clearTile(mapTile);
@@ -34,7 +36,6 @@ class MoveSystem extends System {
                 this.state.occupiedTilesMap.set(mapTile, entity);
                 mapTile[0] |= bitfield;
                 positionComponent.update({ x, y });
-
                 entity.removeComponent(moveComponent);
             }
         });

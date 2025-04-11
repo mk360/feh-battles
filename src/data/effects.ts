@@ -353,9 +353,9 @@ export function shove(state: GameState, caller: Entity, shoved: Entity, range: n
  * Unit moves 1 tile behind. A second unit should be specified in order to create the "behind" vector.
  * Before running the `runner` function, check if `checker` returns true.
  */
-export function retreat(state: GameState, target: Entity, referencePoint: Entity) {
-    const pos1 = getPosition(target);
-    const pos2 = getPosition(referencePoint);
+export function retreat(state: GameState, target: Entity, referencePoint: Entity, checkedCoordinates?: { x: number; y: number }) {
+    const pos1 = checkedCoordinates ?? getPosition(target).getObject(false);
+    const pos2 = getPosition(referencePoint).getObject(false);
 
     const direction = new Direction(pos1.x - pos2.x, pos1.y - pos2.y);
     const newPos1 = new Direction(pos1.x, pos1.y).add(direction.x, direction.y);
@@ -365,31 +365,38 @@ export function retreat(state: GameState, target: Entity, referencePoint: Entity
         checker() {
             const newTile1 = state.map[newPos1.y]?.[newPos1.x];
             if (!newTile1) return false;
-            const isValid1 = canReachTile(target, newTile1) && ((newTile1[0] & tileBitmasks.occupation) === 0);
+            const isValid1 = canReachTile(target, newTile1) && ((newTile1[0] & tileBitmasks.occupation) === 0 || state.occupiedTilesMap.get(newTile1).id === target.id);
             const isValid2 = canReachTile(referencePoint, state.map[pos1.y]?.[pos1.x], true);
 
             return isValid1 && isValid2;
         },
-        runner() {
-            // target.addComponent({
-            //     type: "DrawBack",
-            //     ...newPos1,
-            // });
-
-            // referencePoint.addComponent({
-            //     type: "DrawBack",
-            //     ...newPos2,
-            // });
-
+        runner(applyToReferencePoint = false) {
             target.addComponent({
                 type: "Move",
-                ...newPos1,
+                x: newPos1.x,
+                y: newPos1.y,
             });
 
-            referencePoint.addComponent({
-                type: "Move",
-                ...newPos2,
+            target.addComponent({
+                type: "DrawBack",
+                ...newPos1,
+                oldX: pos1.x,
+                oldY: pos1.y,
             });
+
+            if (applyToReferencePoint) {
+                referencePoint.addComponent({
+                    type: "Move",
+                    ...newPos2,
+                });
+
+                referencePoint.addComponent({
+                    type: "DrawBack",
+                    ...newPos2,
+                    oldX: pos2.x,
+                    oldY: pos2.y,
+                });
+            }
         }
     }
 }

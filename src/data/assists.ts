@@ -9,7 +9,7 @@ import MovementType from "../components/movement-type";
 import Characters from "./characters.json";
 import { retreat, shove, swap } from "./effects";
 import getPosition from "../systems/get-position";
-import { applyMapComponent } from "../systems/apply-map-effect";
+import { applyMapComponent, removeStatuses } from "../systems/apply-map-effect";
 import getMapStats from "../systems/get-map-stats";
 import CombatTurnOutcome from "../interfaces/combat-turn-outcome";
 
@@ -100,10 +100,10 @@ const ASSISTS: AssistsDict = {
             const { x, y } = position;
             const currentMapTile = state.map[y][x];
             const allyCanMove = canReachTile(ally, currentMapTile, true);
-            return allyCanMove && retreat(state, this.entity, ally).checker();
+            return allyCanMove && retreat(state, this.entity, ally, { x, y }).checker();
         },
         onApply(state, ally) {
-            retreat(state, this.entity, ally).runner();
+            retreat(state, this.entity, ally).runner(true);
         },
     },
     "Harsh Command": {
@@ -131,10 +131,7 @@ const ASSISTS: AssistsDict = {
                 ally.removeComponent(component);
             });
 
-            ally.tags.delete("Penalty");
-            ally.getComponents("Status").forEach((status) => {
-                if (status.value === "Penalty") ally.removeComponent(status);
-            });
+            removeStatuses(ally, "Penalty");
             applyMapComponent(ally, "MapBuff", newBuffs, this.entity);
         },
     },

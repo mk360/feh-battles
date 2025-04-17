@@ -594,13 +594,12 @@ class GameWorld extends World {
         let changes: string[] = [];
 
         const assistSource = this.getEntity(source);
-        if (!assistSource.has("Assist")) {
+        if (!assistSource.has("Assist") || !this.previewUnitMovement(source, actionCoordinates)) {
             // shouldn't be here
             return null;
         } else {
             const targetTile = this.state.map[target.y][target.x];
             const assistTarget = this.state.occupiedTilesMap.get(targetTile);
-            console.log("assistTarget", !!assistTarget, { targetTile: getTileCoordinates(targetTile) });
             const c1 = assistSource.addComponent({
                 type: "Assisting"
             });
@@ -614,11 +613,7 @@ class GameWorld extends World {
                 type: "Assisted"
             });
 
-            // assistSource.addComponent({
-            //     type: "Move",
-            //     x: actionCoordinates.x,
-            //     y: actionCoordinates.y
-            // })
+            changes = changes.concat(this.moveUnit(source, actionCoordinates, false));
 
             this.runSystems("assist");
 
@@ -1137,8 +1132,14 @@ class GameWorld extends World {
         }
     }
 
-    getActionableTile(unit: Entity, path: string[], range: number) {
+    getActionableTile(unit: Entity, path: { x: number; y: number }[], range: number, targetCoordinates: { x: number; y: number }) {
+        let bestTile = path.reverse().find((tile) => getDistance(tile, targetCoordinates) === range);
+        if (!bestTile) {
+            const movementTiles = Array.from(unit.getComponents("MovementTile")).filter((tile) => getDistance(tile.getObject() as unknown as { x: number; y: number }, targetCoordinates) === range);
+            bestTile = movementTiles[0].getObject(false) as unknown as { x: number; y: number };
+        }
 
+        return bestTile;
     }
 };
 

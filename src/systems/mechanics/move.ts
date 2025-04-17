@@ -20,7 +20,7 @@ class MoveSystem extends System {
         unitsToMove.forEach((entity) => {
             const { x, y } = entity.getOne("Position");
             // it should strictly be this Position and not the getPosition() fct, because
-            // then it will try to delete a tile that wasn't occupied in the first place
+            // then it might try to delete a tile that wasn't occupied in the first place
             const mapTile = this.state.map[y][x] as Uint16Array;
             this.state.occupiedTilesMap.delete(mapTile);
             clearTile(mapTile);

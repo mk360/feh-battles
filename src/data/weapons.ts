@@ -3985,6 +3985,17 @@ const WEAPONS: WeaponDict = {
                     atk: -7,
                     spd: -7
                 });
+                const allies = getAllies(battleState, target).filter((i) => HeroSystem.getDistance(i, target) <= 2);
+                target.addComponent({
+                    type: "MapDamage",
+                    value: 7
+                });
+                for (let ally of allies) {
+                    ally.addComponent({
+                        type: "MapDamage",
+                        value: 7,
+                    })
+                }
             }
         },
     },

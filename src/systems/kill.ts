@@ -14,7 +14,6 @@ class KillSystem extends System {
 
     update() {
         const deadUnits = this.query.refresh().execute();
-        // console.log(Array.from(deadUnits).map((i) => i.getOne("Name").value));
         deadUnits.forEach((deadUnit) => {
             if (deadUnit) {
                 const { value } = deadUnit.getOne("Side");

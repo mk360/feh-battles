@@ -181,7 +181,7 @@ class GameWorld extends World {
 
         const statusDealingMap: { [k: string]: { target: string, status: string }[] } = {};
 
-        const statuses = events.filter((change) => change.type === "Status" && change.op === "add");
+        const statuses = events.filter((change) => change.type === "Status" && change.op === "add" && !!this.getComponent(change.component));
 
         for (let status of statuses) {
             const comp = this.getComponent(status.component);
@@ -220,10 +220,29 @@ class GameWorld extends World {
             const attackActions = dealDamageActions.map((damageAction) => {
                 const comp = this.getComponent(damageAction.component);
                 const parsed = comp.getObject(false);
-                return `attack ${parsed.attacker.entity.id} ${parsed.attacker.hp} ${parsed.attacker.specialCooldown} ${parsed.attacker.triggerSpecial} ${parsed.attacker.damage} ${parsed.attacker.heal} ${parsed.target.entity.id} ${parsed.target.hp} ${parsed.target.specialCooldown} ${+parsed.target.triggerSpecial} ${parsed.target.damage} ${parsed.target.heal}`;
+                return `attack ${parsed.attacker.entity.id} ${parsed.attacker.hp} ${parsed.attacker.specialCooldown} ${parsed.attacker.triggerSpecial} ${parsed.attacker.damage} ${parsed.attacker.heal} ${parsed.target.entity.id} ${parsed.target.hp} ${parsed.target.specialCooldown} ${parsed.target.triggerSpecial} ${parsed.target.damage} ${parsed.target.heal}`;
             }).join("|");
 
             actions.push(attackActions);
+        }
+
+        const aoeDamage = events.filter(({ type }) => {
+            return type === "AoEDamage";
+        });
+
+        const heal = events.filter(({ type, component }) => type === "Heal" && this.getEntity(component));
+
+        const aoeDamageStrings = aoeDamage.concat(heal).map((change) => {
+            const detailedComponent = this.getComponent(change.component);
+            if (change.type === "AoEDamage") {
+                return `map-damage ${detailedComponent.entity.id} ${detailedComponent.value} ${detailedComponent.remainingHP}`;
+            }
+
+            return `heal ${detailedComponent.entity.id} ${detailedComponent.value} ${detailedComponent.newHP}`;
+        }).join("|");
+
+        if (aoeDamageStrings) {
+            actions.push(aoeDamageStrings);
         }
 
         const killAction = events.filter((change) => change.type === "Kill" && change.op === "add");
@@ -319,7 +338,6 @@ class GameWorld extends World {
     runCombat(attackerId: string, movementCoordinates: { x: number, y: number }, targetCoordinates: { x: number, y: number }, path: { x: number, y: number }[]) {
         const attacker = this.getEntity(attackerId);
         const range = attacker.getOne("Weapon").range;
-        console.log({ targetCoordinates, pos: attacker.getOne("Position").getObject(false) });
         const targetTile = this.state.map[targetCoordinates.y][targetCoordinates.x];
         const defender = this.state.occupiedTilesMap.get(targetTile);
         let bestTile = path.reverse().find((tile) => getDistance(tile, targetCoordinates) === range);
@@ -340,18 +358,19 @@ class GameWorld extends World {
         let changes: string[] = this.moveUnit(attackerId, bestTile, false);
 
         this.runSystems("before-combat");
-        this.runSystems("combat");
-        this.runSystems("after-combat");
-
         this.systems.get("before-combat").forEach((system) => {
             // @ts-ignore
             changes = changes.concat(this.outputBeforeCombatActions(system._stagedChanges));
         });
-
+        this.runSystems("combat");
         this.systems.get("combat").forEach((system) => {
             // @ts-ignore
             changes = changes.concat(this.outputEngineActions(system._stagedChanges));
         });
+        for (let status of NEGATIVE_STATUSES) {
+            removeStatuses(attacker, status);
+        }
+        this.runSystems("after-combat");
 
         this.systems.get("after-combat").forEach((system) => {
             // @ts-ignore
@@ -535,10 +554,6 @@ class GameWorld extends World {
 
     previewUnitMovement(id: string, candidateTile: { x: number, y: number }) {
         const entity = this.getEntity(id);
-        const currentPosition = entity.getOne("Position");
-        if (currentPosition.x === candidateTile.x && currentPosition.y === candidateTile.y) {
-            return false;
-        }
         const allyPositions = getAllies(this.state, entity).map((ally) => {
             const position = ally.getOne("Position");
             const { x, y } = position;
@@ -629,7 +644,13 @@ class GameWorld extends World {
             assistTarget.removeComponent(c2);
         }
 
-        return changes.concat(this.endAction(source));
+        changes = changes.concat(this.endAction(source));
+
+        for (let status of NEGATIVE_STATUSES) {
+            removeStatuses(assistSource, status);
+        }
+
+        return changes;
     }
 
     endAction(id: string) {
@@ -640,10 +661,6 @@ class GameWorld extends World {
         unit.addComponent({
             type: "FinishedAction"
         });
-
-        for (let status of NEGATIVE_STATUSES) {
-            removeStatuses(unit, status);
-        }
 
         changes.push(`finish ${id}`);
 
@@ -1132,7 +1149,7 @@ class GameWorld extends World {
         }
     }
 
-    getActionableTile(unit: Entity, path: { x: number; y: number }[], range: number, targetCoordinates: { x: number; y: number }) {
+    private getActionableTile(unit: Entity, path: { x: number; y: number }[], range: number, targetCoordinates: { x: number; y: number }) {
         let bestTile = path.reverse().find((tile) => getDistance(tile, targetCoordinates) === range);
         if (!bestTile) {
             const movementTiles = Array.from(unit.getComponents("MovementTile")).filter((tile) => getDistance(tile.getObject() as unknown as { x: number; y: number }, targetCoordinates) === range);

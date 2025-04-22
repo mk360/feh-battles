@@ -7,12 +7,12 @@ class AoESystem extends System {
     private query = battlingEntitiesQuery(this);
     private state: GameState;
 
-    init(state: GameState): void {
+    init(state: GameState) {
         this.state = state;
         this.subscribe("AoETarget");
     }
 
-    update(): void {
+    update() {
         const { attacker, defender } = this.query();
 
         const special = attacker.getOne("Special");

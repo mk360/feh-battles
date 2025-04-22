@@ -6,7 +6,6 @@ import collectCombatMods from "../../systems/collect-combat-mods";
 import checkBattleEffectiveness from "../../systems/effectiveness";
 import generateTurns from "../../systems/generate-turns";
 import getAttackerAdvantage from "../../systems/get-attacker-advantage";
-import getCombatStats from "../../systems/get-combat-stats";
 import getDistance from "../../systems/get-distance";
 import level40Stats from "../constants/lv40_stats.json";
 import TEAM_IDS from "../constants/teamIds";

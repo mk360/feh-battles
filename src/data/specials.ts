@@ -484,7 +484,6 @@ const SPECIALS: SpecialsDict = {
         cooldown: 0,
         onCombatRoundAttack() {
             const { res } = getCombatStats(this.entity);
-            console.log("triggered");
             this.entity.addComponent({
                 type: "RoundDamageIncrease",
                 amount: Math.floor(res / 2)

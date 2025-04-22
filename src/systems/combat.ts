@@ -42,7 +42,6 @@ class CombatSystem extends System {
         }>();
 
         const attackerPosition = getPosition(attacker);
-        console.log(attackerPosition.getObject(false));
         const attackerTile = this.state.map[attackerPosition.y][attackerPosition.x];
 
         combatMap.set(attacker, {
@@ -146,7 +145,6 @@ class CombatSystem extends System {
             attacker.getComponents("DamageIncrease").forEach((damageIncrease) => {
                 if (damageIncrease.amount) {
                     flatExtraDamage += damageIncrease.amount;
-                    // if (attacker.getOne(""))
                 }
                 if (damageIncrease.percentage) {
                     damageIncreasePercentage *= damageIncrease.percentage / 100;
@@ -162,10 +160,6 @@ class CombatSystem extends System {
                 }
                 attacker.removeComponent(damageIncrease);
             });
-
-            if (flatExtraDamage) {
-                console.log({ flatExtraDamage, t: turn.getOne("Name").value });
-            }
 
             const defenderSkills = this.state.skillMap.get(defender);
             defenderSkills.onCombatRoundDefense?.forEach((skill) => {

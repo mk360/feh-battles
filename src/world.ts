@@ -38,6 +38,7 @@ import movesetManager from "./moveset-manager";
 import Debugger from "./debugger";
 import AfterAssist from "./systems/mechanics/after-assist";
 import getTileCoordinates from "./systems/get-tile-coordinates";
+import validator from "./validator";
 
 /**
  * TODO:
@@ -75,7 +76,8 @@ interface InitialLineup {
 }
 
 class GameWorld extends World {
-    static validator = movesetManager;
+    static validator = validator;
+    static movesets = movesetManager;
     debugger: Debugger;
     id = shortid();
     state: GameState = {

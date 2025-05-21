@@ -1,5 +1,5 @@
 import { ValidationHero } from "./validators/interfaces";
-import { SingleHeroRule, StrictLearnset, ValidationRule, ValidDataRule } from "./validators/validators";
+import { SingleHeroRule, StrictLearnset, TeamCountRule, ValidationRule, ValidDataRule } from "./validators/validators";
 
 class Validator {
     rules: ValidationRule[];
@@ -23,4 +23,4 @@ class Validator {
     }
 };
 
-export default new Validator([new ValidDataRule(), new SingleHeroRule(), new StrictLearnset()]);
+export default new Validator([new TeamCountRule(), new ValidDataRule(), new SingleHeroRule(), new StrictLearnset()]);

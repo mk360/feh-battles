@@ -82,6 +82,17 @@ export class StrictLearnset implements ValidationRule {
     }
 }
 
+export class TeamCountRule implements ValidationRule {
+    name = "Team Count Rule";
+    validate(team: ValidationHero[]): string[] {
+        if (!team.length || team.length > 4) {
+            return ["There should be at least one team member and not more than 4."];
+        }
+
+        return [];
+    }
+}
+
 export class SingleHeroRule implements ValidationRule {
     name = "Single Hero Rule"
     validate(team: ValidationHero[]): string[] {

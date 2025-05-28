@@ -16,7 +16,7 @@ class MovesetManager {
 
         let otherSlot: keyof typeof commonSkills;
         for (otherSlot in commonSkills) {
-            skills = skills.concat(exclusiveSkills[slot].map((i) => i.name));
+            skills = skills.concat(commonSkills[otherSlot].map((i) => i.name));
         }
 
         return skills.includes(skill);

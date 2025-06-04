@@ -1,11 +1,17 @@
+import { Stat } from "../interfaces/types";
+
 export interface ValidationHero {
     name: string;
-    weapon: string;
-    assist: string;
-    special: string;
+    skills: {
+        weapon: string;
+        assist: string;
+        special: string;
+        A: string;
+        B: string;
+        C: string;
+        S: string;
+    }
     merges: number;
-    A: string;
-    B: string;
-    C: string;
-    S: string;
+    asset: Stat | "";
+    flaw: Stat | "";
 }

@@ -6,6 +6,7 @@ import collectMapMods from "../../systems/collect-map-mods";
 import checkBattleEffectiveness from "../../systems/effectiveness";
 import generateTurns from "../../systems/generate-turns";
 import getAffinity from "../../systems/get-affinity";
+import level40Stats from "../constants/lv40_stats.json";
 import TEAM_IDS from "../constants/teamIds";
 import TEST_GAME_WORLD from "../constants/world";
 import blankKit from "../utils/blank-kit";
@@ -545,4 +546,456 @@ describe("S", () => {
             assert.equal(unit.getOne("Special").maxCooldown, SPECIALS[unit.getOne("Special").name].cooldown - 1);
         });
     }
+
+    it("Slow", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Elise: Budding Flower",
+            weapon: "Slow",
+            skills: blankKit(),
+            rarity: 5,
+        }, TEAM_IDS[0], 1);
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Lukas: Sharp Soldier",
+            weapon: "",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[1], 1);
+
+        unit.addComponent({
+            type: "Battling"
+        });
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+
+        enemy.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        TEST_GAME_WORLD.runSystems("combat");
+        TEST_GAME_WORLD.runSystems("after-combat");
+        const debuff = enemy.getOne("MapDebuff");
+
+        assert.equal(debuff.spd, -6);
+    });
+
+    it("Slow+", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Elise: Budding Flower",
+            weapon: "Slow+",
+            skills: blankKit(),
+            rarity: 5,
+        }, TEAM_IDS[0], 1);
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Lukas: Sharp Soldier",
+            weapon: "",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[1], 1);
+
+        const enemyAlly = TEST_GAME_WORLD.createHero({
+            name: "Chrom: Exalted Prince",
+            weapon: "",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[1], 2);
+
+        unit.addComponent({
+            type: "Battling"
+        });
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+
+        enemy.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        TEST_GAME_WORLD.runSystems("combat");
+        TEST_GAME_WORLD.runSystems("after-combat");
+        const debuff = enemy.getOne("MapDebuff");
+        const otherDebuff = enemyAlly.getOne("MapDebuff");
+
+        assert.equal(debuff.spd, -7);
+        assert.equal(otherDebuff.spd, -7);
+    });
+
+    it("Smoke Dagger", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Saizo: Angry Ninja",
+            weapon: "Smoke Dagger",
+            skills: blankKit(),
+            rarity: 5,
+        }, TEAM_IDS[0], 1);
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Lukas: Sharp Soldier",
+            weapon: "",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[1], 1);
+
+        const enemyAlly = TEST_GAME_WORLD.createHero({
+            name: "Chrom: Exalted Prince",
+            weapon: "",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[1], 2);
+
+        unit.addComponent({
+            type: "Battling"
+        });
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+
+        enemy.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        TEST_GAME_WORLD.runSystems("combat");
+        TEST_GAME_WORLD.runSystems("after-combat");
+        const debuff = enemy.getOne("MapDebuff");
+        const otherDebuff = enemyAlly.getOne("MapDebuff");
+
+        assert(!debuff);
+        assert.equal(otherDebuff.def, -4);
+        assert.equal(otherDebuff.res, -4);
+    });
+
+    it("Smoke Dagger+", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Saizo: Angry Ninja",
+            weapon: "Smoke Dagger+",
+            skills: blankKit(),
+            rarity: 5,
+        }, TEAM_IDS[0], 1);
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Lukas: Sharp Soldier",
+            weapon: "",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[1], 1);
+
+        const enemyAlly = TEST_GAME_WORLD.createHero({
+            name: "Chrom: Exalted Prince",
+            weapon: "",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[1], 2);
+
+        unit.addComponent({
+            type: "Battling"
+        });
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+
+        enemy.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        TEST_GAME_WORLD.runSystems("combat");
+        TEST_GAME_WORLD.runSystems("after-combat");
+        const debuff = enemy.getOne("MapDebuff");
+        const otherDebuff = enemyAlly.getOne("MapDebuff");
+
+        assert(!debuff);
+        assert.equal(otherDebuff.def, -6);
+        assert.equal(otherDebuff.res, -6);
+    });
+
+    it("Sniper's Bow", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Clarisse: Sniper in the Dark",
+            weapon: "Sniper's Bow",
+            skills: blankKit(),
+            rarity: 5,
+        }, TEAM_IDS[0], 1);
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Lukas: Sharp Soldier",
+            weapon: "",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[1], 1);
+
+        const enemyAlly = TEST_GAME_WORLD.createHero({
+            name: "Chrom: Exalted Prince",
+            weapon: "",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[1], 2);
+
+        unit.addComponent({
+            type: "Battling"
+        });
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+
+        enemy.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        TEST_GAME_WORLD.runSystems("combat");
+        const { hp } = enemy.getOne("Stats");
+        TEST_GAME_WORLD.runSystems("after-combat");
+        assert.equal(enemy.getOne("Stats").hp, Math.max(hp - 7, 1));
+        assert.equal(enemyAlly.getOne("Stats").hp, enemyAlly.getOne("Stats").maxHP - 7);
+        const debuff = enemy.getOne("MapDebuff");
+        const otherDebuff = enemyAlly.getOne("MapDebuff");
+
+        assert.equal(debuff.atk, -7);
+        assert.equal(debuff.spd, -7);
+
+        assert.equal(otherDebuff.atk, -7);
+        assert.equal(otherDebuff.spd, -7);
+    });
+
+    it("Solitary Blade", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Lon'qu: Solitary Blade",
+            weapon: "Solitary Blade",
+            skills: {
+                ...blankKit(),
+                special: "Aether"
+            },
+            rarity: 5,
+        }, TEAM_IDS[0], 1);
+
+        assert.equal(unit.getOne("Special").maxCooldown, SPECIALS[unit.getOne("Special").name].cooldown - 1);
+    });
+
+    it("Spectral Tome", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Henry: Happy Vampire",
+            weapon: "Spectral Tome",
+            skills: blankKit(),
+            rarity: 5,
+        }, TEAM_IDS[0], 1);
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Lukas: Sharp Soldier",
+            weapon: "",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[1], 1);
+
+        const enemyAlly = TEST_GAME_WORLD.createHero({
+            name: "Chrom: Exalted Prince",
+            weapon: "",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[1], 2);
+
+        unit.addComponent({
+            type: "Battling"
+        });
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+
+        enemy.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        TEST_GAME_WORLD.runSystems("combat");
+        TEST_GAME_WORLD.runSystems("after-combat");
+        assert(enemyAlly.tags.has("Panic"));
+    });
+
+    it("Spectral Tome+", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Henry: Happy Vampire",
+            weapon: "Spectral Tome+",
+            skills: blankKit(),
+            rarity: 5,
+        }, TEAM_IDS[0], 1);
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Lukas: Sharp Soldier",
+            weapon: "",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[1], 1);
+
+        const enemyAlly = TEST_GAME_WORLD.createHero({
+            name: "Chrom: Exalted Prince",
+            weapon: "",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[1], 2);
+
+        unit.addComponent({
+            type: "Battling"
+        });
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+
+        enemy.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        TEST_GAME_WORLD.runSystems("combat");
+        TEST_GAME_WORLD.runSystems("after-combat");
+        assert(enemyAlly.tags.has("Panic"));
+    });
+
+    it("Springtime Staff", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Genny: Endearing Ally",
+            weapon: "Springtime Staff",
+            skills: blankKit(),
+            rarity: 5,
+        }, TEAM_IDS[0], 1);
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Lukas: Sharp Soldier",
+            weapon: "",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[1], 1);
+
+        const enemyAlly = TEST_GAME_WORLD.createHero({
+            name: "Chrom: Exalted Prince",
+            weapon: "",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[1], 2);
+
+        unit.addComponent({
+            type: "Battling"
+        });
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+
+        enemy.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        TEST_GAME_WORLD.runSystems("combat");
+        TEST_GAME_WORLD.runSystems("after-combat");
+        assert(enemyAlly.tags.has("Gravity"));
+        assert.equal(unit.getOne("Stats").atk, level40Stats["Genny: Endearing Ally"].atk.standard + 14 + 3);
+        assert(enemy.tags.has("Gravity"));
+    });
+
+    it("Spy's Dagger", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Matthew: Faithful Spy",
+            weapon: "Spy's Dagger",
+            skills: blankKit(),
+            rarity: 5,
+        }, TEAM_IDS[0], 1);
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Lukas: Sharp Soldier",
+            weapon: "",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[1], 1);
+
+        const enemyAlly = TEST_GAME_WORLD.createHero({
+            name: "Chrom: Exalted Prince",
+            weapon: "",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[1], 2);
+
+        const ally = TEST_GAME_WORLD.createHero({
+            name: "Hector: General of Ostia",
+            weapon: "",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[0], 2);
+
+        unit.addComponent({
+            type: "Battling"
+        });
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+
+        enemy.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        TEST_GAME_WORLD.runSystems("combat");
+        TEST_GAME_WORLD.runSystems("after-combat");
+        const debuff = enemy.getOne("MapDebuff");
+        const allyDebuff = enemyAlly.getOne("MapDebuff");
+        const buff = unit.getOne("MapBuff");
+        const allyBuff = ally.getOne("MapBuff");
+
+        assert.equal(debuff.def, -6);
+        assert.equal(debuff.res, -6);
+        assert.equal(allyDebuff.def, -6);
+        assert.equal(allyDebuff.res, -6);
+
+        assert.equal(buff.def, 6);
+        assert.equal(buff.res, 6);
+        assert.equal(allyBuff.def, 6);
+        assert.equal(allyBuff.res, 6);
+    });
+
+    it("Sol Katti", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Lyn: Lady of the Plains",
+            weapon: "Sol Katti",
+            skills: blankKit(),
+            rarity: 5,
+        }, TEAM_IDS[0], 1);
+
+        unit.getOne("Stats").hp = Math.floor(unit.getOne("Stats").hp / 2) - 1
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Lukas: Sharp Soldier",
+            weapon: "",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[1], 1);
+
+        unit.addComponent({
+            type: "Battling"
+        });
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+
+        enemy.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+
+        const turns = generateTurns(unit, enemy);
+        assert.equal(turns[0], unit);
+        assert.equal(turns[1], unit);
+        assert.equal(turns[2], enemy);
+    });
 });

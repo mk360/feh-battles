@@ -1,16 +1,11 @@
 import assert from "assert";
 import { afterEach, describe, it } from "node:test";
 import SPECIALS from "../../data/specials";
-import WEAPONS from "../../data/weapons";
-import { applyMapComponent } from "../../systems/apply-map-effect";
 import collectCombatMods from "../../systems/collect-combat-mods";
 import collectMapMods from "../../systems/collect-map-mods";
 import checkBattleEffectiveness from "../../systems/effectiveness";
 import generateTurns from "../../systems/generate-turns";
 import getAffinity from "../../systems/get-affinity";
-import getAttackerAdvantage from "../../systems/get-attacker-advantage";
-import getCombatStats from "../../systems/get-combat-stats";
-import level40Stats from "../constants/lv40_stats.json";
 import TEAM_IDS from "../constants/teamIds";
 import TEST_GAME_WORLD from "../constants/world";
 import blankKit from "../utils/blank-kit";

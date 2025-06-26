@@ -243,7 +243,7 @@ class CombatSystem extends System {
 
             const damageAfterReduction = calculateFinalDamage({
                 netDamage: damageBeforeReduction,
-                flatReduction: 0,
+                flatReduction,
                 damagePercentage
             });
 

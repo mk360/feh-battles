@@ -611,7 +611,7 @@ class GameWorld extends World {
         let changes: string[] = [];
 
         const assistSource = this.getEntity(source);
-        if (!assistSource.has("Assist") || !this.previewUnitMovement(source, actionCoordinates)) {
+        if (!assistSource.getOne("Assist") || !this.previewUnitMovement(source, actionCoordinates)) {
             // shouldn't be here
             return null;
         } else {

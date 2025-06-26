@@ -484,9 +484,7 @@ describe("S", () => {
         });
 
         TEST_GAME_WORLD.runSystems("before-combat");
-        TEST_GAME_WORLD.runSystems("combat");
         assert.equal(getAffinity(unit, enemy), -0.2);
-        TEST_GAME_WORLD.runSystems("after-combat");
     });
 
     for (let rank of ["", "+"]) {
@@ -974,7 +972,7 @@ describe("S", () => {
 
         const enemy = TEST_GAME_WORLD.createHero({
             name: "Lukas: Sharp Soldier",
-            weapon: "",
+            weapon: "Killer Lance+",
             skills: blankKit(),
             rarity: 5
         }, TEAM_IDS[1], 1);
@@ -997,5 +995,105 @@ describe("S", () => {
         assert.equal(turns[0], unit);
         assert.equal(turns[1], unit);
         assert.equal(turns[2], enemy);
+    });
+
+    it("Stalwart Sword", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Draug: Gentle Giant",
+            weapon: "Stalwart Sword",
+            skills: blankKit(),
+            rarity: 5,
+        }, TEAM_IDS[0], 1);
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Draug: Gentle Giant",
+            weapon: "Stalwart Sword",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[1], 1);
+
+        unit.addComponent({
+            type: "Battling"
+        });
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+
+        enemy.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        const unitStats = collectCombatMods(unit);
+        const enemyStats = collectCombatMods(enemy);
+        assert.equal(unitStats.atk, -6);
+        assert.equal(enemyStats.atk, 0);
+    });
+
+    it("Steady Lance", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Roderick: Steady Squire",
+            weapon: "Steady Lance",
+            skills: blankKit(),
+            rarity: 5,
+        }, TEAM_IDS[0], 1);
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Roderick: Steady Squire",
+            weapon: "Steady Lance",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[1], 1);
+
+        unit.addComponent({
+            type: "Battling"
+        });
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+
+        enemy.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        const turns = generateTurns(unit, enemy);
+        assert.equal(turns[0], unit);
+        assert.equal(turns.length, 1);
+    });
+
+    it("Stout Tomahawk", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Arvis: Emperor of Flame",
+            weapon: "Valflame",
+            skills: blankKit(),
+            rarity: 5,
+        }, TEAM_IDS[0], 1);
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Dorcas: Serene Warrior",
+            weapon: "Stout Tomahawk",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[1], 1);
+
+        unit.addComponent({
+            type: "Battling"
+        });
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+
+        enemy.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        const turns = generateTurns(unit, enemy);
+        assert.equal(turns[0], unit);
+        assert.equal(turns[1], enemy);
     });
 });

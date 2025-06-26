@@ -42,7 +42,7 @@ interface WeaponDict {
         onTurnStart?(this: Skill, battleState: GameState): void;
         onTurnStartBefore?(this: Skill, battleState: GameState): void;
         onTurnStartAfter?(this: Skill, battleState: GameState): void;
-        onAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: Skill): void;
+        onAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: typeof ASSISTS[keyof typeof ASSISTS]): void;
         onAllyAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: Skill): void;
     }
 }
@@ -3953,10 +3953,15 @@ const WEAPONS: WeaponDict = {
         might: 6,
         onCombatAfter(state, target) {
             if (this.entity.getOne("DealDamage")) {
-                Effects.dagger(this, state, target, {
-                    def: -4,
-                    res: -4
+                const allies = getAllies(state, target).filter((ally) => {
+                    return HeroSystem.getDistance(ally, target) <= 2;
                 });
+                for (let ally of allies) {
+                    applyMapComponent(ally, "MapDebuff", {
+                        def: -4,
+                        res: -4
+                    }, this.entity);
+                }
             }
         }
     },
@@ -3966,10 +3971,15 @@ const WEAPONS: WeaponDict = {
         might: 9,
         onCombatAfter(state, target) {
             if (this.entity.getOne("DealDamage")) {
-                Effects.dagger(this, state, target, {
-                    def: -6,
-                    res: -6
+                const allies = getAllies(state, target).filter((ally) => {
+                    return HeroSystem.getDistance(ally, target) <= 2;
                 });
+                for (let ally of allies) {
+                    applyMapComponent(ally, "MapDebuff", {
+                        def: -6,
+                        res: -6
+                    }, this.entity);
+                }
             }
         }
     },
@@ -3994,7 +4004,7 @@ const WEAPONS: WeaponDict = {
                     ally.addComponent({
                         type: "MapDamage",
                         value: 7,
-                    })
+                    });
                 }
             }
         },
@@ -4055,7 +4065,7 @@ const WEAPONS: WeaponDict = {
         },
         type: "staff",
         might: 14,
-        description: "Grants Atk+3. Foe cannot counterattack. After combat, if unit attacked, inflicts 【Gravity】on target and foes within 1 space of target.",
+        description: "Grants Atk+3. Foe cannot counterattack. After combat, if unit attacked, inflicts【Gravity】on target and foes within 1 space of target.",
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
                 const enemies = getAllies(battleState, target).filter((enemy) => HeroSystem.getDistance(enemy, target) === 1);
@@ -4075,8 +4085,8 @@ const WEAPONS: WeaponDict = {
         onCombatAfter(state, target) {
             if (this.entity.getOne("DealDamage")) {
                 Effects.dagger(this, state, target, {
-                    def: -7,
-                    res: -7
+                    def: -6,
+                    res: -6
                 });
 
                 const allies = getAllies(state, this.entity);
@@ -4220,7 +4230,8 @@ const WEAPONS: WeaponDict = {
                 const { hp, maxHP } = this.entity.getOne("Stats");
                 if (specialData.onCombatRoundAttack && hp / maxHP <= 0.75) {
                     this.entity.addComponent({
-                        type: "AccelerateSpecial"
+                        type: "ModifySpecialCooldown",
+                        value: -1
                     });
                 }
             }
@@ -4272,8 +4283,7 @@ const WEAPONS: WeaponDict = {
         might: 16,
         exclusiveTo: ["Azura: Lady of Ballads"],
         onAssistAfter(battleState, ally, skill) {
-            const assistDex = ASSISTS[skill.name];
-            if (assistDex.type.includes("refresh")) {
+            if (skill.type.includes("refresh")) {
                 applyMapComponent(ally, "MapBuff", {
                     atk: 3,
                     spd: 3,
@@ -4298,7 +4308,7 @@ const WEAPONS: WeaponDict = {
             if (combatRound.consecutiveTurnNumber > 1) {
                 this.entity.addComponent({
                     type: "RoundDamageReduction",
-                    percentage: 0.8,
+                    percentage: 80,
                 });
             }
         },

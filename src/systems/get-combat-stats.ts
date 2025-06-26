@@ -3,6 +3,9 @@ import { Stats } from "../interfaces/types";
 import collectCombatMods from "./collect-combat-mods";
 import getMapStats from "./get-map-stats";
 
+/**
+ * Compute the full stats a unit will use in combat.
+ */
 function getCombatStats(entity: Entity) {
     const baseStats = getMapStats(entity);
 

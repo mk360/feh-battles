@@ -14,11 +14,15 @@ function generateTurns(attacker: Entity, defender: Entity, providedAttackerStats
 
     turns = turns.concat(generateRoundUnit(attacker));
 
+    if (attacker.getOne("Desperation")) {
+        turns = turns.concat(generateRoundUnit(attacker));
+    }
+
     if (defenderIsAllowed) {
         turns = turns.concat(generateRoundUnit(defender));
     }
 
-    if ((attackerCombatStats.spd >= defenderCombatStats.spd + 5 || attacker.getOne("GuaranteedFollowup")) && !defender.getOne("PreventFollowup")) {
+    if ((attackerCombatStats.spd >= defenderCombatStats.spd + 5 || attacker.getOne("GuaranteedFollowup")) && !defender.getOne("PreventFollowup") && !attacker.getOne("Desperation")) {
         turns = turns.concat(generateRoundUnit(attacker));
     }
 

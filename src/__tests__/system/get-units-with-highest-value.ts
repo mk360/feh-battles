@@ -41,9 +41,8 @@ describe("Get-units-with-highest-value", () => {
     });
 
     it("can find a single unit when applicable", () => {
-        anna.getOne("Stats").spd = Math.floor(Math.random() * 999);
-        ally.getOne("Stats").spd = Math.floor(Math.random() * 999) - anna.getOne("Stats").spd;
-        ally2.getOne("Stats").spd = Math.floor(Math.random() * 999) - anna.getOne("Stats").spd;
+        anna.getOne("Stats").spd = Math.floor(Math.random() * 540);
+        ally.getOne("Stats").spd = 999;
         const highestSpd = getUnitsWithHighestValue([anna, ally, ally2], (entity) => entity.getOne("Stats").spd);
         assert.equal(highestSpd.length, 1);
     });

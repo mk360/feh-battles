@@ -3879,28 +3879,6 @@ const WEAPONS: WeaponDict = {
             });
         }
     },
-    "Slaying Lance": {
-        description: "Accelerates Special trigger (cooldown count-1).",
-        might: 10,
-        type: "lance",
-        onEquip() {
-            this.entity.addComponent({
-                type: "ModifySpecialCooldown",
-                value: -1
-            });
-        }
-    },
-    "Slaying Lance+": {
-        description: "Accelerates Special trigger (cooldown count-1).",
-        might: 14,
-        type: "lance",
-        onEquip() {
-            this.entity.addComponent({
-                type: "ModifySpecialCooldown",
-                value: -1
-            });
-        }
-    },
     "Slaying Edge": {
         type: "sword",
         might: 10,
@@ -3922,6 +3900,28 @@ const WEAPONS: WeaponDict = {
                 value: -1
             });
         },
+    },
+    "Slaying Lance": {
+        description: "Accelerates Special trigger (cooldown count-1).",
+        might: 10,
+        type: "lance",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        }
+    },
+    "Slaying Lance+": {
+        description: "Accelerates Special trigger (cooldown count-1).",
+        might: 14,
+        type: "lance",
+        onEquip() {
+            this.entity.addComponent({
+                type: "ModifySpecialCooldown",
+                value: -1
+            });
+        }
     },
     "Slow": {
         description: "After combat, if unit attacked, inflicts Spd-6 on foe through its next action.",
@@ -4370,19 +4370,7 @@ const WEAPONS: WeaponDict = {
             this.entity.getOne("Stats").spd += 3;
         },
         onTurnStart(battleState) {
-            const enemies = getEnemies(battleState, this.entity);
-            const selfPosition = this.entity.getOne("Position");
-            const selfStats = this.entity.getOne("Stats");
-            for (let enemy of enemies) {
-                const { x, y } = enemy.getOne("Position");
-                const { res } = enemy.getOne("Stats");
-                if ((selfPosition.x === x || selfPosition.y === y) && selfStats.res > res) {
-
-                    applyMapComponent(enemy, "MapDebuff", {
-                        spd: -5,
-                    }, this.entity);
-                }
-            }
+            Effects.ploy(this, battleState, "spd", -5);
         },
     },
     "Whitewing Blade": {

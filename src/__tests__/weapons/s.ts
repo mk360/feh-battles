@@ -417,4 +417,137 @@ describe("S", () => {
         const turns = generateTurns(enemy, unit);
         assert(turns.includes(unit));
     });
+
+    it("Sieglinde", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Eirika: Restoration Lady",
+            skills: blankKit(),
+            rarity: 5,
+            weapon: "Sieglinde"
+        }, TEAM_IDS[0], 1);
+
+        const ally = TEST_GAME_WORLD.createHero({
+            name: "Eirika: Restoration Lady",
+            skills: blankKit(),
+            rarity: 5,
+            weapon: ""
+        }, TEAM_IDS[0], 2);
+
+        TEST_GAME_WORLD.runSystems("every-turn");
+        const atkBuff = ally.getOne("MapBuff");
+        assert(atkBuff);
+        assert.equal(atkBuff.atk, 4);
+    });
+
+    it("Siegmund", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Ephraim: Restoration Lord",
+            skills: blankKit(),
+            rarity: 5,
+            weapon: "Siegmund"
+        }, TEAM_IDS[0], 1);
+
+        const ally = TEST_GAME_WORLD.createHero({
+            name: "Ephraim: Restoration Lord",
+            skills: blankKit(),
+            rarity: 5,
+            weapon: ""
+        }, TEAM_IDS[0], 2);
+
+        TEST_GAME_WORLD.runSystems("every-turn");
+        const atkBuff = ally.getOne("MapBuff");
+        assert(atkBuff);
+        assert.equal(atkBuff.atk, 3);
+    });
+
+    it("Silverbrand", () => {
+        const unit = TEST_GAME_WORLD.createHero({
+            name: "Seth: Silver Knight",
+            weapon: "Silverbrand",
+            skills: blankKit(),
+            rarity: 5,
+        }, TEAM_IDS[0], 1);
+
+        const enemy = TEST_GAME_WORLD.createHero({
+            name: "Lukas: Sharp Soldier",
+            weapon: "",
+            skills: blankKit(),
+            rarity: 5
+        }, TEAM_IDS[1], 1);
+
+        unit.addComponent({
+            type: "Battling"
+        });
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+
+        enemy.addComponent({
+            type: "Battling"
+        });
+
+        TEST_GAME_WORLD.runSystems("before-combat");
+        TEST_GAME_WORLD.runSystems("combat");
+        assert.equal(getAffinity(unit, enemy), -0.2);
+        TEST_GAME_WORLD.runSystems("after-combat");
+    });
+
+    for (let rank of ["", "+"]) {
+        it(`Slaying Axe${rank}`, () => {
+            const unit = TEST_GAME_WORLD.createHero({
+                name: "Ike: Brave Mercenary",
+                weapon: `Slaying Axe${rank}`,
+                skills: {
+                    ...blankKit(),
+                    special: "Aether"
+                },
+                rarity: 5,
+            }, TEAM_IDS[0], 1);
+
+            assert.equal(unit.getOne("Special").maxCooldown, SPECIALS[unit.getOne("Special").name].cooldown - 1);
+        });
+
+        it(`Slaying Bow${rank}`, () => {
+            const unit = TEST_GAME_WORLD.createHero({
+                name: "Klein: Silver Nobleman",
+                weapon: `Slaying Bow${rank}`,
+                skills: {
+                    ...blankKit(),
+                    special: "Aether"
+                },
+                rarity: 5,
+            }, TEAM_IDS[0], 1);
+
+            assert.equal(unit.getOne("Special").maxCooldown, SPECIALS[unit.getOne("Special").name].cooldown - 1);
+        });
+
+        it(`Slaying Edge${rank}`, () => {
+            const unit = TEST_GAME_WORLD.createHero({
+                name: "Lon'qu: Solitary Blade",
+                weapon: `Slaying Edge${rank}`,
+                skills: {
+                    ...blankKit(),
+                    special: "Aether"
+                },
+                rarity: 5,
+            }, TEAM_IDS[0], 1);
+
+            assert.equal(unit.getOne("Special").maxCooldown, SPECIALS[unit.getOne("Special").name].cooldown - 1);
+        });
+
+        it(`Slaying Lance${rank}`, () => {
+            const unit = TEST_GAME_WORLD.createHero({
+                name: "Lukas: Sharp Soldier",
+                weapon: `Slaying Lance${rank}`,
+                skills: {
+                    ...blankKit(),
+                    special: "Aether"
+                },
+                rarity: 5,
+            }, TEAM_IDS[0], 1);
+
+            assert.equal(unit.getOne("Special").maxCooldown, SPECIALS[unit.getOne("Special").name].cooldown - 1);
+        });
+    }
 });

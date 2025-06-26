@@ -8,18 +8,17 @@ class MovesetManager {
 
     checkSkillLearnability(skill: string, moveset: CharacterMoveset) {
         const { exclusiveSkills, commonSkills } = moveset;
-        let skills: string[] = [];
         let slot: keyof typeof exclusiveSkills;
         for (slot in exclusiveSkills) {
-            skills = skills.concat(exclusiveSkills[slot].map((i) => i.name));
+            if (exclusiveSkills[slot].map((i) => i.name).includes(skill)) return true;
         }
 
         let otherSlot: keyof typeof commonSkills;
         for (otherSlot in commonSkills) {
-            skills = skills.concat(commonSkills[otherSlot].map((i) => i.name));
+            if (commonSkills[otherSlot].map((i) => i.name).includes(skill)) return true;
         }
 
-        return skills.includes(skill);
+        return false;
     }
 };
 

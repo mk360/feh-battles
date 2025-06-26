@@ -4297,7 +4297,7 @@ const WEAPONS: WeaponDict = {
         onCombatRoundDefense(enemy, combatRound) {
             if (combatRound.consecutiveTurnNumber > 1) {
                 this.entity.addComponent({
-                    type: "DamageReduction",
+                    type: "RoundDamageReduction",
                     percentage: 0.8,
                 });
             }

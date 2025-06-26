@@ -417,3 +417,83 @@ export function balm(skill: Skill, state: GameState, buffs: Stats) {
         applyMapComponent(ally, "MapBuff", buffs, skill.entity);
     }
 }
+
+/**
+ * If unit or allies' movement type count in team <= 2, apply specified buffs
+ */
+export function tactic(thisArg: Skill, state: GameState, affectedStat: Stat, buff: number) {
+    const userMovementType = thisArg.entity.getOne("MovementType").value;
+
+    const allies = getAllies(state, thisArg.entity);
+
+    if (state.teamsByMovementTypes[thisArg.entity.getOne("Side").value][userMovementType] <= 2) {
+        applyMapComponent(thisArg.entity, "MapBuff", {
+            [affectedStat]: buff
+        }, thisArg.entity);
+    }
+
+    for (let ally of allies) {
+        const allyMovementType = ally.getOne("MovementType").value;
+        if (state.teamsByMovementTypes[thisArg.entity.getOne("Side").value][allyMovementType] <= 2) {
+            applyMapComponent(ally, "MapBuff", {
+                [affectedStat]: buff
+            }, thisArg.entity);
+        }
+    }
+}
+
+/**
+ * Apply specified buffs to specified stat to unit and allies if they are adjacent to each other
+ */
+export function wave(affectedStat: Stat, parity: (turnCount: number) => boolean, buff: number) {
+    return function (this: Skill, state: GameState) {
+        if (parity(state.turn)) {
+            applyMapComponent(this.entity, "MapBuff", {
+                [affectedStat]: buff
+            }, this.entity);
+            const allies = getAllies(state, this.entity);
+            for (let ally of allies) {
+                if (HeroSystem.getDistance(ally, this.entity) === 1) {
+                    applyMapComponent(ally, "MapBuff", {
+                        [affectedStat]: buff
+                    }, this.entity);
+                }
+            }
+        }
+    }
+}
+
+/**
+ * If there are enemies within the same column or row as unit, check whether
+ * unit has higher Res, and, if true, apply specified debuffs
+ */
+export function ploy(skill: Skill, state: GameState, affectedStat: Stat, debuff: number) {
+    const { x, y } = skill.entity.getOne("Position");
+    const enemies = getEnemies(state, skill.entity);
+
+    for (let enemy of enemies) {
+        const enemyPos = enemy.getOne("Position");
+        const isCardinal = x === enemyPos.x || y === enemyPos.y;
+        if (isCardinal) {
+            const resIsHigher = skill.entity.getOne("Stats").res > enemy.getOne("Stats").res;
+            if (resIsHigher) {
+                applyMapComponent(enemy, "MapDebuff", {
+                    [affectedStat]: debuff
+                }, skill.entity);
+            }
+        }
+    }
+}
+
+/**
+ * Returns a closure that adds combat buffs to ally if they match a certain movement type and are within a specified range
+ */
+export function movementBasedCombatBuff(buff: Stats, range: number) {
+    return function (movementType: MovementType) {
+        return function (this: Skill, state: GameState, ally: Entity) {
+            if (ally.getOne("MovementType").value === movementType && HeroSystem.getDistance(ally, this.entity) <= range) {
+                applyMapComponent(ally, "MapBuff", buff, this.entity);
+            }
+        }
+    }
+}

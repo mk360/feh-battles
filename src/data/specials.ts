@@ -386,6 +386,7 @@ const SPECIALS: SpecialsDict = {
             return targets;
         },
     },
+    // range: adjacent enemie, or enemies on same column of target within 3 spaces
     "Growing Thunder": {
         type: "aoe",
         cooldown: 5,

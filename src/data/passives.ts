@@ -16,7 +16,7 @@ import getAllies from "../utils/get-allies";
 import getEnemies from "../utils/get-enemies";
 import ASSISTS from "./assists";
 import Characters from "./characters.json";
-import { bond, breaker, combatBuffByRange, counterattack, defiant, elementalBoost, guidance, honeStat, mapBuffByMovementType, renewal, retreat, shove, swap, threaten } from "./effects";
+import { bond, breaker, combatBuffByRange, counterattack, defiant, elementalBoost, guidance, honeStat, mapBuffByMovementType, movementBasedCombatBuff, ploy, renewal, retreat, shove, swap, tactic, threaten, wave } from "./effects";
 import SPECIALS from "./specials";
 
 const exceptStaves: WeaponType[] = ["axe", "beast", "bow", "breath", "dagger", "lance", "sword", "tome"];
@@ -55,76 +55,11 @@ interface PassivesDict {
     }
 }
 
-function ploy(skill: Skill, state: GameState, affectedStat: Stat, debuff: number) {
-    const { x, y } = skill.entity.getOne("Position");
-    const enemies = getEnemies(state, skill.entity);
-
-    for (let enemy of enemies) {
-        const enemyPos = enemy.getOne("Position");
-        const isCardinal = x === enemyPos.x || y === enemyPos.y;
-        const resIsHigher = skill.entity.getOne("Stats").res > enemy.getOne("Stats").res;
-        if (isCardinal && resIsHigher) {
-            applyMapComponent(enemy, "MapDebuff", {
-                [affectedStat]: debuff
-            }, skill.entity);
-        }
-    }
-}
-
 const ward = movementBasedCombatBuff({ def: 4, res: 4 }, 2);
 const goad = movementBasedCombatBuff({ atk: 4, spd: 4 }, 2);
 
 function turnIsOdd(turnCount: number) {
     return !!(turnCount & 1);
-}
-
-function wave(affectedStat: Stat, parity: (turnCount: number) => boolean, buff: number) {
-    return function (this: Skill, state: GameState) {
-        if (parity(state.turn)) {
-            applyMapComponent(this.entity, "MapBuff", {
-                [affectedStat]: buff
-            }, this.entity);
-            const allies = getAllies(state, this.entity);
-            for (let ally of allies) {
-                if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                    applyMapComponent(ally, "MapBuff", {
-                        [affectedStat]: buff
-                    }, this.entity);
-                }
-            }
-        }
-    }
-}
-
-function tactic(thisArg: Skill, state: GameState, affectedStat: Stat, buff: number) {
-    const userMovementType = thisArg.entity.getOne("MovementType").value;
-
-    const allies = getAllies(state, thisArg.entity);
-
-    if (state.teamsByMovementTypes[thisArg.entity.getOne("Side").value][userMovementType] <= 2) {
-        applyMapComponent(thisArg.entity, "MapBuff", {
-            [affectedStat]: buff
-        }, thisArg.entity);
-    }
-
-    for (let ally of allies) {
-        const allyMovementType = ally.getOne("MovementType").value;
-        if (state.teamsByMovementTypes[thisArg.entity.getOne("Side").value][allyMovementType] <= 2) {
-            applyMapComponent(ally, "MapBuff", {
-                [affectedStat]: buff
-            }, thisArg.entity);
-        }
-    }
-}
-
-function movementBasedCombatBuff(buff: Stats, range: number) {
-    return function (movementType: MovementType) {
-        return function (this: Skill, state: GameState, ally: Entity) {
-            if (ally.getOne("MovementType").value === movementType && HeroSystem.getDistance(ally, this.entity) <= range) {
-                applyMapComponent(ally, "MapBuff", buff, this.entity);
-            }
-        }
-    }
 }
 
 const PASSIVES: PassivesDict = {
@@ -204,7 +139,7 @@ const PASSIVES: PassivesDict = {
     "Close Counter": {
         description: "Unit can counterattack regardless of enemy range.",
         slot: "A",
-        allowedWeaponTypes: ["bow", "dagger", "tome", "staff"]
+        allowedWeaponTypes: farRange
     },
     "Crusader's Ward": {
         description: "If unit receives consecutive attacks and foe's Range = 2, reduces damage from foe's second attack onward by 80%. (Skill cannot be inherited.)",

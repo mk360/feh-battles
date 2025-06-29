@@ -8,7 +8,7 @@ import collectCombatMods from "../../systems/collect-combat-mods";
 import { applyMapComponent } from "../../systems/apply-map-effect";
 import killUnits from "../utils/kill-units";
 
-describe("T", () => {
+describe("Weapons in T", () => {
     afterEach(() => {
         killUnits(Array.from(TEST_GAME_WORLD.getEntities("Side")));
     });

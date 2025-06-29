@@ -10,7 +10,7 @@ import generateTurns from "../../systems/generate-turns";
 import checkBattleEffectiveness from "../../systems/effectiveness";
 import { removeStatuses } from "../../systems/apply-map-effect";
 
-describe("F", () => {
+describe("Weapons in F", () => {
     afterEach(() => {
         killUnits(Array.from(TEST_GAME_WORLD.getEntities("Side")));
     });

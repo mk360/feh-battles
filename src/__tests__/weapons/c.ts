@@ -11,7 +11,7 @@ import TEST_GAME_WORLD from "../constants/world"
 import killUnits from "../utils/kill-units";
 import blankKit from "../utils/blank-kit";
 
-describe("C", () => {
+describe("Weapons in C", () => {
     afterEach(() => {
         killUnits(Array.from(TEST_GAME_WORLD.getEntities("Side")));
     });

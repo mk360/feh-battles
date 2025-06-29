@@ -9,7 +9,7 @@ import killUnits from "../utils/kill-units";
 import SPECIALS from "../../data/specials";
 import checkBattleEffectiveness from "../../systems/effectiveness";
 
-describe("K", () => {
+describe("Weapons in K", () => {
     afterEach(() => {
         killUnits(Array.from(TEST_GAME_WORLD.getEntities("Side")));
     });

@@ -909,7 +909,11 @@ class GameWorld extends World {
 
                 if (mapCell[0] & tileBitmasks.occupation) {
                     const occupied = this.state.occupiedTilesMap.get(mapCell);
-                    throw new Error("Tile is already occupied by " + occupied.getOne("Name").value);
+                    if (!occupied) {
+                        throw new Error("Tile is registered as occupied but nobody is on it. Did you manually assign an Entity's coordinates?");
+                    } else {
+                        throw new Error("Tile is already occupied by " + occupied.getOne("Name").value);
+                    }
                 }
 
                 this.state.map[y][x][0] |= Teams[this.state.teamIds.indexOf(team)];
@@ -1057,6 +1061,7 @@ class GameWorld extends World {
 
                 return entity;
             } catch (e) {
+                console.log({ e });
                 console.error(`Error creating the Hero ${member.name}`);
                 throw e;
             }

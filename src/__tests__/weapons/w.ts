@@ -9,7 +9,7 @@ import TEST_GAME_WORLD from "../constants/world";
 import blankKit from "../utils/blank-kit";
 import killUnits from "../utils/kill-units";
 
-describe("W", () => {
+describe("Weapons in W", () => {
     afterEach(() => {
         killUnits(Array.from(TEST_GAME_WORLD.getEntities("Side")));
     });
@@ -36,8 +36,18 @@ describe("W", () => {
             rarity: 5
         }, TEAM_IDS[1], 2);
 
-        enemy.getOne("Position").y = unit.getOne("Position").y;
-        enemy2.getOne("Position").x = unit.getOne("Position").x;
+        const curPos = unit.getOne("Position");
+
+        TEST_GAME_WORLD.moveUnit(enemy.id, {
+            x: enemy.getOne("Position").x,
+            y: curPos.y
+        }, false);
+
+        TEST_GAME_WORLD.moveUnit(enemy2.id, {
+            x: curPos.x,
+            y: enemy2.getOne("Position").y
+        }, false);
+
         enemy2.getOne("Stats").res = unit.getOne("Stats").res + 1;
 
         TEST_GAME_WORLD.runSystems("every-turn");
@@ -61,6 +71,18 @@ describe("W", () => {
             skills: blankKit(),
             rarity: 5,
         }, TEAM_IDS[1], 1);
+
+        unit.addComponent({
+            type: "InitiateCombat"
+        });
+
+        unit.addComponent({
+            type: "Battling"
+        });
+
+        enemy.addComponent({
+            type: "Battling"
+        });
 
         TEST_GAME_WORLD.runSystems("before-combat");
         assert.equal(getAffinity(unit, enemy), 0.2);

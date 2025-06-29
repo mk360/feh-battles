@@ -8,7 +8,7 @@ import blankKit from "../utils/blank-kit";
 import { applyMapComponent, removeStatuses } from "../../systems/apply-map-effect";
 import collectCombatMods from "../../systems/collect-combat-mods";
 
-describe("I", () => {
+describe("Weapons in I", () => {
     afterEach(() => {
         killUnits(Array.from(TEST_GAME_WORLD.getEntities("Side")));
     });

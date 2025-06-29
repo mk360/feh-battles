@@ -465,7 +465,7 @@ export function wave(affectedStat: Stat, parity: (turnCount: number) => boolean,
 
 /**
  * If there are enemies within the same column or row as unit, check whether
- * unit has higher Res, and, if true, apply specified debuffs
+ * unit has higher Res, and apply specified debuffs on enemies on which this condition is true
  */
 export function ploy(skill: Skill, state: GameState, affectedStat: Stat, debuff: number) {
     const { x, y } = skill.entity.getOne("Position");

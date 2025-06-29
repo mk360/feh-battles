@@ -10,14 +10,9 @@ import level40Stats from "../constants/lv40_stats.json";
 import TEAM_IDS from "../constants/teamIds";
 import TEST_GAME_WORLD from "../constants/world";
 import killUnits from "../utils/kill-units";
-import blankKit from "../utils/blank-kit";
+import blankKit from "../utils/blank-kit"
 
-// const worker = new Worker("../constants/game-world-worker.ts");
-// worker.on("message", (world) => {
-//     globalThis.__gameWorld = world;
-// });
-
-describe("A", () => {
+describe("Weapons in A", () => {
     afterEach(() => {
         killUnits(Array.from(TEST_GAME_WORLD.getEntities("Side")));
     });

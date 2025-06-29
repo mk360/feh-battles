@@ -14,7 +14,7 @@ import level40Stats from "../constants/lv40_stats.json";
 import getAffinity from "../../systems/get-affinity";
 import blankKit from "../utils/blank-kit";
 
-describe("B", () => {
+describe("Weapons in B", () => {
     afterEach(() => {
         killUnits(Array.from(TEST_GAME_WORLD.getEntities("Side")));
     });

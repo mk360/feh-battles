@@ -6,7 +6,7 @@ import TEAM_IDS from "../constants/teamIds";
 import assert from "node:assert";
 import collectCombatMods from "../../systems/collect-combat-mods";
 
-describe("W", () => {
+describe("Weapons in W", () => {
     afterEach(() => {
         killUnits(Array.from(TEST_GAME_WORLD.getEntities("Side")));
     });

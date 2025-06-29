@@ -9,7 +9,7 @@ import blankKit from "../utils/blank-kit";
 import killUnits from "../utils/kill-units";
 import SPECIALS from "../../data/specials";
 
-describe("L", () => {
+describe("Weapons in L", () => {
     afterEach(() => {
         killUnits(Array.from(TEST_GAME_WORLD.getEntities("Side")));
     });

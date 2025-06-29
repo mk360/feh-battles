@@ -1,7 +1,7 @@
 import { Entity } from "ape-ecs";
 import Skill from "../components/skill";
 import CombatTurnOutcome from "../interfaces/combat-turn-outcome";
-import { MovementType, PassiveSlot, Stat, Stats, WeaponColor, WeaponType } from "../interfaces/types";
+import { MovementType, PassiveSlot, WeaponColor, WeaponType } from "../interfaces/types";
 import { applyMapComponent } from "../systems/apply-map-effect";
 import canReachTile from "../systems/can-reach-tile";
 import { defenderCanDefend } from "../systems/generate-turns";
@@ -123,11 +123,29 @@ const PASSIVES: PassivesDict = {
             this.entity.getOne("Stats").res += 2;
         }
     },
+    "Atk/Spd 1": {
+        description: "Grants Atk/Spd+1.",
+        slot: "A",
+        isSacredSeal: true,
+        onEquip() {
+            this.entity.getOne("Stats").atk++;
+            this.entity.getOne("Stats").spd++;
+        }
+    },
+    "Atk/Spd 2": {
+        description: "Grants Atk/Spd+2.",
+        slot: "A",
+        isSacredSeal: true,
+        onEquip() {
+            this.entity.getOne("Stats").atk += 2;
+            this.entity.getOne("Stats").spd += 2;
+        }
+    },
     "Beorc's Blessing": {
         slot: "B",
         description: `Neutralizes cavalry and flying foes' bonuses (from skills like Fortify, Rally, etc.) during combat. (Skill cannot be inherited.)`,
         onCombatStart(state, target) {
-            if (target.has("PanicComponent")) return;
+            if (target.has("Panic")) return;
             if (["flier", "cavalry"].includes(target.getOne("MovementType").value)) {
                 target.addComponent({
                     type: "NeutralizeMapBuffs",
@@ -396,24 +414,6 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         onEquip() {
             this.entity.getOne("Stats").spd += 2;
-            this.entity.getOne("Stats").res += 2;
-        }
-    },
-    "Atk/Spd 1": {
-        description: "Grants Atk/Spd+1.",
-        slot: "A",
-        isSacredSeal: true,
-        onEquip() {
-            this.entity.getOne("Stats").atk++;
-            this.entity.getOne("Stats").res++;
-        }
-    },
-    "Atk/Spd 2": {
-        description: "Grants Atk/Spd+2.",
-        slot: "A",
-        isSacredSeal: true,
-        onEquip() {
-            this.entity.getOne("Stats").atk += 2;
             this.entity.getOne("Stats").res += 2;
         }
     },
@@ -2297,6 +2297,8 @@ const PASSIVES: PassivesDict = {
     },
     "Axebreaker 1": {
         onCombatStart(state, target) {
+            const { hp, maxHP } = this.entity.getOne("Stats");
+            console.log({ hp, maxHP })
             breaker(this, target, "axe", 0.9);
         },
         slot: "B",

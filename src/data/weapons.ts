@@ -4411,7 +4411,7 @@ const WEAPONS: WeaponDict = {
         description: "Effective against armored and cavalry foes.",
         type: "lance",
         might: 16,
-        effectiveAgainst: ["armored"],
+        effectiveAgainst: ["armored", "cavalry"],
         exclusiveTo: ["Est: Junior Whitewing"],
     },
     "Wind's Brand": {

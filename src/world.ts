@@ -1,43 +1,42 @@
 import { Component, Entity, IComponentChange, IComponentObject, IWorldConfig, World } from "ape-ecs";
-import TurnStart from "./systems/turn-start";
-import CHARACTERS from "./data/characters";
-import WEAPONS from "./data/weapons";
-import GameState from "./systems/state";
 import * as fs from "fs";
 import * as path from "path";
-import getLv40Stats from "./systems/unit-stats";
-import PASSIVES from "./data/passives";
+import shortid from "shortid";
+import ASSISTS from "./data/assists";
+import CHARACTERS from "./data/characters";
 import MovementTypes from "./data/movement-types";
-import CombatSystem from "./systems/combat";
-import SkillInteractionSystem from "./systems/skill-interaction";
+import PASSIVES from "./data/passives";
+import SPECIALS from "./data/specials";
 import Teams from "./data/teams";
-import MovementSystem from "./systems/movement";
 import tileBitmasks from "./data/tile-bitmasks";
 import TileBitshifts from "./data/tile-bitshifts";
+import WEAPONS from "./data/weapons";
+import Debugger from "./debugger";
 import { Stat } from "./interfaces/types";
-import getAllies from "./utils/get-allies";
-import AfterCombatSystem from "./systems/after-combat";
+import movesetManager from "./moveset-manager";
 import { NEGATIVE_STATUSES, POSITIVE_STATUSES, STATUSES } from "./statuses";
-import checkBattleEffectiveness from "./systems/effectiveness";
-import getEnemies from "./utils/get-enemies";
-import ASSISTS from "./data/assists";
-import SPECIALS from "./data/specials";
+import AfterCombatSystem from "./systems/after-combat";
+import { removeStatuses } from "./systems/apply-map-effect";
+import AssistSystem from "./systems/assist";
+import BeforeCombat from "./systems/before-combat";
 import collectCombatMods from "./systems/collect-combat-mods";
 import collectMapMods from "./systems/collect-map-mods";
-import KillSystem from "./systems/kill";
-import AssistSystem from "./systems/assist";
+import CombatSystem from "./systems/combat";
+import checkBattleEffectiveness from "./systems/effectiveness";
 import getDistance from "./systems/get-distance";
-import BeforeCombat from "./systems/before-combat";
-import AoESystem from "./systems/mechanics/aoe";
-import MoveSystem from "./systems/mechanics/move";
-import HPModSystem from "./systems/mechanics/hp-mod";
-import { removeStatuses } from "./systems/apply-map-effect";
-import SpecialCooldownSystem from "./systems/mechanics/special-cooldown";
-import shortid from "shortid";
-import movesetManager from "./moveset-manager";
-import Debugger from "./debugger";
+import KillSystem from "./systems/kill";
 import AfterAssist from "./systems/mechanics/after-assist";
-import getTileCoordinates from "./systems/get-tile-coordinates";
+import AoESystem from "./systems/mechanics/aoe";
+import HPModSystem from "./systems/mechanics/hp-mod";
+import MoveSystem from "./systems/mechanics/move";
+import SpecialCooldownSystem from "./systems/mechanics/special-cooldown";
+import MovementSystem from "./systems/movement";
+import SkillInteractionSystem from "./systems/skill-interaction";
+import GameState from "./systems/state";
+import TurnStart from "./systems/turn-start";
+import getLv40Stats from "./systems/unit-stats";
+import getAllies from "./utils/get-allies";
+import getEnemies from "./utils/get-enemies";
 import validator from "./validator";
 
 /**
@@ -83,11 +82,6 @@ class GameWorld extends World {
     state: GameState = {
         teamIds: ["", ""],
         lastChangeSequence: [],
-        /**
-         * Map is stored in an 8x6 matrix of 16 bits for each cell (column x row, top-left is indexed at [1][1]).
-         * This map is used to store basic information on the cell coordinates, what's the cell's type, does it have anything special
-         * (trench, defensive tile) added. It acts as the source of truth in case any state or data conflict arises.
-         */
         map: {
             1: [null, new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1)],
             2: [null, new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1), new Uint16Array(1)],
@@ -342,11 +336,7 @@ class GameWorld extends World {
         const range = attacker.getOne("Weapon").range;
         const targetTile = this.state.map[targetCoordinates.y][targetCoordinates.x];
         const defender = this.state.occupiedTilesMap.get(targetTile);
-        let bestTile = path.reverse().find((tile) => getDistance(tile, targetCoordinates) === range);
-        if (!bestTile) {
-            const movementTiles = Array.from(attacker.getComponents("MovementTile")).filter((tile) => getDistance(tile.getObject() as unknown as { x: number; y: number }, targetCoordinates) === range) as unknown as { x: number; y: number }[];
-            bestTile = movementTiles[0];
-        }
+        const bestTile = this.getActionableTile(attacker, path, range, targetCoordinates);
         const b1 = attacker.addComponent({
             type: "Battling"
         });
@@ -761,11 +751,7 @@ class GameWorld extends World {
         const attacker = this.getEntity(attackerId);
         const range = attacker.getOne("Weapon").range;
         const mapTile = this.state.map[targetCoordinates.y][targetCoordinates.x];
-        let bestTile = path.reverse().find((tile) => getDistance(tile, targetCoordinates) === range);
-        if (!bestTile) {
-            const movementTiles = Array.from(attacker.getComponents("MovementTile")).filter((tile) => getDistance(tile.getObject() as unknown as { x: number; y: number }, targetCoordinates) === range);
-            bestTile = movementTiles[0].getObject(false) as unknown as { x: number; y: number };
-        }
+        const bestTile = this.getActionableTile(attacker, path, range, targetCoordinates);
         const defender = this.state.occupiedTilesMap.get(mapTile);
         const b1 = attacker.addComponent({
             type: "PreviewingBattle"

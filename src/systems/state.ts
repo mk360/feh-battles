@@ -11,6 +11,11 @@ interface GameState {
     };
     mapId: string;
     topology: JSONMapData;
+    /**
+     * Map is stored in an 8x6 matrix of 16 bits for each cell (column x row, top-left is indexed at [1][1]).
+     * This map is used to store basic information on the cell coordinates, what's the cell's type, does it have anything special
+     * (trench, defensive tile) added. It acts as the source of truth in case any state or data conflict arises.
+     */
     map: {
         1: [null, Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array];
         2: [null, Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array, Uint16Array];

@@ -106,6 +106,8 @@ class MovementSystem extends System {
         });
 
         const attackTiles = new Set<Uint16Array>();
+        const weapon = Array.from(unit.getComponents("Skill")).find((skill) => skill.slot === "weapon");
+
 
         movementTiles.forEach((tile) => {
             const { x, y } = getTileCoordinates(tile);
@@ -114,10 +116,13 @@ class MovementSystem extends System {
             if (existingUnit && existingUnit.id !== unit.id || warpTileData.has(mapTile)) {
                 return;
             }
-            const collectedAttackTiles = this.computeFixedRange({ x, y }, movementTiles, unit.getOne("Weapon").range, false);
-            collectedAttackTiles.forEach((tile) => {
-                attackTiles.add(tile);
-            });
+
+            if (weapon) {
+                const collectedAttackTiles = this.computeFixedRange({ x, y }, movementTiles, unit.getOne("Weapon").range, false);
+                collectedAttackTiles.forEach((tile) => {
+                    attackTiles.add(tile);
+                });
+            }
 
         });
 
@@ -128,10 +133,13 @@ class MovementSystem extends System {
             if (existingUnit && existingUnit.id !== unit.id || movementTiles.has(mapTile)) {
                 return;
             }
-            const collectedAttackTiles = this.computeFixedRange({ x, y }, movementTiles, unit.getOne("Weapon").range, true);
-            collectedAttackTiles.forEach((tile) => {
-                attackTiles.add(tile);
-            });
+
+            if (weapon) {
+                const collectedAttackTiles = this.computeFixedRange({ x, y }, movementTiles, unit.getOne("Weapon").range, true);
+                collectedAttackTiles.forEach((tile) => {
+                    attackTiles.add(tile);
+                });
+            }
         });
 
         attackTiles.forEach((t) => {

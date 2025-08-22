@@ -8,7 +8,7 @@ import PreventEnemyAlliesInteraction from "../components/prevent-enemy-allies-in
 import getAllies from "../utils/get-allies";
 import COMBAT_COMPONENTS from "./combat-components";
 
-const STATUS_COMPONENTS = COMBAT_COMPONENTS.concat(["SlowSpecial", "AccelerateSpecial", "AoEDamage", "AoETarget", "PreventCounterattack", "GuaranteedFollowup", "AoEDamage", "Heal", "Special"]);
+const STATUS_COMPONENTS = COMBAT_COMPONENTS.concat(["SlowSpecial", "AccelerateSpecial", "AoEDamage", "AoETarget", "PreventCounterattack", "GuaranteedFollowup", "Heal", "Special"]);
 
 class BeforeCombat extends System {
     private state: GameState;
@@ -109,7 +109,7 @@ class BeforeCombat extends System {
         const allies = getAllies(this.state, entity);
         for (let ally of allies) {
             this.state.skillMap.get(ally).onCombatAllyStart?.forEach((skill) => {
-                SKILLS[skill.name].onCombatAllyStart.call(skill, this.state, entity);
+                SKILLS[skill.name].onCombatAllyStart.call(skill, this.state, entity, { context: skill.name, owner: ally.id });
             });
         }
     }

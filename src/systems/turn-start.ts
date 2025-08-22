@@ -11,7 +11,7 @@ class TurnStartSystem extends System {
     init(state: GameState) {
         this.state = state;
         this.heroesQuery = this.createQuery().fromAll("Side");
-        for (let status of MAP_STATUSES) {
+        for (let status of MAP_STATUSES.concat(["Heal", "AoEDamage"])) {
             this.subscribe(status);
         }
     };

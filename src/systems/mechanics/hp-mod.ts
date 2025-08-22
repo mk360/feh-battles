@@ -5,7 +5,6 @@ class HPModSystem extends System {
 
     init() {
         this.healableQuery = this.createQuery().fromAny("Heal", "MapDamage");
-        this.subscribe("Heal");
     }
 
     update() {

@@ -226,7 +226,7 @@ class GameWorld extends World {
             return type === "AoEDamage";
         });
 
-        const heal = events.filter(({ type, component }) => type === "Heal" && this.getEntity(component));
+        const heal = events.filter(({ type, component }) => type === "Heal" && this.getComponent(component));
 
         const aoeDamageStrings = aoeDamage.concat(heal).map((change) => {
             const detailedComponent = this.getComponent(change.component);

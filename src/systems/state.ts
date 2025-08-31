@@ -43,6 +43,7 @@ interface GameState {
         [hook in SkillHook]: Set<Skill>;
     }>>;
     occupiedTilesMap: Map<Uint16Array, Entity>;
+    history: Entity;
 }
 
 export default GameState;

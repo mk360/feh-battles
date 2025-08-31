@@ -1,4 +1,4 @@
-import { Entity } from "ape-ecs";
+import { Component, Entity } from "ape-ecs";
 import GameState from "../systems/state";
 import Direction from "../systems/directions";
 import Assist from "../components/assist";
@@ -34,7 +34,7 @@ interface AssistsDict {
         exclusiveTo?: (keyof typeof Characters)[];
         type: AssistKind[];
         onSpecialTrigger?(this: Assist, battleState: GameState, target: Entity): void;
-        onCombatStart?(this: Assist, battleState: GameState, target: Entity): void;
+        onCombatStart?(this: Assist, battleState: GameState, target: Entity): Component[];
         onCombatAfter?(this: Assist, battleState: GameState, target: Entity): void;
         onCombatInitiate?(this: Assist, state: GameState, target: Entity): void;
         onCombatAllyStart?(this: Assist, state: GameState, ally: Entity): void;

@@ -42,6 +42,7 @@ These are the Component the Engine currently uses. This is an auto-generated doc
 | Immunity                       | Prevents Effectiveness effects on the specified Movement Type or Weapon Type.                                                        |
 | InitiateCombat                 | Marks the Hero that initiated the Combat.                                                                                            |
 | Kill                           | This Hero is dead and will be cleaned up.                                                                                            |
+| LogEntry                       | Entry that gets added to the history. Tracks component changes, where they originate from, and who do they benefit.                  |
 | MapBuff                        | Out-of-combat buffs that don't stack.                                                                                                |
 | MapDamage                      | Damage that is inflicted outside of combat (AoE, Poison Strike, etc.).                                                               |
 | MapDebuff                      | Out-of-combat debuffs that don't stack.                                                                                              |

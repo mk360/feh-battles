@@ -1,4 +1,4 @@
-import { Entity } from "ape-ecs";
+import { Component, Entity } from "ape-ecs";
 import MovementType from "../components/movement-type";
 import Skill from "../components/skill";
 import { WeaponType } from "../interfaces/types";
@@ -31,7 +31,7 @@ interface SpecialsDict {
         getAoEDamage?(skill: Skill, state: GameState, target: Entity): number;
         onAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: Skill): void;
         onSpecialTrigger?(this: Skill, battleState: GameState, target: Entity): void;
-        onCombatStart?(this: Skill, battleState: GameState, target: Entity): void;
+        onCombatStart?(this: Skill, battleState: GameState, target: Entity): Component[];
         onCombatAfter?(this: Skill, battleState: GameState, target: Entity): void;
         onCombatInitiate?(this: Skill, state: GameState, target: Entity): void;
         onCombatAllyStart?(this: Skill, state: GameState, ally: Entity): void;

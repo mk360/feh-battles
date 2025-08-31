@@ -7,6 +7,7 @@ import SKILLS from "../data/skill-dex";
 import PreventEnemyAlliesInteraction from "../components/prevent-enemy-allies-interaction";
 import getAllies from "../utils/get-allies";
 import COMBAT_COMPONENTS from "./combat-components";
+import addLogEntry from "../utils/add-log-entry";
 
 const STATUS_COMPONENTS = COMBAT_COMPONENTS.concat(["SlowSpecial", "AccelerateSpecial", "AoEDamage", "AoETarget", "PreventCounterattack", "GuaranteedFollowup", "Heal", "Special"]);
 
@@ -32,7 +33,18 @@ class BeforeCombat extends System {
         const defenderSkills = this.state.skillMap.get(defender);
 
         attackerSkills.onCombatStart?.forEach((skill) => {
-            SKILLS[skill.name].onCombatStart.call(skill, this.state, defender);
+            const components = SKILLS[skill.name].onCombatStart.call(skill, this.state, defender);
+            for (let addedComponent of components) {
+                console.log(addedComponent.type);
+                addLogEntry(addedComponent, attacker, addedComponent.entity === attacker ? attacker : defender, skill.name, this.state.history);
+                // this.state.history.addComponent({
+                //     type: "LogEntry",
+                //     component: addedComponent.id,
+                //     sourceSkill: skill.name,
+                //     sourceEntity: attacker, // for ex. if attacker inflicts debuffs on the defender, the source entity of any component is the attacker.
+                //     // if necessary, the defender can always be retrieved with the component.entity property
+                // })
+            }
         });
 
         defenderSkills.onCombatStart?.forEach((skill) => {

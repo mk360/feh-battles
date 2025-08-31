@@ -38,6 +38,7 @@ import getLv40Stats from "./systems/unit-stats";
 import getAllies from "./utils/get-allies";
 import getEnemies from "./utils/get-enemies";
 import validator from "./validator";
+import addLogEntry from "./utils/add-log-entry";
 
 /**
  * TODO:
@@ -104,7 +105,8 @@ class GameWorld extends World {
         currentSide: "",
         turn: 1,
         skillMap: new Map(),
-        occupiedTilesMap: new Map()
+        occupiedTilesMap: new Map(),
+        history: this.createEntity({})
     };
 
     constructor(config: Partial<IWorldConfig> & { team1: string; team2: string }) {
@@ -769,6 +771,13 @@ class GameWorld extends World {
             ...bestTile
         });
         this.runSystems("before-combat");
+        // const comp = this.getComponent(item.component);
+        // const entity = this.getEntity(item.sourceEntity);
+        // if (entity === comp.entity) {
+        //     if (comp.type === "CombatBuff") {
+        //         console.log(entity.getOne("Name").value + " received Atk+" + comp.atk + " from " + item.sourceSkill);
+        //     }
+        // }
         this.runSystems("combat");
 
         attacker.removeComponent(b1);
@@ -839,6 +848,8 @@ class GameWorld extends World {
             effectiveness: defenderEffectiveness,
         };
 
+        const history = Array.from(this.state.history.getComponents("LogEntry")).map((i) => i.getObject(true));
+
         return {
             attacker: {
                 id: attacker.id,
@@ -851,7 +862,8 @@ class GameWorld extends World {
                 ...defenderDamageData
             },
             attackerTile: bestTile,
-            aoeTargets
+            aoeTargets,
+            history
         };
     }
 

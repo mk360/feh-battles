@@ -143,11 +143,10 @@ export function bond(skill: Skill, state: GameState, buffs: Stats) {
     const allies = getAllies(state, skill.entity);
     for (let ally of allies) {
         if (HeroSystem.getDistance(ally, skill.entity) === 1) {
-            skill.entity.addComponent({
+            return skill.entity.addComponent({
                 type: "CombatBuff",
                 ...buffs
             });
-            return;
         }
     }
 }
@@ -160,7 +159,7 @@ export function elementalBoost(skill: Skill, target: Entity, buffs: Stats) {
     const enemyHP = target.getOne("Stats").hp;
 
     if (wielderHP >= enemyHP + 3) {
-        skill.entity.addComponent({
+        return skill.entity.addComponent({
             type: "CombatBuff",
             ...buffs
         });
@@ -215,7 +214,7 @@ export function dagger(skill: Skill, state: GameState, target: Entity, debuffs: 
  * Allow unit to counterattack, regardless of range, barring any other blocking effect.
  */
 export function counterattack(skill: Skill) {
-    skill.entity.addComponent({
+    return skill.entity.addComponent({
         type: "Counterattack"
     });
 };

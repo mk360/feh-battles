@@ -1,4 +1,4 @@
-import { Entity } from "ape-ecs";
+import { Component, Entity } from "ape-ecs";
 import Skill from "../components/skill";
 import CombatTurnOutcome from "../interfaces/combat-turn-outcome";
 import { MovementType, PassiveSlot, WeaponColor, WeaponType } from "../interfaces/types";
@@ -34,7 +34,7 @@ interface PassivesDict {
         protects?: (MovementType | WeaponType)[];
         exclusiveTo?: (keyof typeof Characters)[];
         effectiveAgainst?: (MovementType | WeaponType)[];
-        onCombatStart?(this: Skill, state: GameState, target: Entity): void;
+        onCombatStart?(this: Skill, state: GameState, target: Entity): Component[];
         onEquip?(this: Skill): void;
         onCombatInitiate?(this: Skill, state: GameState, target: Entity): void;
         onCombatAllyStart?(this: Skill, state: GameState, ally: Entity): void;
@@ -145,19 +145,25 @@ const PASSIVES: PassivesDict = {
         slot: "B",
         description: `Neutralizes cavalry and flying foes' bonuses (from skills like Fortify, Rally, etc.) during combat. (Skill cannot be inherited.)`,
         onCombatStart(state, target) {
+            const components: Component[] = [];
             if (target.has("Panic")) return;
             if (["flier", "cavalry"].includes(target.getOne("MovementType").value)) {
-                target.addComponent({
+                components.push(target.addComponent({
                     type: "NeutralizeMapBuffs",
-                });
+                }));
             }
+
+            return components;
         },
         exclusiveTo: ["Ike: Brave Mercenary"]
     },
     "Close Counter": {
         description: "Unit can counterattack regardless of enemy range.",
         slot: "A",
-        allowedWeaponTypes: farRange
+        allowedWeaponTypes: farRange,
+        onCombatStart() {
+            return counterattack(this);
+        },
     },
     "Crusader's Ward": {
         description: "If unit receives consecutive attacks and foe's Range = 2, reduces damage from foe's second attack onward by 80%. (Skill cannot be inherited.)",
@@ -200,7 +206,7 @@ const PASSIVES: PassivesDict = {
         description: "Unit can counterattack regardless of enemy range.",
         slot: "A",
         onCombatStart() {
-            counterattack(this);
+            return [counterattack(this)];
         },
         allowedWeaponTypes: closeRange
     },
@@ -209,13 +215,15 @@ const PASSIVES: PassivesDict = {
         slot: "B",
         exclusiveTo: ["Arden: Strong and Tough"],
         onCombatStart() {
+            const components: Component[] = [];
             const { maxHP, hp } = this.entity.getOne("Stats");
 
             if (hp / maxHP >= 0.5) {
-                this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "GuaranteedFollowup"
-                });
+                }));
             }
+            return components;
         }
     },
     "Fury 1": {
@@ -726,12 +734,14 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: ["staff"],
         description: "At start of combat, if unit's HP = 100%, calculates damage from staff like other weapons.",
         onCombatStart() {
+            const components: Component[] = [];
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp === maxHP) {
-                this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "NormalizeStaffDamage"
-                });
+                }));
             }
+            return components;
         },
         slot: "B",
     },
@@ -739,12 +749,14 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: ["staff"],
         description: "At start of combat, if unit's HP = 100%, calculates damage from staff like other weapons.",
         onCombatStart() {
+            const components: Component[] = [];
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp / maxHP >= 0.5) {
-                this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "NormalizeStaffDamage"
-                });
+                }));
             }
+            return components;
         },
         slot: "B",
     },
@@ -752,9 +764,11 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: ["staff"],
         description: "At start of combat, if unit's HP = 100%, calculates damage from staff like other weapons.",
         onCombatStart() {
-            this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "NormalizeStaffDamage"
-            });
+            }));
+            return components;
         },
         slot: "B",
     },
@@ -802,10 +816,16 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         isSacredSeal: true,
         onCombatStart(state) {
-            bond(this, state, {
+            const components: Component[] = [];
+            const component = bond(this, state, {
                 atk: 3,
                 def: 3
             });
+
+            if (component) {
+                components.push(component);
+            }
+            return components;
         }
     },
     "Atk/Def Bond 2": {
@@ -813,10 +833,16 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         isSacredSeal: true,
         onCombatStart(state) {
-            bond(this, state, {
+            const components: Component[] = [];
+            const component = bond(this, state, {
                 atk: 4,
                 def: 4
             });
+
+            if (component) {
+                components.push(component);
+            }
+            return components;
         }
     },
     "Atk/Def Bond 3": {
@@ -824,10 +850,16 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         isSacredSeal: true,
         onCombatStart(state) {
-            bond(this, state, {
+            const components: Component[] = [];
+            const component = bond(this, state, {
                 atk: 5,
                 def: 5
             });
+
+            if (component) {
+                components.push(component);
+            }
+            return components;
         }
     },
     "Atk/Res Bond 1": {
@@ -835,10 +867,16 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         isSacredSeal: true,
         onCombatStart(state) {
-            bond(this, state, {
+            const components: Component[] = [];
+            const component = bond(this, state, {
                 atk: 3,
                 res: 3
             });
+
+            if (component) {
+                components.push(component);
+            }
+            return components;
         }
     },
     "Atk/Res Bond 2": {
@@ -846,10 +884,16 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         isSacredSeal: true,
         onCombatStart(state) {
-            bond(this, state, {
+            const components: Component[] = [];
+            const component = bond(this, state, {
                 atk: 4,
                 res: 4
             });
+
+            if (component) {
+                components.push(component);
+            }
+            return components;
         }
     },
     "Atk/Res Bond 3": {
@@ -857,10 +901,16 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         isSacredSeal: true,
         onCombatStart(state) {
-            bond(this, state, {
+            const components: Component[] = [];
+            const component = bond(this, state, {
                 atk: 5,
                 res: 5
             });
+
+            if (component) {
+                components.push(component);
+            }
+            return components;
         }
     },
     "Death Blow 1": {
@@ -1265,9 +1315,12 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Res+4 during combat.",
         onCombatStart(state, target) {
-            elementalBoost(this, target, {
+            const components: Component[] = [];
+            const result = elementalBoost(this, target, {
                 res: 4
             });
+            if (result) components.push(result);
+            return components;
         },
     },
     "Water Boost 3": {
@@ -1275,9 +1328,12 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Res+6 during combat.",
         onCombatStart(state, target) {
-            elementalBoost(this, target, {
+            const components: Component[] = [];
+            const result = elementalBoost(this, target, {
                 res: 6
             });
+            if (result) components.push(result);
+            return components;
         },
     },
     "Wind Boost 1": {
@@ -1285,9 +1341,12 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Spd+2 during combat.",
         onCombatStart(state, target) {
-            elementalBoost(this, target, {
+            const components: Component[] = [];
+            const result = elementalBoost(this, target, {
                 spd: 2
             });
+            if (result) components.push(result);
+            return components;
         },
     },
     "Wind Boost 2": {
@@ -1295,9 +1354,12 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Spd+4 during combat.",
         onCombatStart(state, target) {
-            elementalBoost(this, target, {
+            const components: Component[] = [];
+            const result = elementalBoost(this, target, {
                 spd: 4
             });
+            if (result) components.push(result);
+            return components;
         },
     },
     "Wind Boost 3": {
@@ -1305,9 +1367,12 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Spd+6 during combat.",
         onCombatStart(state, target) {
-            elementalBoost(this, target, {
+            const components: Component[] = [];
+            const result = elementalBoost(this, target, {
                 spd: 6
             });
+            if (result) components.push(result);
+            return components;
         },
     },
     "Earth Boost 1": {
@@ -1315,9 +1380,12 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Def+2 during combat.",
         onCombatStart(state, target) {
-            elementalBoost(this, target, {
+            const components: Component[] = [];
+            const result = elementalBoost(this, target, {
                 def: 2
             });
+            if (result) components.push(result);
+            return components;
         },
     },
     "Earth Boost 2": {
@@ -1325,9 +1393,12 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Def+4 during combat.",
         onCombatStart(state, target) {
-            elementalBoost(this, target, {
+            const components: Component[] = [];
+            const result = elementalBoost(this, target, {
                 def: 4
             });
+            if (result) components.push(result);
+            return components;
         },
     },
     "Earth Boost 3": {
@@ -1335,36 +1406,48 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Def+6 during combat.",
         onCombatStart(state, target) {
-            elementalBoost(this, target, {
+            const components: Component[] = [];
+            const result = elementalBoost(this, target, {
                 def: 6
             });
+            if (result) components.push(result);
+            return components;
         },
     },
     "Fire Boost 1": {
         slot: "A",
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Atk+2 during combat.",
         onCombatStart(state, target) {
-            elementalBoost(this, target, {
+            const components: Component[] = [];
+            const result = elementalBoost(this, target, {
                 atk: 2
             });
+            if (result) components.push(result);
+            return components;
         },
     },
     "Fire Boost 2": {
         slot: "A",
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Atk+4 during combat.",
         onCombatStart(state, target) {
-            elementalBoost(this, target, {
+            const components: Component[] = [];
+            const result = elementalBoost(this, target, {
                 atk: 4
             });
+            if (result) components.push(result);
+            return components;
         },
     },
     "Fire Boost 3": {
         slot: "A",
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Atk+6 during combat.",
         onCombatStart(state, target) {
-            elementalBoost(this, target, {
+            const components: Component[] = [];
+            const result = elementalBoost(this, target, {
                 atk: 6
             });
+            if (result) components.push(result);
+            return components;
         },
     },
     "Grani's Shield": {

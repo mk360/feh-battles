@@ -3,7 +3,7 @@ import { MovementType, WeaponColor, WeaponType } from "../interfaces/types";
 import * as Effects from "./effects";
 import Skill from "../components/skill";
 import Characters from "./characters.json";
-import { Entity } from "ape-ecs";
+import { Component, Entity } from "ape-ecs";
 import getEnemies from "../utils/get-enemies";
 import HeroSystem from "../systems/hero";
 import getAllies from "../utils/get-allies";
@@ -28,14 +28,14 @@ interface WeaponDict {
         exclusiveTo?: (keyof typeof Characters)[];
         effectiveAgainst?: (MovementType | WeaponType)[];
         protects?: (MovementType | WeaponType)[];
-        onSpecialTrigger?(this: Skill, battleState: GameState, target: Entity): void;
-        onCombatStart?(this: Skill, battleState: GameState, target: Entity): void;
-        onCombatAfter?(this: Skill, battleState: GameState, target: Entity): void;
-        onCombatInitiate?(this: Skill, state: GameState, target: Entity): void;
-        onCombatAllyStart?(this: Skill, state: GameState, ally: Entity): void;
-        onCombatDefense?(this: Skill, state: GameState, attacker: Entity): void;
-        onCombatRoundAttack?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): void;
-        onCombatRoundDefense?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): void;
+        onSpecialTrigger?(this: Skill, battleState: GameState, target: Entity): Component[];
+        onCombatStart?(this: Skill, battleState: GameState, target: Entity): Component[];
+        onCombatAfter?(this: Skill, battleState: GameState, target: Entity): Component[];
+        onCombatInitiate?(this: Skill, state: GameState, target: Entity): Component[];
+        onCombatAllyStart?(this: Skill, state: GameState, ally: Entity): Component[];
+        onCombatDefense?(this: Skill, state: GameState, attacker: Entity): Component[];
+        onCombatRoundAttack?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): Component[];
+        onCombatRoundDefense?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): Component[];
         onEquip?(this: Skill): any;
         onTurnAllyCheckRange?(this: Skill, state: GameState, ally: Entity): void;
         onTurnCheckRange?(this: Skill, state: GameState): void;
@@ -399,9 +399,9 @@ const WEAPONS: WeaponDict = {
         might: 11,
         type: "sword",
         onCombatInitiate() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "BraveWeapon"
-            });
+            })];
         }
     },
     "Arden's Blade": {
@@ -425,9 +425,9 @@ const WEAPONS: WeaponDict = {
             this.entity.getOne("Stats").spd -= 2;
         },
         onCombatInitiate() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "BraveWeapon"
-            });
+            })];
         },
         exclusiveTo: ["Klein: Silver Nobleman"],
         might: 8,

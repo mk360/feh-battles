@@ -1,6 +1,7 @@
 import { Query, System } from "ape-ecs";
 import GameState from "./state";
 import SKILLS from "../data/skill-dex";
+import addLogEntry from "../utils/log-entries/add-log-entry";
 
 const MAP_STATUSES = ["MapBuff", "MapDebuff", "Special", "Status"];
 
@@ -25,7 +26,10 @@ class TurnStartSystem extends System {
 
             if (skillMap.onTurnStartBefore) {
                 for (let skill of skillMap.onTurnStartBefore) {
-                    SKILLS[skill.name].onTurnStartBefore.call(skill, this.state);
+                    const components = SKILLS[skill.name].onTurnStartBefore.call(skill, this.state);
+                    for (let component of components) {
+                        addLogEntry(component, member, component.entity, skill.name, this.state.history);
+                    }
                 }
             }
 

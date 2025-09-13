@@ -32,6 +32,16 @@ function addLogEntry(component: Component, sourceEntity: Entity, targetEntity: E
             properties.penalties = props;
             break;
         };
+
+        case "Heal": {
+            properties.heal = props.value;
+            break;
+        }
+
+        case "MapDamage": {
+            properties.damage = props.value;
+            break;
+        }
     }
 
     const logEntryComponent = history.addComponent({

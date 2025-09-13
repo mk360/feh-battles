@@ -38,7 +38,7 @@ import getLv40Stats from "./systems/unit-stats";
 import getAllies from "./utils/get-allies";
 import getEnemies from "./utils/get-enemies";
 import validator from "./validator";
-import addLogEntry from "./utils/add-log-entry";
+import addLogEntry from "./utils/log-entries/add-log-entry";
 
 /**
  * TODO:
@@ -789,8 +789,15 @@ class GameWorld extends World {
         this.undoSystemChanges("combat");
 
         attacker.removeComponent(tempPos);
+        this.clearHistory();
 
         return producedPreview;
+    }
+
+    private clearHistory() {
+        while (this.state.history.getComponents("LogEntry").size) {
+            this.state.history.removeComponent(this.state.history.getOne("LogEntry"));
+        }
     }
 
     produceCombatPreview(attacker: Entity, defender: Entity, bestTile: { x: number; y: number }) {

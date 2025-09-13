@@ -1,4 +1,4 @@
-import { Entity } from "ape-ecs";
+import { Component, Entity } from "ape-ecs";
 import Skill from "../components/skill";
 import HeroSystem from "../systems/hero";
 import GameState from "../systems/state";
@@ -38,25 +38,31 @@ export function guidance(sourceEntity: Entity, state: GameState, target: Entity)
  * Apply specified map buff to adjacent allies
  */
 export function honeStat(skill: Skill, state: GameState, stat: Stat, buff: number) {
+    const components: Component[] = [];
     const allies = getAllies(state, skill.entity);
     for (let ally of allies) {
         if (HeroSystem.getDistance(ally, skill.entity) === 1) {
-            applyMapComponent(ally, "MapBuff", {
+            components.push(...applyMapComponent(ally, "MapBuff", {
                 [stat]: buff,
-            }, skill.entity);
+            }, skill.entity));
         }
     }
+
+    return components;
 }
 
 export function mapBuffByMovementType(skill: Skill, state: GameState, movementType: MovementType, buffs: Stats) {
     const allies = getAllies(state, skill.entity);
+    const components: Component[] = [];
     for (let ally of allies) {
         if (ally.getOne("MovementType").value === movementType) {
-            applyMapComponent(ally, "MapBuff", {
+            components.push(...applyMapComponent(ally, "MapBuff", {
                 ...buffs,
-            }, skill.entity);
+            }, skill.entity));
         }
     }
+
+    return components;
 }
 
 export function mapBuffByRange(skill: Skill, state: GameState, range: number, buffs: Stats) {
@@ -103,7 +109,7 @@ export function combatBuffByRange(skill: Skill, ally: Entity, range: number, buf
 export function defiant(skill: Skill, stat: Stat, buff: number) {
     const { maxHP, hp } = skill.entity.getOne("Stats");
     if (hp / maxHP <= 0.5) {
-        applyMapComponent(skill.entity, "MapBuff", {
+        return applyMapComponent(skill.entity, "MapBuff", {
             [stat]: buff,
         }, skill.entity);
     }
@@ -113,27 +119,34 @@ export function defiant(skill: Skill, stat: Stat, buff: number) {
  * If enemy has specified weapon and unit has at least specified % of HP, prevents enemy from doing a followup, and guarantees unit followup on them.
  */
 export function breaker(skill: Skill, enemy: Entity, targetWeaponType: WeaponType, hpPercentage: number) {
+    const components: Component[] = [];
     const { weaponType } = enemy.getOne("Weapon");
     const { hp, maxHP } = skill.entity.getOne("Stats");
     if (weaponType === targetWeaponType && hp / maxHP >= hpPercentage) {
-        skill.entity.addComponent({
-            type: "PreventFollowup"
-        });
-        skill.entity.addComponent({
+        components.push(skill.entity.addComponent({
+            type: "PreventFollowup",
+            target: enemy,
+        }));
+
+        components.push(skill.entity.addComponent({
             type: "GuaranteedFollowup"
-        });
+        }));
     }
+
+    return components;
 }
 
 /**
  * Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.
  */
 export function raven(skill: Skill, enemy: Entity) {
+    const components: Component[] = [];
     if (enemy.getOne("Weapon").color === "colorless") {
-        skill.entity.addComponent({
+        components.push(skill.entity.addComponent({
             type: "GuaranteedAdvantage"
-        });
+        }));
     }
+    return components;
 }
 
 /**
@@ -158,6 +171,8 @@ export function elementalBoost(skill: Skill, target: Entity, buffs: Stats) {
     const wielderHP = skill.entity.getOne("Stats").hp;
     const enemyHP = target.getOne("Stats").hp;
 
+    console.log({ wielderHP, enemyHP }, target.getOne("Name").value, skill.entity.getOne("Name").value)
+
     if (wielderHP >= enemyHP + 3) {
         return skill.entity.addComponent({
             type: "CombatBuff",
@@ -171,7 +186,7 @@ export function elementalBoost(skill: Skill, target: Entity, buffs: Stats) {
  */
 export function renewal(skill: Skill, shouldActivate: boolean, amount: number) {
     if (shouldActivate) {
-        skill.entity.addComponent({
+        return skill.entity.addComponent({
             type: "Heal",
             value: amount
         });
@@ -183,13 +198,16 @@ export function renewal(skill: Skill, shouldActivate: boolean, amount: number) {
  */
 export function threaten(skill: Skill, state: GameState, statDebuffs: Stats) {
     const enemies = getEnemies(state, skill.entity);
+    let components: Component[] = [];
     for (let enemy of enemies) {
         if (HeroSystem.getDistance(enemy, skill.entity) <= 2) {
-            applyMapComponent(enemy, "MapDebuff", {
+            components = components.concat(applyMapComponent(enemy, "MapDebuff", {
                 ...statDebuffs,
-            }, skill.entity);
+            }, skill.entity));
         }
     }
+
+    return components;
 }
 
 /**
@@ -226,7 +244,7 @@ export function owl(skill: Skill, state: GameState) {
     const allies = getAllies(state, skill.entity).filter((ally) => HeroSystem.getDistance(ally, skill.entity) === 1);
     const buff = allies.length * 2;
 
-    skill.entity.addComponent({
+    return skill.entity.addComponent({
         type: "CombatBuff",
         atk: buff,
         def: buff,
@@ -246,7 +264,7 @@ export function bladeTome(skill: Skill) {
         statsSum += atk + def + res + spd;
     });
 
-    skill.entity.addComponent({
+    return skill.entity.addComponent({
         type: "CombatBuff",
         atk: statsSum
     });
@@ -422,23 +440,25 @@ export function balm(skill: Skill, state: GameState, buffs: Stats) {
  */
 export function tactic(thisArg: Skill, state: GameState, affectedStat: Stat, buff: number) {
     const userMovementType = thisArg.entity.getOne("MovementType").value;
-
+    const components: Component[] = [];
     const allies = getAllies(state, thisArg.entity);
 
     if (state.teamsByMovementTypes[thisArg.entity.getOne("Side").value][userMovementType] <= 2) {
-        applyMapComponent(thisArg.entity, "MapBuff", {
+        components.push(...applyMapComponent(thisArg.entity, "MapBuff", {
             [affectedStat]: buff
-        }, thisArg.entity);
+        }, thisArg.entity));
     }
 
     for (let ally of allies) {
         const allyMovementType = ally.getOne("MovementType").value;
         if (state.teamsByMovementTypes[thisArg.entity.getOne("Side").value][allyMovementType] <= 2) {
-            applyMapComponent(ally, "MapBuff", {
+            components.push(...applyMapComponent(ally, "MapBuff", {
                 [affectedStat]: buff
-            }, thisArg.entity);
+            }, thisArg.entity));
         }
     }
+
+    return components;
 }
 
 /**
@@ -446,19 +466,25 @@ export function tactic(thisArg: Skill, state: GameState, affectedStat: Stat, buf
  */
 export function wave(affectedStat: Stat, parity: (turnCount: number) => boolean, buff: number) {
     return function (this: Skill, state: GameState) {
+        const components: Component[] = [];
         if (parity(state.turn)) {
-            applyMapComponent(this.entity, "MapBuff", {
-                [affectedStat]: buff
-            }, this.entity);
+            components.push(
+                ...applyMapComponent(this.entity, "MapBuff", {
+                    [affectedStat]: buff
+                }, this.entity)
+            );
             const allies = getAllies(state, this.entity);
             for (let ally of allies) {
                 if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                    applyMapComponent(ally, "MapBuff", {
-                        [affectedStat]: buff
-                    }, this.entity);
+                    components.push(
+                        ...applyMapComponent(ally, "MapBuff", {
+                            [affectedStat]: buff
+                        }, this.entity)
+                    );
                 }
             }
         }
+        return components;
     }
 }
 
@@ -469,6 +495,7 @@ export function wave(affectedStat: Stat, parity: (turnCount: number) => boolean,
 export function ploy(skill: Skill, state: GameState, affectedStat: Stat, debuff: number) {
     const { x, y } = skill.entity.getOne("Position");
     const enemies = getEnemies(state, skill.entity);
+    const components: Component[] = [];
 
     for (let enemy of enemies) {
         const enemyPos = enemy.getOne("Position");
@@ -476,12 +503,15 @@ export function ploy(skill: Skill, state: GameState, affectedStat: Stat, debuff:
         if (isCardinal) {
             const resIsHigher = skill.entity.getOne("Stats").res > enemy.getOne("Stats").res;
             if (resIsHigher) {
-                applyMapComponent(enemy, "MapDebuff", {
-                    [affectedStat]: debuff
-                }, skill.entity);
+                components.push(
+                    ...applyMapComponent(enemy, "MapDebuff", {
+                        [affectedStat]: debuff
+                    }, skill.entity)
+                );
             }
         }
     }
+    return components;
 }
 
 /**
@@ -490,9 +520,11 @@ export function ploy(skill: Skill, state: GameState, affectedStat: Stat, debuff:
 export function movementBasedCombatBuff(buff: Stats, range: number) {
     return function (movementType: MovementType) {
         return function (this: Skill, state: GameState, ally: Entity) {
+            const components: Component[] = [];
             if (ally.getOne("MovementType").value === movementType && HeroSystem.getDistance(ally, this.entity) <= range) {
-                applyMapComponent(ally, "MapBuff", buff, this.entity);
+                components.push(...applyMapComponent(ally, "MapBuff", buff, this.entity));
             }
+            return components;
         }
     }
 }

@@ -36,14 +36,14 @@ interface PassivesDict {
         effectiveAgainst?: (MovementType | WeaponType)[];
         onCombatStart?(this: Skill, state: GameState, target: Entity): Component[];
         onEquip?(this: Skill): void;
-        onCombatInitiate?(this: Skill, state: GameState, target: Entity): void;
-        onCombatAllyStart?(this: Skill, state: GameState, ally: Entity): void;
-        onCombatDefense?(this: Skill, state: GameState, attacker: Entity): void;
-        onCombatAfter?(this: Skill, state: GameState, target: Entity): void;
+        onCombatInitiate?(this: Skill, state: GameState, target: Entity): Component[];
+        onCombatAllyStart?(this: Skill, state: GameState, ally: Entity): Component[];
+        onCombatDefense?(this: Skill, state: GameState, attacker: Entity): Component[];
+        onCombatAfter?(this: Skill, state: GameState, target: Entity): Component[];
         onCombatRoundAttack?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): void;
         onCombatRoundDefense?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): void;
         onSpecialTrigger?(this: Skill, battleState: GameState, target: Entity): void;
-        onTurnStart?(this: Skill, state: GameState): void;
+        onTurnStart?(this: Skill, state: GameState): Component[];
         onTurnStartBefore?(this: Skill, state: GameState): void;
         onTurnStartAfter?(this: Skill, state: GameState): void;
         onTurnCheckRange?(this: Skill, state: GameState): void;
@@ -162,7 +162,7 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         allowedWeaponTypes: farRange,
         onCombatStart() {
-            return counterattack(this);
+            return [counterattack(this)];
         },
     },
     "Crusader's Ward": {
@@ -239,10 +239,10 @@ const PASSIVES: PassivesDict = {
             stats.res++;
         },
         onCombatAfter() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "MapDamage",
                 value: 2
-            });
+            })];
         }
     },
     "Fury 2": {
@@ -258,10 +258,10 @@ const PASSIVES: PassivesDict = {
             stats.res += 2;
         },
         onCombatAfter() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "MapDamage",
                 value: 4
-            });
+            })];
         }
     },
     "Fury 3": {
@@ -277,10 +277,10 @@ const PASSIVES: PassivesDict = {
             stats.res += 3;
         },
         onCombatAfter() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "MapDamage",
                 value: 6
-            });
+            })];
         }
     },
     "HP +3": {
@@ -321,7 +321,7 @@ const PASSIVES: PassivesDict = {
         exclusiveTo: ["Arvis: Emperor of Flame"],
         slot: "B",
         onTurnStart() {
-            renewal(this, true, 10);
+            return [renewal(this, true, 10)];
         },
     },
     "Resistance +1": {
@@ -354,10 +354,12 @@ const PASSIVES: PassivesDict = {
         exclusiveTo: ["Lyn: Brave Lady"],
         onCombatInitiate(state, target) {
             if (["sword", "axe", "lance"].includes(target.getOne("Weapon").weaponType)) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "PreventCounterattack"
-                });
+                })];
             }
+
+            return [];
         },
     },
     "Speed +1": {
@@ -431,12 +433,14 @@ const PASSIVES: PassivesDict = {
         onCombatDefense(state, attacker) {
             const { range } = attacker.getOne("Weapon");
             if (range === 1) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "CombatBuff",
                     def: 2,
                     res: 2
-                });
+                })];
             }
+
+            return [];
         },
     },
     "Close Def 2": {
@@ -445,12 +449,14 @@ const PASSIVES: PassivesDict = {
         onCombatDefense(state, attacker) {
             const { range } = attacker.getOne("Weapon");
             if (range === 1) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "CombatBuff",
                     def: 4,
                     res: 4
-                });
+                })];
             }
+
+            return [];
         },
     },
     "Close Def 3": {
@@ -459,12 +465,14 @@ const PASSIVES: PassivesDict = {
         onCombatDefense(state, attacker) {
             const { range } = attacker.getOne("Weapon");
             if (range === 1) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "CombatBuff",
                     def: 6,
                     res: 6
-                });
+                })];
             }
+
+            return [];
         },
     },
     "Distant Def 1": {
@@ -474,12 +482,14 @@ const PASSIVES: PassivesDict = {
         onCombatDefense(state, attacker) {
             const { range } = attacker.getOne("Weapon");
             if (range === 2) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "CombatBuff",
                     def: 2,
                     res: 2
-                });
+                })];
             }
+
+            return [];
         },
     },
     "Distant Def 2": {
@@ -489,12 +499,14 @@ const PASSIVES: PassivesDict = {
         onCombatDefense(state, attacker) {
             const { range } = attacker.getOne("Weapon");
             if (range === 2) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "CombatBuff",
                     def: 4,
                     res: 4
-                });
+                })];
             }
+
+            return [];
         },
     },
     "Distant Def 3": {
@@ -504,12 +516,14 @@ const PASSIVES: PassivesDict = {
         onCombatDefense(state, attacker) {
             const { range } = attacker.getOne("Weapon");
             if (range === 2) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "CombatBuff",
                     def: 6,
                     res: 6
-                });
+                })];
             }
+
+            return [];
         },
     },
     "Guard 1": {
@@ -1305,9 +1319,12 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Res+2 during combat.",
         onCombatStart(state, target) {
-            elementalBoost(this, target, {
+            const components: Component[] = [];
+            const result = elementalBoost(this, target, {
                 res: 2
             });
+            if (result) components.push(result);
+            return components;
         },
     },
     "Water Boost 2": {
@@ -2259,12 +2276,14 @@ const PASSIVES: PassivesDict = {
             if (state.turn === 1 && special) {
                 const specialData = SPECIALS[special.name];
                 if (specialData.onCombatRoundDefense) {
-                    this.entity.addComponent({
+                    return [this.entity.addComponent({
                         type: "ModifySpecialCooldown",
                         value: -2
-                    });
+                    })];
                 }
             }
+
+            return [];
         },
         onSpecialTrigger() {
             const special = this.entity.getOne("Special");
@@ -2315,15 +2334,20 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: closeRange,
         description: "Neutralizes weapon-triangle advantage granted by unit's skills. If unit has weapon-triangle disadvantage, reverses weapon-triangle advantage granted by foe's skills.",
         onCombatStart(state, target) {
-            target.addComponent({
+            const components: Component[] = [];
+            const targetComp = target.addComponent({
                 type: "NeutralizeAffinity",
             });
 
+            components.push(targetComp);
+
             if (getAffinity(target, this.entity) === 0.2) {
-                this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "GuaranteedAffinity"
-                });
+                }));
             }
+
+            return components;
         }
     },
     "Drag Back": {
@@ -2381,8 +2405,7 @@ const PASSIVES: PassivesDict = {
     "Axebreaker 1": {
         onCombatStart(state, target) {
             const { hp, maxHP } = this.entity.getOne("Stats");
-            console.log({ hp, maxHP })
-            breaker(this, target, "axe", 0.9);
+            return breaker(this, target, "axe", 0.9);
         },
         slot: "B",
         allowedWeaponTypes: ["sword", "axe", "beast", "bow", "dagger", "breath", "tome", "staff"],
@@ -2391,7 +2414,7 @@ const PASSIVES: PassivesDict = {
     },
     "Axebreaker 2": {
         onCombatStart(state, target) {
-            breaker(this, target, "axe", 0.7);
+            return breaker(this, target, "axe", 0.7);
         },
         slot: "B",
         allowedWeaponTypes: ["sword", "axe", "beast", "bow", "dagger", "breath", "tome", "staff"],
@@ -2400,7 +2423,7 @@ const PASSIVES: PassivesDict = {
     },
     "Axebreaker 3": {
         onCombatStart(state, target) {
-            breaker(this, target, "axe", 0.5);
+            return breaker(this, target, "axe", 0.5);
         },
         slot: "B",
         allowedWeaponTypes: ["sword", "axe", "beast", "bow", "dagger", "breath", "tome", "staff"],
@@ -2411,7 +2434,10 @@ const PASSIVES: PassivesDict = {
         description: "At the start of every fourth turn, restores 10 HP.",
         isSacredSeal: true,
         onTurnStart(state) {
-            renewal(this, state.turn % 4 === 0, 10);
+            const components: Component[] = [];
+            const comp = renewal(this, state.turn % 4 === 0, 10);
+            if (comp) components.push(comp);
+            return components;
         },
         slot: "B",
     },
@@ -2419,7 +2445,10 @@ const PASSIVES: PassivesDict = {
         description: "At the start of every third turn, restores 10 HP.",
         isSacredSeal: true,
         onTurnStart(state) {
-            renewal(this, state.turn % 3 === 0, 10);
+            const components: Component[] = [];
+            const comp = renewal(this, state.turn % 3 === 0, 10);
+            if (comp) components.push(comp);
+            return components;
         },
         slot: "B",
     },
@@ -2427,14 +2456,15 @@ const PASSIVES: PassivesDict = {
         description: "At start of odd-numbered turns, restores 10 HP.",
         isSacredSeal: true,
         onTurnStart(state) {
-            renewal(this, state.turn % 2 === 1, 10);
+            const comp = renewal(this, state.turn % 2 === 1, 10);
+            if (comp) return [comp];
         },
         slot: "B",
     },
     "Daggerbreaker 1": {
         onCombatStart(state, target) {
             if (target.getOne("Weapon").color === "colorless") {
-                breaker(this, target, "dagger", 0.9);
+                return breaker(this, target, "dagger", 0.9);
             }
         },
         slot: "B",
@@ -2443,7 +2473,7 @@ const PASSIVES: PassivesDict = {
     "Daggerbreaker 2": {
         onCombatStart(state, target) {
             if (target.getOne("Weapon").color === "colorless") {
-                breaker(this, target, "dagger", 0.7);
+                return breaker(this, target, "dagger", 0.7);
             }
         },
         slot: "B",
@@ -2451,16 +2481,19 @@ const PASSIVES: PassivesDict = {
     },
     "Daggerbreaker 3": {
         onCombatStart(state, target) {
+            let components: Component[] = [];
             if (target.getOne("Weapon").color === "colorless") {
-                breaker(this, target, "dagger", 0.5);
+                const result = breaker(this, target, "dagger", 0.5);
+                if (result) components = components.concat(result);
             }
+            return components;
         },
         slot: "B",
         description: "If unit's HP ≥ 50% in combat against a colorless dagger foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack."
     },
     "Lancebreaker 1": {
         onCombatStart(state, target) {
-            breaker(this, target, "lance", 0.9);
+            return breaker(this, target, "lance", 0.9);
         },
         slot: "B",
         allowedWeaponTypes: ["lance", "axe", "beast", "bow", "dagger", "breath", "tome", "staff"],
@@ -2469,7 +2502,7 @@ const PASSIVES: PassivesDict = {
     },
     "Lancebreaker 2": {
         onCombatStart(state, target) {
-            breaker(this, target, "lance", 0.7);
+            return breaker(this, target, "lance", 0.7);
         },
         slot: "B",
         allowedWeaponTypes: ["lance", "axe", "beast", "bow", "dagger", "breath", "tome", "staff"],
@@ -2478,7 +2511,7 @@ const PASSIVES: PassivesDict = {
     },
     "Lancebreaker 3": {
         onCombatStart(state, target) {
-            breaker(this, target, "lance", 0.5);
+            return breaker(this, target, "lance", 0.5);
         },
         slot: "B",
         allowedWeaponTypes: ["lance", "axe", "beast", "bow", "dagger", "breath", "tome", "staff"],
@@ -2487,7 +2520,7 @@ const PASSIVES: PassivesDict = {
     },
     "Swordbreaker 1": {
         onCombatStart(state, target) {
-            breaker(this, target, "sword", 0.9);
+            return breaker(this, target, "sword", 0.9);
         },
         slot: "B",
         allowedWeaponTypes: ["lance", "sword", "beast", "bow", "dagger", "breath", "tome", "staff"],
@@ -2496,7 +2529,7 @@ const PASSIVES: PassivesDict = {
     },
     "Swordbreaker 2": {
         onCombatStart(state, target) {
-            breaker(this, target, "sword", 0.7);
+            return breaker(this, target, "sword", 0.7);
         },
         slot: "B",
         allowedWeaponTypes: ["lance", "sword", "beast", "bow", "dagger", "breath", "tome", "staff"],
@@ -2505,7 +2538,7 @@ const PASSIVES: PassivesDict = {
     },
     "Swordbreaker 3": {
         onCombatStart(state, target) {
-            breaker(this, target, "sword", 0.5);
+            return breaker(this, target, "sword", 0.5);
         },
         slot: "B",
         allowedWeaponTypes: ["lance", "sword", "beast", "bow", "dagger", "breath", "tome", "staff"],
@@ -2515,8 +2548,10 @@ const PASSIVES: PassivesDict = {
     "R Tomebreaker 1": {
         onCombatStart(state, target) {
             if (target.getOne("Weapon").color === "red") {
-                breaker(this, target, "tome", 0.9);
+                return breaker(this, target, "tome", 0.9);
             }
+
+            return [];
         },
         slot: "B",
         allowedColors: ["red", "blue", "colorless"],
@@ -2525,8 +2560,10 @@ const PASSIVES: PassivesDict = {
     "R Tomebreaker 2": {
         onCombatStart(state, target) {
             if (target.getOne("Weapon").color === "red") {
-                breaker(this, target, "tome", 0.7);
+                return breaker(this, target, "tome", 0.7);
             }
+
+            return [];
         },
         slot: "B",
         allowedColors: ["red", "blue", "colorless"],
@@ -2535,8 +2572,10 @@ const PASSIVES: PassivesDict = {
     "R Tomebreaker 3": {
         onCombatStart(state, target) {
             if (target.getOne("Weapon").color === "red") {
-                breaker(this, target, "tome", 0.5);
+                return breaker(this, target, "tome", 0.5);
             }
+
+            return [];
         },
         slot: "B",
         allowedColors: ["red", "blue", "colorless"],
@@ -2545,8 +2584,10 @@ const PASSIVES: PassivesDict = {
     "B Tomebreaker 1": {
         onCombatStart(state, target) {
             if (target.getOne("Weapon").color === "blue") {
-                breaker(this, target, "tome", 0.9);
+                return breaker(this, target, "tome", 0.9);
             }
+
+            return [];
         },
         slot: "B",
         allowedColors: ["blue", "green", "colorless"],
@@ -2555,7 +2596,7 @@ const PASSIVES: PassivesDict = {
     "B Tomebreaker 2": {
         onCombatStart(state, target) {
             if (target.getOne("Weapon").color === "blue") {
-                breaker(this, target, "tome", 0.7);
+                return breaker(this, target, "tome", 0.7);
             }
         },
         slot: "B",
@@ -2565,7 +2606,7 @@ const PASSIVES: PassivesDict = {
     "B Tomebreaker 3": {
         onCombatStart(state, target) {
             if (target.getOne("Weapon").color === "blue") {
-                breaker(this, target, "tome", 0.5);
+                return breaker(this, target, "tome", 0.5);
             }
         },
         allowedColors: ["blue", "green", "colorless"],
@@ -2575,8 +2616,10 @@ const PASSIVES: PassivesDict = {
     "G Tomebreaker 1": {
         onCombatStart(state, target) {
             if (target.getOne("Weapon").color === "green") {
-                breaker(this, target, "tome", 0.9);
+                return breaker(this, target, "tome", 0.9);
             }
+
+            return [];
         },
         slot: "B",
         allowedColors: ["red", "green", "colorless"],
@@ -2585,8 +2628,10 @@ const PASSIVES: PassivesDict = {
     "G Tomebreaker 2": {
         onCombatStart(state, target) {
             if (target.getOne("Weapon").color === "green") {
-                breaker(this, target, "tome", 0.7);
+                return breaker(this, target, "tome", 0.7);
             }
+
+            return [];
         },
         slot: "B",
         allowedColors: ["red", "green", "colorless"],
@@ -2595,8 +2640,10 @@ const PASSIVES: PassivesDict = {
     "G Tomebreaker 3": {
         onCombatStart(state, target) {
             if (target.getOne("Weapon").color === "green") {
-                breaker(this, target, "tome", 0.5);
+                return breaker(this, target, "tome", 0.5);
             }
+
+            return [];
         },
         allowedColors: ["red", "green", "colorless"],
         slot: "B",
@@ -2605,8 +2652,10 @@ const PASSIVES: PassivesDict = {
     "Bowbreaker 1": {
         onCombatStart(state, target) {
             if (target.getOne("Weapon").color === "colorless") {
-                breaker(this, target, "bow", 0.9);
+                return breaker(this, target, "bow", 0.9);
             }
+
+            return [];
         },
         slot: "B",
         allowedMovementTypes: ["armored", "cavalry", "infantry"],
@@ -2615,8 +2664,10 @@ const PASSIVES: PassivesDict = {
     "Bowbreaker 2": {
         onCombatStart(state, target) {
             if (target.getOne("Weapon").color === "colorless") {
-                breaker(this, target, "bow", 0.7);
+                return breaker(this, target, "bow", 0.7);
             }
+
+            return [];
         },
         slot: "B",
         allowedMovementTypes: ["armored", "cavalry", "infantry"],
@@ -2624,7 +2675,7 @@ const PASSIVES: PassivesDict = {
     },
     "Bowbreaker 3": {
         onCombatStart(state, target) {
-            breaker(this, target, "bow", 0.5);
+            return breaker(this, target, "bow", 0.5);
         },
         slot: "B",
         allowedMovementTypes: ["armored", "cavalry", "infantry"],
@@ -2635,7 +2686,9 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         description: "At start of turn, if unit's HP ≤ 50%, grants Atk+3 for 1 turn.",
         onTurnStart() {
-            defiant(this, "atk", 3);
+            const components = defiant(this, "atk", 3);
+            if (components) return components;
+            return [];
         }
     },
     "Defiant Atk 2": {
@@ -2643,7 +2696,9 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         description: "At start of turn, if unit's HP ≤ 50%, grants Atk+5 for 1 turn.",
         onTurnStart() {
-            defiant(this, "atk", 5);
+            const components = defiant(this, "atk", 5);
+            if (components) return components;
+            return [];
         }
     },
     "Defiant Atk 3": {
@@ -2651,7 +2706,9 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         description: "At start of turn, if unit's HP ≤ 50%, grants Atk+7 for 1 turn.",
         onTurnStart() {
-            defiant(this, "atk", 7);
+            const components = defiant(this, "atk", 7);
+            if (components) return components;
+            return [];
         }
     },
     "Defiant Def 1": {
@@ -2659,7 +2716,9 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         description: "At start of turn, if unit's HP ≤ 50%, grants Def+3 for 1 turn.",
         onTurnStart() {
-            defiant(this, "def", 3);
+            const components = defiant(this, "def", 3);
+            if (components) return components;
+            return [];
         }
     },
     "Defiant Def 2": {
@@ -2667,7 +2726,9 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         description: "At start of turn, if unit's HP ≤ 50%, grants Def+5 for 1 turn.",
         onTurnStart() {
-            defiant(this, "def", 5);
+            const components = defiant(this, "def", 5);
+            if (components) return components;
+            return [];
         }
     },
     "Defiant Def 3": {
@@ -2675,7 +2736,9 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         description: "At start of turn, if unit's HP ≤ 50%, grants Def+7 for 1 turn.",
         onTurnStart() {
-            defiant(this, "def", 7);
+            const components = defiant(this, "def", 7);
+            if (components) return components;
+            return [];
         }
     },
     "Defiant Spd 1": {
@@ -2683,7 +2746,9 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         description: "At start of turn, if unit's HP ≤ 50%, grants Spd+3 for 1 turn.",
         onTurnStart() {
-            defiant(this, "spd", 3);
+            const components = defiant(this, "spd", 3);
+            if (components) return components;
+            return [];
         }
     },
     "Defiant Spd 2": {
@@ -2691,7 +2756,9 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         description: "At start of turn, if unit's HP ≤ 50%, grants Spd+5 for 1 turn.",
         onTurnStart() {
-            defiant(this, "spd", 5);
+            const components = defiant(this, "spd", 5);
+            if (components) return components;
+            return [];
         }
     },
     "Defiant Spd 3": {
@@ -2699,28 +2766,36 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         description: "At start of turn, if unit's HP ≤ 50%, grants Spd+7 for 1 turn.",
         onTurnStart() {
-            defiant(this, "spd", 7);
+            const components = defiant(this, "spd", 7);
+            if (components) return components;
+            return [];
         }
     },
     "Defiant Res 1": {
         slot: "A",
         description: "At start of turn, if unit's HP ≤ 50%, grants Res+3 for 1 turn.",
         onTurnStart() {
-            defiant(this, "res", 3);
+            const components = defiant(this, "res", 3);
+            if (components) return components;
+            return [];
         }
     },
     "Defiant Res 2": {
         slot: "A",
         description: "At start of turn, if unit's HP ≤ 50%, grants Res+5 for 1 turn.",
         onTurnStart() {
-            defiant(this, "res", 5);
+            const components = defiant(this, "res", 5);
+            if (components) return components;
+            return [];
         }
     },
     "Defiant Res 3": {
         slot: "A",
         description: "At start of turn, if unit's HP ≤ 50%, grants Res+7 for 1 turn.",
         onTurnStart() {
-            defiant(this, "res", 7);
+            const components = defiant(this, "res", 7);
+            if (components) return components;
+            return [];
         }
     },
     "Breath of Life 1": {
@@ -2865,7 +2940,7 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         slot: "C",
         onTurnStart(state) {
-            honeStat(this, state, "atk", 2);
+            return honeStat(this, state, "atk", 2);
         }
     },
     "Hone Atk 2": {
@@ -2873,7 +2948,7 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         slot: "C",
         onTurnStart(state) {
-            honeStat(this, state, "atk", 3)
+            return honeStat(this, state, "atk", 3)
         }
     },
     "Hone Atk 3": {
@@ -2881,35 +2956,35 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         slot: "C",
         onTurnStart(state) {
-            honeStat(this, state, "atk", 4);
+            return honeStat(this, state, "atk", 4);
         }
     },
     "Hone Atk 4": {
         description: "At start of turn, grants Atk+7 to adjacent allies for 1 turn.",
         slot: "C",
         onTurnStart(state) {
-            honeStat(this, state, "atk", 7);
+            return honeStat(this, state, "atk", 7);
         }
     },
     "Hone Spd 1": {
         description: "At start of turn, grants Spd+2 to adjacent allies for 1 turn.",
         slot: "C",
         onTurnStart(state) {
-            honeStat(this, state, "spd", 2);
+            return honeStat(this, state, "spd", 2);
         }
     },
     "Hone Spd 2": {
         description: "At start of turn, grants Spd+3 to adjacent allies for 1 turn.",
         slot: "C",
         onTurnStart(state) {
-            honeStat(this, state, "spd", 3);
+            return honeStat(this, state, "spd", 3);
         }
     },
     "Hone Spd 3": {
         description: "At start of turn, grants Spd+4 to adjacent allies for 1 turn.",
         slot: "C",
         onTurnStart(state) {
-            honeStat(this, state, "spd", 4);
+            return honeStat(this, state, "spd", 4);
         }
     },
     "Hone Cavalry": {
@@ -2917,7 +2992,7 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         allowedMovementTypes: ["cavalry"],
         onTurnStart(battleState) {
-            mapBuffByMovementType(this, battleState, "cavalry", {
+            return mapBuffByMovementType(this, battleState, "cavalry", {
                 atk: 6,
                 spd: 6
             });
@@ -2928,7 +3003,7 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         allowedMovementTypes: ["flier"],
         onTurnStart(battleState) {
-            mapBuffByMovementType(this, battleState, "flier", {
+            return mapBuffByMovementType(this, battleState, "flier", {
                 atk: 6,
                 spd: 6
             });
@@ -2940,14 +3015,16 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         onTurnStart(battleState) {
             const allies = getAllies(battleState, this.entity);
+            const components: Component[] = [];
             for (let ally of allies) {
                 if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                    ally.addComponent({
-                        type: "MapBuff",
-                        def: 2
-                    });
+                    components.push(...applyMapComponent(ally, "MapBuff", {
+                        def: 2,
+                    }, this.entity));
                 }
             }
+
+            return components;
         },
     },
     "Fortify Def 2": {
@@ -2956,14 +3033,16 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         onTurnStart(battleState) {
             const allies = getAllies(battleState, this.entity);
+            const components: Component[] = [];
             for (let ally of allies) {
                 if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                    ally.addComponent({
-                        type: "MapBuff",
-                        def: 3
-                    });
+                    components.push(...applyMapComponent(ally, "MapBuff", {
+                        def: 3,
+                    }, this.entity));
                 }
             }
+
+            return components;
         },
     },
     "Fortify Def 3": {
@@ -2972,13 +3051,16 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         onTurnStart(battleState) {
             const allies = getAllies(battleState, this.entity);
+            const components: Component[] = [];
             for (let ally of allies) {
                 if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                    applyMapComponent(ally, "MapBuff", {
+                    components.push(...applyMapComponent(ally, "MapBuff", {
                         def: 3
-                    }, this.entity);
+                    }, this.entity));
                 }
             }
+
+            return components;
         },
     },
     "Fortify Res 1": {
@@ -2986,14 +3068,17 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         isSacredSeal: true,
         onTurnStart(battleState) {
+            const components: Component[] = [];
             const allies = getAllies(battleState, this.entity);
             for (let ally of allies) {
                 if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                    applyMapComponent(ally, "MapBuff", {
+                    components.push(...applyMapComponent(ally, "MapBuff", {
                         res: 2
-                    }, this.entity);
+                    }, this.entity));
                 }
             }
+
+            return components;
         },
     },
     "Fortify Res 2": {
@@ -3001,14 +3086,17 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         isSacredSeal: true,
         onTurnStart(battleState) {
+            const components: Component[] = [];
             const allies = getAllies(battleState, this.entity);
             for (let ally of allies) {
                 if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                    applyMapComponent(ally, "MapBuff", {
+                    components.push(...applyMapComponent(ally, "MapBuff", {
                         res: 3
-                    }, this.entity);
+                    }, this.entity));
                 }
             }
+
+            return components;
         },
     },
     "Fortify Res 3": {
@@ -3016,14 +3104,17 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         isSacredSeal: true,
         onTurnStart(battleState) {
+            const components: Component[] = [];
             const allies = getAllies(battleState, this.entity);
             for (let ally of allies) {
                 if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                    applyMapComponent(ally, "MapBuff", {
+                    components.push(...applyMapComponent(ally, "MapBuff", {
                         res: 4
-                    }, this.entity);
+                    }, this.entity));
                 }
             }
+
+            return components;
         },
     },
     "Fortify Armor": {
@@ -3032,15 +3123,17 @@ const PASSIVES: PassivesDict = {
         allowedMovementTypes: ["armored"],
         onTurnStart(state) {
             const allies = getAllies(state, this.entity);
+            const components: Component[] = [];
             for (let ally of allies) {
                 if (ally.getOne("MovementType").value === "armored" && HeroSystem.getDistance(ally, this.entity) === 1) {
-                    ally.addComponent({
-                        type: "MapBuff",
+                    components.push(...applyMapComponent(ally, "MapBuff", {
                         def: 6,
-                        res: 6
-                    });
+                        res: 6,
+                    }, this.entity));
                 }
             }
+
+            return components;
         },
     },
     "Fortify Cavalry": {
@@ -3049,14 +3142,17 @@ const PASSIVES: PassivesDict = {
         allowedMovementTypes: ["cavalry"],
         onTurnStart(state) {
             const allies = getAllies(state, this.entity);
+            const components: Component[] = [];
             for (let ally of allies) {
                 if (ally.getOne("MovementType").value === "cavalry" && HeroSystem.getDistance(ally, this.entity) === 1) {
-                    applyMapComponent(ally, "MapBuff", {
+                    components.push(...applyMapComponent(ally, "MapBuff", {
                         def: 6,
                         res: 6,
-                    }, this.entity);
+                    }, this.entity));
                 }
             }
+
+            return components;
         },
     },
     "Fortify Dragons": {
@@ -3289,7 +3385,7 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         description: "At start of turn, grants Atk+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
         onTurnStart(state) {
-            tactic(this, state, "atk", 2);
+            return tactic(this, state, "atk", 2);
         }
     },
     "Atk Tactic 2": {
@@ -3297,7 +3393,7 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         description: "At start of turn, grants Atk+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
         onTurnStart(state) {
-            tactic(this, state, "atk", 4);
+            return tactic(this, state, "atk", 4);
         }
     },
     "Atk Tactic 3": {
@@ -3305,7 +3401,7 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         description: "At start of turn, grants Atk+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
         onTurnStart(state) {
-            tactic(this, state, "atk", 6);
+            return tactic(this, state, "atk", 6);
         }
     },
     "Spd Tactic 1": {
@@ -3313,7 +3409,7 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         description: "At start of turn, grants Spd+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
         onTurnStart(state) {
-            tactic(this, state, "spd", 2);
+            return tactic(this, state, "spd", 2);
         }
     },
     "Spd Tactic 2": {
@@ -3321,7 +3417,7 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         description: "At start of turn, grants Spd+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
         onTurnStart(state) {
-            tactic(this, state, "spd", 4);
+            return tactic(this, state, "spd", 4);
         }
     },
     "Spd Tactic 3": {
@@ -3329,49 +3425,49 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         description: "At start of turn, grants Spd+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
         onTurnStart(state) {
-            tactic(this, state, "spd", 6);
+            return tactic(this, state, "spd", 6);
         }
     },
     "Def Tactic 1": {
         slot: "C",
         description: "At start of turn, grants Def+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
         onTurnStart(state) {
-            tactic(this, state, "def", 2);
+            return tactic(this, state, "def", 2);
         }
     },
     "Def Tactic 2": {
         slot: "C",
         description: "At start of turn, grants Def+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
         onTurnStart(state) {
-            tactic(this, state, "def", 4);
+            return tactic(this, state, "def", 4);
         }
     },
     "Def Tactic 3": {
         slot: "C",
         description: "At start of turn, grants Def+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
         onTurnStart(state) {
-            tactic(this, state, "def", 6);
+            return tactic(this, state, "def", 6);
         }
     },
     "Res Tactic 1": {
         slot: "C",
         description: "At start of turn, grants Res+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
         onTurnStart(state) {
-            tactic(this, state, "res", 2);
+            return tactic(this, state, "res", 2);
         }
     },
     "Res Tactic 2": {
         slot: "C",
         description: "At start of turn, grants Res+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
         onTurnStart(state) {
-            tactic(this, state, "res", 4);
+            return tactic(this, state, "res", 4);
         }
     },
     "Res Tactic 3": {
         slot: "C",
         description: "At start of turn, grants Res+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
         onTurnStart(state) {
-            tactic(this, state, "res", 6);
+            return tactic(this, state, "res", 6);
         }
     },
     "Odd Atk Wave 1": {
@@ -3400,10 +3496,12 @@ const PASSIVES: PassivesDict = {
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp / maxHP >= 0.9) {
                 this.entity.addComponent({
-                    type: "PreventFollowup"
+                    type: "PreventFollowup",
+                    target
                 });
                 target.addComponent({
-                    type: "PreventFollowup"
+                    type: "PreventFollowup",
+                    target: this.entity
                 });
             }
         },
@@ -3766,17 +3864,21 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         allowedMovementTypes: ["infantry"],
         onTurnStart(battleState) {
+            const components: Component[] = [];
+
             if (battleState.turn === 1) {
                 const allies = getAllies(battleState, this.entity);
                 for (let ally of allies) {
                     if (ally.getOne("MovementType").value === "infantry" && ally.getOne("Stats").hp <= this.entity.getOne("Stats").hp - 5) {
-                        ally.addComponent({
+                        components.push(ally.addComponent({
                             type: "ModifySpecialCooldown",
                             value: -1
-                        });
+                        }));
                     }
                 }
             }
+
+            return components;
         },
     },
     "Infantry Pulse 2": {
@@ -3784,17 +3886,21 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         allowedMovementTypes: ["infantry"],
         onTurnStart(battleState) {
+            const components: Component[] = [];
+
             if (battleState.turn === 1) {
                 const allies = getAllies(battleState, this.entity);
                 for (let ally of allies) {
                     if (ally.getOne("MovementType").value === "infantry" && ally.getOne("Stats").hp <= this.entity.getOne("Stats").hp - 3) {
-                        ally.addComponent({
+                        components.push(ally.addComponent({
                             type: "ModifySpecialCooldown",
                             value: -1
-                        });
+                        }));
                     }
                 }
             }
+
+            return components;
         },
     },
     "Infantry Pulse 3": {
@@ -3802,24 +3908,28 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         allowedMovementTypes: ["infantry"],
         onTurnStart(battleState) {
+            const components: Component[] = [];
+
             if (battleState.turn === 1) {
                 const allies = getAllies(battleState, this.entity);
                 for (let ally of allies) {
                     if (ally.getOne("MovementType").value === "infantry" && ally.getOne("Stats").hp <= this.entity.getOne("Stats").hp - 5) {
-                        ally.addComponent({
+                        components.push(ally.addComponent({
                             type: "ModifySpecialCooldown",
                             value: -1
-                        });
+                        }));
                     }
                 }
             }
+
+            return components;
         },
     },
     "Threaten Atk 1": {
         description: "At start of turn, inflicts Atk-3 on foes within 2 spaces through their next actions.",
         slot: "C",
         onTurnStart(state) {
-            threaten(this, state, { atk: -3 });
+            return threaten(this, state, { atk: -3 });
         }
     },
     "Threaten Atk 2": {
@@ -3827,7 +3937,7 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         isSacredSeal: true,
         onTurnStart(state) {
-            threaten(this, state, { atk: -5 });
+            return threaten(this, state, { atk: -5 });
         }
     },
     "Threaten Atk 3": {
@@ -3835,7 +3945,7 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         isSacredSeal: true,
         onTurnStart(state) {
-            threaten(this, state, { atk: -7 });
+            return threaten(this, state, { atk: -7 });
         }
     },
     "Threaten Def 1": {
@@ -3843,7 +3953,7 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         isSacredSeal: true,
         onTurnStart(state) {
-            threaten(this, state, { def: -3 });
+            return threaten(this, state, { def: -3 });
         }
     },
     "Threaten Def 2": {
@@ -3851,7 +3961,7 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         isSacredSeal: true,
         onTurnStart(state) {
-            threaten(this, state, { def: -5 });
+            return threaten(this, state, { def: -5 });
         }
     },
     "Threaten Def 3": {
@@ -3859,7 +3969,7 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         isSacredSeal: true,
         onTurnStart(state) {
-            threaten(this, state, { def: -7 });
+            return threaten(this, state, { def: -7 });
         }
     },
     "Threaten Spd 1": {
@@ -3867,7 +3977,7 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         isSacredSeal: true,
         onTurnStart(state) {
-            threaten(this, state, { spd: -3 });
+            return threaten(this, state, { spd: -3 });
         }
     },
     "Threaten Spd 2": {
@@ -3875,7 +3985,7 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         isSacredSeal: true,
         onTurnStart(state) {
-            threaten(this, state, { spd: -5 });
+            return threaten(this, state, { spd: -5 });
         }
     },
     "Threaten Spd 3": {
@@ -3883,7 +3993,7 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         isSacredSeal: true,
         onTurnStart(state) {
-            threaten(this, state, { spd: -7 });
+            return threaten(this, state, { spd: -7 });
         }
     },
     "Threaten Res 1": {
@@ -3891,7 +4001,7 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         isSacredSeal: true,
         onTurnStart(state) {
-            threaten(this, state, { res: -3 });
+            return threaten(this, state, { res: -3 });
         }
     },
     "Threaten Res 2": {
@@ -3899,7 +4009,7 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         isSacredSeal: true,
         onTurnStart(state) {
-            threaten(this, state, { res: -5 });
+            return threaten(this, state, { res: -5 });
         }
     },
     "Threaten Res 3": {
@@ -3907,17 +4017,17 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         isSacredSeal: true,
         onTurnStart(state) {
-            threaten(this, state, { res: -7 });
+            return threaten(this, state, { res: -7 });
         }
     },
     "Triangle Adept 1": {
         description: "If unit has weapon-triangle advantage, boosts Atk by 10%. If unit has weapon-triangle disadvantage, reduces Atk by 10%.",
         allowedColors: ["red", "blue", "green"],
         onCombatStart() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "ApplyAffinity",
                 value: 10
-            });
+            })];
         },
         slot: "A",
     },
@@ -3925,10 +4035,10 @@ const PASSIVES: PassivesDict = {
         allowedColors: ["red", "blue", "green"],
         description: "If unit has weapon-triangle advantage, boosts Atk by 15%. If unit has weapon-triangle disadvantage, reduces Atk by 15%.",
         onCombatStart() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "ApplyAffinity",
                 value: 15
-            });
+            })];
         },
         slot: "A",
     },
@@ -3936,10 +4046,10 @@ const PASSIVES: PassivesDict = {
         allowedColors: ["red", "blue", "green"],
         description: "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
         onCombatStart() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "ApplyAffinity",
                 value: 20
-            });
+            })];
         },
         slot: "A",
     },
@@ -4190,6 +4300,7 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         description: "Grants Spd/Def+3 to adjacent allies during combat.",
         onCombatAllyStart(state, ally) {
+
             if (HeroSystem.getDistance(ally, this.entity) === 1) {
                 ally.addComponent({
                     type: "CombatBuff",
@@ -4278,6 +4389,7 @@ const PASSIVES: PassivesDict = {
         onCombatInitiate(state, target) {
             target.addComponent({
                 type: "PreventFollowup",
+                target: this.entity,
             });
             const { spd } = getCombatStats(this.entity);
             const { spd: enemySpd } = getCombatStats(target);
@@ -4296,6 +4408,7 @@ const PASSIVES: PassivesDict = {
         onCombatInitiate(state, target) {
             target.addComponent({
                 type: "PreventFollowup",
+                target: this.entity,
             });
             const { spd } = getCombatStats(this.entity);
             const { spd: enemySpd } = getCombatStats(target);

@@ -59,7 +59,7 @@ class SkillInteractionSystem extends System {
                 }
             });
 
-            defender.getComponents(neutralizingComponent).forEach((comp) => {
+            attacker.getComponents(neutralizingComponent).forEach((comp) => {
                 const matchingDefensiveComponent = defender.getOne(neutralizedComponent);
                 if (comp && matchingDefensiveComponent) {
                     attacker.removeComponent(comp);

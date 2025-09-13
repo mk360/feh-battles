@@ -145,12 +145,16 @@ const WEAPONS: WeaponDict = {
         description: "After combat, if unit attacked, inflicts Def/Res-3 on foe through its next action.",
         might: 3,
         onCombatAfter(state, target) {
+            const components: Component[] = [];
             if (this.entity.getOne("DealDamage")) {
-                applyMapComponent(target, "MapDebuff", {
-                    def: -3,
-                    res: -3
-                }, this.entity);
+                components.push(
+                    ...applyMapComponent(target, "MapDebuff", {
+                        def: -3,
+                        res: -3
+                    }, this.entity)
+                );
             }
+            return components;
         },
         type: "dagger"
     },
@@ -180,12 +184,16 @@ const WEAPONS: WeaponDict = {
         type: "dagger",
         might: 5,
         onCombatAfter(state, target) {
+            const components: Component[] = [];
             if (this.entity.getOne("DealDamage")) {
-                applyMapComponent(target, "MapDebuff", {
-                    def: -3,
-                    res: -3
-                }, this.entity);
+                components.push(
+                    ...applyMapComponent(target, "MapDebuff", {
+                        def: -3,
+                        res: -3
+                    }, this.entity)
+                );
             }
+            return components;
         }
     },
     "Silver Sword": {
@@ -212,12 +220,16 @@ const WEAPONS: WeaponDict = {
     "Silver Dagger": {
         description: "After combat, if unit attacked, inflicts Def/Res-5 on foe through its next action.",
         onCombatAfter(battleState, target) {
+            const components: Component[] = [];
             if (this.entity.getOne("DealDamage")) {
-                applyMapComponent(target, "MapDebuff", {
-                    def: -5,
-                    res: -5
-                }, this.entity);
+                components.push(
+                    ...applyMapComponent(target, "MapDebuff", {
+                        def: -5,
+                        res: -5
+                    }, this.entity)
+                );
             }
+            return components;
         },
         might: 7,
         type: "dagger"
@@ -246,12 +258,16 @@ const WEAPONS: WeaponDict = {
     "Silver Dagger+": {
         description: "After combat, if unit attacked, inflicts Def/Res-7 on foe through its next action.",
         onCombatAfter(battleState, target) {
+            const components: Component[] = [];
             if (this.entity.getOne("DealDamage")) {
-                applyMapComponent(target, "MapDebuff", {
-                    def: -7,
-                    res: -7
-                }, this.entity);
+                components.push(
+                    ...applyMapComponent(target, "MapDebuff", {
+                        def: -7,
+                        res: -7
+                    }, this.entity)
+                );
             }
+            return components;
         },
         might: 10,
         type: "dagger"
@@ -386,7 +402,7 @@ const WEAPONS: WeaponDict = {
         might: 16,
         type: "sword",
         onCombatStart() {
-            Effects.counterattack(this);
+            return [Effects.counterattack(this)];
         },
         exclusiveTo: ["Black Knight: Sinister General"]
     },
@@ -413,9 +429,9 @@ const WEAPONS: WeaponDict = {
             this.entity.getOne("Stats").spd -= 5;
         },
         onCombatStart() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "BraveWeapon"
-            });
+            })];
         }
     },
     "Argent Bow": {
@@ -436,12 +452,14 @@ const WEAPONS: WeaponDict = {
     "Armads": {
         description: "If unit's HP ≥ 80% and foe initiates combat, unit makes a guaranteed follow-up attack.",
         onCombatDefense() {
+            const components: Component[] = [];
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp / maxHP >= 0.8) {
-                this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "GuaranteedFollowup"
-                });
+                }));
             }
+            return components;
         },
         type: "axe",
         might: 16,
@@ -465,15 +483,17 @@ const WEAPONS: WeaponDict = {
         type: "axe",
         might: 16,
         onCombatStart() {
+            const components: Component[] = [];
             if (this.entity.getOne("MapBuff")) {
-                this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "CombatBuff",
                     atk: 3,
                     spd: 3,
                     def: 3,
                     res: 3
-                });
+                }));
             }
+            return components;
         }
     },
     "Assault": {
@@ -487,10 +507,12 @@ const WEAPONS: WeaponDict = {
         might: 7,
         description: "Effective against flying foes. In combat against a colorless dagger foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack.",
         onCombatStart(state, target) {
+            let components: Component[] = [];
             const enemyWeapon = target.getOne("Weapon");
             if (enemyWeapon.color === "colorless") {
-                Effects.breaker(this, target, "dagger", 0);
+                components = components.concat(Effects.breaker(this, target, "dagger", 0));
             }
+            return components;
         }
     },
     "Assassin's Bow+": {
@@ -500,9 +522,11 @@ const WEAPONS: WeaponDict = {
         description: "Effective against flying foes. In combat against a colorless dagger foe, unit makes a guaranteed follow-up attack and foe cannot make a follow-up attack.",
         onCombatStart(state, target) {
             const enemyWeapon = target.getOne("Weapon");
+            const components: Component[] = [];
             if (enemyWeapon.color === "colorless") {
-                Effects.breaker(this, target, "dagger", 0);
+                components.push(...Effects.breaker(this, target, "dagger", 0));
             }
+            return components;
         }
     },
     "Audhulma": {
@@ -524,17 +548,19 @@ const WEAPONS: WeaponDict = {
         exclusiveTo: ["Linde: Light Mage"],
         might: 14,
         onCombatAfter(state) {
+            const components: Component[] = [];
             if (this.entity.getOne("InitiateCombat")) {
                 const allies = getAllies(state, this.entity);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                        ally.addComponent({
+                        components.push(ally.addComponent({
                             type: "Heal",
                             value: 5
-                        });
+                        }));
                     }
                 }
             }
+            return components;
         }
     },
     "Axe of Virility": {
@@ -553,13 +579,15 @@ const WEAPONS: WeaponDict = {
             this.entity.getOne("Stats").spd += 3;
         },
         onCombatRoundAttack(enemy) {
+            const components: Component[] = [];
             const { spd: enemySpd } = getCombatStats(enemy);
             const { spd } = getCombatStats(this.entity);
             if (spd > enemySpd) {
-                this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "AccelerateSpecial"
-                });
+                }));
             }
+            return components;
         },
     },
     "Basilikos": {
@@ -579,10 +607,10 @@ const WEAPONS: WeaponDict = {
         might: 10,
         type: "lance",
         onCombatDefense() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "CombatBuff",
                 res: 4
-            });
+            })];
         }
     },
     "Berkut's Lance+": {
@@ -590,10 +618,10 @@ const WEAPONS: WeaponDict = {
         might: 14,
         type: "lance",
         onCombatDefense() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "CombatBuff",
                 res: 4
-            });
+            })];
         }
     },
     "Beruka's Axe": {
@@ -617,13 +645,15 @@ const WEAPONS: WeaponDict = {
             this.entity.getOne("Stats").atk += 3;
         },
         onCombatRoundAttack(enemy) {
+            const components: Component[] = [];
             const { atk } = getCombatStats(enemy);
             const { atk: selfAtk } = getCombatStats(this.entity);
             if (selfAtk > atk) {
-                this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "AccelerateSpecial"
-                });
+                }));
             }
+            return components;
         },
     },
     "Blárblade": {
@@ -638,7 +668,7 @@ const WEAPONS: WeaponDict = {
             });
         },
         onCombatStart() {
-            Effects.bladeTome(this);
+            return [Effects.bladeTome(this)];
         }
     },
     "Blárblade+": {
@@ -653,7 +683,7 @@ const WEAPONS: WeaponDict = {
             });
         },
         onCombatStart() {
-            Effects.bladeTome(this);
+            return [Effects.bladeTome(this)];
         }
     },
     "Blárowl": {
@@ -662,7 +692,7 @@ const WEAPONS: WeaponDict = {
         color: "blue",
         might: 10,
         onCombatStart(state) {
-            Effects.owl(this, state);
+            return [Effects.owl(this, state)];
         }
     },
     "Blárowl+": {
@@ -671,7 +701,7 @@ const WEAPONS: WeaponDict = {
         color: "blue",
         might: 14,
         onCombatStart(state) {
-            Effects.owl(this, state);
+            return [Effects.owl(this, state)];
         }
     },
     "Blárraven": {
@@ -680,7 +710,7 @@ const WEAPONS: WeaponDict = {
         type: "tome",
         color: "blue",
         onCombatStart(state, target) {
-            Effects.raven(this, target);
+            return Effects.raven(this, target);
         }
     },
     "Blárraven+": {
@@ -689,7 +719,7 @@ const WEAPONS: WeaponDict = {
         type: "tome",
         color: "blue",
         onCombatStart(state, target) {
-            Effects.raven(this, target);
+            return Effects.raven(this, target);
         }
     },
     "Blárwolf": {
@@ -712,17 +742,21 @@ const WEAPONS: WeaponDict = {
         description: "If unit initiates combat, grants Def/Res+2 to allies within 2 spaces for 1 turn after combat.",
         might: 8,
         onCombatAfter(battleState) {
+            const components: Component[] = [];
             if (this.entity.getOne("InitiateCombat")) {
                 const allies = getAllies(battleState, this.entity);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, this.entity) <= 2) {
-                        applyMapComponent(ally, "MapBuff", {
-                            def: 2,
-                            res: 2
-                        }, this.entity);
+                        components.push(...
+                            applyMapComponent(ally, "MapBuff", {
+                                def: 2,
+                                res: 2
+                            }, this.entity)
+                        );
                     }
                 }
             }
+            return components;
         },
     },
     "Blessed Bouquet+": {
@@ -731,17 +765,21 @@ const WEAPONS: WeaponDict = {
         description: "If unit initiates combat, grants Def/Res+2 to allies within 2 spaces for 1 turn after combat.",
         might: 12,
         onCombatAfter(battleState) {
+            const components: Component[] = [];
             if (this.entity.getOne("InitiateCombat")) {
                 const allies = getAllies(battleState, this.entity);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, this.entity) <= 2) {
-                        applyMapComponent(ally, "MapBuff", {
-                            def: 2,
-                            res: 2
-                        }, this.entity);
+                        components.push(
+                            ...applyMapComponent(ally, "MapBuff", {
+                                def: 2,
+                                res: 2
+                            }, this.entity)
+                        );
                     }
                 }
             }
+            return components;
         },
     },
     "Blue Egg": {
@@ -750,12 +788,14 @@ const WEAPONS: WeaponDict = {
         color: "blue",
         might: 7,
         onCombatAfter() {
+            const components: Component[] = [];
             if (this.entity.getOne("InitiateCombat")) {
-                this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "Heal",
                     value: 4
-                });
+                }));
             }
+            return components;
         }
     },
     "Blue Egg+": {
@@ -764,12 +804,14 @@ const WEAPONS: WeaponDict = {
         color: "blue",
         might: 11,
         onCombatAfter() {
+            const components: Component[] = [];
             if (this.entity.getOne("InitiateCombat")) {
-                this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "Heal",
                     value: 4
-                });
+                }));
             }
+            return components;
         }
     },
     "Book of Orchids": {
@@ -778,10 +820,10 @@ const WEAPONS: WeaponDict = {
         might: 16,
         type: "tome",
         onCombatInitiate() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "CombatBuff",
                 atk: 6
-            });
+            })];
         }
     },
     "Bow of Beauty": {
@@ -947,11 +989,11 @@ const WEAPONS: WeaponDict = {
 
             const maxBuff = Math.min(6, alliesWithinRange * 2);
 
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "CombatBuff",
                 atk: maxBuff,
                 def: maxBuff
-            });
+            })];
         }
     },
     "Bull Spear": {

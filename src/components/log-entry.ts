@@ -27,20 +27,20 @@ class LogEntry extends Component {
         /* combat buffs*/
         buffs: statsTemplate,
         /* combat */
-        round: 0,
+        rounds: [],
         attacker: {
             id: "",
             damage: 0,
-            activatedSpecial: false,
             mods: [],
-            newSpecialCooldown: 0,
         },
         defender: {
             id: "",
-            activatedSpecial: false,
             mods: [],
-            newSpecialCooldown: 0,
         },
+        /* map damage */
+        damage: 0,
+        /* map heal */
+        heal: 0,
     }
 };
 

@@ -1,4 +1,4 @@
-import { Entity, IComponentConfig } from "ape-ecs";
+import { Component, Entity, IComponentConfig } from "ape-ecs";
 import { Stats } from "../interfaces/types";
 import { STATUSES } from "../statuses";
 
@@ -62,15 +62,16 @@ export function removeStatuses<T extends keyof typeof ReverseStatusesDict>(targe
  * statuses (with extra values where needed)
  */
 export function applyMapComponent<K extends keyof MapComponentsDict>(target: Entity, component: K, extraValues: Omit<MapComponentsDict[K], "status">, source?: Entity) {
+    const components: Component[] = [];
     const componentCreationPayload: IComponentConfig = {
         type: "Status",
         value: StatusesDict[component],
     };
 
-    target.addComponent({
+    components.push(target.addComponent({
         type: component,
         ...extraValues
-    });
+    }));
 
     if (source) {
         componentCreationPayload.source = source;
@@ -78,7 +79,9 @@ export function applyMapComponent<K extends keyof MapComponentsDict>(target: Ent
 
     const status = StatusesDict[component];
 
-    target.addComponent(componentCreationPayload);
+    components.push(target.addComponent(componentCreationPayload));
 
     target.addTag(status);
+
+    return components;
 }

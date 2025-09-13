@@ -7,7 +7,7 @@ import SKILLS from "../data/skill-dex";
 import PreventEnemyAlliesInteraction from "../components/prevent-enemy-allies-interaction";
 import getAllies from "../utils/get-allies";
 import COMBAT_COMPONENTS from "./combat-components";
-import addLogEntry from "../utils/add-log-entry";
+import addLogEntry from "../utils/log-entries/add-log-entry";
 
 const STATUS_COMPONENTS = COMBAT_COMPONENTS.concat(["SlowSpecial", "AccelerateSpecial", "AoEDamage", "AoETarget", "PreventCounterattack", "GuaranteedFollowup", "Heal", "Special"]);
 
@@ -35,28 +35,29 @@ class BeforeCombat extends System {
         attackerSkills.onCombatStart?.forEach((skill) => {
             const components = SKILLS[skill.name].onCombatStart.call(skill, this.state, defender);
             for (let addedComponent of components) {
-                console.log(addedComponent.type);
                 addLogEntry(addedComponent, attacker, addedComponent.entity === attacker ? attacker : defender, skill.name, this.state.history);
-                // this.state.history.addComponent({
-                //     type: "LogEntry",
-                //     component: addedComponent.id,
-                //     sourceSkill: skill.name,
-                //     sourceEntity: attacker, // for ex. if attacker inflicts debuffs on the defender, the source entity of any component is the attacker.
-                //     // if necessary, the defender can always be retrieved with the component.entity property
-                // })
             }
         });
 
         defenderSkills.onCombatStart?.forEach((skill) => {
-            SKILLS[skill.name].onCombatStart.call(skill, this.state, attacker);
+            const components = SKILLS[skill.name].onCombatStart.call(skill, this.state, attacker);
+            for (let addedComponent of components) {
+                addLogEntry(addedComponent, defender, addedComponent.entity === defender ? defender : attacker, skill.name, this.state.history);
+            }
         });
 
         attackerSkills.onCombatInitiate?.forEach((skill) => {
-            SKILLS[skill.name].onCombatInitiate.call(skill, this.state, defender);
+            const components = SKILLS[skill.name].onCombatInitiate.call(skill, this.state, defender);
+            for (let addedComponent of components) {
+                addLogEntry(addedComponent, attacker, addedComponent.entity === attacker ? attacker : defender, skill.name, this.state.history);
+            }
         });
 
         defenderSkills.onCombatDefense?.forEach((skill) => {
-            SKILLS[skill.name].onCombatDefense.call(skill, this.state, attacker);
+            const components = SKILLS[skill.name].onCombatDefense.call(skill, this.state, attacker);
+            for (let addedComponent of components) {
+                addLogEntry(addedComponent, attacker, addedComponent.entity === defender ? defender : attacker, skill.name, this.state.history);
+            }
         });
 
         if (!defender.getOne(PreventEnemyAlliesInteraction)) {
@@ -121,7 +122,10 @@ class BeforeCombat extends System {
         const allies = getAllies(this.state, entity);
         for (let ally of allies) {
             this.state.skillMap.get(ally).onCombatAllyStart?.forEach((skill) => {
-                SKILLS[skill.name].onCombatAllyStart.call(skill, this.state, entity, { context: skill.name, owner: ally.id });
+                const components = SKILLS[skill.name].onCombatAllyStart.call(skill, this.state, entity, { context: skill.name, owner: ally.id });
+                for (let addedComponent of components) {
+                    addLogEntry(addedComponent, ally, addedComponent.entity, skill.name, this.state.history);
+                }
             });
         }
     }

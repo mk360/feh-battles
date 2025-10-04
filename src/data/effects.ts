@@ -21,17 +21,20 @@ import tileBitmasks from "./tile-bitmasks";
 export function guidance(sourceEntity: Entity, state: GameState, target: Entity) {
     const { x, y } = sourceEntity.getOne("Position");
     const tile = state.map[y][x];
+    const components: Component[] = [];
     const surroundings = getSurroundings(state.map, y, x);
     surroundings.splice(surroundings.indexOf(tile), 1);
     const validAllyTiles = surroundings.filter((tile) => canReachTile(target, tile));
     for (let tile of validAllyTiles) {
         const { x: tileX, y: tileY } = getTileCoordinates(tile);
-        target.addComponent({
+        components.push(target.addComponent({
             type: "WarpTile",
             x: tileX,
             y: tileY
-        });
+        }));
     }
+
+    return components;
 };
 
 /**
@@ -95,12 +98,15 @@ export function dodgeStat(skill: Skill, enemy: Entity, comparedStat: Stat) {
  * Unconditionally apply a Combat Buff if there's an ally within the specified range
  */
 export function combatBuffByRange(skill: Skill, ally: Entity, range: number, buffs: Stats) {
+    const components: Component[] = [];
     if (HeroSystem.getDistance(ally, skill.entity) <= range) {
-        ally.addComponent({
+        components.push(ally.addComponent({
             type: "CombatBuff",
             ...buffs
-        });
+        }));
     }
+
+    return components;
 };
 
 /**
@@ -170,8 +176,6 @@ export function bond(skill: Skill, state: GameState, buffs: Stats) {
 export function elementalBoost(skill: Skill, target: Entity, buffs: Stats) {
     const wielderHP = skill.entity.getOne("Stats").hp;
     const enemyHP = target.getOne("Stats").hp;
-
-    console.log({ wielderHP, enemyHP }, target.getOne("Name").value, skill.entity.getOne("Name").value)
 
     if (wielderHP >= enemyHP + 3) {
         return skill.entity.addComponent({

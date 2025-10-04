@@ -23,6 +23,7 @@ import collectCombatMods from "./systems/collect-combat-mods";
 import collectMapMods from "./systems/collect-map-mods";
 import CombatSystem from "./systems/combat";
 import checkBattleEffectiveness from "./systems/effectiveness";
+import getAttackerAdvantage from "./systems/get-attacker-advantage";
 import getDistance from "./systems/get-distance";
 import KillSystem from "./systems/kill";
 import AfterAssist from "./systems/mechanics/after-assist";
@@ -38,7 +39,6 @@ import getLv40Stats from "./systems/unit-stats";
 import getAllies from "./utils/get-allies";
 import getEnemies from "./utils/get-enemies";
 import validator from "./validator";
-import addLogEntry from "./utils/log-entries/add-log-entry";
 
 /**
  * TODO:
@@ -158,7 +158,16 @@ class GameWorld extends World {
             for (let status of POSITIVE_STATUSES) {
                 removeStatuses(hero, status);
             }
-            hero.removeComponent(hero.getOne("FinishedAction"));
+            const finished = hero.getOne("FinishedAction");
+            if (finished) {
+                hero.removeComponent(finished);
+            }
+        });
+        this.state.history.addComponent({
+            type: "LogEntry",
+            logType: "turn",
+            turn: this.state.turn,
+            side: this.state.currentSide
         });
         let changes: (IComponentChange & Partial<{ detailedComponent: IComponentObject }>)[] = [];
         this.runSystems("every-turn");
@@ -171,7 +180,9 @@ class GameWorld extends World {
         const withTurnChange = [`turn ${this.state.currentSide} ${this.state.turn}`].concat(turnEvents);
         this.switchSides();
         this.state.lastChangeSequence = withTurnChange;
-        return withTurnChange;
+        const output = { changes: withTurnChange, history: Array.from(this.state.history.getComponents("LogEntry")).map((i) => i.getObject(true)) };
+        this.clearHistory();
+        return output;
     }
 
     private outputEngineActions(events: IComponentChange[]) {
@@ -388,7 +399,7 @@ class GameWorld extends World {
                     type: "Galeforced"
                 });
             } else {
-                changes = changes.concat(this.endAction(attacker.id));
+                changes = changes.concat(this.endAction(attacker.id).changes);
             }
 
             attacker.getComponents("DealDamage").forEach((comp) => attacker.removeComponent(comp));
@@ -449,7 +460,9 @@ class GameWorld extends World {
     private outputAssistActions(actions: IComponentChange[]) {
         let actionStrings: string[] = [];
 
-        const refresh = actions.filter((action) => action.op === "delete" && action.type === "FinishedAction").map((action) => `refresh ${action.entity}`);
+        const refresh = actions.filter((action) => action.op === "add" && action.type === "Refresh").map((action) => {
+            return `refresh ${action.entity}`
+        });
 
         if (refresh.length) {
             actionStrings = actionStrings.concat(refresh);
@@ -457,6 +470,7 @@ class GameWorld extends World {
 
         const swap = actions.filter((action) => action.type === "Swap") as (IComponentChange & { x: number; y: number; assistTarget: { x: number; y: number } })[];
         let assistString = "";
+
         if (swap.length === 1) {
             let en = this.getComponent(swap[0].component).getObject(false);
             var sourceCoords = en.x * 10 + en.y;
@@ -507,16 +521,22 @@ class GameWorld extends World {
 
         const statuses = actions.filter((change) => change.type === "Status" && change.op === "add");
 
-        const statusDealingMap: { [k: string]: { target: string, status: string }[] } = {};
+        const statusDealingMap: { [k: string]: { target: string, status: string }[] } = {
+            unknown: []
+        };
 
         for (let status of statuses) {
             const comp = this.getComponent(status.component);
-            const source = comp.source.id;
-            if (!statusDealingMap[source]) statusDealingMap[source] = [];
-            statusDealingMap[source].push({ target: comp.entity.id, status: comp.value });
+            const source = comp.source?.id;
+            if (source) {
+                if (!statusDealingMap[source]) statusDealingMap[source] = [];
+                statusDealingMap[source].push({ target: comp.entity.id, status: comp.value });
+            } else {
+                statusDealingMap["unknown"].push({ target: comp.entity.id, status: comp.value });
+            }
         }
 
-        const line = Object.keys(statusDealingMap).map((dealer) => `trigger ${dealer}`).join(",");
+        const line = Object.keys(statusDealingMap).filter((i) => i !== "unknown").map((dealer) => `trigger ${dealer}`).join(",");
 
         if (line.length) {
             actionStrings.push(line);
@@ -577,7 +597,7 @@ class GameWorld extends World {
 
         if (endAction) {
             const endActionChanges = this.endAction(id);
-            return change.concat(endActionChanges);
+            return change.concat(endActionChanges.changes);
         }
 
         unit.getComponents("MovementTile").forEach((tile) => {
@@ -631,6 +651,11 @@ class GameWorld extends World {
                 changes = changes.concat(this.outputAssistActions(system._stagedChanges));
             });
 
+            this.systems.get("after-assist").forEach((system) => {
+                // @ts-ignore
+                changes = changes.concat(this.outputAssistActions(system._stagedChanges));
+            });
+
             // TODO : run a cleanup function that removes assist commands
 
             assistSource.removeComponent(c1);
@@ -638,13 +663,16 @@ class GameWorld extends World {
             assistTarget.removeComponent(c2);
         }
 
-        changes = changes.concat(this.endAction(source));
+        changes = changes.concat(this.endAction(source).changes);
 
         for (let status of NEGATIVE_STATUSES) {
             removeStatuses(assistSource, status);
         }
 
-        return changes;
+        const history = Array.from(this.state.history.getComponents("LogEntry")).map((i) => i.getObject(true));
+        this.clearHistory();
+
+        return { changes, history };
     }
 
     endAction(id: string) {
@@ -653,13 +681,14 @@ class GameWorld extends World {
         const unit = this.getEntity(id);
 
         unit.addComponent({
-            type: "FinishedAction"
+            type: "FinishedAction",
         });
 
         changes.push(`finish ${id}`);
 
         const team = this.state.teams[unit.getOne("Side").value as "team1" | "team2"];
         const remainingUnits = Array.from(team).filter((e) => !e.getOne("FinishedAction"));
+        let history: IComponentObject[] = [];
 
         if (remainingUnits.length === 0) {
             for (let unit of remainingUnits) {
@@ -668,10 +697,11 @@ class GameWorld extends World {
                 }
             }
             const turnChanges = this.startTurn();
-            changes = changes.concat(turnChanges);
+            history = turnChanges.history;
+            changes = changes.concat(turnChanges.changes);
         }
 
-        return changes;
+        return { changes, history };
     }
 
     generateMap() {
@@ -727,6 +757,10 @@ class GameWorld extends World {
 
         this.runSystems("assist");
 
+        const history = Array.from(this.state.history.getComponents("LogEntry")).map((i) => i.getObject(true));
+
+        this.clearHistory();
+
         const payload = {
             assisting: {
                 id: source.id,
@@ -739,6 +773,7 @@ class GameWorld extends World {
                 expectedHP: target.getOne("PreviewHP").value
             },
             assist: assistSkill.name,
+            history
         };
 
         this.undoSystemChanges("assist");
@@ -771,13 +806,6 @@ class GameWorld extends World {
             ...bestTile
         });
         this.runSystems("before-combat");
-        // const comp = this.getComponent(item.component);
-        // const entity = this.getEntity(item.sourceEntity);
-        // if (entity === comp.entity) {
-        //     if (comp.type === "CombatBuff") {
-        //         console.log(entity.getOne("Name").value + " received Atk+" + comp.atk + " from " + item.sourceSkill);
-        //     }
-        // }
         this.runSystems("combat");
 
         attacker.removeComponent(b1);
@@ -837,12 +865,15 @@ class GameWorld extends World {
 
         const attackerNewHP = Math.max(0, attacker.getOne("Stats").hp - totalDefenderDamage);
         const defenderNewHP = Math.max(0, defender.getOne("Stats").hp - totalAttackerDamage);
+        const attackerAdvantage = getAttackerAdvantage(attacker, defender);
+        const defenderAdvantage = getAttackerAdvantage(defender, attacker);
 
         const attackerDamageData = {
             previousHP: attacker.getOne("Stats").hp,
             newHP: attackerNewHP,
             damagePerTurn: attackerDamagePerTurn,
             turns: attackerTurns,
+            advantage: attackerAdvantage > 0 ? "advantage" : attackerAdvantage < 0 ? "disadvantage" : "neutral",
             effectiveness: attackerEffectiveness,
             beforeCombat: defender.getOne("AoETarget")?.value ?? 0
         };
@@ -852,6 +883,7 @@ class GameWorld extends World {
             newHP: defenderNewHP,
             damagePerTurn: defenderDamagePerTurn,
             turns: defenderTurns,
+            advantage: defenderAdvantage > 0 ? "advantage" : defenderAdvantage < 0 ? "disadvantage" : "neutral",
             effectiveness: defenderEffectiveness,
         };
 
@@ -1149,9 +1181,9 @@ class GameWorld extends World {
         switch (change.op) {
             case "add": {
                 targetEntity.removeComponent(targetComponent);
-            }
                 break;
-            case "remove": {
+            }
+            case "destroy": {
                 const { type, ...properties } = targetComponent;
                 targetEntity.addComponent({
                     type,

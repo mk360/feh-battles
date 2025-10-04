@@ -1,17 +1,17 @@
 import { Component, Entity } from "ape-ecs";
-import GameState from "../systems/state";
-import Direction from "../systems/directions";
 import Assist from "../components/assist";
-import canReachTile from "../systems/can-reach-tile";
-import tileBitmasks from "./tile-bitmasks";
-import { Stats, WeaponType } from "../interfaces/types";
 import MovementType from "../components/movement-type";
+import CombatTurnOutcome from "../interfaces/combat-turn-outcome";
+import { Stats, WeaponType } from "../interfaces/types";
+import { applyMapComponent, removeStatuses } from "../systems/apply-map-effect";
+import canReachTile from "../systems/can-reach-tile";
+import Direction from "../systems/directions";
+import getMapStats from "../systems/get-map-stats";
+import getPosition from "../systems/get-position";
+import GameState from "../systems/state";
 import Characters from "./characters.json";
 import { retreat, shove, swap } from "./effects";
-import getPosition from "../systems/get-position";
-import { applyMapComponent, removeStatuses } from "../systems/apply-map-effect";
-import getMapStats from "../systems/get-map-stats";
-import CombatTurnOutcome from "../interfaces/combat-turn-outcome";
+import tileBitmasks from "./tile-bitmasks";
 
 const exceptStaves: WeaponType[] = ["axe", "beast", "bow", "breath", "dagger", "lance", "sword", "tome"];
 
@@ -21,6 +21,10 @@ function allyCanBeHealed(state: GameState, ally: Entity) {
     const { hp, maxHP } = ally.getOne("Stats");
     return hp < maxHP;
 };
+
+function allyCanBeRefreshed(state: GameState, ally: Entity) {
+    return ally.getOne("FinishedAction") && !ally.getOne("Refresher");
+}
 
 interface AssistsDict {
     [k: string]: {
@@ -83,11 +87,11 @@ const ASSISTS: AssistsDict = {
         range: 1,
         description: "Grants another action to target ally. (Cannot target an ally with Sing or Dance.)",
         type: ["refresh"],
-        canApply(state, ally) {
-            return ally.getOne("FinishedAction") && !ally.getOne("Refresher");
-        },
+        canApply: allyCanBeRefreshed,
         onApply(state, ally) {
-            ally.removeComponent("FinishedAction");
+            return [ally.addComponent({
+                type: "Refresh"
+            })];
         },
         exclusiveTo: ["Inigo: Indigo Dancer", "Ninian: Oracle of Destiny", "Olivia: Blushing Beauty", "Olivia: Festival Dancer"]
     },
@@ -586,11 +590,11 @@ const ASSISTS: AssistsDict = {
         range: 1,
         type: ["refresh"],
         description: "Grants another action to target ally. (Cannot target an ally with Sing or Dance.)",
-        canApply(state, ally) {
-            return ally.getOne("FinishedAction") && !ally.getOne("Refresher");
-        },
+        canApply: allyCanBeRefreshed,
         onApply(state, ally) {
-            ally.removeComponent("FinishedAction");
+            return [ally.addComponent({
+                type: "Refresh"
+            })];
         },
         exclusiveTo: ["Azura: Lady of Ballads", "Azura: Lady of the Lake", "Shigure: Dark Sky Singer"],
     },

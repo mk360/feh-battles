@@ -35,7 +35,7 @@ class BeforeCombat extends System {
         attackerSkills.onCombatStart?.forEach((skill) => {
             const components = SKILLS[skill.name].onCombatStart.call(skill, this.state, defender);
             for (let addedComponent of components) {
-                addLogEntry(addedComponent, attacker, addedComponent.entity === attacker ? attacker : defender, skill.name, this.state.history);
+                addLogEntry(addedComponent, attacker, addedComponent.entity === attacker ? attacker : defender, skill.name, this.state.history, !!attacker.getOne("PreviewingBattle"));
             }
         });
 

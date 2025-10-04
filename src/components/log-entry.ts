@@ -18,6 +18,7 @@ class LogEntry extends Component {
         sourceEntity: EntityRef,
         targetEntity: EntityRef,
         logType: "",
+        preview: false,
         /* map debuffs */
         debuffs: statsTemplate,
         /* map buffs*/
@@ -41,6 +42,11 @@ class LogEntry extends Component {
         damage: 0,
         /* map heal */
         heal: 0,
+        /* status */
+        status: "",
+        /* new turn */
+        turn: 0,
+        side: "",
     }
 };
 

@@ -1,8 +1,9 @@
 import { Entity, Query, System } from "ape-ecs";
 import GameState from "./state";
 import ASSISTS from "../data/assists";
+import addLogEntry from "../utils/log-entries/add-log-entry";
 
-const SUBSCRIBED_COMPONENTS = ["MapBuff", "MapDebuff", "Stats", "PreviewHP", "SacrificeHP", "Swap", "Reposition", "Pivot", "Move", "Status", "Shove", "Heal", "DrawBack"];
+const SUBSCRIBED_COMPONENTS = ["MapBuff", "MapDebuff", "Stats", "PreviewHP", "SacrificeHP", "Refresh", "Swap", "Reposition", "Pivot", "Move", "Status", "Shove", "Heal", "DrawBack"];
 
 class AssistSystem extends System {
     private state: GameState;
@@ -22,7 +23,17 @@ class AssistSystem extends System {
         if (assistSkill) {
             const assistData = ASSISTS[assistSkill.name];
             // todo pour plus tard : ajouter des "onAssist" aux skills qui s'activent après un assist (pour les trucs du genre Snare, le B de Mordecai, etc.)
-            assistData.onApply.call(assistSkill, this.state, assisted);
+            const components = assistData.onApply.call(assistSkill, this.state, assisted);
+            if (components) {
+                for (let addedComponent of components) {
+                    if (assisting.getOne("PreviewAssist")) {
+                        console.log("assist preview", addedComponent.type);
+                    } else {
+                        console.log("assist run", addedComponent.type);
+                    }
+                    addLogEntry(addedComponent, assisting, assisted, assistSkill.name, this.state.history, !!assisting.getOne("PreviewAssist"));
+                }
+            }
             const newAssistingHealth = getNewHealth(assisting);
             const newAssistedHealth = getNewHealth(assisted);
             if (assisting.getOne("PreviewAssist")) {
@@ -38,7 +49,6 @@ class AssistSystem extends System {
             } else {
                 this.world.runSystems("move");
                 this.world.runSystems("after-assist");
-                this.world.runSystems("hp-mod");
             }
         }
     }

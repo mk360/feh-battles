@@ -1,13 +1,14 @@
 import { Component, Entity } from "ape-ecs";
 
 // need to split log entries depending on phases, for a more narrow scope and customized behavior
-function addLogEntry(component: Component, sourceEntity: Entity, targetEntity: Entity, skillName: string, history: Entity) {
+function addLogEntry(component: Component, sourceEntity: Entity, targetEntity: Entity, skillName: string, history: Entity, preview = false) {
     const properties: { [k: string]: any } = { // temporary
         sourceSkill: skillName,
         component: component.id,
         sourceEntity,
         targetEntity,
-        logType: component.type
+        logType: component.type,
+        preview
     };
 
     const { type, ...props } = component.getObject(false);
@@ -40,6 +41,11 @@ function addLogEntry(component: Component, sourceEntity: Entity, targetEntity: E
 
         case "MapDamage": {
             properties.damage = props.value;
+            break;
+        }
+
+        case "Status": {
+            properties.status = props.value;
             break;
         }
     }

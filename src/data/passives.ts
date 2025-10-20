@@ -34,7 +34,7 @@ interface PassivesDict {
         protects?: (MovementType | WeaponType)[];
         exclusiveTo?: (keyof typeof Characters)[];
         effectiveAgainst?: (MovementType | WeaponType)[];
-        onCombatStart?(this: Skill, state: GameState, target: Entity): Component[];
+        onCombatStart?(this: Skill, state: GameState, target: Entity): Component | Component[];
         onEquip?(this: Skill): void;
         onCombatInitiate?(this: Skill, state: GameState, target: Entity): Component[];
         onCombatAllyStart?(this: Skill, state: GameState, ally: Entity): Component[];

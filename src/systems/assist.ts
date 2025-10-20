@@ -33,6 +33,8 @@ class AssistSystem extends System {
                     }
                     addLogEntry(addedComponent, assisting, assisted, assistSkill.name, this.state.history, !!assisting.getOne("PreviewAssist"));
                 }
+            } else {
+                console.warn("No components found for " + assistSkill.name);
             }
             const newAssistingHealth = getNewHealth(assisting);
             const newAssistedHealth = getNewHealth(assisted);

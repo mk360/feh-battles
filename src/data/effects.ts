@@ -218,18 +218,21 @@ export function threaten(skill: Skill, state: GameState, statDebuffs: Stats) {
  * Lowers target's map stats by specified debuffs. Lowers enemies' map stats by specified debuffs, if they are max. 2 tiles away from target.
  */
 export function dagger(skill: Skill, state: GameState, target: Entity, debuffs: Stats) {
+    const components: Component[] = [];
     const allies = getAllies(state, target);
-    applyMapComponent(target, "MapDebuff", {
+    components.push(...applyMapComponent(target, "MapDebuff", {
         ...debuffs,
-    }, skill.entity);
+    }, skill.entity));
 
     for (let ally of allies) {
         if (HeroSystem.getDistance(ally, target) <= 2) {
-            applyMapComponent(ally, "MapDebuff", {
+            components.push(...applyMapComponent(ally, "MapDebuff", {
                 ...debuffs,
-            }, skill.entity);
+            }, skill.entity));
         }
     }
+
+    return components;
 };
 
 /**

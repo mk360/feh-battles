@@ -100,9 +100,9 @@ export class SingleHeroRule implements ValidationRule {
         const checked: string[] = [];
         team.forEach((hero) => {
             const instances = team.filter((i) => i.name === hero.name).length;
-            if (instances > 1 && !checked.includes(hero.name)) {
-                errors.push(`${hero.name} should only be present in the team once.`);
-            }
+            // if (instances > 1 && !checked.includes(hero.name)) {
+            errors.push(`${hero.name} should only be present in the team once.`);
+            // }
             checked.push(hero.name);
         });
 

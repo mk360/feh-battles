@@ -33,11 +33,13 @@ class BeforeCombat extends System {
         const defenderSkills = this.state.skillMap.get(defender);
 
         attackerSkills.onCombatStart?.forEach((skill) => {
-            const components = SKILLS[skill.name].onCombatStart.call(skill, this.state, defender);
+            const components = SKILLS[skill.name].onCombatStart.bind(skill)(this.state, defender);
             if (components) {
                 for (let addedComponent of components) {
                     addLogEntry(addedComponent, attacker, addedComponent.entity === attacker ? attacker : defender, skill.name, this.state.history, !!attacker.getOne("PreviewingBattle"));
                 }
+            } else {
+                console.warn("No components found for " + skill.name);
             }
         });
 
@@ -45,8 +47,10 @@ class BeforeCombat extends System {
             const components = SKILLS[skill.name].onCombatStart.call(skill, this.state, attacker);
             if (components) {
                 for (let addedComponent of components) {
-                    addLogEntry(addedComponent, defender, addedComponent.entity === defender ? defender : attacker, skill.name, this.state.history);
+                    addLogEntry(addedComponent, defender, addedComponent.entity === defender ? defender : attacker, skill.name, this.state.history, !!attacker.getOne("PreviewingBattle"));
                 }
+            } else {
+                console.warn("No components found for " + skill.name);
             }
         });
 
@@ -54,8 +58,10 @@ class BeforeCombat extends System {
             const components = SKILLS[skill.name].onCombatInitiate.call(skill, this.state, defender);
             if (components) {
                 for (let addedComponent of components) {
-                    addLogEntry(addedComponent, attacker, addedComponent.entity === attacker ? attacker : defender, skill.name, this.state.history);
+                    addLogEntry(addedComponent, attacker, addedComponent.entity === attacker ? attacker : defender, skill.name, this.state.history, !!attacker.getOne("PreviewingBattle"));
                 }
+            } else {
+                console.warn("No components found for " + skill.name);
             }
         });
 
@@ -63,8 +69,10 @@ class BeforeCombat extends System {
             const components = SKILLS[skill.name].onCombatDefense.call(skill, this.state, attacker);
             if (components) {
                 for (let addedComponent of components) {
-                    addLogEntry(addedComponent, attacker, addedComponent.entity === defender ? defender : attacker, skill.name, this.state.history);
+                    addLogEntry(addedComponent, attacker, addedComponent.entity === defender ? defender : attacker, skill.name, this.state.history, !!attacker.getOne("PreviewingBattle"));
                 }
+            } else {
+                console.warn("No components found for " + skill.name);
             }
         });
 
@@ -133,8 +141,10 @@ class BeforeCombat extends System {
                 const components = SKILLS[skill.name].onCombatAllyStart.call(skill, this.state, entity, { context: skill.name, owner: ally.id });
                 if (components) {
                     for (let addedComponent of components) {
-                        addLogEntry(addedComponent, ally, addedComponent.entity, skill.name, this.state.history);
+                        addLogEntry(addedComponent, ally, addedComponent.entity, skill.name, this.state.history, !!entity.getOne("PreviewingBattle"));
                     }
+                } else {
+                    console.warn("No components found for " + skill.name);
                 }
             });
         }

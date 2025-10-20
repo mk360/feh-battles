@@ -38,7 +38,7 @@ interface AssistsDict {
         exclusiveTo?: (keyof typeof Characters)[];
         type: AssistKind[];
         onSpecialTrigger?(this: Assist, battleState: GameState, target: Entity): void;
-        onCombatStart?(this: Assist, battleState: GameState, target: Entity): Component[];
+        onCombatStart?(this: Assist, battleState: GameState, target: Entity): Component | Component[];
         onCombatAfter?(this: Assist, battleState: GameState, target: Entity): void;
         onCombatInitiate?(this: Assist, state: GameState, target: Entity): void;
         onCombatAllyStart?(this: Assist, state: GameState, ally: Entity): void;

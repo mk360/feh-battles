@@ -1,21 +1,21 @@
-import GameState from "../systems/state";
-import { MovementType, WeaponColor, WeaponType } from "../interfaces/types";
-import * as Effects from "./effects";
-import Skill from "../components/skill";
-import Characters from "./characters.json";
 import { Component, Entity } from "ape-ecs";
-import getEnemies from "../utils/get-enemies";
-import HeroSystem from "../systems/hero";
-import getAllies from "../utils/get-allies";
+import Skill from "../components/skill";
 import CombatTurnOutcome from "../interfaces/combat-turn-outcome";
-import getSurroundings from "../systems/get-surroundings";
+import { MovementType, WeaponColor, WeaponType } from "../interfaces/types";
+import { applyMapComponent } from "../systems/apply-map-effect";
 import canReachTile from "../systems/can-reach-tile";
-import getTileCoordinates from "../systems/get-tile-coordinates";
 import getCombatStats from "../systems/get-combat-stats";
 import getMapStats from "../systems/get-map-stats";
+import getSurroundings from "../systems/get-surroundings";
+import getTileCoordinates from "../systems/get-tile-coordinates";
+import HeroSystem from "../systems/hero";
+import GameState from "../systems/state";
 import { getUnitsLowerThanOrEqualingValue, getUnitsWithHighestValue, getUnitsWithLowestValue } from "../systems/value-matchers";
+import getAllies from "../utils/get-allies";
+import getEnemies from "../utils/get-enemies";
 import ASSISTS from "./assists";
-import { applyMapComponent } from "../systems/apply-map-effect";
+import Characters from "./characters.json";
+import * as Effects from "./effects";
 import SPECIALS from "./specials";
 
 interface WeaponDict {
@@ -28,22 +28,22 @@ interface WeaponDict {
         exclusiveTo?: (keyof typeof Characters)[];
         effectiveAgainst?: (MovementType | WeaponType)[];
         protects?: (MovementType | WeaponType)[];
-        onSpecialTrigger?(this: Skill, battleState: GameState, target: Entity): Component | Component[];
-        onCombatStart?(this: Skill, battleState: GameState, target: Entity): Component | Component[];
-        onCombatAfter?(this: Skill, battleState: GameState, target: Entity): Component | Component[];
-        onCombatInitiate?(this: Skill, state: GameState, target: Entity): Component | Component[];
-        onCombatAllyStart?(this: Skill, state: GameState, ally: Entity): Component | Component[];
-        onCombatDefense?(this: Skill, state: GameState, attacker: Entity): Component | Component[];
-        onCombatRoundAttack?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): Component | Component[];
-        onCombatRoundDefense?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): Component | Component[];
+        onSpecialTrigger?(this: Skill, battleState: GameState, target: Entity): Component[];
+        onCombatStart?(this: Skill, battleState: GameState, target: Entity): Component[];
+        onCombatAfter?(this: Skill, battleState: GameState, target: Entity): Component[];
+        onCombatInitiate?(this: Skill, state: GameState, target: Entity): Component[];
+        onCombatAllyStart?(this: Skill, state: GameState, ally: Entity): Component[];
+        onCombatDefense?(this: Skill, state: GameState, attacker: Entity): Component[];
+        onCombatRoundAttack?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): Component[];
+        onCombatRoundDefense?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): Component[];
         onEquip?(this: Skill): any;
-        onTurnAllyCheckRange?(this: Skill, state: GameState, ally: Entity): void;
-        onTurnCheckRange?(this: Skill, state: GameState): void;
-        onTurnStart?(this: Skill, battleState: GameState): void;
-        onTurnStartBefore?(this: Skill, battleState: GameState): void;
-        onTurnStartAfter?(this: Skill, battleState: GameState): void;
-        onAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: typeof ASSISTS[keyof typeof ASSISTS]): void;
-        onAllyAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: Skill): void;
+        onTurnAllyCheckRange?(this: Skill, state: GameState, ally: Entity): Component[];
+        onTurnCheckRange?(this: Skill, state: GameState): Component[];
+        onTurnStart?(this: Skill, battleState: GameState): Component[];
+        onTurnStartBefore?(this: Skill, battleState: GameState): Component[];
+        onTurnStartAfter?(this: Skill, battleState: GameState): Component[];
+        onAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: typeof ASSISTS[keyof typeof ASSISTS]): Component[];
+        onAllyAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: Skill): Component[];
     }
 }
 
@@ -51,7 +51,7 @@ const WEAPONS: WeaponDict = {
     "Fólkvangr": {
         description: "At start of turn, if unit's HP ≤ 50%, grants Atk+5 for 1 turn.",
         onTurnStart() {
-            Effects.defiant(this, "atk", 5);
+            return Effects.defiant(this, "atk", 5);
         },
         type: "sword",
         might: 16,
@@ -64,13 +64,16 @@ const WEAPONS: WeaponDict = {
         type: "lance",
         onTurnStart(battleState) {
             const enemies = getEnemies(battleState, this.entity);
+            const components: Component[] = [];
             for (let enemy of enemies) {
                 if (HeroSystem.getDistance(enemy, this.entity) <= 2) {
-                    applyMapComponent(enemy, "MapDebuff", {
+                    components.push(...applyMapComponent(enemy, "MapDebuff", {
                         atk: -4,
-                    }, this.entity);
+                    }, this.entity));
                 }
             }
+
+            return components;
         },
     },
     "Nóatún": {
@@ -80,6 +83,7 @@ const WEAPONS: WeaponDict = {
         type: "axe",
         onTurnCheckRange(state) {
             const { hp, maxHP } = this.entity.getOne("Stats");
+            const components: Component[] = [];
             if (hp / maxHP <= 0.4) {
                 const allies = getAllies(state, this.entity);
                 for (let ally of allies) {
@@ -90,14 +94,16 @@ const WEAPONS: WeaponDict = {
                     const validAllyTiles = surroundings.filter((tile) => canReachTile(this.entity, tile));
                     for (let tile of validAllyTiles) {
                         const { x: tileX, y: tileY } = getTileCoordinates(tile);
-                        this.entity.addComponent({
+                        components.push(this.entity.addComponent({
                             type: "WarpTile",
                             x: tileX,
                             y: tileY
-                        });
+                        }));
                     }
                 }
             }
+
+            return components;
         }
     },
     "Fire Breath": {
@@ -378,10 +384,10 @@ const WEAPONS: WeaponDict = {
         might: 7,
         description: "Restores HP = 50% of damage dealt. After combat, if unit attacked, restores 7 HP to allies within 2 spaces of unit.",
         onCombatRoundAttack() {
-            return this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "CombatHeal",
                 percentage: 50
-            });
+            })];
         },
         onCombatAfter(state) {
             const components: Component[] = [];
@@ -847,9 +853,9 @@ const WEAPONS: WeaponDict = {
             this.entity.getOne("Stats").spd -= 5;
         },
         onCombatInitiate() {
-            return this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "BraveWeapon"
-            });
+            })];
         },
         might: 5,
         type: "axe"
@@ -860,9 +866,9 @@ const WEAPONS: WeaponDict = {
             this.entity.getOne("Stats").spd -= 5;
         },
         onCombatInitiate() {
-            return this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "BraveWeapon"
-            });
+            })];
         },
         might: 8,
         type: "axe"
@@ -874,9 +880,9 @@ const WEAPONS: WeaponDict = {
             this.entity.getOne("Stats").spd -= 5;
         },
         onCombatInitiate() {
-            return this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "BraveWeapon"
-            });
+            })];
         },
         might: 4,
         type: "bow",
@@ -888,9 +894,9 @@ const WEAPONS: WeaponDict = {
             this.entity.getOne("Stats").spd -= 5;
         },
         onCombatInitiate() {
-            return this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "BraveWeapon"
-            });
+            })];
         },
         might: 7,
         type: "bow",
@@ -901,9 +907,9 @@ const WEAPONS: WeaponDict = {
             this.entity.getOne("Stats").spd -= 5;
         },
         onCombatInitiate() {
-            return this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "BraveWeapon"
-            });
+            })];
         },
         might: 5,
         type: "lance"
@@ -914,9 +920,9 @@ const WEAPONS: WeaponDict = {
             this.entity.getOne("Stats").spd -= 5;
         },
         onCombatInitiate() {
-            return this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "BraveWeapon"
-            });
+            })];
         },
         might: 8,
         type: "lance"
@@ -927,9 +933,9 @@ const WEAPONS: WeaponDict = {
             this.entity.getOne("Stats").spd -= 5;
         },
         onCombatInitiate() {
-            return this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "BraveWeapon"
-            });
+            })];
         },
         might: 5,
         type: "sword"
@@ -940,9 +946,9 @@ const WEAPONS: WeaponDict = {
             this.entity.getOne("Stats").spd -= 5;
         },
         onCombatInitiate() {
-            return this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "BraveWeapon"
-            });
+            })];
         },
         might: 8,
         type: "sword"
@@ -954,7 +960,7 @@ const WEAPONS: WeaponDict = {
         type: "breath",
         might: 16,
         onTurnStart(battleState) {
-            Effects.renewal(this, battleState.turn % 2 === 1, 10);
+            return [Effects.renewal(this, battleState.turn % 2 === 1, 10)];
         },
         onCombatStart(battleState, target) {
             const components: Component[] = [];
@@ -1008,10 +1014,10 @@ const WEAPONS: WeaponDict = {
         type: "lance",
         might: 16,
         onCombatStart() {
-            return this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "ApplyAffinity",
                 value: 20
-            });
+            })];
         }
     },
     "Camilla's Axe": {
@@ -1104,10 +1110,10 @@ const WEAPONS: WeaponDict = {
         might: 9,
         onCombatAfter() {
             if (this.entity.getOne("InitiateCombat")) {
-                return this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "Heal",
                     value: 4
-                });
+                })];
             }
 
             return [];
@@ -1119,10 +1125,10 @@ const WEAPONS: WeaponDict = {
         might: 13,
         onCombatAfter() {
             if (this.entity.getOne("InitiateCombat")) {
-                return this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "Heal",
                     value: 4
-                });
+                })];
             }
 
             return [];
@@ -1134,10 +1140,10 @@ const WEAPONS: WeaponDict = {
         might: 9,
         onCombatAfter() {
             if (this.entity.getOne("InitiateCombat")) {
-                return this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "Heal",
                     value: 4
-                });
+                })];
             }
 
             return [];
@@ -1149,10 +1155,10 @@ const WEAPONS: WeaponDict = {
         might: 13,
         onCombatAfter() {
             if (this.entity.getOne("InitiateCombat")) {
-                return this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "Heal",
                     value: 4
-                });
+                })];
             }
 
             return [];
@@ -1167,9 +1173,9 @@ const WEAPONS: WeaponDict = {
             this.entity.getOne("Stats").spd -= 5;
         },
         onCombatInitiate() {
-            return this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "BraveWeapon"
-            });
+            })];
         }
     },
     "Clarisse's Bow": {
@@ -1200,17 +1206,19 @@ const WEAPONS: WeaponDict = {
         might: 11,
         effectiveAgainst: ["flier"],
         onCombatAfter(battleState, target) {
+            const components: Component[] = [];
             if (this.entity.getOne("InitiateCombat")) {
                 const allies = getAllies(battleState, target);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, target) <= 2) {
-                        applyMapComponent(ally, "MapDebuff", {
+                        components.push(...applyMapComponent(ally, "MapDebuff", {
                             atk: -5,
                             spd: -5
-                        }, this.entity);
+                        }, this.entity));
                     }
                 }
             }
+            return components;
         },
     },
     "Cordelia's Lance": {
@@ -1222,9 +1230,9 @@ const WEAPONS: WeaponDict = {
             this.entity.getOne("Stats").spd -= 2;
         },
         onCombatInitiate() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "BraveWeapon"
-            });
+            })];
         }
     },
     "Corvus Tome": {
@@ -1233,7 +1241,7 @@ const WEAPONS: WeaponDict = {
         might: 14,
         description: "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
         onCombatStart(battleState, target) {
-            Effects.raven(this, target);
+            return Effects.raven(this, target);
         },
         exclusiveTo: ["Henry: Twisted Mind"]
     },
@@ -1247,12 +1255,14 @@ const WEAPONS: WeaponDict = {
             if (special) {
                 const specialData = SPECIALS[special.name];
                 if (specialData.onCombatRoundAttack) {
-                    this.entity.addComponent({
+                    return [this.entity.addComponent({
                         type: "RoundDamageIncrease",
                         amount: 10
-                    });
+                    })];
                 }
             }
+
+            return [];
         }
     },
     "Crimson Axe": {
@@ -1273,17 +1283,19 @@ const WEAPONS: WeaponDict = {
         description: "Effective against flying foes. If unit initiates combat, grants Def/Res+2 to allies within 2 spaces for 1 turn after combat.",
         might: 8,
         onCombatAfter(battleState) {
+            const components: Component[] = [];
             if (this.entity.getOne("InitiateCombat")) {
                 const allies = getAllies(battleState, this.entity);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, this.entity) <= 2) {
-                        applyMapComponent(ally, "MapBuff", {
+                        components.push(...applyMapComponent(ally, "MapBuff", {
                             def: 2,
                             res: 2
-                        }, this.entity);
+                        }, this.entity));
                     }
                 }
             }
+            return components;
         },
     },
     "Cupid Arrow+": {
@@ -1292,17 +1304,19 @@ const WEAPONS: WeaponDict = {
         description: "Effective against flying foes.&lt;br>If unit initiates combat, grants Def/Res+2 to allies within 2 spaces for 1 turn after combat.",
         might: 12,
         onCombatAfter(battleState) {
+            const components: Component[] = [];
             if (this.entity.getOne("InitiateCombat")) {
                 const allies = getAllies(battleState, this.entity);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, this.entity) <= 2) {
-                        applyMapComponent(ally, "MapBuff", {
+                        components.push(...applyMapComponent(ally, "MapBuff", {
                             def: 2,
                             res: 2
-                        }, this.entity);
+                        }, this.entity));
                     }
                 }
             }
+            return components;
         },
     },
     "Cursed Lance": {
@@ -1319,10 +1333,10 @@ const WEAPONS: WeaponDict = {
             this.entity.getOne("Stats").spd += 2;
         },
         onCombatAfter() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "MapDamage",
                 value: 4
-            });
+            })];
         },
     },
     "Cymbeline": {
@@ -1331,16 +1345,18 @@ const WEAPONS: WeaponDict = {
         description: "If unit initiates combat, grants Atk+4 to adjacent allies for 1 turn after combat.",
         type: "tome",
         onCombatAfter(state) {
+            const components: Component[] = [];
             if (this.entity.getOne("InitiateCombat")) {
                 const allies = getAllies(state, this.entity);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                        applyMapComponent(ally, "MapBuff", {
+                        components.push(...applyMapComponent(ally, "MapBuff", {
                             atk: 4
-                        }, this.entity);
+                        }, this.entity));
                     }
                 }
             }
+            return components;
         }
     },
     "Dark Breath": {
@@ -1348,17 +1364,19 @@ const WEAPONS: WeaponDict = {
         might: 9,
         type: "breath",
         onCombatAfter(battleState, target) {
+            const components: Component[] = [];
             if (this.entity.getOne("InitiateCombat")) {
                 const enemies = getAllies(battleState, target);
                 for (let enemy of enemies) {
                     if (HeroSystem.getDistance(enemy, target) <= 2) {
-                        applyMapComponent(enemy, "MapDebuff", {
+                        components.push(...applyMapComponent(enemy, "MapDebuff", {
                             atk: -5,
                             spd: -5,
-                        }, this.entity);
+                        }, this.entity));
                     }
                 }
             }
+            return components;
         },
     },
     "Dark Breath+": {
@@ -1366,17 +1384,19 @@ const WEAPONS: WeaponDict = {
         might: 13,
         type: "breath",
         onCombatAfter(battleState, target) {
+            const components: Component[] = [];
             if (this.entity.getOne("InitiateCombat")) {
                 const enemies = getAllies(battleState, target);
                 for (let enemy of enemies) {
                     if (HeroSystem.getDistance(enemy, target) <= 2) {
-                        applyMapComponent(enemy, "MapDebuff", {
+                        components.push(...applyMapComponent(enemy, "MapDebuff", {
                             atk: -5,
                             spd: -5
-                        }, this.entity);
+                        }, this.entity));
                     }
                 }
             }
+            return components;
         },
     },
     "Dark Excalibur": {
@@ -1389,12 +1409,14 @@ const WEAPONS: WeaponDict = {
             if (special) {
                 const specialData = SPECIALS[special.name];
                 if (specialData.onCombatRoundAttack) {
-                    this.entity.addComponent({
+                    return [this.entity.addComponent({
                         type: "RoundDamageIncrease",
                         amount: 10
-                    });
+                    })];
                 }
             }
+
+            return [];
         }
     },
     "Dancer's Fan": {
@@ -1402,24 +1424,28 @@ const WEAPONS: WeaponDict = {
         might: 7,
         type: "dagger",
         onCombatAfter(battleState, target) {
+            const components: Component[] = [];
+
             if (this.entity.getOne("InitiateCombat")) {
                 const allies = getAllies(battleState, this.entity);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                        ally.addComponent({
+                        components.push(ally.addComponent({
                             type: "Heal",
                             value: 7
-                        });
+                        }));
                     }
                 }
             }
 
             if (this.entity.getOne("DealDamage")) {
-                applyMapComponent(target, "MapDebuff", {
+                components.push(...applyMapComponent(target, "MapDebuff", {
                     def: -5,
                     res: -5
-                }, this.entity);
+                }, this.entity));
             }
+
+            return components;
         },
     },
     "Dancer's Fan+": {
@@ -1427,24 +1453,28 @@ const WEAPONS: WeaponDict = {
         might: 10,
         type: "dagger",
         onCombatAfter(battleState, target) {
+            const components: Component[] = [];
+
             if (this.entity.getOne("InitiateCombat")) {
                 const allies = getAllies(battleState, this.entity);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                        ally.addComponent({
+                        components.push(ally.addComponent({
                             type: "Heal",
                             value: 7
-                        });
+                        }));
                     }
                 }
             }
 
             if (this.entity.getOne("DealDamage")) {
-                applyMapComponent(target, "MapDebuff", {
+                components.push(...applyMapComponent(target, "MapDebuff", {
                     def: -7,
                     res: -7
-                }, this.entity);
+                }, this.entity));
             }
+
+            return components;
         },
     },
     "Dancer's Ring": {
@@ -1453,17 +1483,19 @@ const WEAPONS: WeaponDict = {
         type: "tome",
         color: "green",
         onCombatAfter(battleState) {
+            const components: Component[] = [];
             if (this.entity.getOne("InitiateCombat")) {
                 const allies = getAllies(battleState, this.entity);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                        ally.addComponent({
+                        components.push(ally.addComponent({
                             type: "Heal",
                             value: 7
-                        });
+                        }));
                     }
                 }
             }
+            return components;
         },
     },
     "Dancer's Ring+": {
@@ -1472,17 +1504,19 @@ const WEAPONS: WeaponDict = {
         type: "tome",
         color: "green",
         onCombatAfter(battleState) {
+            const components: Component[] = [];
             if (this.entity.getOne("InitiateCombat")) {
                 const allies = getAllies(battleState, this.entity);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                        ally.addComponent({
+                        components.push(ally.addComponent({
                             type: "Heal",
                             value: 7
-                        });
+                        }));
                     }
                 }
             }
+            return components;
         },
     },
     "Dancer's Score": {
@@ -1491,17 +1525,19 @@ const WEAPONS: WeaponDict = {
         type: "tome",
         color: "blue",
         onCombatAfter(battleState) {
+            const components: Component[] = [];
             if (this.entity.getOne("InitiateCombat")) {
                 const allies = getAllies(battleState, this.entity);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                        ally.addComponent({
+                        components.push(ally.addComponent({
                             type: "Heal",
                             value: 7
-                        });
+                        }));
                     }
                 }
             }
+            return components;
         },
     },
     "Dancer's Score+": {
@@ -1510,17 +1546,19 @@ const WEAPONS: WeaponDict = {
         type: "tome",
         color: "blue",
         onCombatAfter(battleState) {
+            const components: Component[] = [];
             if (this.entity.getOne("InitiateCombat")) {
                 const allies = getAllies(battleState, this.entity);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                        ally.addComponent({
+                        components.push(ally.addComponent({
                             type: "Heal",
                             value: 7
-                        });
+                        }));
                     }
                 }
             }
+            return components;
         },
     },
     "Dark Aura": {
@@ -1531,13 +1569,15 @@ const WEAPONS: WeaponDict = {
         exclusiveTo: ["Delthea: Free Spirit"],
         onTurnStart(battleState) {
             const allies = getAllies(battleState, this.entity);
+            const components: Component[] = [];
             for (let ally of allies) {
                 if (HeroSystem.getDistance(this.entity, ally) === 1 && ["sword", "lance", "axe", "breath", "beast"].includes(ally.getOne("Weapon").weaponType)) {
-                    applyMapComponent(ally, "MapBuff", {
+                    components.push(...applyMapComponent(ally, "MapBuff", {
                         atk: 6
-                    }, this.entity);
+                    }, this.entity));
                 }
             }
+            return components;
         },
     },
     "Dark Royal Spear": {
@@ -1546,23 +1586,25 @@ const WEAPONS: WeaponDict = {
         type: "lance",
         description: "If foe initiates combat or if foe's HP = 100% at start of combat, grants Atk/Def/Res+5 to unit during combat.",
         onCombatDefense() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "CombatBuff",
                 atk: 5,
                 def: 5,
                 res: 5
-            });
+            })];
         },
         onCombatInitiate(state, target) {
             const { maxHP, hp } = target.getOne("Stats");
             if (hp === maxHP) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "CombatBuff",
                     atk: 5,
                     def: 5,
                     res: 5
-                });
+                })];
             }
+
+            return [];
         },
     },
     "Dauntless Lance": {
@@ -1596,19 +1638,22 @@ const WEAPONS: WeaponDict = {
         might: 11,
         exclusiveTo: ["Jaffar: Angel of Death"],
         onCombatAfter(battleState, target) {
+            const components: Component[] = [];
             if (this.entity.getOne("DealDamage")) {
-                applyMapComponent(target, "MapDebuff", {
+                components.push(...applyMapComponent(target, "MapDebuff", {
                     def: -7,
                     res: -7
-                });
+                }, this.entity));
             }
 
             if (this.entity.getOne("InitiateCombat")) {
-                target.addComponent({
+                components.push(target.addComponent({
                     type: "MapDamage",
                     value: 7
-                });
+                }));
             }
+
+            return components;
         },
     },
     "Deft Harpoon": {
@@ -1617,26 +1662,29 @@ const WEAPONS: WeaponDict = {
         might: 10,
         onCombatStart() {
             const { hp, maxHP } = this.entity.getOne("Stats");
-
             if (hp === maxHP) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "CombatBuff",
                     atk: 2,
                     spd: 2,
                     def: 2,
                     res: 2
-                });
+                })];
             }
+
+            return [];
         },
         onCombatAfter() {
             const { hp, maxHP } = this.entity.getOne("Stats");
             const { value: startingHP } = this.entity.getOne("StartingHP");
             if (hp === startingHP && hp === maxHP) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "MapDamage",
                     value: 2
-                });
+                })];
             }
+
+            return [];
         }
     },
     "Deft Harpoon+": {
@@ -1645,26 +1693,29 @@ const WEAPONS: WeaponDict = {
         might: 14,
         onCombatStart() {
             const { hp, maxHP } = this.entity.getOne("Stats");
-
             if (hp === maxHP) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "CombatBuff",
                     atk: 2,
                     spd: 2,
                     def: 2,
                     res: 2
-                });
+                })];
             }
+
+            return [];
         },
         onCombatAfter() {
             const { hp, maxHP } = this.entity.getOne("Stats");
             const { value: startingHP } = this.entity.getOne("StartingHP");
             if (hp === startingHP && hp === maxHP && this.entity.getOne("DealDamage")) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "MapDamage",
                     value: 2
-                });
+                })];
             }
+
+            return [];
         }
     },
     "Devil Axe": {
@@ -1673,20 +1724,20 @@ const WEAPONS: WeaponDict = {
         might: 16,
         description: "Grants Atk/Spd/Def/Res+4 during combat, but if unit attacked, deals 4 damage to unit after combat.",
         onCombatStart() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "CombatBuff",
                 atk: 4,
                 res: 4,
                 spd: 4,
                 def: 4
-            });
+            })];
         },
         onCombatAfter() {
             if (this.entity.getOne("DealDamage")) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "MapDamage",
                     value: 4
-                });
+                })];
             }
         },
     },
@@ -1710,9 +1761,11 @@ const WEAPONS: WeaponDict = {
                 }
             }
 
+            const components: Component[] = [];
             for (let target of targets) {
-                applyMapComponent(target, "PanicComponent", null, this.entity);
+                components.push(...applyMapComponent(target, "PanicComponent", null, this.entity));
             }
+            return components;
         },
     },
     "Dire Thunder": {
@@ -1724,9 +1777,9 @@ const WEAPONS: WeaponDict = {
             this.entity.getOne("Stats").spd -= 5;
         },
         onCombatInitiate() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "BraveWeapon"
-            });
+            })];
         }
     },
     "Divine Naga": {
@@ -1737,9 +1790,9 @@ const WEAPONS: WeaponDict = {
         description: "Effective against dragon foes. Neutralizes foe's bonuses (from skills like Fortify, Rally, etc.) during combat.",
         effectiveAgainst: ["breath"],
         onCombatStart() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "NeutralizeMapBuffs"
-            });
+            })];
         },
     },
     "Divine Tyrfing": {
@@ -1750,11 +1803,13 @@ const WEAPONS: WeaponDict = {
         },
         onCombatRoundDefense(enemy, combatRound) {
             if (combatRound.turnNumber === 1 && enemy.getOne("Weapon").weaponType === "tome") {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "RoundDamageReduction",
                     percentage: 50
-                });
+                })];
             }
+
+            return [];
         },
         type: "sword",
         might: 16
@@ -1765,10 +1820,10 @@ const WEAPONS: WeaponDict = {
         exclusiveTo: ["Titania: Mighty Mercenary"],
         type: "axe",
         onCombatStart() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "ApplyAffinity",
                 value: 20
-            });
+            })];
         }
     },
     "Durandal": {
@@ -1777,10 +1832,10 @@ const WEAPONS: WeaponDict = {
         description: "If unit initiates combat, grants Atk+4 during combat.",
         exclusiveTo: ["Eliwood: Knight of Lycia"],
         onCombatInitiate() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "CombatBuff",
                 atk: 4
-            });
+            })];
         }
     },
     "Eckesachs": {
@@ -1789,7 +1844,7 @@ const WEAPONS: WeaponDict = {
         might: 16,
         type: "sword",
         onTurnStart(battleState) {
-            Effects.threaten(this, battleState, {
+            return Effects.threaten(this, battleState, {
                 def: -4
             });
         },
@@ -1800,9 +1855,9 @@ const WEAPONS: WeaponDict = {
             this.entity.getOne("Stats").res += 3;
         },
         onCombatInitiate() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "PreventCounterattack"
-            });
+            })];
         },
         might: 14,
         exclusiveTo: ["Mist: Helpful Sister"],
@@ -1811,20 +1866,24 @@ const WEAPONS: WeaponDict = {
             const enemies = getEnemies(battleState, this.entity);
             const nearestIn4Spaces = getUnitsLowerThanOrEqualingValue(enemies, (unit) => HeroSystem.getDistance(this.entity, unit), 4);
 
+            const components: Component[] = [];
             for (let nearEnemy of nearestIn4Spaces) {
-                applyMapComponent(nearEnemy, "MapDebuff", {
+                components.push(...applyMapComponent(nearEnemy, "MapDebuff", {
                     atk: -7,
                     spd: -7
-                }, this.entity);
+                }, this.entity));
             }
+            return components;
         },
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
-                Effects.dagger(this, battleState, target, {
+                return Effects.dagger(this, battleState, target, {
                     atk: -7,
                     spd: -7
                 });
             }
+
+            return [];
         },
     },
     "Elise's Staff": {
@@ -1836,21 +1895,24 @@ const WEAPONS: WeaponDict = {
             this.entity.getOne("Stats").spd += 3;
         },
         onCombatStart() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "NormalizeStaffDamage"
-            });
+            })];
         },
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
+                const components: Component[] = [];
                 const enemyAllies = getAllies(battleState, target);
-                applyMapComponent(target, "GravityComponent", null, this.entity);
+                components.push(...applyMapComponent(target, "GravityComponent", null, this.entity));
 
                 for (let enemy of enemyAllies) {
                     if (HeroSystem.getDistance(enemy, target) === 1) {
-                        applyMapComponent(enemy, "GravityComponent", null, this.entity);
+                        components.push(...applyMapComponent(enemy, "GravityComponent", null, this.entity));
                     }
                 }
+                return components;
             }
+            return [];
         },
     },
     "Emerald Axe": {
@@ -1858,10 +1920,10 @@ const WEAPONS: WeaponDict = {
         type: "axe",
         might: 8,
         onCombatStart() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "ApplyAffinity",
                 value: 20,
-            });
+            })];
         }
     },
     "Emerald Axe+": {
@@ -1869,10 +1931,10 @@ const WEAPONS: WeaponDict = {
         type: "axe",
         might: 12,
         onCombatStart() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "ApplyAffinity",
                 value: 20,
-            });
+            })];
         }
     },
     "Eternal Breath": {
@@ -1883,34 +1945,39 @@ const WEAPONS: WeaponDict = {
         onTurnStart(battleState) {
             const allies = getAllies(battleState, this.entity);
             let affectWielder = false;
+            const components: Component[] = [];
 
             for (let ally of allies) {
                 if (HeroSystem.getDistance(ally, this.entity) <= 2) {
                     affectWielder = true;
-                    applyMapComponent(ally, "MapBuff", {
+                    components.push(...applyMapComponent(ally, "MapBuff", {
                         atk: 5,
                         spd: 5,
                         def: 5,
                         res: 5
-                    }, this.entity);
+                    }, this.entity));
                 }
             }
 
             if (affectWielder) {
-                applyMapComponent(this.entity, "MapBuff", {
+                components.push(...applyMapComponent(this.entity, "MapBuff", {
                     atk: 5,
                     spd: 5,
                     def: 5,
                     res: 5
-                }, this.entity);
+                }, this.entity));
             }
+
+            return [];
         },
         onCombatStart(state, target) {
             if (target.getOne("Weapon").range === 2) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "TargetLowestDefense"
-                });
+                })];
             }
+
+            return [];
         }
     },
     "Eternal Tome": {
@@ -1919,7 +1986,7 @@ const WEAPONS: WeaponDict = {
         color: "red",
         description: "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
         onCombatStart(state, enemy) {
-            Effects.raven(this, enemy);
+            return Effects.raven(this, enemy);
         },
         exclusiveTo: ["Sophia: Nabata Prophet"]
     },
@@ -1937,7 +2004,7 @@ const WEAPONS: WeaponDict = {
         displayName: "Falchion",
         type: "sword",
         onTurnStart(battleState) {
-            Effects.renewal(this, battleState.turn % 3 === 0, 10);
+            return [Effects.renewal(this, battleState.turn % 3 === 0, 10)];
         },
         exclusiveTo: ["Chrom: Exalted Prince", "Lucina: Future Witness"]
     },
@@ -1948,7 +2015,7 @@ const WEAPONS: WeaponDict = {
         displayName: "Falchion",
         type: "sword",
         onTurnStart(battleState) {
-            Effects.renewal(this, battleState.turn % 3 === 0, 10);
+            return [Effects.renewal(this, battleState.turn % 3 === 0, 10)];
         },
         exclusiveTo: ["Marth: Altean Prince"]
     },
@@ -1959,7 +2026,7 @@ const WEAPONS: WeaponDict = {
         displayName: "Falchion",
         type: "sword",
         onTurnStart(battleState) {
-            Effects.renewal(this, battleState.turn % 3 === 0, 10);
+            return [Effects.renewal(this, battleState.turn % 3 === 0, 10)];
         },
         exclusiveTo: ["Alm: Hero of Prophecy"]
     },
@@ -1968,11 +2035,13 @@ const WEAPONS: WeaponDict = {
         might: 5,
         type: "staff",
         onCombatAfter(battleState, target) {
+            const components: Component[] = [];
             if (this.entity.getOne("DealDamage")) {
-                applyMapComponent(target, "MapDebuff", {
+                components.push(...applyMapComponent(target, "MapDebuff", {
                     atk: -6
-                }, this.entity);
+                }, this.entity));
             }
+            return components;
         },
     },
     "Fear+": {
@@ -1980,11 +2049,13 @@ const WEAPONS: WeaponDict = {
         might: 12,
         type: "staff",
         onCombatAfter(battleState, target) {
+            const components: Component[] = [];
             if (this.entity.getOne("DealDamage")) {
-                Effects.dagger(this, battleState, target, {
+                components.push(...Effects.dagger(this, battleState, target, {
                     atk: -7
-                });
+                }));
             }
+            return components;
         },
     },
     "Felicia's Plate": {
@@ -1993,12 +2064,12 @@ const WEAPONS: WeaponDict = {
         might: 14,
         exclusiveTo: ["Felicia: Maid Mayhem"],
         onCombatStart() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "TargetLowestDefense"
-            });
+            })];
         },
         onCombatAfter(battleState, target) {
-            Effects.dagger(this, battleState, target, {
+            return Effects.dagger(this, battleState, target, {
                 def: -7,
                 res: -7
             });
@@ -2010,14 +2081,14 @@ const WEAPONS: WeaponDict = {
         might: 7,
         type: "bow",
         onCombatInitiate() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "PreventCounterattack"
-            });
+            })];
         },
         onCombatDefense(state, attacker) {
-            attacker.addComponent({
+            return [attacker.addComponent({
                 type: "PreventCounterattack"
-            });
+            })];
         },
     },
     "Firesweep Bow+": {
@@ -2026,14 +2097,14 @@ const WEAPONS: WeaponDict = {
         might: 11,
         type: "bow",
         onCombatInitiate() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "PreventCounterattack"
-            });
+            })];
         },
         onCombatDefense(state, attacker) {
-            attacker.addComponent({
+            return [attacker.addComponent({
                 type: "PreventCounterattack"
-            });
+            })];
         },
     },
     "Firesweep Lance": {
@@ -2041,14 +2112,14 @@ const WEAPONS: WeaponDict = {
         might: 11,
         type: "lance",
         onCombatInitiate() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "PreventCounterattack"
-            });
+            })];
         },
         onCombatDefense(state, attacker) {
-            attacker.addComponent({
+            return [attacker.addComponent({
                 type: "PreventCounterattack"
-            });
+            })];
         },
     },
     "Firesweep Lance+": {
@@ -2056,14 +2127,14 @@ const WEAPONS: WeaponDict = {
         might: 15,
         type: "lance",
         onCombatInitiate() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "PreventCounterattack"
-            });
+            })];
         },
         onCombatDefense(state, attacker) {
-            attacker.addComponent({
+            return [attacker.addComponent({
                 type: "PreventCounterattack"
-            });
+            })];
         },
     },
     "First Bite": {
@@ -2071,17 +2142,19 @@ const WEAPONS: WeaponDict = {
         description: "If unit initiates combat, grants Def/Res+2 to allies within 2 spaces for 1 turn after combat.",
         might: 10,
         onCombatAfter(battleState) {
+            const components: Component[] = [];
             if (this.entity.getOne("InitiateCombat")) {
                 const allies = getAllies(battleState, this.entity);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, this.entity) <= 2) {
-                        applyMapComponent(ally, "MapBuff", {
+                        components.push(...applyMapComponent(ally, "MapBuff", {
                             def: 2,
                             res: 2
-                        }, this.entity);
+                        }, this.entity));
                     }
                 }
             }
+            return components;
         },
     },
     "First Bite+": {
@@ -2089,17 +2162,19 @@ const WEAPONS: WeaponDict = {
         description: "If unit initiates combat, grants Def/Res+2 to allies within 2 spaces for 1 turn after combat.",
         might: 14,
         onCombatAfter(battleState) {
+            const components: Component[] = [];
             if (this.entity.getOne("InitiateCombat")) {
                 const allies = getAllies(battleState, this.entity);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, this.entity) <= 2) {
-                        applyMapComponent(ally, "MapBuff", {
+                        components.push(...applyMapComponent(ally, "MapBuff", {
                             def: 2,
                             res: 2
-                        }, this.entity);
+                        }, this.entity));
                     }
                 }
             }
+            return components;
         },
     },
     "Florina's Lance": {
@@ -2114,14 +2189,17 @@ const WEAPONS: WeaponDict = {
         type: "tome",
         exclusiveTo: ["Lilina: Delightful Noble"],
         onTurnStart(battleState) {
+            const components: Component[] = [];
             const enemies = getEnemies(battleState, this.entity);
             const highestRes = getUnitsWithHighestValue(enemies, (enemy) => enemy.getOne("Stats").res);
 
             for (let enemy of highestRes) {
-                applyMapComponent(enemy, "MapDebuff", {
+                components.push(...applyMapComponent(enemy, "MapDebuff", {
                     res: -7,
-                }, this.entity);
+                }, this.entity));
             }
+
+            return components;
         },
         might: 14
     },
@@ -2141,10 +2219,12 @@ const WEAPONS: WeaponDict = {
         onTurnStart() {
             const { maxHP, hp } = this.entity.getOne("Stats");
             if (hp / maxHP >= 0.5) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "Pass"
-                });
+                })];
             }
+
+            return [];
         }
     },
     "Geirskögul": {
@@ -2157,12 +2237,14 @@ const WEAPONS: WeaponDict = {
         },
         onCombatAllyStart(state, ally) {
             if (HeroSystem.getDistance(this.entity, ally) <= 2 && ["sword", "lance", "axe", "dagger", "bow", "beast"].includes(ally.getOne("Weapon").weaponType)) {
-                ally.addComponent({
+                return [ally.addComponent({
                     type: "CombatBuff",
                     atk: 3,
                     spd: 3
-                });
+                })];
             }
+
+            return [];
         },
     },
     "Gladiator's Blade": {
@@ -2177,10 +2259,12 @@ const WEAPONS: WeaponDict = {
             const { atk } = getCombatStats(enemy);
             const { atk: selfAtk } = getCombatStats(this.entity);
             if (selfAtk > atk) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "AccelerateSpecial"
-                });
+                })];
             }
+
+            return [];
         },
     },
     "Gloom Breath": {
@@ -2189,30 +2273,36 @@ const WEAPONS: WeaponDict = {
         exclusiveTo: ["Corrin: Fateful Princess"],
         description: "At start of turn, inflicts Atk/Spd-7 on foes within 2 spaces through their next actions. After combat, if unit attacked, inflicts Atk/Spd-7 on target and foes within 2 spaces of target through their next actions. If foe's Range = 2, calculates damage using the lower of foe's Def or Res.",
         onTurnStart(battleState) {
+            const components: Component[] = [];
             const enemies = getEnemies(battleState, this.entity);
             for (let enemy of enemies) {
                 if (HeroSystem.getDistance(enemy, this.entity) <= 2) {
-                    applyMapComponent(enemy, "MapDebuff", {
+                    components.push(...applyMapComponent(enemy, "MapDebuff", {
                         atk: -7,
                         spd: -7,
-                    }, this.entity);
+                    }, this.entity));
                 }
             }
+            return components;
         },
         onCombatStart(battleState, target) {
             if (target.getOne("Weapon").range === 2) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "TargetLowestDefense"
-                });
+                })];
             }
+
+            return [];
         },
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
-                Effects.dagger(this, battleState, target, {
+                return Effects.dagger(this, battleState, target, {
                     atk: -7,
                     spd: -7
                 });
             }
+
+            return [];
         },
     },
     "Green Egg": {
@@ -2222,11 +2312,13 @@ const WEAPONS: WeaponDict = {
         might: 7,
         onCombatAfter() {
             if (this.entity.getOne("InitiateCombat")) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "Heal",
                     value: 4
-                });
+                })];
             }
+
+            return [];
         }
     },
     "Green Egg+": {
@@ -2236,11 +2328,13 @@ const WEAPONS: WeaponDict = {
         might: 11,
         onCombatAfter() {
             if (this.entity.getOne("InitiateCombat")) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "Heal",
                     value: 4
-                });
+                })];
             }
+
+            return [];
         }
     },
     "Grimoire": {
@@ -2251,11 +2345,14 @@ const WEAPONS: WeaponDict = {
         onTurnCheckRange(state) {
             const allies = getAllies(state, this.entity);
             const { hp, maxHP } = this.entity.getOne("Stats");
+            const components: Component[] = [];
             if (hp / maxHP >= 0.5) {
                 for (let ally of allies) {
-                    Effects.guidance(ally, state, this.entity);
+                    components.push(...Effects.guidance(ally, state, this.entity));
                 }
             }
+
+            return components;
         },
     },
     "Golden Dagger": {
@@ -2285,14 +2382,16 @@ const WEAPONS: WeaponDict = {
             const foeAtk = getMapStats(target).atk;
             const selfAtk = getMapStats(this.entity).atk;
             if (foeAtk >= selfAtk + 3) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "CombatBuff",
                     atk: 3,
                     def: 3,
                     res: 3,
                     spd: 3
-                });
+                })];
             }
+
+            return [];
         },
     },
     "Gradivus": {
@@ -2301,7 +2400,7 @@ const WEAPONS: WeaponDict = {
         type: "lance",
         exclusiveTo: ["Camus: Sable Knight"],
         onCombatStart() {
-            Effects.counterattack(this);
+            return [Effects.counterattack(this)];
         }
     },
     "Grado Poleax": {
@@ -2322,8 +2421,9 @@ const WEAPONS: WeaponDict = {
         might: 6,
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
-                applyMapComponent(target, "GravityComponent", null, this.entity);
+                return applyMapComponent(target, "GravityComponent", null, this.entity);
             }
+            return [];
         },
     },
     "Gravity+": {
@@ -2332,8 +2432,10 @@ const WEAPONS: WeaponDict = {
         might: 10,
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
-                applyMapComponent(target, "GravityComponent", null, this.entity);
+                return applyMapComponent(target, "GravityComponent", null, this.entity);
             }
+
+            return [];
         },
     },
     "Gronnblade": {
@@ -2347,7 +2449,7 @@ const WEAPONS: WeaponDict = {
             });
         },
         onCombatStart() {
-            Effects.bladeTome(this);
+            return [Effects.bladeTome(this)];
         },
         might: 9,
     },
@@ -2360,7 +2462,7 @@ const WEAPONS: WeaponDict = {
             });
         },
         onCombatStart() {
-            Effects.bladeTome(this);
+            return [Effects.bladeTome(this)];
         },
         type: "tome",
         color: "green",
@@ -2372,7 +2474,7 @@ const WEAPONS: WeaponDict = {
         color: "green",
         might: 6,
         onCombatStart(battleState) {
-            Effects.owl(this, battleState);
+            return [Effects.owl(this, battleState)];
         },
     },
     "Gronnowl+": {
@@ -2381,7 +2483,7 @@ const WEAPONS: WeaponDict = {
         color: "green",
         might: 10,
         onCombatStart(battleState) {
-            Effects.owl(this, battleState);
+            return [Effects.owl(this, battleState)];
         },
     },
     "Gronnraven": {
@@ -2390,7 +2492,7 @@ const WEAPONS: WeaponDict = {
         color: "green",
         might: 7,
         onCombatStart(state, target) {
-            Effects.raven(this, target);
+            return Effects.raven(this, target);
         }
     },
     "Gronnraven+": {
@@ -2399,7 +2501,7 @@ const WEAPONS: WeaponDict = {
         color: "green",
         might: 11,
         onCombatStart(state, target) {
-            Effects.raven(this, target);
+            return Effects.raven(this, target);
         }
     },
     "Gronnwolf": {
@@ -2479,10 +2581,12 @@ const WEAPONS: WeaponDict = {
         effectiveAgainst: ["cavalry"],
         onCombatStart(battleState, target) {
             if (target.getOne("Weapon").range === 2) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "NeutralizeMapBuffs"
-                });
+                })];
             }
+
+            return [];
         },
     },
     "Hewn Lance": {
@@ -2494,9 +2598,9 @@ const WEAPONS: WeaponDict = {
             this.entity.getOne("Stats").spd -= 5;
         },
         onCombatInitiate() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "BraveWeapon"
-            });
+            })];
         }
     },
     "Hibiscus Tome": {
@@ -2506,11 +2610,11 @@ const WEAPONS: WeaponDict = {
         might: 8,
         onCombatAllyStart(state, ally) {
             if (HeroSystem.getDistance(ally, this.entity) <= 2) {
-                ally.addComponent({
+                return [ally.addComponent({
                     type: "CombatBuff",
                     atk: 1,
                     spd: 1
-                });
+                })];
             }
         },
     },
@@ -2521,12 +2625,14 @@ const WEAPONS: WeaponDict = {
         might: 12,
         onCombatAllyStart(state, ally) {
             if (HeroSystem.getDistance(ally, this.entity) <= 2) {
-                ally.addComponent({
+                return [ally.addComponent({
                     type: "CombatBuff",
                     atk: 1,
                     spd: 1
-                });
+                })];
             }
+
+            return [];
         },
     },
     "Hinata's Katana": {
@@ -2535,11 +2641,11 @@ const WEAPONS: WeaponDict = {
         type: "sword",
         exclusiveTo: ["Hinata: Wild Samurai"],
         onCombatDefense() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "CombatBuff",
                 atk: 4,
                 def: 4
-            });
+            })];
         }
     },
     "Hinoka's Spear": {
@@ -2549,16 +2655,19 @@ const WEAPONS: WeaponDict = {
         might: 16,
         onCombatStart(state) {
             const allies = getAllies(state, this.entity);
+            const components: Component[] = [];
             for (let ally of allies) {
                 if (HeroSystem.getDistance(this.entity, ally) <= 2 && ["flier", "infantry"].includes(ally.getOne("MovementType").value)) {
-                    this.entity.addComponent({
+                    components.push(this.entity.addComponent({
                         type: "CombatBuff",
                         atk: 4,
                         spd: 4
-                    });
-                    return;
+                    }));
+                    return components;
                 }
             }
+
+            return [];
         }
     },
     "Inscribed Tome": {
@@ -2567,7 +2676,7 @@ const WEAPONS: WeaponDict = {
         exclusiveTo: ["Boey: Skillful Survivor"],
         might: 14,
         onCombatStart(state, target) {
-            Effects.raven(this, target);
+            return Effects.raven(this, target);
         }
     },
     "Inveterate Axe": {
@@ -2580,14 +2689,15 @@ const WEAPONS: WeaponDict = {
             if (hp / maxHP >= 0.5) {
                 const enemies = getEnemies(battleState, this.entity);
                 let targets = getUnitsWithLowestValue(enemies, (unit) => unit.getOne("Stats").spd);
-
+                const components: Component[] = [];
                 for (let target of targets) {
-                    applyMapComponent(target, "MapDebuff", {
+                    components.push(...applyMapComponent(target, "MapDebuff", {
                         def: -5,
                         atk: -5
-                    }, this.entity);
+                    }, this.entity));
                 }
             }
+            return [];
         },
     },
     "Iris's Tome": {
@@ -2597,7 +2707,7 @@ const WEAPONS: WeaponDict = {
         might: 14,
         description: "Grants bonus to unit's Atk = total bonuses on unit during combat.",
         onCombatStart() {
-            Effects.bladeTome(this);
+            return [Effects.bladeTome(this)];
         }
     },
     "Jakob's Tray": {
@@ -2606,21 +2716,23 @@ const WEAPONS: WeaponDict = {
         might: 14,
         description: "If unit initiates combat, inflicts Atk/Spd/Def/Res-4 on foe during combat. Effect:【Dagger ７】\n【Dagger ７】\n After combat, if unit attacked, inflicts Def/Res-７ on target and foes within 2 spaces of target through their next actions.",
         onCombatInitiate(state, target) {
-            target.addComponent({
+            return [target.addComponent({
                 type: "CombatDebuff",
                 atk: -4,
                 spd: -4,
                 def: -4,
                 res: -4
-            });
+            })];
         },
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
-                Effects.dagger(this, battleState, target, {
+                return Effects.dagger(this, battleState, target, {
                     def: -7,
                     res: -7
                 });
             }
+
+            return [];
         },
     },
     "Jubilant Blade": {
@@ -2640,20 +2752,24 @@ const WEAPONS: WeaponDict = {
             const { atk: opponentAtk } = getMapStats(target);
 
             if (currentAtk > opponentAtk) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "CombatBuff",
                     atk: 4,
                     spd: 4
-                });
+                })];
             }
+
+            return [];
         },
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
-                Effects.dagger(this, battleState, target, {
+                return Effects.dagger(this, battleState, target, {
                     def: -7,
                     res: -7
                 });
             }
+
+            return [];
         },
     },
     "Killer Axe": {
@@ -2753,11 +2869,13 @@ const WEAPONS: WeaponDict = {
         effectiveAgainst: ["tome"],
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage") && target.getOne("Weapon").weaponType === "tome") {
-                applyMapComponent(target, "MapDebuff", {
+                return applyMapComponent(target, "MapDebuff", {
                     def: -5,
                     res: -5,
                 }, this.entity);
             }
+
+            return [];
         },
     },
     "Kitty Paddle+": {
@@ -2767,11 +2885,13 @@ const WEAPONS: WeaponDict = {
         effectiveAgainst: ["tome"],
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage") && target.getOne("Weapon").weaponType === "tome") {
-                applyMapComponent(target, "MapDebuff", {
+                return applyMapComponent(target, "MapDebuff", {
                     def: -7,
                     res: -7,
                 }, this.entity);
             }
+
+            return [];
         },
     },
     "Knightly Lance": {
@@ -2795,14 +2915,16 @@ const WEAPONS: WeaponDict = {
         onCombatStart() {
             const { maxHP, hp } = this.entity.getOne("Stats");
             if (hp / maxHP >= 0.5) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "CombatBuff",
                     atk: 3,
                     spd: 3,
                     def: 3,
                     res: 3
-                });
+                })];
             }
+
+            return [];
         }
     },
     "Laslow's Blade": {
@@ -2812,17 +2934,18 @@ const WEAPONS: WeaponDict = {
         description: "If a movement Assist skill (like Reposition, Shove, Pivot, etc.) is used by unit or targets unit, grants Atk/Spd/Def/Res+4 to target or targeting ally and allies within 2 spaces of unit and target or targeting ally for 1 turn after movement. (Excludes unit.)",
         onAssistAfter(battleState, ally, assistSkill) {
             const targetedEntities = new Set<Entity>().add(ally);
+            const components: Component[] = [];
             if (assistSkill.type.includes("movement")) {
                 const allies = getAllies(battleState, this.entity);
                 for (let validAlly of allies) {
                     if (HeroSystem.getDistance(validAlly, this.entity) <= 2) {
                         targetedEntities.add(validAlly);
-                        applyMapComponent(validAlly, "MapBuff", {
+                        components.push(...applyMapComponent(validAlly, "MapBuff", {
                             atk: 4,
                             spd: 4,
                             def: 4,
                             res: 4
-                        }, this.entity);
+                        }, this.entity));
                     }
                 }
 
@@ -2830,29 +2953,32 @@ const WEAPONS: WeaponDict = {
                 for (let validAlly of allyAllies) {
                     if (HeroSystem.getDistance(validAlly, this.entity) <= 2) {
                         targetedEntities.add(validAlly);
-                        applyMapComponent(validAlly, "MapBuff", {
+                        components.push(...applyMapComponent(validAlly, "MapBuff", {
                             atk: 4,
                             spd: 4,
                             def: 4,
                             res: 4
-                        }, ally);
+                        }, ally));
                     }
                 }
+
+                return components;
             }
         },
         onAllyAssistAfter(battleState, sourceAlly, assistData) {
             const targetedEntities = new Set<Entity>().add(sourceAlly);
+            const components: Component[] = [];
             if (assistData.type.includes("movement")) {
                 const allies = getAllies(battleState, this.entity);
                 for (let validAlly of allies) {
                     if (HeroSystem.getDistance(validAlly, this.entity) <= 2) {
                         targetedEntities.add(validAlly);
-                        applyMapComponent(validAlly, "MapBuff", {
+                        components.push(...applyMapComponent(validAlly, "MapBuff", {
                             atk: 4,
                             spd: 4,
                             def: 4,
                             res: 4
-                        }, this.entity);
+                        }, this.entity));
                     }
                 }
 
@@ -2860,15 +2986,17 @@ const WEAPONS: WeaponDict = {
                 for (let validAlly of allyAllies) {
                     if (HeroSystem.getDistance(validAlly, this.entity) <= 2) {
                         targetedEntities.add(validAlly);
-                        applyMapComponent(validAlly, "MapBuff", {
+                        components.push(...applyMapComponent(validAlly, "MapBuff", {
                             atk: 4,
                             spd: 4,
                             def: 4,
                             res: 4
-                        }, sourceAlly);
+                        }, sourceAlly));
                     }
                 }
             }
+
+            return components;
         },
     },
     "Legion's Axe": {
@@ -2877,8 +3005,10 @@ const WEAPONS: WeaponDict = {
         description: "After combat, if unit attacked, converts bonuses on foe into penalties through its next action.",
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
-                applyMapComponent(target, "PanicComponent", {}, this.entity);
+                return applyMapComponent(target, "PanicComponent", {}, this.entity);
             }
+
+            return [];
         },
     },
     "Legion's Axe+": {
@@ -2887,8 +3017,10 @@ const WEAPONS: WeaponDict = {
         description: "After combat, if unit attacked, converts bonuses on foe into penalties through its next action.",
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
-                applyMapComponent(target, "PanicComponent", {}, this.entity);
+                return applyMapComponent(target, "PanicComponent", {}, this.entity);
             }
+
+            return [];
         },
     },
     "Light Breath": {
@@ -2896,17 +3028,20 @@ const WEAPONS: WeaponDict = {
         type: "breath",
         might: 9,
         onCombatAfter(battleState) {
+            const components: Component[] = [];
             if (this.entity.getOne("InitiateCombat")) {
                 const allies = getAllies(battleState, this.entity);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                        applyMapComponent(ally, "MapBuff", {
+                        components.push(...applyMapComponent(ally, "MapBuff", {
                             def: 4,
                             res: 4
-                        }, this.entity);
+                        }, this.entity));
                     }
                 }
             }
+
+            return components;
         },
     },
     "Light Breath+": {
@@ -2914,17 +3049,19 @@ const WEAPONS: WeaponDict = {
         type: "breath",
         might: 13,
         onCombatAfter(battleState) {
+            const components: Component[] = [];
             if (this.entity.getOne("InitiateCombat")) {
                 const allies = getAllies(battleState, this.entity);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                        applyMapComponent(ally, "MapBuff", {
+                        components.push(...applyMapComponent(ally, "MapBuff", {
                             def: 4,
                             res: 4
-                        }, this.entity);
+                        }, this.entity));
                     }
                 }
             }
+            return components;
         },
     },
     "Lightning Breath": {
@@ -2938,9 +3075,7 @@ const WEAPONS: WeaponDict = {
             });
         },
         onCombatDefense() {
-            this.entity.addComponent({
-                type: "Counterattack"
-            })
+            return [Effects.counterattack(this)];
         },
     },
     "Lightning Breath+": {
@@ -2954,9 +3089,7 @@ const WEAPONS: WeaponDict = {
             });
         },
         onCombatDefense() {
-            this.entity.addComponent({
-                type: "Counterattack"
-            })
+            return [Effects.counterattack(this)];
         },
     },
     "Lilith Floatie": {
@@ -2965,12 +3098,14 @@ const WEAPONS: WeaponDict = {
         might: 10,
         onCombatAllyStart(state, ally) {
             if (HeroSystem.getDistance(ally, this.entity) <= 2) {
-                ally.addComponent({
+                return [ally.addComponent({
                     type: "CombatBuff",
                     atk: 1,
                     spd: 1
-                });
+                })];
             }
+
+            return [];
         },
     },
     "Lilith Floatie+": {
@@ -2979,12 +3114,14 @@ const WEAPONS: WeaponDict = {
         might: 14,
         onCombatAllyStart(state, ally) {
             if (HeroSystem.getDistance(ally, this.entity) <= 2) {
-                ally.addComponent({
+                return [ally.addComponent({
                     type: "CombatBuff",
                     atk: 1,
                     spd: 1
-                });
+                })];
             }
+
+            return [];
         },
     },
     "Lordly Lance": {
@@ -3012,33 +3149,29 @@ const WEAPONS: WeaponDict = {
         might: 10,
         onCombatStart() {
             const { hp, maxHP } = this.entity.getOne("Stats");
-
             if (hp === maxHP) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "CombatBuff",
                     atk: 2,
                     spd: 2,
                     def: 2,
                     res: 2
-                });
-            }
-        },
-        onCombatAfter(state, target) {
-            const { hp, maxHP } = this.entity.getOne("Stats");
-            const { value: startingHP } = this.entity.getOne("StartingHP");
-            if (hp === startingHP && hp === maxHP) {
-                this.entity.addComponent({
-                    type: "MapDamage",
-                    value: 2
-                });
+                })];
             }
 
-            if (this.entity.getOne("DealDamage")) {
-                applyMapComponent(target, "MapDebuff", {
-                    def: -5,
-                    res: -5
-                }, this.entity);
+            return [];
+        },
+        onCombatAfter(state, target) {
+            const { maxHP } = this.entity.getOne("Stats");
+            const { value: startingHP } = this.entity.getOne("StartingHP");
+            if (startingHP === maxHP) {
+                return [this.entity.addComponent({
+                    type: "MapDamage",
+                    value: 2
+                })];
             }
+
+            return [];
         }
     },
     "Melon Crusher+": {
@@ -3047,33 +3180,37 @@ const WEAPONS: WeaponDict = {
         might: 14,
         onCombatStart() {
             const { hp, maxHP } = this.entity.getOne("Stats");
-
             if (hp === maxHP) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "CombatBuff",
                     atk: 2,
                     spd: 2,
                     def: 2,
                     res: 2
-                });
+                })];
             }
+
+            return [];
         },
         onCombatAfter(state, target) {
             const { hp, maxHP } = this.entity.getOne("Stats");
             const { value: startingHP } = this.entity.getOne("StartingHP");
+            const components: Component[] = [];
             if (hp === startingHP && hp === maxHP) {
-                this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "MapDamage",
                     value: 2
-                });
+                }));
             }
 
             if (this.entity.getOne("DealDamage")) {
-                applyMapComponent(target, "MapDebuff", {
+                components.push(...applyMapComponent(target, "MapDebuff", {
                     def: -5,
                     res: -5
-                }, this.entity);
+                }, this.entity));
             }
+
+            return components;
         }
     },
     "Monstrous Bow": {
@@ -3082,14 +3219,17 @@ const WEAPONS: WeaponDict = {
         might: 8,
         description: "Effective against flying foes. After combat, if unit attacked, converts bonuses on foes within 2 spaces of target into penalties through their next actions.",
         onCombatAfter(battleState, target) {
+            const components: Component[] = [];
             if (this.entity.getOne("DealDamage")) {
                 const allies = getAllies(battleState, target);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, target) <= 2) {
-                        applyMapComponent(ally, "PanicComponent", {}, this.entity);
+                        components.push(...applyMapComponent(ally, "PanicComponent", {}, this.entity));
                     }
                 }
             }
+
+            return components;
         },
     },
     "Monstrous Bow+": {
@@ -3098,14 +3238,17 @@ const WEAPONS: WeaponDict = {
         might: 12,
         description: "Effective against flying foes. After combat, if unit attacked, converts bonuses on foes within 2 spaces of target into penalties through their next actions.",
         onCombatAfter(battleState, target) {
+            const components: Component[] = [];
             if (this.entity.getOne("DealDamage")) {
                 const allies = getAllies(battleState, target);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, target) <= 2) {
-                        applyMapComponent(ally, "PanicComponent", {}, this.entity);
+                        components.push(...applyMapComponent(ally, "PanicComponent", {}, this.entity));
                     }
                 }
             }
+
+            return components;
         },
     },
     "Mulagir": {
@@ -3114,10 +3257,14 @@ const WEAPONS: WeaponDict = {
         onEquip() {
             this.entity.getOne("Stats").spd += 3;
         },
-        onCombatStart() {
-            this.entity.addComponent({
-                type: "NeutralizeMapBuffs"
-            });
+        onCombatStart(state, target) {
+            if (target.getOne("Weapon").type === "tome") {
+                return [this.entity.addComponent({
+                    type: "NeutralizeMapBuffs"
+                })];
+            }
+
+            return [];
         },
         might: 14,
         exclusiveTo: ["Lyn: Brave Lady"],
@@ -3139,11 +3286,11 @@ const WEAPONS: WeaponDict = {
         description: "Effective against dragon foes. If foe initiates combat, grants Def/Res+2 during combat.",
         effectiveAgainst: ["breath"],
         onCombatDefense() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "CombatBuff",
                 def: 2,
                 res: 2
-            });
+            })];
         },
         type: "tome",
         might: 14,
@@ -3155,7 +3302,7 @@ const WEAPONS: WeaponDict = {
         might: 14,
         effectiveAgainst: ["flier"],
         onCombatStart(state) {
-            Effects.owl(this, state);
+            return [Effects.owl(this, state)];
         },
         exclusiveTo: ["Innes: Regal Strategician"]
     },
@@ -3171,11 +3318,13 @@ const WEAPONS: WeaponDict = {
         onCombatStart(state, target) {
             const { def, res } = getCombatStats(target);
             if (def >= res + 5) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "DamageIncrease",
                     amount: 7
-                });
+                })];
             }
+
+            return [];
         },
         exclusiveTo: ["Niles: Cruel to Be Kind"],
         type: "bow",
@@ -3194,7 +3343,7 @@ const WEAPONS: WeaponDict = {
         type: "tome",
         exclusiveTo: ["Odin: Potent Force"],
         onCombatStart() {
-            Effects.bladeTome(this);
+            return [Effects.bladeTome(this)];
         }
     },
     "Pain": {
@@ -3203,11 +3352,13 @@ const WEAPONS: WeaponDict = {
         might: 3,
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
-                target.addComponent({
+                return [target.addComponent({
                     type: "MapDamage",
                     value: 10
-                });
+                })];
             }
+
+            return [];
         },
     },
     "Pain+": {
@@ -3215,21 +3366,24 @@ const WEAPONS: WeaponDict = {
         type: "staff",
         might: 10,
         onCombatAfter(battleState, target) {
+            const components: Component[] = [];
             if (this.entity.getOne("DealDamage")) {
-                target.addComponent({
+                components.push(target.addComponent({
                     type: "MapDamage",
                     value: 10
-                });
+                }));
                 const allies = getAllies(battleState, target);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, target) <= 2) {
-                        ally.addComponent({
+                        components.push(ally.addComponent({
                             type: "MapDamage",
                             value: 10
-                        });
+                        }));
                     }
                 }
             }
+
+            return components;
         },
     },
     "Panic": {
@@ -3238,8 +3392,10 @@ const WEAPONS: WeaponDict = {
         description: "After combat, if unit attacked, converts bonuses on foe into penalties through its next action.",
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
-                applyMapComponent(target, "PanicComponent", {}, this.entity);
+                return applyMapComponent(target, "PanicComponent", {}, this.entity);
             }
+
+            return [];
         },
     },
     "Panic+": {
@@ -3247,15 +3403,18 @@ const WEAPONS: WeaponDict = {
         might: 11,
         description: "After combat, if unit attacked, converts bonuses on target and foes within 2 spaces of target into penalties through their next actions.",
         onCombatAfter(battleState, target) {
+            const components: Component[] = [];
             if (this.entity.getOne("DealDamage")) {
-                applyMapComponent(target, "PanicComponent", {}, this.entity);
+                components.push(...applyMapComponent(target, "PanicComponent", {}, this.entity));
                 const allies = getAllies(battleState, target);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, target) <= 2) {
-                        applyMapComponent(ally, "PanicComponent", {}, this.entity);
+                        components.push(...applyMapComponent(ally, "PanicComponent", {}, this.entity));
                     }
                 }
             }
+
+            return components;
         },
     },
     "Panther Lance": {
@@ -3274,11 +3433,14 @@ const WEAPONS: WeaponDict = {
 
             const maxBuff = Math.min(6, alliesWithinRange * 2);
 
-            this.entity.addComponent({
-                type: "CombatBuff",
-                atk: maxBuff,
-                def: maxBuff
-            });
+            if (maxBuff)
+                return [this.entity.addComponent({
+                    type: "CombatBuff",
+                    atk: maxBuff,
+                    def: maxBuff
+                })];
+
+            return [];
         }
     },
     "Panther Sword": {
@@ -3287,10 +3449,10 @@ const WEAPONS: WeaponDict = {
         type: "sword",
         might: 16,
         onCombatStart() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "ApplyAffinity",
                 value: 20
-            });
+            })];
         }
     },
     "Parthia": {
@@ -3300,10 +3462,10 @@ const WEAPONS: WeaponDict = {
         might: 14,
         type: "bow",
         onCombatInitiate() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "CombatBuff",
                 res: 4
-            });
+            })];
         },
     },
     "Poison Dagger": {
@@ -3313,11 +3475,13 @@ const WEAPONS: WeaponDict = {
         effectiveAgainst: ["infantry"],
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage") && target.getOne("MovementType").value === "infantry") {
-                applyMapComponent(target, "MapDebuff", {
+                return applyMapComponent(target, "MapDebuff", {
                     def: -4,
                     res: -4
                 }, this.entity);
             }
+
+            return [];
         },
     },
     "Poison Dagger+": {
@@ -3327,11 +3491,13 @@ const WEAPONS: WeaponDict = {
         effectiveAgainst: ["infantry"],
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage") && target.getOne("MovementType").value === "infantry") {
-                Effects.dagger(this, battleState, target, {
+                return Effects.dagger(this, battleState, target, {
                     def: -4,
                     res: -4
                 });
             }
+
+            return [];
         },
     },
     "Purifying Breath": {
@@ -3346,14 +3512,14 @@ const WEAPONS: WeaponDict = {
             });
         },
         onCombatStart(state, target) {
-            this.entity.addComponent({
-                type: "Counterattack"
-            });
+            const components = [Effects.counterattack(this)];
             if (target.getOne("Weapon").range === 2) {
-                this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "TargetLowestDefense"
-                });
+                }));
             }
+
+            return components;
         }
     },
     "Ragnarok": {
@@ -3363,29 +3529,35 @@ const WEAPONS: WeaponDict = {
         onCombatStart() {
             const { maxHP, hp } = this.entity.getOne("Stats");
             if (hp === maxHP) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "CombatBuff",
                     atk: 5,
                     spd: 5
-                });
+                })];
             }
+
+            return [];
         },
         onCombatAfter(state, target) {
             const { hp, maxHP } = this.entity.getOne("Stats");
             const { value: startingHP } = this.entity.getOne("StartingHP");
+            const components: Component[] = [];
+
             if (hp === startingHP && hp === maxHP) {
-                this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "MapDamage",
                     value: 5
-                });
+                }));
             }
 
             if (this.entity.getOne("DealDamage")) {
-                applyMapComponent(target, "MapDebuff", {
+                components.push(...applyMapComponent(target, "MapDebuff", {
                     def: -5,
                     res: -5
-                }, this.entity);
+                }, this.entity));
             }
+
+            return components;
         },
         exclusiveTo: ["Celica: Caring Princess"]
     },
@@ -3395,7 +3567,7 @@ const WEAPONS: WeaponDict = {
         type: "sword",
         exclusiveTo: ["Ike: Young Mercenary"],
         onCombatStart() {
-            Effects.counterattack(this);
+            return [Effects.counterattack(this)];
         }
     },
     "Raijinto": {
@@ -3403,7 +3575,7 @@ const WEAPONS: WeaponDict = {
         might: 16,
         type: "sword",
         onCombatStart() {
-            Effects.counterattack(this);
+            return [Effects.counterattack(this)];
         },
         exclusiveTo: ["Ryoma: Peerless Samurai"]
     },
@@ -3416,7 +3588,7 @@ const WEAPONS: WeaponDict = {
             });
         },
         onCombatStart() {
-            Effects.bladeTome(this);
+            return [Effects.bladeTome(this)];
         },
         type: "tome",
         color: "red",
@@ -3431,7 +3603,7 @@ const WEAPONS: WeaponDict = {
             });
         },
         onCombatStart() {
-            Effects.bladeTome(this);
+            return [Effects.bladeTome(this)];
         },
         type: "tome",
         color: "red",
@@ -3443,7 +3615,7 @@ const WEAPONS: WeaponDict = {
         description: "During combat, boosts unit's Atk/Spd/Def/Res by number of adjacent allies × 2.",
         color: "red",
         onCombatStart(battleState) {
-            Effects.owl(this, battleState);
+            return [Effects.owl(this, battleState)];
         },
     },
     "Rauðrowl+": {
@@ -3452,7 +3624,7 @@ const WEAPONS: WeaponDict = {
         description: "During combat, boosts unit's Atk/Spd/Def/Res by number of adjacent allies × 2.",
         color: "red",
         onCombatStart(battleState) {
-            Effects.owl(this, battleState);
+            return [Effects.owl(this, battleState)];
         },
     },
     "Rauðrraven": {
@@ -3461,7 +3633,7 @@ const WEAPONS: WeaponDict = {
         might: 7,
         description: "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
         onCombatStart(battleState, target) {
-            Effects.raven(this, target);
+            return Effects.raven(this, target);
         },
     },
     "Rauðrraven+": {
@@ -3470,7 +3642,7 @@ const WEAPONS: WeaponDict = {
         might: 11,
         description: "Grants weapon-triangle advantage against colorless foes, and inflicts weapon-triangle disadvantage on colorless foes during combat.",
         onCombatStart(battleState, target) {
-            Effects.raven(this, target);
+            return Effects.raven(this, target);
         },
     },
     "Rauðrwolf": {
@@ -3506,7 +3678,7 @@ const WEAPONS: WeaponDict = {
         might: 14,
         exclusiveTo: ["Katarina: Wayward One"],
         onCombatStart(battleState) {
-            Effects.owl(this, battleState);
+            return [Effects.owl(this, battleState)];
         },
     },
     "Regal Blade": {
@@ -3517,12 +3689,14 @@ const WEAPONS: WeaponDict = {
         onCombatStart(battleState, target) {
             const { maxHP, hp } = target.getOne("Stats");
             if (hp === maxHP) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "CombatBuff",
                     atk: 2,
                     spd: 2
-                });
+                })];
             }
+
+            return [];
         },
     },
     "Renowned Bow": {
@@ -3531,9 +3705,9 @@ const WEAPONS: WeaponDict = {
             this.entity.getOne("Stats").spd -= 5;
         },
         onCombatInitiate() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "BraveWeapon"
-            });
+            })];
         },
         might: 9,
         effectiveAgainst: ["flier"],
@@ -3553,12 +3727,14 @@ const WEAPONS: WeaponDict = {
             if (special) {
                 const specialData = SPECIALS[special.name];
                 if (specialData.onCombatRoundAttack) {
-                    this.entity.addComponent({
+                    return [this.entity.addComponent({
                         type: "RoundDamageIncrease",
                         amount: 10
-                    });
+                    })];
                 }
             }
+
+            return [];
         }
     },
     "Rhomphaia": {
@@ -3585,17 +3761,20 @@ const WEAPONS: WeaponDict = {
         might: 4,
         type: "dagger",
         onCombatAfter(battleState, target) {
+            const components: Component[] = [];
             if (this.entity.getOne("DealDamage")) {
-                applyMapComponent(target, "MapDebuff", {
+                components.push(...applyMapComponent(target, "MapDebuff", {
                     def: -3,
                     res: -3,
-                }, this.entity);
+                }, this.entity));
 
-                applyMapComponent(this.entity, "MapBuff", {
+                components.push(...applyMapComponent(this.entity, "MapBuff", {
                     def: 3,
                     res: 3,
-                }, this.entity);
+                }, this.entity));
             }
+
+            return components;
         },
     },
     "Rogue Dagger+": {
@@ -3603,17 +3782,19 @@ const WEAPONS: WeaponDict = {
         might: 7,
         type: "dagger",
         onCombatAfter(battleState, target) {
+            const components: Component[] = [];
             if (this.entity.getOne("DealDamage")) {
-                applyMapComponent(target, "MapDebuff", {
+                components.push(...applyMapComponent(target, "MapDebuff", {
                     def: -5,
                     res: -5,
-                }, this.entity);
+                }, this.entity));
 
-                applyMapComponent(this.entity, "MapBuff", {
+                components.push(...applyMapComponent(this.entity, "MapBuff", {
                     def: 5,
                     res: 5,
-                }, this.entity);
+                }, this.entity));
             }
+            return components;
         },
     },
     "Rowdy Sword": {
@@ -3625,9 +3806,9 @@ const WEAPONS: WeaponDict = {
             this.entity.getOne("Stats").spd -= 5;
         },
         onCombatInitiate() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "BraveWeapon"
-            });
+            })];
         }
     },
     "Ruby Sword": {
@@ -3635,10 +3816,10 @@ const WEAPONS: WeaponDict = {
         type: "sword",
         might: 8,
         onCombatStart() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "ApplyAffinity",
                 value: 20
-            });
+            })];
         }
     },
     "Ruby Sword+": {
@@ -3646,10 +3827,10 @@ const WEAPONS: WeaponDict = {
         type: "sword",
         might: 12,
         onCombatStart() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "ApplyAffinity",
                 value: 20
-            });
+            })];
         }
     },
     "Runeaxe": {
@@ -3658,10 +3839,10 @@ const WEAPONS: WeaponDict = {
         exclusiveTo: ["Narcian: Wyvern General"],
         type: "axe",
         onCombatRoundAttack() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "CombatHeal",
                 amount: 7
-            });
+            })];
         }
     },
     "Saizo's Star": {
@@ -3671,13 +3852,15 @@ const WEAPONS: WeaponDict = {
         might: 14,
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
-                Effects.dagger(this, battleState, target, {
+                return Effects.dagger(this, battleState, target, {
                     atk: -6,
                     spd: -6,
                     def: -6,
                     res: -6
                 });
             }
+
+            return [];
         },
     },
     "Sapphire Lance": {
@@ -3685,10 +3868,10 @@ const WEAPONS: WeaponDict = {
         type: "lance",
         might: 8,
         onCombatStart() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "ApplyAffinity",
                 value: 20
-            });
+            })];
         }
     },
     "Sapphire Lance+": {
@@ -3696,10 +3879,10 @@ const WEAPONS: WeaponDict = {
         type: "lance",
         might: 12,
         onCombatStart() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "ApplyAffinity",
                 value: 20
-            });
+            })];
         }
     },
     "Scarlet Sword": {
@@ -3721,12 +3904,14 @@ const WEAPONS: WeaponDict = {
         might: 8,
         onCombatAllyStart(state, ally) {
             if (HeroSystem.getDistance(ally, this.entity) <= 2) {
-                ally.addComponent({
+                return [ally.addComponent({
                     type: "CombatBuff",
                     atk: 1,
                     spd: 1
-                });
+                })];
             }
+
+            return [];
         },
     },
     "Sealife Tome+": {
@@ -3736,12 +3921,14 @@ const WEAPONS: WeaponDict = {
         might: 12,
         onCombatAllyStart(state, ally) {
             if (HeroSystem.getDistance(ally, this.entity) <= 2) {
-                ally.addComponent({
+                return [ally.addComponent({
                     type: "CombatBuff",
                     atk: 1,
                     spd: 1
-                });
+                })];
             }
+
+            return [];
         },
     },
     "Seashell": {
@@ -3750,33 +3937,37 @@ const WEAPONS: WeaponDict = {
         might: 7,
         onCombatStart() {
             const { hp, maxHP } = this.entity.getOne("Stats");
-
             if (hp === maxHP) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "CombatBuff",
                     atk: 2,
                     spd: 2,
                     def: 2,
                     res: 2
-                });
+                })];
             }
+
+            return [];
         },
         onCombatAfter(state, target) {
             const { hp, maxHP } = this.entity.getOne("Stats");
             const { value: startingHP } = this.entity.getOne("StartingHP");
+            const components: Component[] = [];
             if (hp === startingHP && hp === maxHP) {
-                this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "MapDamage",
                     value: 2
-                });
+                }));
             }
 
             if (this.entity.getOne("DealDamage")) {
-                applyMapComponent(target, "MapDebuff", {
+                components.push(...applyMapComponent(target, "MapDebuff", {
                     def: -5,
                     res: -5
-                }, this.entity);
+                }, this.entity));
             }
+
+            return components;
         }
     },
     "Seashell+": {
@@ -3785,33 +3976,37 @@ const WEAPONS: WeaponDict = {
         might: 10,
         onCombatStart() {
             const { hp, maxHP } = this.entity.getOne("Stats");
-
             if (hp === maxHP) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "CombatBuff",
                     atk: 2,
                     spd: 2,
                     def: 2,
                     res: 2
-                });
+                })];
             }
+
+            return [];
         },
         onCombatAfter(state, target) {
             const { hp, maxHP } = this.entity.getOne("Stats");
             const { value: startingHP } = this.entity.getOne("StartingHP");
+            const components: Component[] = [];
             if (hp === startingHP && hp === maxHP) {
-                this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "MapDamage",
                     value: 2
-                });
+                }));
             }
 
             if (this.entity.getOne("DealDamage")) {
-                applyMapComponent(target, "MapDebuff", {
+                components.push(...applyMapComponent(target, "MapDebuff", {
                     def: -7,
                     res: -7
-                }, this.entity);
+                }, this.entity));
             }
+
+            return components;
         }
     },
     "Selena's Blade": {
@@ -3824,14 +4019,16 @@ const WEAPONS: WeaponDict = {
             const { atk: unitAtk } = getMapStats(this.entity)
             const { atk: enemyAtk } = getMapStats(target);
             if (enemyAtk >= unitAtk + 3) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "CombatBuff",
                     atk: 3,
                     spd: 3,
                     def: 3,
                     res: 3
-                });
+                })];
             }
+
+            return [];
         }
     },
     "Setsuna's Yumi": {
@@ -3843,14 +4040,16 @@ const WEAPONS: WeaponDict = {
         onCombatStart(state, target) {
             const { range } = target.getOne("Weapon");
             if (range === 2) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "CombatBuff",
                     atk: 4,
                     spd: 4,
                     def: 4,
                     res: 4
-                });
+                })];
             }
+
+            return [];
         }
     },
     "Shanna's Lance": {
@@ -3870,7 +4069,7 @@ const WEAPONS: WeaponDict = {
         might: 16,
         type: "sword",
         onCombatStart() {
-            Effects.counterattack(this);
+            return [Effects.counterattack(this)];
         },
         exclusiveTo: ["Xander: Paragon Knight"]
     },
@@ -3879,7 +4078,7 @@ const WEAPONS: WeaponDict = {
         might: 16,
         type: "sword",
         onTurnStart: function (state) {
-            Effects.honeStat(this, state, "atk", 4);
+            return Effects.honeStat(this, state, "atk", 4);
         },
         exclusiveTo: ["Eirika: Restoration Lady"]
     },
@@ -3888,7 +4087,7 @@ const WEAPONS: WeaponDict = {
         might: 16,
         type: "lance",
         onTurnStart(battleState) {
-            Effects.honeStat(this, battleState, "atk", 3);
+            return Effects.honeStat(this, battleState, "atk", 3);
         },
         exclusiveTo: ["Ephraim: Restoration Lord"]
     },
@@ -3898,10 +4097,10 @@ const WEAPONS: WeaponDict = {
         might: 16,
         description: "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
         onCombatStart() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "ApplyAffinity",
                 value: 20
-            });
+            })];
         }
     },
     "Slaying Axe": {
@@ -4000,10 +4199,12 @@ const WEAPONS: WeaponDict = {
         might: 5,
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
-                applyMapComponent(target, "MapDebuff", {
+                return applyMapComponent(target, "MapDebuff", {
                     spd: -6
                 }, this.entity);
             }
+
+            return [];
         },
     },
     "Slow+": {
@@ -4012,10 +4213,12 @@ const WEAPONS: WeaponDict = {
         might: 12,
         onCombatAfter(battleState, target) {
             if (this.entity.getOne("DealDamage")) {
-                Effects.dagger(this, battleState, target, {
+                return Effects.dagger(this, battleState, target, {
                     spd: -7
                 });
             }
+
+            return [];
         },
     },
     "Smoke Dagger": {
@@ -4023,17 +4226,20 @@ const WEAPONS: WeaponDict = {
         type: "dagger",
         might: 6,
         onCombatAfter(state, target) {
+            const components: Component[] = [];
             if (this.entity.getOne("DealDamage")) {
                 const allies = getAllies(state, target).filter((ally) => {
                     return HeroSystem.getDistance(ally, target) <= 2;
                 });
                 for (let ally of allies) {
-                    applyMapComponent(ally, "MapDebuff", {
+                    components.push(...applyMapComponent(ally, "MapDebuff", {
                         def: -4,
                         res: -4
-                    }, this.entity);
+                    }, this.entity));
                 }
             }
+
+            return components;
         }
     },
     "Smoke Dagger+": {
@@ -4041,17 +4247,20 @@ const WEAPONS: WeaponDict = {
         type: "dagger",
         might: 9,
         onCombatAfter(state, target) {
+            const components: Component[] = [];
             if (this.entity.getOne("DealDamage")) {
                 const allies = getAllies(state, target).filter((ally) => {
                     return HeroSystem.getDistance(ally, target) <= 2;
                 });
                 for (let ally of allies) {
-                    applyMapComponent(ally, "MapDebuff", {
+                    components.push(...applyMapComponent(ally, "MapDebuff", {
                         def: -6,
                         res: -6
-                    }, this.entity);
+                    }, this.entity));
                 }
             }
+
+            return components;
         }
     },
     "Sniper's Bow": {
@@ -4061,23 +4270,26 @@ const WEAPONS: WeaponDict = {
         effectiveAgainst: ["flier"],
         type: "bow",
         onCombatAfter(battleState, target) {
+            const components: Component[] = [];
             if (this.entity.getOne("DealDamage")) {
-                Effects.dagger(this, battleState, target, {
+                components.push(...Effects.dagger(this, battleState, target, {
                     atk: -7,
                     spd: -7
-                });
+                }));
                 const allies = getAllies(battleState, target).filter((i) => HeroSystem.getDistance(i, target) <= 2);
-                target.addComponent({
+                components.push(target.addComponent({
                     type: "MapDamage",
                     value: 7
-                });
+                }));
                 for (let ally of allies) {
-                    ally.addComponent({
+                    components.push(ally.addComponent({
                         type: "MapDamage",
                         value: 7,
-                    });
+                    }));
                 }
             }
+
+            return components;
         },
     },
     "Solitary Blade": {
@@ -4098,14 +4310,17 @@ const WEAPONS: WeaponDict = {
         might: 8,
         description: "After combat, if unit attacked, converts bonuses on foes within 2 spaces of target into penalties through their next actions.",
         onCombatAfter(battleState, target) {
+            const components: Component[] = [];
             if (this.entity.getOne("DealDamage")) {
                 const allies = getAllies(battleState, target);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, target) <= 2) {
-                        applyMapComponent(ally, "PanicComponent", {}, this.entity);
+                        components.push(...applyMapComponent(ally, "PanicComponent", {}, this.entity));
                     }
                 }
             }
+
+            return components;
         },
     },
     "Spectral Tome+": {
@@ -4114,14 +4329,17 @@ const WEAPONS: WeaponDict = {
         might: 12,
         description: "After combat, if unit attacked, converts bonuses on foes within 2 spaces of target into penalties through their next actions.",
         onCombatAfter(battleState, target) {
+            const components: Component[] = [];
             if (this.entity.getOne("DealDamage")) {
                 const allies = getAllies(battleState, target);
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, target) <= 2) {
-                        applyMapComponent(ally, "PanicComponent", {}, this.entity);
+                        components.push(...applyMapComponent(ally, "PanicComponent", {}, this.entity));
                     }
                 }
             }
+
+            return components;
         },
     },
     "Springtime Staff": {
@@ -4130,22 +4348,25 @@ const WEAPONS: WeaponDict = {
             this.entity.getOne("Stats").atk += 3;
         },
         onCombatInitiate() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "PreventCounterattack"
-            })
+            })];
         },
         type: "staff",
         might: 14,
         description: "Grants Atk+3. Foe cannot counterattack. After combat, if unit attacked, inflicts【Gravity】on target and foes within 1 space of target.",
         onCombatAfter(battleState, target) {
+            const components: Component[] = [];
             if (this.entity.getOne("DealDamage")) {
                 const enemies = getAllies(battleState, target).filter((enemy) => HeroSystem.getDistance(enemy, target) === 1);
-                applyMapComponent(target, "GravityComponent", null, this.entity);
+                components.push(...applyMapComponent(target, "GravityComponent", null, this.entity));
 
                 for (let enemy of enemies) {
-                    applyMapComponent(enemy, "GravityComponent", null, this.entity);
+                    components.push(...applyMapComponent(enemy, "GravityComponent", null, this.entity));
                 }
             }
+
+            return components;
         },
     },
     "Spy's Dagger": {
@@ -4154,27 +4375,30 @@ const WEAPONS: WeaponDict = {
         type: "dagger",
         description: "After combat, if unit attacked, grants Def/Res+6 to unit and allies within 2 spaces of unit for 1 turn. Effect:【Dagger ６】",
         onCombatAfter(state, target) {
+            const components: Component[] = [];
             if (this.entity.getOne("DealDamage")) {
-                Effects.dagger(this, state, target, {
+                components.push(...Effects.dagger(this, state, target, {
                     def: -6,
                     res: -6
-                });
+                }));
 
                 const allies = getAllies(state, this.entity);
-                applyMapComponent(this.entity, "MapBuff", {
+                components.push(...applyMapComponent(this.entity, "MapBuff", {
                     def: 6,
                     res: 6
-                }, this.entity);
+                }, this.entity));
 
                 for (let ally of allies) {
                     if (HeroSystem.getDistance(ally, this.entity) <= 2) {
-                        applyMapComponent(ally, "MapBuff", {
+                        components.push(...applyMapComponent(ally, "MapBuff", {
                             def: 6,
                             res: 6
-                        }, this.entity);
+                        }, this.entity));
                     }
                 }
             }
+
+            return components;
         }
     },
     "Sol Katti": {
@@ -4182,10 +4406,12 @@ const WEAPONS: WeaponDict = {
         onCombatInitiate() {
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp / maxHP <= 0.5) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "Desperation"
-                });
+                })];
             }
+
+            return [];
         },
         exclusiveTo: ["Lyn: Lady of the Plains"],
         might: 16,
@@ -4197,10 +4423,10 @@ const WEAPONS: WeaponDict = {
         exclusiveTo: ["Draug: Gentle Giant"],
         type: "sword",
         onCombatDefense(state, attacker) {
-            attacker.addComponent({
+            return [attacker.addComponent({
                 type: "CombatDebuff",
                 atk: -6
-            });
+            })];
         },
     },
     "Steady Lance": {
@@ -4209,14 +4435,14 @@ const WEAPONS: WeaponDict = {
         type: "lance",
         exclusiveTo: ["Roderick: Steady Squire"],
         onCombatStart() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "PreventCounterattack"
-            });
+            })];
         },
         onCombatDefense(state, attacker) {
-            attacker.addComponent({
+            return [attacker.addComponent({
                 type: "PreventCounterattack"
-            });
+            })];
         },
     },
     "Stout Tomahawk": {
@@ -4225,7 +4451,7 @@ const WEAPONS: WeaponDict = {
         type: "sword",
         exclusiveTo: ["Dorcas: Serene Warrior"],
         onCombatStart() {
-            Effects.counterattack(this);
+            return [Effects.counterattack(this)];
         }
     },
     "Tactical Bolt": {
@@ -4235,7 +4461,7 @@ const WEAPONS: WeaponDict = {
         color: "blue",
         might: 14,
         onCombatStart(state, target) {
-            Effects.raven(this, target);
+            return Effects.raven(this, target);
         }
     },
     "Tactical Gale": {
@@ -4245,7 +4471,7 @@ const WEAPONS: WeaponDict = {
         color: "green",
         might: 14,
         onCombatStart(state, target) {
-            Effects.raven(this, target);
+            return Effects.raven(this, target);
         }
     },
     "Tharja's Hex": {
@@ -4255,7 +4481,7 @@ const WEAPONS: WeaponDict = {
         type: "tome",
         color: "red",
         onCombatStart() {
-            Effects.bladeTome(this);
+            return [Effects.bladeTome(this)];
         }
     },
     "Tomato Tome": {
@@ -4265,12 +4491,14 @@ const WEAPONS: WeaponDict = {
         might: 8,
         onCombatAllyStart(state, ally) {
             if (HeroSystem.getDistance(ally, this.entity) <= 2) {
-                ally.addComponent({
+                return [ally.addComponent({
                     type: "CombatBuff",
                     atk: 1,
                     spd: 1
-                });
+                })];
             }
+
+            return [];
         },
     },
     "Tomato Tome+": {
@@ -4280,12 +4508,14 @@ const WEAPONS: WeaponDict = {
         might: 12,
         onCombatAllyStart(state, ally) {
             if (HeroSystem.getDistance(ally, this.entity) <= 2) {
-                ally.addComponent({
+                return [ally.addComponent({
                     type: "CombatBuff",
                     atk: 1,
                     spd: 1
-                });
+                })];
             }
+
+            return [];
         },
     },
     "Tome of Thoron": {
@@ -4295,42 +4525,45 @@ const WEAPONS: WeaponDict = {
         might: 14,
         onTurnStart() {
             const special = this.entity.getOne("Special");
-
             if (special) {
                 const specialData = SPECIALS[special.name];
                 const { hp, maxHP } = this.entity.getOne("Stats");
                 if (specialData.onCombatRoundAttack && hp / maxHP <= 0.75) {
-                    this.entity.addComponent({
+                    return [this.entity.addComponent({
                         type: "ModifySpecialCooldown",
                         value: -1
-                    });
+                    })];
                 }
             }
+
+            return [];
         },
         onSpecialTrigger() {
             const special = this.entity.getOne("Special");
             const specialData = SPECIALS[special.name];
             const { hp, maxHP } = this.entity.getOne("Stats");
-
             if (specialData.onCombatRoundAttack && hp / maxHP <= 0.75) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "RoundDamageIncrease",
                     amount: 10
-                });
+                })];
             }
+
+            return [];
         },
         onCombatStart() {
             const special = this.entity.getOne("Special");
-
             if (special) {
                 const specialData = SPECIALS[special.name];
                 const { hp, maxHP } = this.entity.getOne("Stats");
                 if (specialData.onCombatRoundAttack && hp / maxHP <= 0.75) {
-                    this.entity.addComponent({
+                    return [this.entity.addComponent({
                         type: "AccelerateSpecial"
-                    });
+                    })];
                 }
             }
+
+            return [];
         },
     },
     "Tyrfing": {
@@ -4341,11 +4574,13 @@ const WEAPONS: WeaponDict = {
         onCombatStart() {
             const { maxHP, hp } = this.entity.getOne("Stats");
             if (hp / maxHP <= 0.5) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "CombatBuff",
                     def: 4
-                });
+                })];
             }
+
+            return [];
         }
     },
     "Urðr": {
@@ -4355,13 +4590,15 @@ const WEAPONS: WeaponDict = {
         exclusiveTo: ["Azura: Lady of Ballads"],
         onAssistAfter(battleState, ally, skill) {
             if (skill.type.includes("refresh")) {
-                applyMapComponent(ally, "MapBuff", {
+                return applyMapComponent(ally, "MapBuff", {
                     atk: 3,
                     spd: 3,
                     def: 3,
                     res: 3
                 }, this.entity);
             }
+
+            return [];
         },
     },
     "Urvan": {
@@ -4377,11 +4614,13 @@ const WEAPONS: WeaponDict = {
         },
         onCombatRoundDefense(enemy, combatRound) {
             if (combatRound.consecutiveTurnNumber > 1) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "RoundDamageReduction",
                     percentage: 80,
-                });
+                })];
             }
+
+            return [];
         },
     },
     "Valflame": {
@@ -4392,15 +4631,18 @@ const WEAPONS: WeaponDict = {
         onTurnStart(battleState) {
             const enemies = getEnemies(battleState, this.entity);
             const position = this.entity.getOne("Position");
+            const components: Component[] = [];
             for (let enemy of enemies) {
                 const enemyPos = enemy.getOne("Position");
                 if ((enemyPos.x === position.x || enemyPos.y === position.y) && enemy.getOne("Stats").res < this.entity.getOne("Stats").res) {
-                    applyMapComponent(enemy, "MapDebuff", {
+                    components.push(...applyMapComponent(enemy, "MapDebuff", {
                         atk: -4,
                         res: -4
-                    }, this.entity);
+                    }, this.entity));
                 }
             }
+
+            return components;
         },
         exclusiveTo: ["Arvis: Emperor of Flame"]
     },
@@ -4411,32 +4653,35 @@ const WEAPONS: WeaponDict = {
         type: "lance",
         onCombatInitiate(state, target) {
             const { maxHP, hp } = target.getOne("Stats");
-
             if (hp / maxHP >= 0.7) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "CombatBuff",
                     atk: 5,
                     res: 5
-                });
+                })];
             }
+
+            return [];
         },
         onCombatDefense() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "CombatBuff",
                 atk: 5,
                 res: 5
-            });
+            })];
         },
     },
     "Vidofnir": {
         description: "If foe initiates combat and uses sword, lance, or axe, grants Def+7 during combat.",
         onCombatDefense(state, attacker) {
             if (["sword", "lance", "axe"].includes(attacker.getOne("Weapon").weaponType)) {
-                this.entity.addComponent({
+                return [this.entity.addComponent({
                     type: "CombatBuff",
                     def: 7
-                });
+                })];
             }
+
+            return [];
         },
         type: "lance",
         might: 16,
@@ -4451,7 +4696,7 @@ const WEAPONS: WeaponDict = {
             this.entity.getOne("Stats").spd += 3;
         },
         onTurnStart(battleState) {
-            Effects.ploy(this, battleState, "spd", -5);
+            return Effects.ploy(this, battleState, "spd", -5);
         },
     },
     "Whitewing Blade": {
@@ -4459,10 +4704,10 @@ const WEAPONS: WeaponDict = {
         type: "sword",
         description: "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
         onCombatStart() {
-            this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "ApplyAffinity",
                 value: 20
-            });
+            })];
         },
         exclusiveTo: ["Palla: Eldest Whitewing"]
     },
@@ -4493,12 +4738,15 @@ const WEAPONS: WeaponDict = {
         onTurnStart(battleState) {
             const enemies = getEnemies(battleState, this.entity);
             const highestAtk = getUnitsWithHighestValue(enemies, (entity) => entity.getOne("Stats").atk);
+            const components: Component[] = [];
 
             for (let hero of highestAtk) {
-                applyMapComponent(hero, "MapDebuff", {
+                components.push(...applyMapComponent(hero, "MapDebuff", {
                     atk: -7,
-                }, this.entity);
+                }, this.entity));
             }
+
+            return components;
         },
     },
     "Wing Sword": {
@@ -4517,12 +4765,14 @@ const WEAPONS: WeaponDict = {
             if (special) {
                 const specialData = SPECIALS[special.name];
                 if (specialData.onCombatRoundAttack) {
-                    this.entity.addComponent({
+                    return [this.entity.addComponent({
                         type: "RoundDamageIncrease",
                         amount: 10
-                    });
+                    })];
                 }
             }
+
+            return [];
         }
     },
     "Wo Dao+": {
@@ -4534,10 +4784,10 @@ const WEAPONS: WeaponDict = {
             if (special) {
                 const specialData = SPECIALS[special.name];
                 if (specialData.onCombatRoundAttack) {
-                    return this.entity.addComponent({
+                    return [this.entity.addComponent({
                         type: "RoundDamageIncrease",
                         amount: 10
-                    });
+                    })];
                 }
             }
 
@@ -4550,10 +4800,10 @@ const WEAPONS: WeaponDict = {
         might: 16,
         type: "sword",
         onCombatInitiate() {
-            return this.entity.addComponent({
+            return [this.entity.addComponent({
                 type: "CombatBuff",
                 spd: 4
-            });
+            })];
         },
     },
     "Zanbato": {

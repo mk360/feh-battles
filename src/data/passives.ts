@@ -34,7 +34,7 @@ interface PassivesDict {
         protects?: (MovementType | WeaponType)[];
         exclusiveTo?: (keyof typeof Characters)[];
         effectiveAgainst?: (MovementType | WeaponType)[];
-        onCombatStart?(this: Skill, state: GameState, target: Entity): Component | Component[];
+        onCombatStart?(this: Skill, state: GameState, target: Entity): Component[];
         onEquip?(this: Skill): void;
         onCombatInitiate?(this: Skill, state: GameState, target: Entity): Component[];
         onCombatAllyStart?(this: Skill, state: GameState, ally: Entity): Component[];
@@ -239,10 +239,12 @@ const PASSIVES: PassivesDict = {
             stats.res++;
         },
         onCombatAfter() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "MapDamage",
                 value: 2
-            })];
+            }));
+            return components;
         }
     },
     "Fury 2": {
@@ -258,10 +260,12 @@ const PASSIVES: PassivesDict = {
             stats.res += 2;
         },
         onCombatAfter() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "MapDamage",
                 value: 4
-            })];
+            }));
+            return components;
         }
     },
     "Fury 3": {
@@ -277,10 +281,12 @@ const PASSIVES: PassivesDict = {
             stats.res += 3;
         },
         onCombatAfter() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "MapDamage",
                 value: 6
-            })];
+            }));
+            return components;
         }
     },
     "HP +3": {
@@ -353,13 +359,14 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         exclusiveTo: ["Lyn: Brave Lady"],
         onCombatInitiate(state, target) {
+            const components: Component[] = [];
             if (["sword", "axe", "lance"].includes(target.getOne("Weapon").weaponType)) {
-                return [this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "PreventCounterattack"
-                })];
+                }));
             }
 
-            return [];
+            return components;
         },
     },
     "Speed +1": {
@@ -431,48 +438,51 @@ const PASSIVES: PassivesDict = {
         description: "If foe initiates combat and uses sword, lance, axe, dragonstone, or beast damage, grants Def/Res+2 during combat.",
         slot: "A",
         onCombatDefense(state, attacker) {
+            const components: Component[] = [];
             const { range } = attacker.getOne("Weapon");
             if (range === 1) {
-                return [this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "CombatBuff",
                     def: 2,
                     res: 2
-                })];
+                }));
             }
 
-            return [];
+            return components;
         },
     },
     "Close Def 2": {
         description: "If foe initiates combat and uses sword, lance, axe, dragonstone, or beast damage, grants Def/Res+4 during combat.",
         slot: "A",
         onCombatDefense(state, attacker) {
+            const components: Component[] = [];
             const { range } = attacker.getOne("Weapon");
             if (range === 1) {
-                return [this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "CombatBuff",
                     def: 4,
                     res: 4
-                })];
+                }));
             }
 
-            return [];
+            return components;
         },
     },
     "Close Def 3": {
         description: "If foe initiates combat and uses sword, lance, axe, dragonstone, or beast damage, grants Def/Res+6 during combat.",
         slot: "A",
         onCombatDefense(state, attacker) {
+            const components: Component[] = [];
             const { range } = attacker.getOne("Weapon");
             if (range === 1) {
-                return [this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "CombatBuff",
                     def: 6,
                     res: 6
-                })];
+                }));
             }
 
-            return [];
+            return components;
         },
     },
     "Distant Def 1": {
@@ -480,16 +490,17 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         isSacredSeal: true,
         onCombatDefense(state, attacker) {
+            const components: Component[] = [];
             const { range } = attacker.getOne("Weapon");
             if (range === 2) {
-                return [this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "CombatBuff",
                     def: 2,
                     res: 2
-                })];
+                }));
             }
 
-            return [];
+            return components;
         },
     },
     "Distant Def 2": {
@@ -497,16 +508,17 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         isSacredSeal: true,
         onCombatDefense(state, attacker) {
+            const components: Component[] = [];
             const { range } = attacker.getOne("Weapon");
             if (range === 2) {
-                return [this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "CombatBuff",
                     def: 4,
                     res: 4
-                })];
+                }));
             }
 
-            return [];
+            return components;
         },
     },
     "Distant Def 3": {
@@ -514,16 +526,17 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         isSacredSeal: true,
         onCombatDefense(state, attacker) {
+            const components: Component[] = [];
             const { range } = attacker.getOne("Weapon");
             if (range === 2) {
-                return [this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "CombatBuff",
                     def: 6,
                     res: 6
-                })];
+                }));
             }
 
-            return [];
+            return components;
         },
     },
     "Guard 1": {
@@ -756,9 +769,11 @@ const PASSIVES: PassivesDict = {
         slot: "B",
         description: "Foe cannot counterattack.",
         onCombatInitiate() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "PreventCounterattack"
-            })];
+            }));
+            return components;
         }
     },
     "Wrathful Staff 1": {
@@ -957,10 +972,12 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: exceptStaves,
         description: "If unit initiates combat, grants Atk+2 during combat.",
         onCombatInitiate() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 atk: 2
-            })];
+            }));
+            return components;
         }
     },
     "Death Blow 2": {
@@ -969,10 +986,12 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: exceptStaves,
         description: "If unit initiates combat, grants Atk+4 during combat.",
         onCombatInitiate() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 atk: 4
-            })];
+            }));
+            return components;
         }
     },
     "Death Blow 3": {
@@ -981,10 +1000,12 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: exceptStaves,
         description: "If unit initiates combat, grants Atk+6 during combat.",
         onCombatInitiate() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 atk: 6
-            })];
+            }));
+            return components;
         }
     },
     "Darting Blow 1": {
@@ -993,10 +1014,12 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: exceptStaves,
         description: "If unit initiates combat, grants Spd+2 during combat.",
         onCombatInitiate() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 spd: 2
-            })];
+            }));
+            return components;
         }
     },
     "Darting Blow 2": {
@@ -1005,10 +1028,12 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: exceptStaves,
         description: "If unit initiates combat, grants Spd+4 during combat.",
         onCombatInitiate() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 spd: 4
-            })];
+            }));
+            return components;
         }
     },
     "Darting Blow 3": {
@@ -1017,10 +1042,12 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: exceptStaves,
         description: "If unit initiates combat, grants Spd+6 during combat.",
         onCombatInitiate() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 spd: 6
-            })];
+            }));
+            return components;
         }
     },
     "Armored Blow 1": {
@@ -1028,10 +1055,12 @@ const PASSIVES: PassivesDict = {
         description: "If unit initiates combat, grants Def+2 during combat.",
         allowedWeaponTypes: exceptStaves,
         onCombatInitiate() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 def: 2
-            })];
+            }));
+            return components;
         },
         isSacredSeal: true,
     },
@@ -1040,10 +1069,12 @@ const PASSIVES: PassivesDict = {
         description: "If unit initiates combat, grants Def+4 during combat.",
         allowedWeaponTypes: exceptStaves,
         onCombatInitiate() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 def: 4
-            })];
+            }));
+            return components;
         },
         isSacredSeal: true,
     },
@@ -1053,10 +1084,12 @@ const PASSIVES: PassivesDict = {
         description: "If unit initiates combat, grants Def+6 during combat.",
         allowedWeaponTypes: exceptStaves,
         onCombatInitiate() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 def: 6
-            })];
+            }));
+            return components;
         }
     },
     "Warding Blow 1": {
@@ -1065,10 +1098,12 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         isSacredSeal: true,
         onCombatInitiate() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 res: 2
-            })];
+            }));
+            return components;
         }
     },
     "Warding Blow 2": {
@@ -1076,10 +1111,12 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: exceptStaves,
         slot: "A",
         onCombatInitiate() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 res: 4
-            })];
+            }));
+            return components;
         }
     },
     "Warding Blow 3": {
@@ -1087,10 +1124,12 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: exceptStaves,
         slot: "A",
         onCombatInitiate() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 res: 6
-            })];
+            }));
+            return components;
         }
     },
     "Fierce Stance 1": {
@@ -1099,10 +1138,12 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: exceptStaves,
         description: "If foe initiates combat, grants Atk+2 during combat.",
         onCombatDefense() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 atk: 2
-            })];
+            }));
+            return components;
         },
     },
     "Fierce Stance 2": {
@@ -1111,10 +1152,12 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: exceptStaves,
         description: "If foe initiates combat, grants Atk+4 during combat.",
         onCombatDefense() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 atk: 4
-            })];
+            }));
+            return components;
         },
     },
     "Fierce Stance 3": {
@@ -1123,10 +1166,12 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: exceptStaves,
         description: "If foe initiates combat, grants Atk+6 during combat.",
         onCombatDefense() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 atk: 6
-            })];
+            }));
+            return components;
         },
     },
     "Steady Stance 1": {
@@ -1134,10 +1179,12 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         description: "If foe initiates combat, grants Def+2 during combat.",
         onCombatDefense() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 def: 2
-            })];
+            }));
+            return components;
         },
     },
     "Steady Stance 2": {
@@ -1145,10 +1192,12 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         description: "If foe initiates combat, grants Def+4 during combat.",
         onCombatDefense() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 def: 4
-            })];
+            }));
+            return components;
         },
     },
     "Steady Stance 3": {
@@ -1156,10 +1205,12 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         description: "If foe initiates combat, grants Def+6 during combat.",
         onCombatDefense() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 def: 6
-            })];
+            }));
+            return components;
         },
     },
     "Bracing Blow 1": {
@@ -1168,11 +1219,13 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: exceptStaves,
         isSacredSeal: true,
         onCombatInitiate() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 def: 2,
                 res: 2
-            })];
+            }));
+            return components;
         },
     },
     "Bracing Blow 2": {
@@ -1181,11 +1234,13 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: exceptStaves,
         isSacredSeal: true,
         onCombatInitiate() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 def: 4,
                 res: 4
-            })];
+            }));
+            return components;
         },
     },
     "Steady Blow 1": {
@@ -1194,11 +1249,13 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: exceptStaves,
         isSacredSeal: true,
         onCombatInitiate() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 spd: 2,
                 def: 2
-            })];
+            }));
+            return components;
         }
     },
     "Steady Blow 2": {
@@ -1207,11 +1264,13 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: exceptStaves,
         isSacredSeal: true,
         onCombatInitiate() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 spd: 4,
                 def: 4
-            })];
+            }));
+            return components;
         }
     },
     "Sturdy Blow 1": {
@@ -1220,11 +1279,13 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: exceptStaves,
         isSacredSeal: true,
         onCombatInitiate() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 atk: 2,
                 def: 2
-            })];
+            }));
+            return components;
         }
     },
     "Sturdy Blow 2": {
@@ -1233,11 +1294,13 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: exceptStaves,
         isSacredSeal: true,
         onCombatInitiate() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 atk: 4,
                 def: 4
-            })];
+            }));
+            return components;
         }
     },
     "Swift Strike 1": {
@@ -1246,11 +1309,13 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: exceptStaves,
         isSacredSeal: true,
         onCombatInitiate() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 spd: 2,
                 res: 2
-            })];
+            }));
+            return components;
         }
     },
     "Swift Strike 2": {
@@ -1259,11 +1324,13 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: exceptStaves,
         isSacredSeal: true,
         onCombatInitiate() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 spd: 4,
                 res: 4
-            })];
+            }));
+            return components;
         }
     },
     "Mirror Strike 1": {
@@ -1272,11 +1339,13 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: exceptStaves,
         slot: "A",
         onCombatInitiate() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 atk: 2,
                 res: 2
-            })];
+            }));
+            return components;
         }
     },
     "Mirror Strike 2": {
@@ -1285,11 +1354,13 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: exceptStaves,
         slot: "A",
         onCombatInitiate() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 atk: 4,
                 res: 4
-            })];
+            }));
+            return components;
         }
     },
     "Swift Sparrow 1": {
@@ -1298,11 +1369,13 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: exceptStaves,
         description: "If unit initiates combat, grants Atk/Spd+2 during combat.",
         onCombatInitiate() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 atk: 2,
                 spd: 2
-            })];
+            }));
+            return components;
         }
     },
     "Swift Sparrow 2": {
@@ -1311,11 +1384,13 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: exceptStaves,
         description: "If unit initiates combat, grants Atk/Spd+3 during combat.",
         onCombatInitiate() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 atk: 4,
                 spd: 4
-            })];
+            }));
+            return components;
         }
     },
     "Mirror Stance 1": {
@@ -1323,11 +1398,13 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         allowedWeaponTypes: exceptStaves,
         onCombatDefense() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 atk: 2,
                 res: 2
-            })];
+            }));
+            return components;
         },
         slot: "A"
     },
@@ -1336,11 +1413,13 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         allowedWeaponTypes: exceptStaves,
         onCombatDefense() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "CombatBuff",
                 atk: 4,
                 res: 4
-            })];
+            }));
+            return components;
         },
         slot: "A"
     },
@@ -2361,18 +2440,19 @@ const PASSIVES: PassivesDict = {
         description: "At the start of turn 1, if foe's attack can trigger unit's Special, grants Special cooldown count-2. Reduces damage dealt to unit by 5 when Special triggers.",
         slot: "B",
         onTurnStart(state) {
+            const components: Component[] = [];
             const special = this.entity.getOne("Special");
             if (state.turn === 1 && special) {
                 const specialData = SPECIALS[special.name];
                 if (specialData.onCombatRoundDefense) {
-                    return [this.entity.addComponent({
+                    components.push(this.entity.addComponent({
                         type: "ModifySpecialCooldown",
                         value: -2
-                    })];
+                    }));
                 }
             }
 
-            return [];
+            return components;
         },
         onSpecialTrigger() {
             const special = this.entity.getOne("Special");
@@ -4145,10 +4225,12 @@ const PASSIVES: PassivesDict = {
         description: "If unit has weapon-triangle advantage, boosts Atk by 10%. If unit has weapon-triangle disadvantage, reduces Atk by 10%.",
         allowedColors: ["red", "blue", "green"],
         onCombatStart() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "ApplyAffinity",
                 value: 10
-            })];
+            }));
+            return components;
         },
         slot: "A",
     },
@@ -4156,10 +4238,12 @@ const PASSIVES: PassivesDict = {
         allowedColors: ["red", "blue", "green"],
         description: "If unit has weapon-triangle advantage, boosts Atk by 15%. If unit has weapon-triangle disadvantage, reduces Atk by 15%.",
         onCombatStart() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "ApplyAffinity",
                 value: 15
-            })];
+            }));
+            return components;
         },
         slot: "A",
     },
@@ -4167,10 +4251,12 @@ const PASSIVES: PassivesDict = {
         allowedColors: ["red", "blue", "green"],
         description: "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
         onCombatStart() {
-            return [this.entity.addComponent({
+            const components: Component[] = [];
+            components.push(this.entity.addComponent({
                 type: "ApplyAffinity",
                 value: 20
-            })];
+            }));
+            return components;
         },
         slot: "A",
     },

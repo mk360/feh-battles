@@ -684,16 +684,20 @@ class GameWorld extends World {
             type: "FinishedAction",
         });
 
+        for (let status of NEGATIVE_STATUSES) {
+            removeStatuses(unit, status);
+        }
+
         changes.push(`finish ${id}`);
 
-        const team = this.state.teams[unit.getOne("Side").value as "team1" | "team2"];
+        const team = Array.from(this.state.teams[unit.getOne("Side").value as "team1" | "team2"]);
         const remainingUnits = Array.from(team).filter((e) => !e.getOne("FinishedAction"));
         let history: IComponentObject[] = [];
 
         if (remainingUnits.length === 0) {
-            for (let unit of remainingUnits) {
+            for (let teamMember of team) {
                 for (let status of NEGATIVE_STATUSES) {
-                    removeStatuses(unit, status);
+                    removeStatuses(teamMember, status);
                 }
             }
             const turnChanges = this.startTurn();

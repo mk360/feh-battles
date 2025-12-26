@@ -24,7 +24,6 @@ class AfterAssist extends System {
                 const components = assistData.onAssistAfter?.call(skill, this.state, assisted, assistSkill);
                 if (components) {
                     for (let addedComponent of components) {
-                        console.log("after assist", addedComponent.type);
                         addLogEntry(addedComponent, assisting, assisted, skill.name, this.state.history, !!assisting.getOne("PreviewAssist"));
                     }
                 }

@@ -1,21 +1,7 @@
 {
   "tileData": [
-    [
-      "ground",
-      "ground",
-      "ground",
-      "ground",
-      "ground",
-      "ground"
-    ],
-    [
-      "ground",
-      "ground",
-      "ground",
-      "ground",
-      "ground",
-      "ground"
-    ],
+    ["ground", "ground", "ground", "ground", "ground", "ground"],
+    ["ground", "ground", "ground", "ground", "ground", "ground"],
     [
       "ground",
       "ground",
@@ -48,22 +34,8 @@
       "ground",
       "ground"
     ],
-    [
-      "ground",
-      "ground",
-      "ground",
-      "ground",
-      "ground",
-      "ground"
-    ],
-    [
-      "ground",
-      "ground",
-      "ground",
-      "ground",
-      "ground",
-      "ground"
-    ]
+    ["ground", "ground", "ground", "ground", "ground", "ground"],
+    ["ground", "ground", "ground", "ground", "ground", "ground"]
   ],
   "spawnLocations": {
     "team1": [

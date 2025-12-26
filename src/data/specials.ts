@@ -31,7 +31,7 @@ interface SpecialsDict {
         getAoEDamage?(skill: Skill, state: GameState, target: Entity): number;
         onAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: Skill): void;
         onSpecialTrigger?(this: Skill, battleState: GameState, target: Entity): void;
-        onCombatStart?(this: Skill, battleState: GameState, target: Entity): Component | Component[];
+        onCombatStart?(this: Skill, battleState: GameState, target: Entity): Component[];
         onCombatAfter?(this: Skill, battleState: GameState, target: Entity): void;
         onCombatInitiate?(this: Skill, state: GameState, target: Entity): void;
         onCombatAllyStart?(this: Skill, state: GameState, ally: Entity): void;

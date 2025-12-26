@@ -2353,11 +2353,13 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         onCombatAfter(state, target) {
             if (this.entity.getOne("InitiateCombat")) {
-                target.addComponent({
+                return [target.addComponent({
                     type: "MapDamage",
                     value: 4
-                });
+                })];
             }
+
+            return [];
         },
     },
     "Poison Strike 2": {
@@ -2367,11 +2369,12 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         onCombatAfter(state, target) {
             if (this.entity.getOne("InitiateCombat")) {
-                target.addComponent({
+                return [target.addComponent({
                     type: "MapDamage",
                     value: 7
-                });
+                })];
             }
+            return [];
         },
     },
     "Poison Strike 3": {
@@ -2381,11 +2384,12 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         onCombatAfter(state, target) {
             if (this.entity.getOne("InitiateCombat")) {
-                target.addComponent({
+                return [target.addComponent({
                     type: "MapDamage",
                     value: 10
-                });
+                })];
             }
+            return [];
         },
     },
     "Shield Pulse 1": {
@@ -2398,12 +2402,14 @@ const PASSIVES: PassivesDict = {
             if (state.turn === 1 && special) {
                 const specialData = SPECIALS[special.name];
                 if (specialData.onCombatRoundDefense) {
-                    this.entity.addComponent({
+                    return [this.entity.addComponent({
                         type: "ModifySpecialCooldown",
                         value: -1
-                    });
+                    })];
                 }
             }
+
+            return [];
         },
     },
     "Shield Pulse 2": {
@@ -2416,12 +2422,14 @@ const PASSIVES: PassivesDict = {
             if (state.turn === 1 && special) {
                 const specialData = SPECIALS[special.name];
                 if (specialData.onCombatRoundDefense) {
-                    this.entity.addComponent({
+                    return [this.entity.addComponent({
                         type: "ModifySpecialCooldown",
                         value: -1
-                    });
+                    })];
                 }
             }
+
+            return [];
         },
         onSpecialTrigger() {
             const special = this.entity.getOne("Special");
@@ -2532,16 +2540,20 @@ const PASSIVES: PassivesDict = {
         onCombatAfter(state, target) {
             const retreatChecker = retreat(state, this.entity, target);
             const { x, y } = getPosition(this.entity);
-            if (retreatChecker.checker()) {
-                retreatChecker.runner();
+            if (this.entity.getOne("InitiateCombat") && retreatChecker.checker()) {
+                const components = retreatChecker.runner();
                 if (canReachTile(target, state.map[y][x], true)) {
-                    target.addComponent({
+                    components.push(target.addComponent({
                         type: "Move",
                         x,
                         y
-                    });
+                    }));
                 }
+
+                return components;
             }
+
+            return [];
         },
     },
     "Hit and Run": {
@@ -2551,8 +2563,10 @@ const PASSIVES: PassivesDict = {
         onCombatAfter(state, target) {
             const retreatChecker = retreat(state, this.entity, target);
             if (retreatChecker.checker()) {
-                retreatChecker.runner();
+                return retreatChecker.runner();
             }
+
+            return [];
         },
     },
     "Knock Back": {
@@ -2562,8 +2576,10 @@ const PASSIVES: PassivesDict = {
         onCombatAfter(state, target) {
             const shoveChecker = shove(state, this.entity, target, 1);
             if (shoveChecker.checker()) {
-                shoveChecker.runner();
+                return shoveChecker.runner();
             }
+
+            return [];
         },
     },
     "Lunge": {
@@ -2573,8 +2589,10 @@ const PASSIVES: PassivesDict = {
         onCombatAfter(state, target) {
             const boundSwap = swap();
             if (this.entity.getOne("InitiateCombat") && boundSwap.checker(state, this.entity, target)) {
-                boundSwap.runner(state, this.entity, target);
+                return boundSwap.runner(state, this.entity, target);
             }
+
+            return [];
         },
     },
     "Axebreaker 1": {
@@ -2979,14 +2997,17 @@ const PASSIVES: PassivesDict = {
         description: "If unit initiates combat, restores 3 HP to adjacent allies after combat.",
         onCombatInitiate(state) {
             const allies = getAllies(state, this.entity);
+            const components: Component[] = [];
             for (let ally of allies) {
                 if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                    ally.addComponent({
+                    components.push(ally.addComponent({
                         type: "AfterCombatHeal",
                         value: 3
-                    });
+                    }));
                 }
             }
+
+            return components;
         }
     },
     "Breath of Life 2": {
@@ -2995,14 +3016,17 @@ const PASSIVES: PassivesDict = {
         description: "If unit initiates combat, restores 5 HP to adjacent allies after combat.",
         onCombatInitiate(state) {
             const allies = getAllies(state, this.entity);
+            const components: Component[] = [];
             for (let ally of allies) {
                 if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                    ally.addComponent({
+                    components.push(ally.addComponent({
                         type: "AfterCombatHeal",
                         value: 5
-                    });
+                    }));
                 }
             }
+
+            return components;
         }
     },
     "Breath of Life 3": {
@@ -3011,14 +3035,17 @@ const PASSIVES: PassivesDict = {
         description: "If unit initiates combat, restores 7 HP to adjacent allies after combat.",
         onCombatInitiate(state) {
             const allies = getAllies(state, this.entity);
+            const components: Component[] = [];
             for (let ally of allies) {
                 if (HeroSystem.getDistance(ally, this.entity) === 1) {
-                    ally.addComponent({
+                    components.push(ally.addComponent({
                         type: "AfterCombatHeal",
                         value: 7
-                    });
+                    }));
                 }
             }
+
+            return components;
         }
     },
     "Guidance 1": {
@@ -3061,17 +3088,20 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         slot: "C",
         onCombatAfter(state, target) {
+            const components: Component[] = [];
             if (this.entity.getOne("DealDamage")) {
                 const enemies = getAllies(state, target);
                 for (let enemy of enemies) {
                     if (HeroSystem.getDistance(enemy, target) <= 2) {
-                        enemy.addComponent({
+                        components.push(enemy.addComponent({
                             type: "MapDamage",
                             value: 3
-                        });
+                        }));
                     }
                 }
             }
+
+            return components;
         }
     },
     "Savage Blow 2": {
@@ -3079,17 +3109,20 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         isSacredSeal: true,
         onCombatAfter(state, target) {
+            const components: Component[] = [];
             if (this.entity.getOne("DealDamage")) {
                 const enemies = getAllies(state, target);
                 for (let enemy of enemies) {
                     if (HeroSystem.getDistance(enemy, target) <= 2) {
-                        enemy.addComponent({
+                        components.push(enemy.addComponent({
                             type: "MapDamage",
                             value: 5
-                        });
+                        }));
                     }
                 }
             }
+
+            return components;
         }
     },
     "Savage Blow 3": {
@@ -3097,17 +3130,20 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         isSacredSeal: true,
         onCombatAfter(state, target) {
+            const components: Component[] = [];
             if (this.entity.getOne("DealDamage")) {
                 const enemies = getAllies(state, target);
                 for (let enemy of enemies) {
                     if (HeroSystem.getDistance(enemy, target) <= 2) {
-                        enemy.addComponent({
+                        components.push(enemy.addComponent({
                             type: "MapDamage",
                             value: 7
-                        });
+                        }));
                     }
                 }
             }
+
+            return components;
         }
     },
     "Hone Atk 1": {
@@ -4539,17 +4575,20 @@ const PASSIVES: PassivesDict = {
         slot: "B",
         allowedWeaponTypes: exceptStaves,
         onCombatInitiate(state, target) {
-            target.addComponent({
+            const components: Component[] = [];
+            components.push(target.addComponent({
                 type: "PreventFollowup"
-            });
+            }));
             const { spd } = getCombatStats(this.entity);
             const { spd: enemySpd } = getCombatStats(target);
 
             if (spd >= enemySpd + 5 && ["breath", "tome", "staff"].includes(target.getOne("Weapon").weaponType)) {
-                this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "PreventCounterattack"
-                });
+                }));
             }
+
+            return components;
         },
     },
     "Watersweep 2": {
@@ -4557,17 +4596,20 @@ const PASSIVES: PassivesDict = {
         slot: "B",
         allowedWeaponTypes: exceptStaves,
         onCombatInitiate(state, target) {
-            target.addComponent({
-                type: "PreventFollowup",
-            });
             const { spd } = getCombatStats(this.entity);
             const { spd: enemySpd } = getCombatStats(target);
+            const components: Component[] = [];
+            components.push(target.addComponent({
+                type: "PreventFollowup",
+            }));
 
             if (spd >= enemySpd + 3 && ["breath", "tome", "staff"].includes(target.getOne("Weapon").weaponType)) {
-                this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "PreventCounterattack"
-                });
+                }));
             }
+
+            return components;
         },
     },
     "Watersweep 3": {
@@ -4575,17 +4617,20 @@ const PASSIVES: PassivesDict = {
         slot: "B",
         allowedWeaponTypes: exceptStaves,
         onCombatInitiate(state, target) {
-            target.addComponent({
+            const components: Component[] = [];
+            components.push(target.addComponent({
                 type: "PreventFollowup",
-            });
+            }));
             const { spd } = getCombatStats(this.entity);
             const { spd: enemySpd } = getCombatStats(target);
 
             if (spd > enemySpd && ["breath", "tome", "staff"].includes(target.getOne("Weapon").weaponType)) {
-                this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "PreventCounterattack"
-                });
+                }));
             }
+
+            return components;
         },
     },
     "Windsweep 1": {
@@ -4593,17 +4638,20 @@ const PASSIVES: PassivesDict = {
         slot: "B",
         allowedWeaponTypes: exceptStaves,
         onCombatInitiate(state, target) {
-            target.addComponent({
+            const components: Component[] = [];
+            components.push(target.addComponent({
                 type: "PreventFollowup"
-            });
+            }));
             const { spd } = getCombatStats(this.entity);
             const { spd: enemySpd } = getCombatStats(target);
 
             if (spd >= enemySpd + 5 && ["sword", "lance", "axe", "bow", "dagger", "beast"].includes(target.getOne("Weapon").weaponType)) {
-                this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "PreventCounterattack"
-                });
+                }));
             }
+
+            return components;
         },
     },
     "Windsweep 2": {
@@ -4611,18 +4659,21 @@ const PASSIVES: PassivesDict = {
         slot: "B",
         allowedWeaponTypes: exceptStaves,
         onCombatInitiate(state, target) {
-            target.addComponent({
+            const components: Component[] = [];
+            components.push(target.addComponent({
                 type: "PreventFollowup",
                 target: this.entity,
-            });
+            }));
             const { spd } = getCombatStats(this.entity);
             const { spd: enemySpd } = getCombatStats(target);
 
             if (spd >= enemySpd + 3 && ["sword", "lance", "axe", "bow", "dagger", "beast"].includes(target.getOne("Weapon").weaponType)) {
-                this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "PreventCounterattack"
-                });
+                }));
             }
+
+            return components;
         },
     },
     "Windsweep 3": {
@@ -4630,18 +4681,21 @@ const PASSIVES: PassivesDict = {
         slot: "B",
         allowedWeaponTypes: exceptStaves,
         onCombatInitiate(state, target) {
-            target.addComponent({
+            const components: Component[] = [];
+            components.push(target.addComponent({
                 type: "PreventFollowup",
                 target: this.entity,
-            });
+            }));
             const { spd } = getCombatStats(this.entity);
             const { spd: enemySpd } = getCombatStats(target);
 
             if (spd > enemySpd && ["sword", "lance", "axe", "bow", "dagger", "beast"].includes(target.getOne("Weapon").weaponType)) {
-                this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "PreventCounterattack"
-                });
+                }));
             }
+
+            return components;
         },
     }
 };

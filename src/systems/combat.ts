@@ -15,6 +15,7 @@ import getPosition from "./get-position";
 import getSpecialDecrease from "./get-special-decrease";
 import getTargetedDefenseStat from "./get-targeted-defense-stat";
 import GameState from "./state";
+import addLogEntry from "../utils/log-entries/add-log-entry";
 
 class CombatSystem extends System {
     private state: GameState;
@@ -281,7 +282,7 @@ class CombatSystem extends System {
                 defender.removeComponent(heal);
             }
 
-            turn.addComponent({
+            const damageComponent = turn.addComponent({
                 type: "DealDamage",
                 round,
                 attacker: {
@@ -303,6 +304,8 @@ class CombatSystem extends System {
                     turn: 0
                 },
             });
+
+            addLogEntry(damageComponent, turn, defender, "", this.state.history, !!attacker.getOne("PreviewingBattle"));
 
             if (turn.getOne("Battling") && defender.getOne("Battling")) {
                 const defenderStatsComponent = defender.getOne("Stats");

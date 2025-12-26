@@ -13,7 +13,6 @@ let statsTemplate = {
 class LogEntry extends Component {
     static properties = {
         /* common properties */
-        component: "",
         sourceSkill: "",
         sourceEntity: EntityRef,
         targetEntity: EntityRef,

@@ -1,0 +1,525 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Generated Graph for Project</title>
+        <meta name="title" content="Generated Documentation for Project">
+        <meta name="description" content="Generated Documentation for Project">
+        <meta name="keywords" content="project,doc">
+        <meta name="robots" content="noindex, nofollow">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="language" content="English">
+    </head>
+    <body>
+        <pre class="mermaid">
+graph
+D:\feh-battles\src\components\skill.ts --Skill--> D:\feh-battles\src\systems\state.ts
+D:\feh-battles\src\interfaces\skill-hook.ts --SkillHook--> D:\feh-battles\src\systems\state.ts
+D:\feh-battles\src\data\tile-bitmasks.ts --tileBitmasks--> D:\feh-battles\src\systems\can-reach-tile.ts
+D:\feh-battles\src\systems\get-position.ts --getPosition--> D:\feh-battles\src\systems\hero.ts
+D:\feh-battles\src\systems\state.ts --GameState--> D:\feh-battles\src\utils\get-allies.ts
+D:\feh-battles\src\systems\state.ts --GameState--> D:\feh-battles\src\utils\get-enemies.ts
+D:\feh-battles\src\systems\collect-map-mods.ts --collectMapMods--> D:\feh-battles\src\systems\get-map-stats.ts
+D:\feh-battles\src\systems\collect-combat-mods.ts --collectCombatMods--> D:\feh-battles\src\systems\get-combat-stats.ts
+D:\feh-battles\src\systems\get-map-stats.ts --getMapStats--> D:\feh-battles\src\systems\get-combat-stats.ts
+D:\feh-battles\src\systems\state.ts --GameState--> D:\feh-battles\src\systems\get-surroundings.ts
+D:\feh-battles\src\data\tile-bitshifts.ts --TileBitshifts--> D:\feh-battles\src\systems\get-tile-coordinates.ts
+D:\feh-battles\src\components\skill.ts --Skill--> D:\feh-battles\src\data\effects.ts
+D:\feh-battles\src\systems\hero.ts --HeroSystem--> D:\feh-battles\src\data\effects.ts
+D:\feh-battles\src\systems\state.ts --GameState--> D:\feh-battles\src\data\effects.ts
+D:\feh-battles\src\utils\get-allies.ts --getAllies--> D:\feh-battles\src\data\effects.ts
+D:\feh-battles\src\utils\get-enemies.ts --getEnemies--> D:\feh-battles\src\data\effects.ts
+D:\feh-battles\src\systems\get-combat-stats.ts --getCombatStats--> D:\feh-battles\src\data\effects.ts
+D:\feh-battles\src\systems\get-surroundings.ts --getSurroundings--> D:\feh-battles\src\data\effects.ts
+D:\feh-battles\src\systems\can-reach-tile.ts --canReachTile--> D:\feh-battles\src\data\effects.ts
+D:\feh-battles\src\systems\get-tile-coordinates.ts --getTileCoordinates--> D:\feh-battles\src\data\effects.ts
+D:\feh-battles\src\systems\get-position.ts --getPosition--> D:\feh-battles\src\data\effects.ts
+D:\feh-battles\src\systems\directions.ts --Direction--> D:\feh-battles\src\data\effects.ts
+D:\feh-battles\src\data\tile-bitmasks.ts --tileBitmasks--> D:\feh-battles\src\data\effects.ts
+D:\feh-battles\src\systems\state.ts --GameState--> D:\feh-battles\src\data\assists.ts
+D:\feh-battles\src\systems\directions.ts --Direction--> D:\feh-battles\src\data\assists.ts
+D:\feh-battles\src\components\assist.ts --Assist--> D:\feh-battles\src\data\assists.ts
+D:\feh-battles\src\systems\can-reach-tile.ts --canReachTile--> D:\feh-battles\src\data\assists.ts
+D:\feh-battles\src\data\tile-bitmasks.ts --tileBitmasks--> D:\feh-battles\src\data\assists.ts
+D:\feh-battles\src\components\movement-type.ts --MovementType--> D:\feh-battles\src\data\assists.ts
+D:\feh-battles\src\data\characters.json --Characters--> D:\feh-battles\src\data\assists.ts
+D:\feh-battles\src\systems\get-position.ts --getPosition--> D:\feh-battles\src\data\assists.ts
+D:\feh-battles\src\systems\get-map-stats.ts --getMapStats--> D:\feh-battles\src\data\assists.ts
+D:\feh-battles\src\interfaces\combat-turn-outcome.ts --CombatTurnOutcome--> D:\feh-battles\src\data\assists.ts
+D:\feh-battles\src\systems\get-combat-stats.ts --getCombatStats--> D:\feh-battles\src\systems\generate-turns.ts
+D:\feh-battles\src\components\movement-type.ts --MovementType--> D:\feh-battles\src\data\specials.ts
+D:\feh-battles\src\components\skill.ts --Skill--> D:\feh-battles\src\data\specials.ts
+D:\feh-battles\src\data\characters.json --Characters--> D:\feh-battles\src\data\specials.ts
+D:\feh-battles\src\systems\get-combat-stats.ts --getCombatStats--> D:\feh-battles\src\data\specials.ts
+D:\feh-battles\src\systems\get-targeted-defense-stat.ts --getTargetedDefenseStat--> D:\feh-battles\src\data\specials.ts
+D:\feh-battles\src\systems\state.ts --GameState--> D:\feh-battles\src\data\specials.ts
+D:\feh-battles\src\systems\get-surroundings.ts --getSurroundings--> D:\feh-battles\src\data\specials.ts
+D:\feh-battles\src\systems\get-map-stats.ts --getMapStats--> D:\feh-battles\src\data\specials.ts
+D:\feh-battles\src\data\assists.ts --ASSISTS--> D:\feh-battles\src\data\specials.ts
+D:\feh-battles\src\utils\get-allies.ts --getAllies--> D:\feh-battles\src\data\specials.ts
+D:\feh-battles\src\systems\hero.ts --HeroSystem--> D:\feh-battles\src\data\specials.ts
+D:\feh-battles\src\systems\directions.ts --Direction--> D:\feh-battles\src\data\specials.ts
+D:\feh-battles\src\interfaces\combat-turn-outcome.ts --CombatTurnOutcome--> D:\feh-battles\src\data\specials.ts
+D:\feh-battles\src\components\skill.ts --Skill--> D:\feh-battles\src\data\passives.ts
+D:\feh-battles\src\interfaces\combat-turn-outcome.ts --CombatTurnOutcome--> D:\feh-battles\src\data\passives.ts
+D:\feh-battles\src\systems\can-reach-tile.ts --canReachTile--> D:\feh-battles\src\data\passives.ts
+D:\feh-battles\src\systems\get-affinity.ts --getAffinity--> D:\feh-battles\src\data\passives.ts
+D:\feh-battles\src\systems\get-combat-stats.ts --getCombatStats--> D:\feh-battles\src\data\passives.ts
+D:\feh-battles\src\systems\get-position.ts --getPosition--> D:\feh-battles\src\data\passives.ts
+D:\feh-battles\src\systems\get-surroundings.ts --getSurroundings--> D:\feh-battles\src\data\passives.ts
+D:\feh-battles\src\systems\get-tile-coordinates.ts --getTileCoordinates--> D:\feh-battles\src\data\passives.ts
+D:\feh-battles\src\systems\hero.ts --HeroSystem--> D:\feh-battles\src\data\passives.ts
+D:\feh-battles\src\systems\state.ts --GameState--> D:\feh-battles\src\data\passives.ts
+D:\feh-battles\src\utils\get-allies.ts --getAllies--> D:\feh-battles\src\data\passives.ts
+D:\feh-battles\src\utils\get-enemies.ts --getEnemies--> D:\feh-battles\src\data\passives.ts
+D:\feh-battles\src\data\assists.ts --ASSISTS--> D:\feh-battles\src\data\passives.ts
+D:\feh-battles\src\data\characters.json --Characters--> D:\feh-battles\src\data\passives.ts
+D:\feh-battles\src\data\specials.ts --SPECIALS--> D:\feh-battles\src\data\passives.ts
+D:\feh-battles\src\systems\state.ts --GameState--> D:\feh-battles\src\data\weapons.ts
+D:\feh-battles\src\data\effects.ts --Effects--> D:\feh-battles\src\data\weapons.ts
+D:\feh-battles\src\components\skill.ts --Skill--> D:\feh-battles\src\data\weapons.ts
+D:\feh-battles\src\data\characters.json --Characters--> D:\feh-battles\src\data\weapons.ts
+D:\feh-battles\src\utils\get-enemies.ts --getEnemies--> D:\feh-battles\src\data\weapons.ts
+D:\feh-battles\src\systems\hero.ts --HeroSystem--> D:\feh-battles\src\data\weapons.ts
+D:\feh-battles\src\utils\get-allies.ts --getAllies--> D:\feh-battles\src\data\weapons.ts
+D:\feh-battles\src\interfaces\combat-turn-outcome.ts --CombatTurnOutcome--> D:\feh-battles\src\data\weapons.ts
+D:\feh-battles\src\systems\get-surroundings.ts --getSurroundings--> D:\feh-battles\src\data\weapons.ts
+D:\feh-battles\src\systems\can-reach-tile.ts --canReachTile--> D:\feh-battles\src\data\weapons.ts
+D:\feh-battles\src\systems\get-tile-coordinates.ts --getTileCoordinates--> D:\feh-battles\src\data\weapons.ts
+D:\feh-battles\src\systems\get-combat-stats.ts --getCombatStats--> D:\feh-battles\src\data\weapons.ts
+D:\feh-battles\src\systems\get-map-stats.ts --getMapStats--> D:\feh-battles\src\data\weapons.ts
+D:\feh-battles\src\data\assists.ts --ASSISTS--> D:\feh-battles\src\data\weapons.ts
+D:\feh-battles\src\data\specials.ts --SPECIALS--> D:\feh-battles\src\data\weapons.ts
+D:\feh-battles\src\data\assists.ts --ASSISTS--> D:\feh-battles\src\data\skill-dex.ts
+D:\feh-battles\src\data\passives.ts --PASSIVES--> D:\feh-battles\src\data\skill-dex.ts
+D:\feh-battles\src\data\specials.ts --SPECIALS--> D:\feh-battles\src\data\skill-dex.ts
+D:\feh-battles\src\data\weapons.ts --WEAPONS--> D:\feh-battles\src\data\skill-dex.ts
+D:\feh-battles\src\systems\state.ts --GameState--> D:\feh-battles\src\systems\turn-start.ts
+D:\feh-battles\src\data\skill-dex.ts --SKILLS--> D:\feh-battles\src\systems\turn-start.ts
+D:\feh-battles\src\data\characters.json --Characters--> D:\feh-battles\src\data\characters.ts
+D:\feh-battles\src\data\skill-dex.ts --SKILLS--> D:\feh-battles\src\systems\combat.ts
+D:\feh-battles\src\data\specials.ts --SPECIALS--> D:\feh-battles\src\systems\combat.ts
+D:\feh-battles\src\data\tile-bitshifts.ts --TileBitshifts--> D:\feh-battles\src\systems\combat.ts
+D:\feh-battles\src\interfaces\combat-turn-outcome.ts --CombatTurnOutcome--> D:\feh-battles\src\systems\combat.ts
+D:\feh-battles\src\systems\battling-entities-query.ts --battlingEntitiesQuery--> D:\feh-battles\src\systems\combat.ts
+D:\feh-battles\src\systems\effectiveness.ts --checkBattleEffectiveness--> D:\feh-battles\src\systems\combat.ts
+D:\feh-battles\src\systems\generate-turns.ts --generateTurns--> D:\feh-battles\src\systems\combat.ts
+D:\feh-battles\src\systems\get-affinity.ts --getAffinity--> D:\feh-battles\src\systems\combat.ts
+D:\feh-battles\src\systems\get-attacker-advantage.ts --getAttackerAdvantage--> D:\feh-battles\src\systems\combat.ts
+D:\feh-battles\src\systems\get-combat-stats.ts --getCombatStats--> D:\feh-battles\src\systems\combat.ts
+D:\feh-battles\src\systems\get-position.ts --getPosition--> D:\feh-battles\src\systems\combat.ts
+D:\feh-battles\src\systems\get-special-decrease.ts --getSpecialDecrease--> D:\feh-battles\src\systems\combat.ts
+D:\feh-battles\src\systems\get-targeted-defense-stat.ts --getTargetedDefenseStat--> D:\feh-battles\src\systems\combat.ts
+D:\feh-battles\src\systems\state.ts --GameState--> D:\feh-battles\src\systems\combat.ts
+D:\feh-battles\src\components\counterattack.ts --Counterattack--> D:\feh-battles\src\systems\skill-interaction.ts
+D:\feh-battles\src\components\damage-reduction.ts --DamageReduction--> D:\feh-battles\src\systems\skill-interaction.ts
+D:\feh-battles\src\components\guaranteed-affinity.ts --GuaranteedAffinity--> D:\feh-battles\src\systems\skill-interaction.ts
+D:\feh-battles\src\components\guaranteed-followup.ts --GuaranteedFollowup--> D:\feh-battles\src\systems\skill-interaction.ts
+D:\feh-battles\src\components\map-buff.ts --MapBuff--> D:\feh-battles\src\systems\skill-interaction.ts
+D:\feh-battles\src\components\neutralize-affinity.ts --NeutralizeAffinity--> D:\feh-battles\src\systems\skill-interaction.ts
+D:\feh-battles\src\components\neutralize-map-buffs.ts --NeutralizeMapBuffs--> D:\feh-battles\src\systems\skill-interaction.ts
+D:\feh-battles\src\components\neutralize-normalize-staff-damage.ts --NeutralizeNormalizeStaffDamage--> D:\feh-battles\src\systems\skill-interaction.ts
+D:\feh-battles\src\components\normalize-staff-damage.ts --NormalizeStaffDamage--> D:\feh-battles\src\systems\skill-interaction.ts
+D:\feh-battles\src\components\prevent-counterattack.ts --PreventCounterattack--> D:\feh-battles\src\systems\skill-interaction.ts
+D:\feh-battles\src\components\prevent-damage-reduction.ts --PreventDamageReduction--> D:\feh-battles\src\systems\skill-interaction.ts
+D:\feh-battles\src\components\prevent-followup.ts --PreventFollowUp--> D:\feh-battles\src\systems\skill-interaction.ts
+D:\feh-battles\src\components\prevent-target-lowest-defense.ts --PreventTargetLowestDefense--> D:\feh-battles\src\systems\skill-interaction.ts
+D:\feh-battles\src\components\target-lowest-defense.ts --TargetLowestDefense--> D:\feh-battles\src\systems\skill-interaction.ts
+D:\feh-battles\src\components\apply-affinity.ts --ApplyAffinity--> D:\feh-battles\src\systems\skill-interaction.ts
+D:\feh-battles\src\components\slow-special.ts --SlowSpecial--> D:\feh-battles\src\systems\skill-interaction.ts
+D:\feh-battles\src\components\neutralize-slow-special.ts --NeutralizeSlowSpecial--> D:\feh-battles\src\systems\skill-interaction.ts
+D:\feh-battles\src\components\accelerate-special.ts --AccelerateSpecial--> D:\feh-battles\src\systems\skill-interaction.ts
+D:\feh-battles\src\components\neutralize-accelerate-special.ts --NeutralizeAccelerateSpecial--> D:\feh-battles\src\systems\skill-interaction.ts
+D:\feh-battles\src\systems\battling-entities-query.ts --battlingEntitiesQuery--> D:\feh-battles\src\systems\skill-interaction.ts
+D:\feh-battles\src\data\tile-bitmasks.ts --tileBitmasks--> D:\feh-battles\src\systems\movement.ts
+D:\feh-battles\src\utils\get-allies.ts --getAllies--> D:\feh-battles\src\systems\movement.ts
+D:\feh-battles\src\utils\get-enemies.ts --getEnemies--> D:\feh-battles\src\systems\movement.ts
+D:\feh-battles\src\systems\state.ts --GameState--> D:\feh-battles\src\systems\movement.ts
+D:\feh-battles\src\systems\can-reach-tile.ts --canReachTile--> D:\feh-battles\src\systems\movement.ts
+D:\feh-battles\src\systems\get-surroundings.ts --getSurroundings--> D:\feh-battles\src\systems\movement.ts
+D:\feh-battles\src\data\passives.ts --PASSIVES--> D:\feh-battles\src\systems\movement.ts
+D:\feh-battles\src\data\tile-bitshifts.ts --TileBitshifts--> D:\feh-battles\src\systems\movement.ts
+D:\feh-battles\src\systems\get-tile-coordinates.ts --getTileCoordinates--> D:\feh-battles\src\systems\movement.ts
+D:\feh-battles\src\systems\get-distance.ts --getDistance--> D:\feh-battles\src\systems\movement.ts
+D:\feh-battles\src\data\assists.ts --ASSISTS--> D:\feh-battles\src\systems\movement.ts
+D:\feh-battles\src\data\weapons.ts --WEAPONS--> D:\feh-battles\src\systems\movement.ts
+D:\feh-battles\src\systems\state.ts --GameState--> D:\feh-battles\src\systems\after-combat.ts
+D:\feh-battles\src\systems\battling-entities-query.ts --battlingEntitiesQuery--> D:\feh-battles\src\systems\after-combat.ts
+D:\feh-battles\src\data\skill-dex.ts --SKILLS--> D:\feh-battles\src\systems\after-combat.ts
+D:\feh-battles\src\systems\combat-components.ts --COMBAT_COMPONENTS--> D:\feh-battles\src\systems\after-combat.ts
+D:\feh-battles\src\data\tile-bitshifts.ts --TileBitshifts--> D:\feh-battles\src\systems\clear-tile.ts
+D:\feh-battles\src\systems\state.ts --GameState--> D:\feh-battles\src\systems\kill.ts
+D:\feh-battles\src\components\position.ts --Position--> D:\feh-battles\src\systems\kill.ts
+D:\feh-battles\src\systems\clear-tile.ts --clearTile--> D:\feh-battles\src\systems\kill.ts
+D:\feh-battles\src\systems\state.ts --GameState--> D:\feh-battles\src\systems\assist.ts
+D:\feh-battles\src\data\assists.ts --ASSISTS--> D:\feh-battles\src\systems\assist.ts
+D:\feh-battles\src\systems\battling-entities-query.ts --battlingEntitiesQuery--> D:\feh-battles\src\systems\before-combat.ts
+D:\feh-battles\src\systems\state.ts --GameState--> D:\feh-battles\src\systems\before-combat.ts
+D:\feh-battles\src\systems\collect-map-mods.ts --collectMapMods--> D:\feh-battles\src\systems\before-combat.ts
+D:\feh-battles\src\data\skill-dex.ts --SKILLS--> D:\feh-battles\src\systems\before-combat.ts
+D:\feh-battles\src\components\prevent-enemy-allies-interaction.ts --PreventEnemyAlliesInteraction--> D:\feh-battles\src\systems\before-combat.ts
+D:\feh-battles\src\utils\get-allies.ts --getAllies--> D:\feh-battles\src\systems\before-combat.ts
+D:\feh-battles\src\systems\combat-components.ts --COMBAT_COMPONENTS--> D:\feh-battles\src\systems\before-combat.ts
+D:\feh-battles\src\systems\state.ts --GameState--> D:\feh-battles\src\systems\mechanics\aoe.ts
+D:\feh-battles\src\systems\battling-entities-query.ts --battlingEntitiesQuery--> D:\feh-battles\src\systems\mechanics\aoe.ts
+D:\feh-battles\src\data\specials.ts --SPECIALS--> D:\feh-battles\src\systems\mechanics\aoe.ts
+D:\feh-battles\src\systems\state.ts --GameState--> D:\feh-battles\src\systems\mechanics\move.ts
+D:\feh-battles\src\systems\get-position.ts --getPosition--> D:\feh-battles\src\systems\mechanics\move.ts
+D:\feh-battles\src\systems\clear-tile.ts --clearTile--> D:\feh-battles\src\systems\mechanics\move.ts
+D:\feh-battles\src\world.ts --GameWorld--> D:\feh-battles\src\debugger.ts
+D:\feh-battles\src\data\tile-bitmasks.ts --tileBitmasks--> D:\feh-battles\src\debugger.ts
+D:\feh-battles\src\data\tile-bitshifts.ts --TileBitshifts--> D:\feh-battles\src\debugger.ts
+node_modules_chalk --chalk--> D:\feh-battles\src\debugger.ts
+D:\feh-battles\src\systems\get-tile-coordinates.ts --getTileCoordinates--> D:\feh-battles\src\debugger.ts
+D:\feh-battles\src\systems\state.ts --GameState--> D:\feh-battles\src\systems\mechanics\after-assist.ts
+D:\feh-battles\src\data\assists.ts --ASSISTS--> D:\feh-battles\src\systems\mechanics\after-assist.ts
+D:\feh-battles\src\utils\get-allies.ts --getAllies--> D:\feh-battles\src\systems\mechanics\after-assist.ts
+D:\feh-battles\src\data\skill-dex.ts --SKILLS--> D:\feh-battles\src\systems\mechanics\after-assist.ts
+D:\feh-battles\src\systems\turn-start.ts --TurnStart--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\data\characters.ts --CHARACTERS--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\data\weapons.ts --WEAPONS--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\systems\state.ts --GameState--> D:\feh-battles\src\world.ts
+node_modules_fs --fs--> D:\feh-battles\src\world.ts
+node_modules_path --path--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\systems\unit-stats.ts --getLv40Stats--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\data\passives.ts --PASSIVES--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\data\movement-types.ts --MovementTypes--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\systems\combat.ts --CombatSystem--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\systems\skill-interaction.ts --SkillInteractionSystem--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\data\teams.ts --Teams--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\systems\movement.ts --MovementSystem--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\data\tile-bitmasks.ts --tileBitmasks--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\data\tile-bitshifts.ts --TileBitshifts--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\utils\get-allies.ts --getAllies--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\systems\after-combat.ts --AfterCombatSystem--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\systems\effectiveness.ts --checkBattleEffectiveness--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\utils\get-enemies.ts --getEnemies--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\data\assists.ts --ASSISTS--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\data\specials.ts --SPECIALS--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\systems\collect-combat-mods.ts --collectCombatMods--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\systems\collect-map-mods.ts --collectMapMods--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\systems\kill.ts --KillSystem--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\systems\assist.ts --AssistSystem--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\systems\get-distance.ts --getDistance--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\systems\before-combat.ts --BeforeCombat--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\systems\mechanics\aoe.ts --AoESystem--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\systems\mechanics\move.ts --MoveSystem--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\systems\mechanics\hp-mod.ts --HPModSystem--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\systems\mechanics\special-cooldown.ts --SpecialCooldownSystem--> D:\feh-battles\src\world.ts
+node_modules_shortid --shortid--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\moveset-manager.ts --movesetManager--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\debugger.ts --Debugger--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\systems\mechanics\after-assist.ts --AfterAssist--> D:\feh-battles\src\world.ts
+D:\feh-battles\src\world.ts --GameWorld--> D:/feh-battles/src/index.ts
+        </pre>
+        <script type="module">
+            import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            mermaid.run({
+                querySelector: ".mermaid",
+                postRenderCallback(id) {
+                    const el = document.getElementById(id);
+                    console.log(el.viewBox)
+                    const { height, width } = el.viewBox.baseVal;
+                    console.log({ height, width})
+                    // el.setAttribute("viewBox", `0 0 ${ width / 10 } ${ height / 10 } `)
+                    const children = el.childNodes;
+                    console.log(children);
+                    function setupPanZoom(svg) {
+                        // Initial transformation values
+                        let scale = 1;
+                        const initialViewBox = svg.viewBox.baseVal;
+                        let viewBox = {
+                            x: initialViewBox.x,
+                            y: initialViewBox.y,
+                            width: initialViewBox.width,
+                            height: initialViewBox.height
+                        };
+                        
+                        // Variables to track panning
+                        let isPanning = false;
+                        let startPoint = { x: 0, y: 0 };
+                        let endPoint = { x: 0, y: 0 };
+                        let lastPoint = { x: 0, y: 0 };
+                        
+                        // Apply the current transformation to the SVG
+                        function updateViewBox() {
+                            svg.setAttribute('viewBox', `${ viewBox.x } ${ viewBox.y } ${ viewBox.width } ${ viewBox.height } `);
+                        }
+                        
+                        // Handle mouse wheel for zooming
+                        function handleWheel(event) {
+                            event.preventDefault();
+                            
+                            // Get mouse position relative to SVG
+                            const svgPoint = getMousePosition(event);
+                            
+                            // Determine zoom direction
+                            const zoomFactor = event.deltaY > 0 ? 0.8 : 1.25; // Zoom in or out
+                            
+                            // Calculate new scale with limits
+                            const newScale = Math.min(Math.max(scale * zoomFactor, 0.05), 10);
+                            
+                            // Calculate zoom point in current viewBox coordinates
+                            const pointX = svgPoint.x;
+                            const pointY = svgPoint.y;
+                            
+                            // Calculate new viewBox dimensions
+                            const newWidth = initialViewBox.width * (newScale / scale);
+                            const newHeight = initialViewBox.height * (newScale / scale);
+                            
+                            // Calculate new viewBox coordinates to zoom into/out of the mouse position
+                            const dx = (pointX - viewBox.x) * (newScale / scale - 1);
+                            const dy = (pointY - viewBox.y) * (newScale / scale - 1);
+                            
+                            // Update viewBox
+                            viewBox = {
+                            x: viewBox.x - dx,
+                            y: viewBox.y - dy,
+                            width: newWidth,
+                            height: newHeight
+                            };
+                            
+                            // Update scale
+                            scale = newScale;
+                            el.style.transform = "scale(" + scale + ")"
+                            
+                            // Apply changes
+                            // updateViewBox();
+                        }
+                        
+                        // Get mouse position in SVG coordinate system
+                        function getMousePosition(event) {
+                            const CTM = svg.getScreenCTM();
+                            return {
+                            x: (event.clientX - CTM.e) / CTM.a + viewBox.x,
+                            y: (event.clientY - CTM.f) / CTM.d + viewBox.y
+                            };
+                        }
+                        
+                        // Mouse down event handler
+                        function handleMouseDown(event) {
+                            if (event.button === 0) { // Left mouse button
+                            isPanning = true;
+                            startPoint = getMousePosition(event);
+                            lastPoint = startPoint;
+                            svg.style.cursor = 'grabbing';
+                            }
+                        }
+                        
+                        // Mouse move event handler
+                        function handleMouseMove(event) {
+                            if (!isPanning) return;
+                            
+                            endPoint = getMousePosition(event);
+                            
+                            // Calculate the distance moved
+                            const dx = endPoint.x - lastPoint.x;
+                            const dy = endPoint.y - lastPoint.y;
+                            console.log(dx, dy);
+                            
+                            // Update viewBox
+                            viewBox.x -= dx;
+                            viewBox.y -= dy;
+                            
+                            updateViewBox();
+                            lastPoint = endPoint;
+                        }
+                        
+                        // Mouse up event handler
+                        function handleMouseUp() {
+                            isPanning = false;
+                            svg.style.cursor = 'grab';
+                        }
+                        
+                        // Mouse leave event handler
+                        function handleMouseLeave() {
+                            if (isPanning) {
+                            isPanning = false;
+                            svg.style.cursor = 'grab';
+                            }
+                        }
+                        
+                        // Set initial cursor style
+                        svg.style.cursor = 'grab';
+                        
+                        // Add event listeners
+                        svg.addEventListener('wheel', handleWheel);
+                        svg.addEventListener('mousedown', handleMouseDown);
+                        svg.addEventListener('mousemove', handleMouseMove);
+                        svg.addEventListener('mouseup', handleMouseUp);
+                        svg.addEventListener('mouseleave', handleMouseLeave);
+                        
+                        // Touch events for mobile support
+                        let lastTouchDistance = 0;
+                        
+                        function handleTouchStart(event) {
+                            if (event.touches.length === 1) {
+                            // Single touch - panning
+                            isPanning = true;
+                            const touch = event.touches[0];
+                            startPoint = {
+                                x: touch.clientX,
+                                y: touch.clientY
+                            };
+                            lastPoint = startPoint;
+                            } else if (event.touches.length === 2) {
+                            // Two touches - pinch to zoom
+                            const touch1 = event.touches[0];
+                            const touch2 = event.touches[1];
+                            lastTouchDistance = Math.hypot(
+                                touch1.clientX - touch2.clientX,
+                                touch1.clientY - touch2.clientY
+                            );
+                            }
+                        }
+                        
+                        function handleTouchMove(event) {
+                            event.preventDefault();
+                            
+                            if (event.touches.length === 1 && isPanning) {
+                            // Panning with one finger
+                            const touch = event.touches[0];
+                            endPoint = {
+                                x: touch.clientX,
+                                y: touch.clientY
+                            };
+                            
+                            // Calculate the distance moved
+                            const dx = (endPoint.x - lastPoint.x) / scale;
+                            const dy = (endPoint.y - lastPoint.y) / scale;
+                            
+                            // Update viewBox
+                            viewBox.x -= dx;
+                            viewBox.y -= dy;
+                            
+                            updateViewBox();
+                            lastPoint = endPoint;
+                            } else if (event.touches.length === 2) {
+                            // Pinch to zoom with two fingers
+                            const touch1 = event.touches[0];
+                            const touch2 = event.touches[1];
+                            
+                            // Calculate current touch distance
+                            const currentTouchDistance = Math.hypot(
+                                touch1.clientX - touch2.clientX,
+                                touch1.clientY - touch2.clientY
+                            );
+                            
+                            // Zoom factor based on the change in distance
+                            const zoomFactor = lastTouchDistance / currentTouchDistance;
+                            
+                            // Get center point between the two touches
+                            const centerX = (touch1.clientX + touch2.clientX) / 2;
+                            const centerY = (touch1.clientY + touch2.clientY) / 2;
+                            
+                            // Convert to SVG coordinates
+                            const CTM = svg.getScreenCTM();
+                            const svgPoint = {
+                                x: (centerX - CTM.e) / CTM.a + viewBox.x,
+                                y: (centerY - CTM.f) / CTM.d + viewBox.y
+                            };
+                            
+                            // Calculate new scale with limits
+                            const newScale = Math.min(Math.max(scale * zoomFactor, 0.1), 10);
+                            
+                            // Calculate new viewBox dimensions
+                            const newWidth = initialViewBox.width * (newScale / scale);
+                            const newHeight = initialViewBox.height * (newScale / scale);
+                            
+                            // Calculate new viewBox coordinates to zoom into/out of the center point
+                            const dx = (svgPoint.x - viewBox.x) * (newScale / scale - 1);
+                            const dy = (svgPoint.y - viewBox.y) * (newScale / scale - 1);
+                            
+                            // Update viewBox
+                            viewBox = {
+                                x: viewBox.x - dx,
+                                y: viewBox.y - dy,
+                                width: newWidth,
+                                height: newHeight
+                            };
+                            
+                            // Update scale
+                            scale = newScale;
+                            
+                            updateViewBox();
+                            lastTouchDistance = currentTouchDistance;
+                            }
+                        }
+                        
+                        function handleTouchEnd(event) {
+                            if (event.touches.length === 0) {
+                            isPanning = false;
+                            } else if (event.touches.length === 1) {
+                            // If we still have one finger down, update the start point for panning
+                            const touch = event.touches[0];
+                            startPoint = {
+                                x: touch.clientX,
+                                y: touch.clientY
+                            };
+                            lastPoint = startPoint;
+                            }
+                        }
+                        
+                        // Add touch event listeners
+                        svg.addEventListener('touchstart', handleTouchStart);
+                        svg.addEventListener('touchmove', handleTouchMove);
+                        svg.addEventListener('touchend', handleTouchEnd);
+                        svg.addEventListener('touchcancel', handleTouchEnd);
+                        
+                        // Return an object with methods to control zoom programmatically
+                        return {
+                            zoomIn: function(factor = 0.8) {
+                            const centerX = viewBox.x + viewBox.width / 2;
+                            const centerY = viewBox.y + viewBox.height / 2;
+                            
+                            const newScale = Math.min(scale * factor, 10);
+                            const newWidth = initialViewBox.width * (newScale / scale);
+                            const newHeight = initialViewBox.height * (newScale / scale);
+                            
+                            viewBox = {
+                                x: centerX - newWidth / 2,
+                                y: centerY - newHeight / 2,
+                                width: newWidth,
+                                height: newHeight
+                            };
+                            
+                            scale = newScale;
+                            updateViewBox();
+                            },
+                            zoomOut: function(factor = 1.25) {
+                            const centerX = viewBox.x + viewBox.width / 2;
+                            const centerY = viewBox.y + viewBox.height / 2;
+                            
+                            const newScale = Math.max(scale * factor, 0.1);
+                            const newWidth = initialViewBox.width * (newScale / scale);
+                            const newHeight = initialViewBox.height * (newScale / scale);
+                            
+                            viewBox = {
+                                x: centerX - newWidth / 2,
+                                y: centerY - newHeight / 2,
+                                width: newWidth,
+                                height: newHeight
+                            };
+                            
+                            scale = newScale;
+                            updateViewBox();
+                            },
+                            reset: function() {
+                            viewBox = {
+                                x: initialViewBox.x,
+                                y: initialViewBox.y,
+                                width: initialViewBox.width,
+                                height: initialViewBox.height
+                            };
+                            scale = 1;
+                            updateViewBox();
+                            }
+                        };
+                    }
+
+                    setupPanZoom(el);
+                }
+            });
+        </script>
+    </body>
+</html>

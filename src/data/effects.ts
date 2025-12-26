@@ -293,8 +293,9 @@ export function swap() {
         runner(state: GameState, entity1: Entity, entity2: Entity) {
             const firstPosition = getPosition(entity1);
             const secondPosition = getPosition(entity2);
+            const components: Component[] = [];
 
-            entity1.addComponent({
+            components.push(entity1.addComponent({
                 type: "Swap",
                 x: secondPosition.x,
                 y: secondPosition.y,
@@ -303,19 +304,21 @@ export function swap() {
                     x: firstPosition.x,
                     y: firstPosition.y
                 },
-            });
+            }));
 
-            entity1.addComponent({
+            components.push(entity1.addComponent({
                 type: "Move",
                 x: secondPosition.x,
                 y: secondPosition.y,
-            });
+            }));
 
-            entity2.addComponent({
+            components.push(entity2.addComponent({
                 type: "Move",
                 x: firstPosition.x,
                 y: firstPosition.y
-            });
+            }));
+
+            return components;
         }
     }
 };
@@ -356,19 +359,21 @@ export function shove(state: GameState, caller: Entity, shoved: Entity, range: n
         },
         runner() {
             const { x, y } = getTileCoordinates(targetTile);
-
-            shoved.addComponent({
+            const components: Component[] = [];
+            components.push(shoved.addComponent({
                 type: "Move",
                 x,
                 y,
-            });
+            }));
 
-            caller.addComponent({
+            components.push(caller.addComponent({
                 type: "Shove",
                 x,
                 y,
                 target: shoved,
-            });
+            }));
+
+            return components;
         }
     }
 }
@@ -395,32 +400,35 @@ export function retreat(state: GameState, target: Entity, referencePoint: Entity
             return isValid1 && isValid2;
         },
         runner(applyToReferencePoint = false) {
-            target.addComponent({
+            const components: Component[] = [];
+            components.push(target.addComponent({
                 type: "Move",
                 x: newPos1.x,
                 y: newPos1.y,
-            });
+            }));
 
-            target.addComponent({
+            components.push(target.addComponent({
                 type: "DrawBack",
                 ...newPos1,
                 oldX: pos1.x,
                 oldY: pos1.y,
-            });
+            }));
 
             if (applyToReferencePoint) {
-                referencePoint.addComponent({
+                components.push(referencePoint.addComponent({
                     type: "Move",
                     ...newPos2,
-                });
+                }));
 
-                referencePoint.addComponent({
+                components.push(referencePoint.addComponent({
                     type: "DrawBack",
                     ...newPos2,
                     oldX: pos2.x,
                     oldY: pos2.y,
-                });
+                }));
             }
+
+            return components;
         }
     }
 }
@@ -437,9 +445,12 @@ export function bladeWeapon(skill: Skill, comparedStat: Stat, margin: number) {
  */
 export function balm(skill: Skill, state: GameState, buffs: Stats) {
     const allies = getAllies(state, skill.entity);
+    const components: Component[] = [];
     for (let ally of allies) {
-        applyMapComponent(ally, "MapBuff", buffs, skill.entity);
+        components.push(...applyMapComponent(ally, "MapBuff", buffs, skill.entity));
     }
+
+    return components;
 }
 
 /**

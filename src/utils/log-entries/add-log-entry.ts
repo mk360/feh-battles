@@ -4,7 +4,6 @@ import { Component, Entity } from "ape-ecs";
 function addLogEntry(component: Component, sourceEntity: Entity, targetEntity: Entity, skillName: string, history: Entity, preview = false) {
     const properties: { [k: string]: any } = { // temporary
         sourceSkill: skillName,
-        component: component.id,
         sourceEntity,
         targetEntity,
         logType: component.type,
@@ -46,6 +45,13 @@ function addLogEntry(component: Component, sourceEntity: Entity, targetEntity: E
 
         case "Status": {
             properties.status = props.value;
+            break;
+        }
+
+        case "DealDamage": {
+            properties.damage = props.attacker.damage;
+            properties.damage = props.attacker.damage;
+            properties.attacker
             break;
         }
     }

@@ -35,13 +35,19 @@ class TurnStartSystem extends System {
 
             if (skillMap.onTurnStart) {
                 for (let skill of skillMap.onTurnStart) {
-                    SKILLS[skill.name].onTurnStart.call(skill, this.state);
+                    const components = SKILLS[skill.name].onTurnStart.call(skill, this.state);
+                    for (let component of components) {
+                        addLogEntry(component, member, component.entity, skill.name, this.state.history);
+                    }
                 }
             }
 
             if (skillMap.onTurnStartAfter) {
                 for (let skill of skillMap.onTurnStartAfter) {
-                    SKILLS[skill.name].onTurnStartAfter.call(skill, this.state);
+                    const components = SKILLS[skill.name].onTurnStartAfter.call(skill, this.state);
+                    for (let component of components) {
+                        addLogEntry(component, member, component.entity, skill.name, this.state.history);
+                    }
                 }
             }
         }

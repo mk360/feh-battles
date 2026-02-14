@@ -27,7 +27,7 @@
       },
       {
         "name": "Monstrous Bow+",
-        "description": "Effective against flying foes.&lt;br>After combat, if unit attacked, converts bonuses on foes within 2 spaces of target into penalties through their next actions.",
+        "description": "Effective against flying foes. After combat, if unit attacked, converts bonuses on foes within 2 spaces of target into penalties through their next actions.",
         "might": 12
       },
       {
@@ -42,7 +42,7 @@
       },
       {
         "name": "Clarisse's Bow+",
-        "description": "Effective against flying foes. &lt;br/>If unit initiates combat, inflicts Atk/Spd-5 on foes within 2 spaces of target through their next actions after combat.",
+        "description": "Effective against flying foes. If unit initiates combat, inflicts Atk/Spd-5 on foes within 2 spaces of target through their next actions after combat.",
         "might": 11
       },
       {
@@ -62,12 +62,12 @@
       },
       {
         "name": "Cupid Arrow",
-        "description": "Effective against flying foes.&lt;br>If unit initiates combat, grants Def/Res+2 to allies within 2 spaces for 1 turn after combat.",
+        "description": "Effective against flying foes. If unit initiates combat, grants Def/Res+2 to allies within 2 spaces for 1 turn after combat.",
         "might": 8
       },
       {
         "name": "Monstrous Bow",
-        "description": "Effective against flying foes.&lt;br>After combat, if unit attacked, converts bonuses on foes within 2 spaces of target into penalties through their next actions.",
+        "description": "Effective against flying foes. After combat, if unit attacked, converts bonuses on foes within 2 spaces of target into penalties through their next actions.",
         "might": 8
       },
       {
@@ -87,7 +87,7 @@
       },
       {
         "name": "Clarisse's Bow",
-        "description": "Effective against flying foes. &lt;br/>If unit initiates combat, inflicts Atk/Spd-5 on foes within 2 spaces of target through their next actions after combat.",
+        "description": "Effective against flying foes. If unit initiates combat, inflicts Atk/Spd-5 on foes within 2 spaces of target through their next actions after combat.",
         "might": 7
       },
       {
@@ -132,10 +132,6 @@
       {
         "name": "Pivot",
         "description": "Unit moves to opposite side of target ally."
-      },
-      {
-        "name": "Rally Atk/Def",
-        "description": "Grants Atk/Def+3 to target ally for 1 turn."
       },
       {
         "name": "Rally Atk/Res",
@@ -311,11 +307,6 @@
         "cooldown": 3
       },
       {
-        "name": "Iceberg",
-        "description": "Boosts damage by 50% of unit's Res.",
-        "cooldown": 3
-      },
-      {
         "name": "Luna",
         "description": "Treats foe's Def/Res as if reduced by 50% during combat.",
         "cooldown": 3
@@ -364,6 +355,11 @@
         "name": "Vengeance",
         "description": "Boosts damage by 50% of damage dealt to unit.",
         "cooldown": 2
+      },
+      {
+        "name": "Iceberg",
+        "description": "Boosts damage by 50% of unit's Res.",
+        "cooldown": 0
       }
     ],
     "A": [
@@ -378,18 +374,6 @@
       {
         "name": "Armored Blow 3",
         "description": "If unit initiates combat, grants Def+6 during combat."
-      },
-      {
-        "name": "Atk/Def Bond 1",
-        "description": "If unit is adjacent to an ally, grants Atk/Def+3 during combat."
-      },
-      {
-        "name": "Atk/Def Bond 2",
-        "description": "If unit is adjacent to an ally, grants Atk/Def+4 during combat."
-      },
-      {
-        "name": "Atk/Def Bond 3",
-        "description": "If unit is adjacent to an ally, grants Atk/Def+5 during combat."
       },
       {
         "name": "Atk/Res Bond 1",
@@ -422,14 +406,6 @@
       {
         "name": "Attack +3",
         "description": "Grants Attack +3."
-      },
-      {
-        "name": "Attack/Def 1",
-        "description": "Grants Atk/Def+1."
-      },
-      {
-        "name": "Attack/Def 2",
-        "description": "Grants Atk/Def+2."
       },
       {
         "name": "Attack/Res 1",
@@ -704,14 +680,6 @@
         "description": "Grants Atk/Spd+5. Inflicts Def/Res-5."
       },
       {
-        "name": "Mirror Stance 1",
-        "description": "If foe initiates combat, grants Atk/Res+2 during combat."
-      },
-      {
-        "name": "Mirror Stance 2",
-        "description": "If foe initiates combat, grants Atk/Res+4 during combat."
-      },
-      {
         "name": "Mirror Strike 1",
         "description": "If unit initiates combat, grants Atk/Res+2 during combat."
       },
@@ -978,10 +946,6 @@
         "description": "If Sing or Dance is used, grants Def/Res+3 to target."
       },
       {
-        "name": "Geyser Dance 3",
-        "description": "If Sing or Dance is used, grants Def/Res+4 to target."
-      },
-      {
         "name": "Guard 1",
         "description": "At start of combat, if unit's HP = 100%, inflicts Special cooldown charge -1 on foe per attack. (Only highest value applied. Does not stack.)"
       },
@@ -1220,18 +1184,6 @@
         "description": "Inflicts Atk-7 on foes within 2 spaces of target through their next actions after combat."
       },
       {
-        "name": "Atk Tactic 1",
-        "description": "At start of turn, grants Atk+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
-        "name": "Atk Tactic 2",
-        "description": "At start of turn, grants Atk+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
-        "name": "Atk Tactic 3",
-        "description": "At start of turn, grants Atk+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
         "name": "Breath of Life 1",
         "description": "If unit initiates combat, restores 3 HP to adjacent allies after combat."
       },
@@ -1254,18 +1206,6 @@
       {
         "name": "Def Ploy 3",
         "description": "At start of turn, inflicts Def-5 on foes in cardinal directions with Res < unit's Res through their next actions."
-      },
-      {
-        "name": "Def Tactic 1",
-        "description": "At start of turn, grants Def+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
-        "name": "Def Tactic 2",
-        "description": "At start of turn, grants Def+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
-        "name": "Def Tactic 3",
-        "description": "At start of turn, grants Def+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
       },
       {
         "name": "Drive Atk 1",
@@ -1328,10 +1268,6 @@
         "description": "At start of turn, grants Atk+4 to adjacent allies for 1 turn."
       },
       {
-        "name": "Hone Atk 4",
-        "description": "At start of turn, grants Atk+7 to adjacent allies for 1 turn."
-      },
-      {
         "name": "Hone Spd 1",
         "description": "At start of turn, grants Spd+2 to adjacent allies for 1 turn."
       },
@@ -1356,18 +1292,6 @@
         "description": "At the start of turn 1, grants Special cooldown count-1 to all infantry allies on team with HP ≤ unit's HP-5. (Stacks with similar skills.)"
       },
       {
-        "name": "Odd Atk Wave 1",
-        "description": "On odd turns, adds +2 Atk for unit and nearby allies for 1 turn."
-      },
-      {
-        "name": "Odd Atk Wave 2",
-        "description": "On odd turns, adds +4 Atk for unit and nearby allies for 1 turn."
-      },
-      {
-        "name": "Odd Atk Wave 3",
-        "description": "On odd turns, adds +6 Atk for unit and nearby allies for 1 turn."
-      },
-      {
         "name": "Panic Ploy 1",
         "description": "At start of turn, converts bonuses on foes in cardinal directions with HP ≤ unit's HP-5 into penalties through their next actions."
       },
@@ -1390,18 +1314,6 @@
       {
         "name": "Res Ploy 3",
         "description": "At start of turn, inflicts Res-5 on foes in cardinal directions with Res < unit's Res through their next actions."
-      },
-      {
-        "name": "Res Tactic 1",
-        "description": "At start of turn, grants Res+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
-        "name": "Res Tactic 2",
-        "description": "At start of turn, grants Res+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
-        "name": "Res Tactic 3",
-        "description": "At start of turn, grants Res+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
       },
       {
         "name": "Savage Blow 1",
@@ -1438,18 +1350,6 @@
       {
         "name": "Spd Smoke 3",
         "description": "Inflicts Spd-7 on foes within 2 spaces of target through their next actions after combat."
-      },
-      {
-        "name": "Spd Tactic 1",
-        "description": "At start of turn, grants Spd+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
-        "name": "Spd Tactic 2",
-        "description": "At start of turn, grants Spd+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
-        "name": "Spd Tactic 3",
-        "description": "At start of turn, grants Spd+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
       },
       {
         "name": "Spur Atk 1",
@@ -1602,30 +1502,6 @@
         "description": "Inflicts Atk-7 on foes within 2 spaces of target through their next actions after combat."
       },
       {
-        "name": "Atk Tactic 1",
-        "description": "At start of turn, grants Atk+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
-        "name": "Atk Tactic 2",
-        "description": "At start of turn, grants Atk+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
-        "name": "Atk Tactic 3",
-        "description": "At start of turn, grants Atk+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
-        "name": "Atk/Def Bond 1",
-        "description": "If unit is adjacent to an ally, grants Atk/Def+3 during combat."
-      },
-      {
-        "name": "Atk/Def Bond 2",
-        "description": "If unit is adjacent to an ally, grants Atk/Def+4 during combat."
-      },
-      {
-        "name": "Atk/Def Bond 3",
-        "description": "If unit is adjacent to an ally, grants Atk/Def+5 during combat."
-      },
-      {
         "name": "Atk/Res Bond 1",
         "description": "If unit is adjacent to an ally, grants Atk/Res+3 during combat."
       },
@@ -1656,14 +1532,6 @@
       {
         "name": "Attack +3",
         "description": "Grants Attack +3."
-      },
-      {
-        "name": "Attack/Def 1",
-        "description": "Grants Atk/Def+1."
-      },
-      {
-        "name": "Attack/Def 2",
-        "description": "Grants Atk/Def+2."
       },
       {
         "name": "Attack/Res 1",
@@ -2030,14 +1898,6 @@
         "description": "Grants Atk/Spd+5. Inflicts Def/Res-5."
       },
       {
-        "name": "Mirror Stance 1",
-        "description": "If foe initiates combat, grants Atk/Res+2 during combat."
-      },
-      {
-        "name": "Mirror Stance 2",
-        "description": "If foe initiates combat, grants Atk/Res+4 during combat."
-      },
-      {
         "name": "Mirror Strike 1",
         "description": "If unit initiates combat, grants Atk/Res+2 during combat."
       },
@@ -2056,18 +1916,6 @@
       {
         "name": "Obstruct 3",
         "description": "If unit's HP ≥ 50%, foes cannot move through spaces adjacent to unit. (Does not affect foes with Pass skills.)"
-      },
-      {
-        "name": "Odd Atk Wave 1",
-        "description": "On odd turns, adds +2 Atk for unit and nearby allies for 1 turn."
-      },
-      {
-        "name": "Odd Atk Wave 2",
-        "description": "On odd turns, adds +4 Atk for unit and nearby allies for 1 turn."
-      },
-      {
-        "name": "Odd Atk Wave 3",
-        "description": "On odd turns, adds +6 Atk for unit and nearby allies for 1 turn."
       },
       {
         "name": "Panic Ploy 1",
@@ -2176,18 +2024,6 @@
       {
         "name": "Spd Smoke 3",
         "description": "Inflicts Spd-7 on foes within 2 spaces of target through their next actions after combat."
-      },
-      {
-        "name": "Spd Tactic 1",
-        "description": "At start of turn, grants Spd+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
-        "name": "Spd Tactic 2",
-        "description": "At start of turn, grants Spd+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
-      },
-      {
-        "name": "Spd Tactic 3",
-        "description": "At start of turn, grants Spd+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2."
       },
       {
         "name": "Spd/Def 1",

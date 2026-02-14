@@ -290,19 +290,19 @@ const ASSISTS: AssistsDict = {
         allowedWeaponTypes: exceptStaves,
         type: ["buff"]
     },
-    "Rally Atk/Def": {
-        description: "Grants Atk/Def+3 to target ally for 1 turn.",
-        canApply() { return true },
-        onApply(state, ally) {
-            applyMapComponent(ally, "MapBuff", {
-                atk: 3,
-                def: 3
-            }, this.entity);
-        },
-        range: 1,
-        allowedWeaponTypes: exceptStaves,
-        type: ["buff"]
-    },
+    // "Rally Atk/Def": {
+    //     description: "Grants Atk/Def+3 to target ally for 1 turn.",
+    //     canApply() { return true },
+    //     onApply(state, ally) {
+    //         applyMapComponent(ally, "MapBuff", {
+    //             atk: 3,
+    //             def: 3
+    //         }, this.entity);
+    //     },
+    //     range: 1,
+    //     allowedWeaponTypes: exceptStaves,
+    //     type: ["buff"]
+    // },
     "Rally Atk/Res": {
         description: "Grants Atk/Res+3 to target ally for 1 turn.",
         canApply() { return true },

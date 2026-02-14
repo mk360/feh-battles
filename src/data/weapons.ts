@@ -1814,7 +1814,7 @@ const WEAPONS: WeaponDict = {
         type: "sword",
         might: 16
     },
-    "Draconic Poleaxe": {
+    "Draconic Poleax": {
         description: "If unit has weapon-triangle advantage, boosts Atk by 20%. If unit has weapon-triangle disadvantage, reduces Atk by 20%.",
         might: 16,
         exclusiveTo: ["Titania: Mighty Mercenary"],

@@ -87,24 +87,24 @@ const PASSIVES: PassivesDict = {
             this.entity.getOne("Stats").atk += 3;
         },
     },
-    "Attack/Def 1": {
-        description: "Grants Atk/Def+1.",
-        slot: "A",
-        isSacredSeal: true,
-        onEquip() {
-            this.entity.getOne("Stats").atk++;
-            this.entity.getOne("Stats").def++;
-        }
-    },
-    "Attack/Def 2": {
-        description: "Grants Atk/Def+2.",
-        slot: "A",
-        isSacredSeal: true,
-        onEquip() {
-            this.entity.getOne("Stats").atk += 2;
-            this.entity.getOne("Stats").def += 2;
-        }
-    },
+    // "Attack/Def 1": {
+    //     description: "Grants Atk/Def+1.",
+    //     slot: "A",
+    //     isSacredSeal: true,
+    //     onEquip() {
+    //         this.entity.getOne("Stats").atk++;
+    //         this.entity.getOne("Stats").def++;
+    //     }
+    // },
+    // "Attack/Def 2": {
+    //     description: "Grants Atk/Def+2.",
+    //     slot: "A",
+    //     isSacredSeal: true,
+    //     onEquip() {
+    //         this.entity.getOne("Stats").atk += 2;
+    //         this.entity.getOne("Stats").def += 2;
+    //     }
+    // },
     "Attack/Res 1": {
         description: "Grants Atk/Res+1.",
         slot: "A",
@@ -864,57 +864,57 @@ const PASSIVES: PassivesDict = {
             return components;
         }
     },
-    "Atk/Def Bond 1": {
-        description: "If unit is adjacent to an ally, grants Atk/Def+3 during combat.",
-        slot: "A",
-        isSacredSeal: true,
-        onCombatStart(state) {
-            const components: Component[] = [];
-            const component = bond(this, state, {
-                atk: 3,
-                def: 3
-            });
+    // "Atk/Def Bond 1": {
+    //     description: "If unit is adjacent to an ally, grants Atk/Def+3 during combat.",
+    //     slot: "A",
+    //     isSacredSeal: true,
+    //     onCombatStart(state) {
+    //         const components: Component[] = [];
+    //         const component = bond(this, state, {
+    //             atk: 3,
+    //             def: 3
+    //         });
 
-            if (component) {
-                components.push(component);
-            }
-            return components;
-        }
-    },
-    "Atk/Def Bond 2": {
-        description: "If unit is adjacent to an ally, grants Atk/Def+4 during combat.",
-        slot: "A",
-        isSacredSeal: true,
-        onCombatStart(state) {
-            const components: Component[] = [];
-            const component = bond(this, state, {
-                atk: 4,
-                def: 4
-            });
+    //         if (component) {
+    //             components.push(component);
+    //         }
+    //         return components;
+    //     }
+    // },
+    // "Atk/Def Bond 2": {
+    //     description: "If unit is adjacent to an ally, grants Atk/Def+4 during combat.",
+    //     slot: "A",
+    //     isSacredSeal: true,
+    //     onCombatStart(state) {
+    //         const components: Component[] = [];
+    //         const component = bond(this, state, {
+    //             atk: 4,
+    //             def: 4
+    //         });
 
-            if (component) {
-                components.push(component);
-            }
-            return components;
-        }
-    },
-    "Atk/Def Bond 3": {
-        description: "If unit is adjacent to an ally, grants Atk/Def+5 during combat.",
-        slot: "A",
-        isSacredSeal: true,
-        onCombatStart(state) {
-            const components: Component[] = [];
-            const component = bond(this, state, {
-                atk: 5,
-                def: 5
-            });
+    //         if (component) {
+    //             components.push(component);
+    //         }
+    //         return components;
+    //     }
+    // },
+    // "Atk/Def Bond 3": {
+    //     description: "If unit is adjacent to an ally, grants Atk/Def+5 during combat.",
+    //     slot: "A",
+    //     isSacredSeal: true,
+    //     onCombatStart(state) {
+    //         const components: Component[] = [];
+    //         const component = bond(this, state, {
+    //             atk: 5,
+    //             def: 5
+    //         });
 
-            if (component) {
-                components.push(component);
-            }
-            return components;
-        }
-    },
+    //         if (component) {
+    //             components.push(component);
+    //         }
+    //         return components;
+    //     }
+    // },
     "Atk/Res Bond 1": {
         description: "If unit is adjacent to an ally, grants Atk/Res+3 during combat.",
         slot: "A",
@@ -1393,36 +1393,36 @@ const PASSIVES: PassivesDict = {
             return components;
         }
     },
-    "Mirror Stance 1": {
-        description: "If foe initiates combat, grants Atk/Res+2 during combat.",
-        isSacredSeal: true,
-        allowedWeaponTypes: exceptStaves,
-        onCombatDefense() {
-            const components: Component[] = [];
-            components.push(this.entity.addComponent({
-                type: "CombatBuff",
-                atk: 2,
-                res: 2
-            }));
-            return components;
-        },
-        slot: "A"
-    },
-    "Mirror Stance 2": {
-        description: "If foe initiates combat, grants Atk/Res+4 during combat.",
-        isSacredSeal: true,
-        allowedWeaponTypes: exceptStaves,
-        onCombatDefense() {
-            const components: Component[] = [];
-            components.push(this.entity.addComponent({
-                type: "CombatBuff",
-                atk: 4,
-                res: 4
-            }));
-            return components;
-        },
-        slot: "A"
-    },
+    // "Mirror Stance 1": {
+    //     description: "If foe initiates combat, grants Atk/Res+2 during combat.",
+    //     isSacredSeal: true,
+    //     allowedWeaponTypes: exceptStaves,
+    //     onCombatDefense() {
+    //         const components: Component[] = [];
+    //         components.push(this.entity.addComponent({
+    //             type: "CombatBuff",
+    //             atk: 2,
+    //             res: 2
+    //         }));
+    //         return components;
+    //     },
+    //     slot: "A"
+    // },
+    // "Mirror Stance 2": {
+    //     description: "If foe initiates combat, grants Atk/Res+4 during combat.",
+    //     isSacredSeal: true,
+    //     allowedWeaponTypes: exceptStaves,
+    //     onCombatDefense() {
+    //         const components: Component[] = [];
+    //         components.push(this.entity.addComponent({
+    //             type: "CombatBuff",
+    //             atk: 4,
+    //             res: 4
+    //         }));
+    //         return components;
+    //     },
+    //     slot: "A"
+    // },
     "Water Boost 1": {
         slot: "A",
         isSacredSeal: true,
@@ -1734,20 +1734,20 @@ const PASSIVES: PassivesDict = {
         },
         slot: "B"
     },
-    "Geyser Dance 3": {
-        description: "If Sing or Dance is used, grants Def/Res+4 to target.",
-        allowedWeaponTypes: exceptStaves,
-        onAssistAfter(battleState, ally, assistSkill) {
-            const assist = ASSISTS[assistSkill.name];
-            if (assist.type.includes("refresh")) {
-                applyMapComponent(ally, "MapBuff", {
-                    def: 4,
-                    res: 4
-                });
-            }
-        },
-        slot: "B"
-    },
+    // "Geyser Dance 3": {
+    //     description: "If Sing or Dance is used, grants Def/Res+4 to target.",
+    //     allowedWeaponTypes: exceptStaves,
+    //     onAssistAfter(battleState, ally, assistSkill) {
+    //         const assist = ASSISTS[assistSkill.name];
+    //         if (assist.type.includes("refresh")) {
+    //             applyMapComponent(ally, "MapBuff", {
+    //                 def: 4,
+    //                 res: 4
+    //             });
+    //         }
+    //     },
+    //     slot: "B"
+    // },
     "Seal Def 1": {
         description: "Inflicts Def-3 on foe through its next action after combat.",
         slot: "B",
@@ -3170,13 +3170,13 @@ const PASSIVES: PassivesDict = {
             return honeStat(this, state, "atk", 4);
         }
     },
-    "Hone Atk 4": {
-        description: "At start of turn, grants Atk+7 to adjacent allies for 1 turn.",
-        slot: "C",
-        onTurnStart(state) {
-            return honeStat(this, state, "atk", 7);
-        }
-    },
+    // "Hone Atk 4": {
+    //     description: "At start of turn, grants Atk+7 to adjacent allies for 1 turn.",
+    //     slot: "C",
+    //     onTurnStart(state) {
+    //         return honeStat(this, state, "atk", 7);
+    //     }
+    // },
     "Hone Spd 1": {
         description: "At start of turn, grants Spd+2 to adjacent allies for 1 turn.",
         slot: "C",
@@ -3606,114 +3606,114 @@ const PASSIVES: PassivesDict = {
             return ploy(this, state, "res", -5);
         },
     },
-    "Atk Tactic 1": {
-        slot: "C",
-        isSacredSeal: true,
-        description: "At start of turn, grants Atk+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
-        onTurnStart(state) {
-            return tactic(this, state, "atk", 2);
-        }
-    },
-    "Atk Tactic 2": {
-        slot: "C",
-        isSacredSeal: true,
-        description: "At start of turn, grants Atk+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
-        onTurnStart(state) {
-            return tactic(this, state, "atk", 4);
-        }
-    },
-    "Atk Tactic 3": {
-        slot: "C",
-        isSacredSeal: true,
-        description: "At start of turn, grants Atk+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
-        onTurnStart(state) {
-            return tactic(this, state, "atk", 6);
-        }
-    },
-    "Spd Tactic 1": {
-        slot: "C",
-        isSacredSeal: true,
-        description: "At start of turn, grants Spd+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
-        onTurnStart(state) {
-            return tactic(this, state, "spd", 2);
-        }
-    },
-    "Spd Tactic 2": {
-        slot: "C",
-        isSacredSeal: true,
-        description: "At start of turn, grants Spd+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
-        onTurnStart(state) {
-            return tactic(this, state, "spd", 4);
-        }
-    },
-    "Spd Tactic 3": {
-        slot: "C",
-        isSacredSeal: true,
-        description: "At start of turn, grants Spd+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
-        onTurnStart(state) {
-            return tactic(this, state, "spd", 6);
-        }
-    },
-    "Def Tactic 1": {
-        slot: "C",
-        description: "At start of turn, grants Def+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
-        onTurnStart(state) {
-            return tactic(this, state, "def", 2);
-        }
-    },
-    "Def Tactic 2": {
-        slot: "C",
-        description: "At start of turn, grants Def+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
-        onTurnStart(state) {
-            return tactic(this, state, "def", 4);
-        }
-    },
-    "Def Tactic 3": {
-        slot: "C",
-        description: "At start of turn, grants Def+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
-        onTurnStart(state) {
-            return tactic(this, state, "def", 6);
-        }
-    },
-    "Res Tactic 1": {
-        slot: "C",
-        description: "At start of turn, grants Res+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
-        onTurnStart(state) {
-            return tactic(this, state, "res", 2);
-        }
-    },
-    "Res Tactic 2": {
-        slot: "C",
-        description: "At start of turn, grants Res+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
-        onTurnStart(state) {
-            return tactic(this, state, "res", 4);
-        }
-    },
-    "Res Tactic 3": {
-        slot: "C",
-        description: "At start of turn, grants Res+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
-        onTurnStart(state) {
-            return tactic(this, state, "res", 6);
-        }
-    },
-    "Odd Atk Wave 1": {
-        description: "On odd turns, adds +2 Atk for unit and nearby allies for 1 turn.",
-        slot: "C",
-        isSacredSeal: true,
-        onTurnStart: wave("atk", turnIsOdd, 2)
-    },
-    "Odd Atk Wave 2": {
-        description: "On odd turns, adds +4 Atk for unit and nearby allies for 1 turn.",
-        slot: "C",
-        isSacredSeal: true,
-        onTurnStart: wave("atk", turnIsOdd, 4)
-    },
-    "Odd Atk Wave 3": {
-        description: "On odd turns, adds +6 Atk for unit and nearby allies for 1 turn.",
-        slot: "C",
-        isSacredSeal: true,
-        onTurnStart: wave("atk", turnIsOdd, 6)
-    },
+    // "Atk Tactic 1": {
+    //     slot: "C",
+    //     isSacredSeal: true,
+    //     description: "At start of turn, grants Atk+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
+    //     onTurnStart(state) {
+    //         return tactic(this, state, "atk", 2);
+    //     }
+    // },
+    // "Atk Tactic 2": {
+    //     slot: "C",
+    //     isSacredSeal: true,
+    //     description: "At start of turn, grants Atk+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
+    //     onTurnStart(state) {
+    //         return tactic(this, state, "atk", 4);
+    //     }
+    // },
+    // "Atk Tactic 3": {
+    //     slot: "C",
+    //     isSacredSeal: true,
+    //     description: "At start of turn, grants Atk+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
+    //     onTurnStart(state) {
+    //         return tactic(this, state, "atk", 6);
+    //     }
+    // },
+    // "Spd Tactic 1": {
+    //     slot: "C",
+    //     isSacredSeal: true,
+    //     description: "At start of turn, grants Spd+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
+    //     onTurnStart(state) {
+    //         return tactic(this, state, "spd", 2);
+    //     }
+    // },
+    // "Spd Tactic 2": {
+    //     slot: "C",
+    //     isSacredSeal: true,
+    //     description: "At start of turn, grants Spd+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
+    //     onTurnStart(state) {
+    //         return tactic(this, state, "spd", 4);
+    //     }
+    // },
+    // "Spd Tactic 3": {
+    //     slot: "C",
+    //     isSacredSeal: true,
+    //     description: "At start of turn, grants Spd+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
+    //     onTurnStart(state) {
+    //         return tactic(this, state, "spd", 6);
+    //     }
+    // },
+    // "Def Tactic 1": {
+    //     slot: "C",
+    //     description: "At start of turn, grants Def+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
+    //     onTurnStart(state) {
+    //         return tactic(this, state, "def", 2);
+    //     }
+    // },
+    // "Def Tactic 2": {
+    //     slot: "C",
+    //     description: "At start of turn, grants Def+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
+    //     onTurnStart(state) {
+    //         return tactic(this, state, "def", 4);
+    //     }
+    // },
+    // "Def Tactic 3": {
+    //     slot: "C",
+    //     description: "At start of turn, grants Def+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
+    //     onTurnStart(state) {
+    //         return tactic(this, state, "def", 6);
+    //     }
+    // },
+    // "Res Tactic 1": {
+    //     slot: "C",
+    //     description: "At start of turn, grants Res+2 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
+    //     onTurnStart(state) {
+    //         return tactic(this, state, "res", 2);
+    //     }
+    // },
+    // "Res Tactic 2": {
+    //     slot: "C",
+    //     description: "At start of turn, grants Res+4 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
+    //     onTurnStart(state) {
+    //         return tactic(this, state, "res", 4);
+    //     }
+    // },
+    // "Res Tactic 3": {
+    //     slot: "C",
+    //     description: "At start of turn, grants Res+6 to allies within 2 spaces for 1 turn. Granted only if number of that ally's movement type on current team ≤ 2.",
+    //     onTurnStart(state) {
+    //         return tactic(this, state, "res", 6);
+    //     }
+    // },
+    // "Odd Atk Wave 1": {
+    //     description: "On odd turns, adds +2 Atk for unit and nearby allies for 1 turn.",
+    //     slot: "C",
+    //     isSacredSeal: true,
+    //     onTurnStart: wave("atk", turnIsOdd, 2)
+    // },
+    // "Odd Atk Wave 2": {
+    //     description: "On odd turns, adds +4 Atk for unit and nearby allies for 1 turn.",
+    //     slot: "C",
+    //     isSacredSeal: true,
+    //     onTurnStart: wave("atk", turnIsOdd, 4)
+    // },
+    // "Odd Atk Wave 3": {
+    //     description: "On odd turns, adds +6 Atk for unit and nearby allies for 1 turn.",
+    //     slot: "C",
+    //     isSacredSeal: true,
+    //     onTurnStart: wave("atk", turnIsOdd, 6)
+    // },
     "Wary Fighter 1": {
         slot: "B",
         allowedMovementTypes: ["armored"],

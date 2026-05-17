@@ -44,6 +44,10 @@ interface WeaponDict {
         onTurnStartAfter?(this: Skill, battleState: GameState): Component[];
         onAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: typeof ASSISTS[keyof typeof ASSISTS]): Component[];
         onAllyAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: Skill): Component[];
+        statModAlly?(this: Skill, battleState: GameState, ally: Entity): Component[];
+        statModDefense?(this: Skill, battleState: GameState, target: Entity): Component[];
+        statModInitiate?(this: Skill, battleState: GameState, target: Entity): Component[];
+        statMod?(this: Skill, battleState: GameState, target: Entity): Component[];
     }
 }
 
@@ -490,7 +494,7 @@ const WEAPONS: WeaponDict = {
         exclusiveTo: ["Arthur: Hapless Hero"],
         type: "axe",
         might: 16,
-        onCombatStart() {
+        statMod() {
             const components: Component[] = [];
             if (this.entity.getOne("MapBuff")) {
                 components.push(this.entity.addComponent({
@@ -614,7 +618,7 @@ const WEAPONS: WeaponDict = {
         description: "If foe initiates combat, grants Res+4 during combat.",
         might: 10,
         type: "lance",
-        onCombatDefense() {
+        statModDefense() {
             return [this.entity.addComponent({
                 type: "CombatBuff",
                 res: 4
@@ -625,7 +629,7 @@ const WEAPONS: WeaponDict = {
         description: "If foe initiates combat, grants Res+4 during combat.",
         might: 14,
         type: "lance",
-        onCombatDefense() {
+        statModDefense() {
             return [this.entity.addComponent({
                 type: "CombatBuff",
                 res: 4
@@ -699,7 +703,7 @@ const WEAPONS: WeaponDict = {
         type: "tome",
         color: "blue",
         might: 10,
-        onCombatStart(state) {
+        statMod(state) {
             return [Effects.owl(this, state)];
         }
     },
@@ -708,7 +712,7 @@ const WEAPONS: WeaponDict = {
         type: "tome",
         color: "blue",
         might: 14,
-        onCombatStart(state) {
+        statMod(state) {
             return [Effects.owl(this, state)];
         }
     },
@@ -827,7 +831,7 @@ const WEAPONS: WeaponDict = {
         exclusiveTo: ["Mae: Bundle of Energy"],
         might: 16,
         type: "tome",
-        onCombatInitiate() {
+        statModInitiate() {
             return [this.entity.addComponent({
                 type: "CombatBuff",
                 atk: 6
@@ -990,7 +994,7 @@ const WEAPONS: WeaponDict = {
         exclusiveTo: ["Cain: The Bull"],
         type: "sword",
         might: 16,
-        onCombatStart(battleState) {
+        statMod(battleState) {
             const allies = getAllies(battleState, this.entity);
             let alliesWithinRange = 0;
             for (let ally of allies) {
@@ -1025,7 +1029,7 @@ const WEAPONS: WeaponDict = {
         might: 16,
         type: "axe",
         exclusiveTo: ["Camilla: Bewitching Beauty"],
-        onCombatStart(battleState) {
+        statMod(battleState) {
             const components: Component[] = [];
             const allies = getAllies(battleState, this.entity);
             for (let ally of allies) {
@@ -1047,11 +1051,14 @@ const WEAPONS: WeaponDict = {
         might: 14,
         type: "dagger",
         description: "If unit initiates combat, grants Spd+4 and deals damage = 10% of unit's Spd during combat. Effect:【Dagger ７】",
-        onCombatInitiate(state, target) {
-            const components: Component[] = [this.entity.addComponent({
+        statModInitiate() {
+            return [this.entity.addComponent({
                 type: "CombatBuff",
                 spd: 4
             })];
+        },
+        onCombatInitiate(state, target) {
+            const components: Component[] = [];
 
             const { spd } = getCombatStats(this.entity);
 
@@ -1585,7 +1592,7 @@ const WEAPONS: WeaponDict = {
         might: 16,
         type: "lance",
         description: "If foe initiates combat or if foe's HP = 100% at start of combat, grants Atk/Def/Res+5 to unit during combat.",
-        onCombatDefense() {
+        statModDefense() {
             return [this.entity.addComponent({
                 type: "CombatBuff",
                 atk: 5,
@@ -1593,7 +1600,7 @@ const WEAPONS: WeaponDict = {
                 res: 5
             })];
         },
-        onCombatInitiate(state, target) {
+        statModInitiate(state, target) {
             const { maxHP, hp } = target.getOne("Stats");
             if (hp === maxHP) {
                 return [this.entity.addComponent({
@@ -1660,7 +1667,7 @@ const WEAPONS: WeaponDict = {
         description: "At start of combat, if unit's HP = 100%, grants Atk/Spd/Def/Res+2, but after combat, if unit attacked, deals 2 damage to unit.",
         type: "lance",
         might: 10,
-        onCombatStart() {
+        statMod() {
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp === maxHP) {
                 return [this.entity.addComponent({
@@ -1691,7 +1698,7 @@ const WEAPONS: WeaponDict = {
         description: "At start of combat, if unit's HP = 100%, grants Atk/Spd/Def/Res+2, but after combat, if unit attacked, deals 2 damage to unit.",
         type: "lance",
         might: 14,
-        onCombatStart() {
+        statMod() {
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp === maxHP) {
                 return [this.entity.addComponent({
@@ -1723,7 +1730,7 @@ const WEAPONS: WeaponDict = {
         exclusiveTo: ["Barst: The Hatchet"],
         might: 16,
         description: "Grants Atk/Spd/Def/Res+4 during combat, but if unit attacked, deals 4 damage to unit after combat.",
-        onCombatStart() {
+        statMod() {
             return [this.entity.addComponent({
                 type: "CombatBuff",
                 atk: 4,
@@ -1831,7 +1838,7 @@ const WEAPONS: WeaponDict = {
         type: "sword",
         description: "If unit initiates combat, grants Atk+4 during combat.",
         exclusiveTo: ["Eliwood: Knight of Lycia"],
-        onCombatInitiate() {
+        statModInitiate() {
             return [this.entity.addComponent({
                 type: "CombatBuff",
                 atk: 4
@@ -2235,7 +2242,7 @@ const WEAPONS: WeaponDict = {
         onEquip() {
             this.entity.getOne("Stats").def += 3;
         },
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             if (HeroSystem.getDistance(this.entity, ally) <= 2 && ["sword", "lance", "axe", "dagger", "bow", "beast"].includes(ally.getOne("Weapon").weaponType)) {
                 return [ally.addComponent({
                     type: "CombatBuff",
@@ -2378,7 +2385,7 @@ const WEAPONS: WeaponDict = {
                 value: -1
             });
         },
-        onCombatStart(battleState, target) {
+        statMod(battleState, target) {
             const foeAtk = getMapStats(target).atk;
             const selfAtk = getMapStats(this.entity).atk;
             if (foeAtk >= selfAtk + 3) {
@@ -2608,7 +2615,7 @@ const WEAPONS: WeaponDict = {
         type: "tome",
         color: "green",
         might: 8,
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             if (HeroSystem.getDistance(ally, this.entity) <= 2) {
                 return [ally.addComponent({
                     type: "CombatBuff",
@@ -2623,7 +2630,7 @@ const WEAPONS: WeaponDict = {
         type: "tome",
         color: "green",
         might: 12,
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             if (HeroSystem.getDistance(ally, this.entity) <= 2) {
                 return [ally.addComponent({
                     type: "CombatBuff",
@@ -2640,7 +2647,7 @@ const WEAPONS: WeaponDict = {
         might: 16,
         type: "sword",
         exclusiveTo: ["Hinata: Wild Samurai"],
-        onCombatDefense() {
+        statModDefense() {
             return [this.entity.addComponent({
                 type: "CombatBuff",
                 atk: 4,
@@ -2653,7 +2660,7 @@ const WEAPONS: WeaponDict = {
         exclusiveTo: ["Hinoka: Warrior Princess"],
         type: "lance",
         might: 16,
-        onCombatStart(state) {
+        statMod(state) {
             const allies = getAllies(state, this.entity);
             const components: Component[] = [];
             for (let ally of allies) {
@@ -2715,7 +2722,7 @@ const WEAPONS: WeaponDict = {
         type: "dagger",
         might: 14,
         description: "If unit initiates combat, inflicts Atk/Spd/Def/Res-4 on foe during combat. Effect:【Dagger ７】\n【Dagger ７】\n After combat, if unit attacked, inflicts Def/Res-７ on target and foes within 2 spaces of target through their next actions.",
-        onCombatInitiate(state, target) {
+        statModInitiate(state, target) {
             return [target.addComponent({
                 type: "CombatDebuff",
                 atk: -4,
@@ -2747,7 +2754,7 @@ const WEAPONS: WeaponDict = {
         might: 14,
         type: "dagger",
         exclusiveTo: ["Kagero: Honorable Ninja"],
-        onCombatStart(state, target) {
+        statMod(state, target) {
             const { atk: currentAtk } = getMapStats(this.entity);
             const { atk: opponentAtk } = getMapStats(target);
 
@@ -2912,7 +2919,7 @@ const WEAPONS: WeaponDict = {
         type: "sword",
         effectiveAgainst: ["cavalry"],
         description: "Effective against cavalry foes. At start of combat, if unit's HP ≥ 50%, grants Atk/Spd/Def/Res+3 during combat.",
-        onCombatStart() {
+        statMod() {
             const { maxHP, hp } = this.entity.getOne("Stats");
             if (hp / maxHP >= 0.5) {
                 return [this.entity.addComponent({
@@ -3096,7 +3103,7 @@ const WEAPONS: WeaponDict = {
         description: "Grants Atk/Spd+1 to allies within 2 spaces during combat.",
         type: "axe",
         might: 10,
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             if (HeroSystem.getDistance(ally, this.entity) <= 2) {
                 return [ally.addComponent({
                     type: "CombatBuff",
@@ -3112,7 +3119,7 @@ const WEAPONS: WeaponDict = {
         description: "Grants Atk/Spd+1 to allies within 2 spaces during combat.",
         type: "axe",
         might: 14,
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             if (HeroSystem.getDistance(ally, this.entity) <= 2) {
                 return [ally.addComponent({
                     type: "CombatBuff",
@@ -3147,7 +3154,7 @@ const WEAPONS: WeaponDict = {
         description: "At start of combat, if unit's HP = 100%, grants Atk/Spd/Def/Res+2, but after combat, if unit attacked, deals 2 damage to unit.",
         type: "axe",
         might: 10,
-        onCombatStart() {
+        statMod() {
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp === maxHP) {
                 return [this.entity.addComponent({
@@ -3178,7 +3185,7 @@ const WEAPONS: WeaponDict = {
         description: "At start of combat, if unit's HP = 100%, grants Atk/Spd/Def/Res+2, but after combat, if unit attacked, deals 2 damage to unit.",
         type: "axe",
         might: 14,
-        onCombatStart() {
+        statMod() {
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp === maxHP) {
                 return [this.entity.addComponent({
@@ -3285,7 +3292,7 @@ const WEAPONS: WeaponDict = {
     "Naga": {
         description: "Effective against dragon foes. If foe initiates combat, grants Def/Res+2 during combat.",
         effectiveAgainst: ["breath"],
-        onCombatDefense() {
+        statModDefense() {
             return [this.entity.addComponent({
                 type: "CombatBuff",
                 def: 2,
@@ -3422,7 +3429,7 @@ const WEAPONS: WeaponDict = {
         exclusiveTo: ["Abel: The Panther"],
         type: "sword",
         might: 16,
-        onCombatStart(battleState) {
+        statMod(battleState) {
             const allies = getAllies(battleState, this.entity);
             let alliesWithinRange = 0;
             for (let ally of allies) {
@@ -3461,7 +3468,7 @@ const WEAPONS: WeaponDict = {
         exclusiveTo: ["Jeorge: Perfect Shot"],
         might: 14,
         type: "bow",
-        onCombatInitiate() {
+        statModInitiate() {
             return [this.entity.addComponent({
                 type: "CombatBuff",
                 res: 4
@@ -3526,7 +3533,7 @@ const WEAPONS: WeaponDict = {
         description: "At start of combat, if unit's HP = 100%, grants Atk/Spd+5, but after combat, if unit attacked, deals 5 damage to unit.",
         type: "tome",
         might: 14,
-        onCombatStart() {
+        statMod() {
             const { maxHP, hp } = this.entity.getOne("Stats");
             if (hp === maxHP) {
                 return [this.entity.addComponent({
@@ -3686,7 +3693,7 @@ const WEAPONS: WeaponDict = {
         exclusiveTo: ["Lloyd: White Wolf"],
         type: "sword",
         might: 16,
-        onCombatStart(battleState, target) {
+        statMod(battleState, target) {
             const { maxHP, hp } = target.getOne("Stats");
             if (hp === maxHP) {
                 return [this.entity.addComponent({
@@ -3902,7 +3909,7 @@ const WEAPONS: WeaponDict = {
         type: "tome",
         color: "blue",
         might: 8,
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             if (HeroSystem.getDistance(ally, this.entity) <= 2) {
                 return [ally.addComponent({
                     type: "CombatBuff",
@@ -3919,7 +3926,7 @@ const WEAPONS: WeaponDict = {
         type: "tome",
         color: "blue",
         might: 12,
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             if (HeroSystem.getDistance(ally, this.entity) <= 2) {
                 return [ally.addComponent({
                     type: "CombatBuff",
@@ -3935,7 +3942,7 @@ const WEAPONS: WeaponDict = {
         description: "At start of combat, if unit's HP = 100%, grants Atk/Spd/Def/Res+2, but after combat, if unit attacked, deals 2 damage to unit. After combat, if unit attacked, inflicts Def/Res-5 on foe through its next action.",
         type: "dagger",
         might: 7,
-        onCombatStart() {
+        statMod() {
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp === maxHP) {
                 return [this.entity.addComponent({
@@ -3974,7 +3981,7 @@ const WEAPONS: WeaponDict = {
         description: "At start of combat, if unit's HP = 100%, grants Atk/Spd/Def/Res+2, but after combat, if unit attacked, deals 2 damage to unit. After combat, if unit attacked, inflicts Def/Res-7 on foe through its next action.",
         type: "dagger",
         might: 10,
-        onCombatStart() {
+        statMod() {
             const { hp, maxHP } = this.entity.getOne("Stats");
             if (hp === maxHP) {
                 return [this.entity.addComponent({
@@ -4015,7 +4022,7 @@ const WEAPONS: WeaponDict = {
         might: 16,
         effectiveAgainst: ["armored"],
         exclusiveTo: ["Selena: Cutting Wit"],
-        onCombatStart(state, target) {
+        statMod(state, target) {
             const { atk: unitAtk } = getMapStats(this.entity)
             const { atk: enemyAtk } = getMapStats(target);
             if (enemyAtk >= unitAtk + 3) {
@@ -4037,7 +4044,7 @@ const WEAPONS: WeaponDict = {
         might: 14,
         description: "Effective against flying foes. If foe uses bow, dagger, magic, or staff, grants Atk/Spd/Def/Res+4 during combat.",
         effectiveAgainst: ["flier"],
-        onCombatStart(state, target) {
+        statMod(state, target) {
             const { range } = target.getOne("Weapon");
             if (range === 2) {
                 return [this.entity.addComponent({
@@ -4422,7 +4429,7 @@ const WEAPONS: WeaponDict = {
         might: 16,
         exclusiveTo: ["Draug: Gentle Giant"],
         type: "sword",
-        onCombatDefense(state, attacker) {
+        statModDefense(state, attacker) {
             return [attacker.addComponent({
                 type: "CombatDebuff",
                 atk: -6
@@ -4489,7 +4496,7 @@ const WEAPONS: WeaponDict = {
         type: "tome",
         color: "red",
         might: 8,
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             if (HeroSystem.getDistance(ally, this.entity) <= 2) {
                 return [ally.addComponent({
                     type: "CombatBuff",
@@ -4506,7 +4513,7 @@ const WEAPONS: WeaponDict = {
         type: "tome",
         color: "red",
         might: 12,
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             if (HeroSystem.getDistance(ally, this.entity) <= 2) {
                 return [ally.addComponent({
                     type: "CombatBuff",
@@ -4571,7 +4578,7 @@ const WEAPONS: WeaponDict = {
         type: "sword",
         might: 16,
         exclusiveTo: ["Seliph: Heir of Light"],
-        onCombatStart() {
+        statMod() {
             const { maxHP, hp } = this.entity.getOne("Stats");
             if (hp / maxHP <= 0.5) {
                 return [this.entity.addComponent({
@@ -4651,7 +4658,7 @@ const WEAPONS: WeaponDict = {
         exclusiveTo: ["Jagen: Veteran Knight"],
         might: 16,
         type: "lance",
-        onCombatInitiate(state, target) {
+        statModInitiate(state, target) {
             const { maxHP, hp } = target.getOne("Stats");
             if (hp / maxHP >= 0.7) {
                 return [this.entity.addComponent({
@@ -4663,7 +4670,7 @@ const WEAPONS: WeaponDict = {
 
             return [];
         },
-        onCombatDefense() {
+        statModDefense() {
             return [this.entity.addComponent({
                 type: "CombatBuff",
                 atk: 5,
@@ -4673,7 +4680,7 @@ const WEAPONS: WeaponDict = {
     },
     "Vidofnir": {
         description: "If foe initiates combat and uses sword, lance, or axe, grants Def+7 during combat.",
-        onCombatDefense(state, attacker) {
+        statModDefense(state, attacker) {
             if (["sword", "lance", "axe"].includes(attacker.getOne("Weapon").weaponType)) {
                 return [this.entity.addComponent({
                     type: "CombatBuff",
@@ -4799,7 +4806,7 @@ const WEAPONS: WeaponDict = {
         exclusiveTo: ["Corrin: Fateful Prince"],
         might: 16,
         type: "sword",
-        onCombatInitiate() {
+        statModInitiate() {
             return [this.entity.addComponent({
                 type: "CombatBuff",
                 spd: 4

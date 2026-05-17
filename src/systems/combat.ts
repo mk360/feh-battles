@@ -65,7 +65,7 @@ class CombatSystem extends System {
             value: target.getOne("Stats").hp,
         });
 
-        const defenderPosition = target.getOne("Position");
+        const defenderPosition = getPosition(target);
         const defenderTile = this.state.map[defenderPosition.y][defenderPosition.x];
         combatMap.set(target, {
             effective: checkBattleEffectiveness(target, attacker),

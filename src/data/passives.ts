@@ -42,15 +42,19 @@ interface PassivesDict {
         onCombatAfter?(this: Skill, state: GameState, target: Entity): Component[];
         onCombatRoundAttack?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): void;
         onCombatRoundDefense?(this: Skill, enemy: Entity, combatRound: Partial<CombatTurnOutcome>): void;
-        onSpecialTrigger?(this: Skill, battleState: GameState, target: Entity): void;
+        onSpecialTrigger?(this: Skill, battleState: GameState, target: Entity): Component[];
         onTurnStart?(this: Skill, state: GameState): Component[];
         onTurnStartBefore?(this: Skill, state: GameState): void;
         onTurnStartAfter?(this: Skill, state: GameState): void;
         onTurnCheckRange?(this: Skill, state: GameState): void;
-        onTurnAllyCheckRange?(this: Skill, state: GameState, ally: Entity): void;
-        onTurnEnemyCheckRange?(this: Skill, state: GameState, enemy: Entity): void;
+        onTurnAllyCheckRange?(this: Skill, state: GameState, ally: Entity): Component[];
+        onTurnEnemyCheckRange?(this: Skill, state: GameState, enemy: Entity): Component[];
         onAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: Skill): void;
         onAllyAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: Skill): void;
+        statModAlly?(this: Skill, battleState: GameState, ally: Entity): Component[];
+        statModDefense?(this: Skill, battleState: GameState, enemy: Entity): Component[];
+        statModInitiate?(this: Skill, battleState: GameState): Component[];
+        statMod?(this: Skill, battleState: GameState, target: Entity): Component[];
         isSacredSeal?: true;
     }
 }
@@ -437,7 +441,7 @@ const PASSIVES: PassivesDict = {
     "Close Def 1": {
         description: "If foe initiates combat and uses sword, lance, axe, dragonstone, or beast damage, grants Def/Res+2 during combat.",
         slot: "A",
-        onCombatDefense(state, attacker) {
+        statModDefense(state, attacker) {
             const components: Component[] = [];
             const { range } = attacker.getOne("Weapon");
             if (range === 1) {
@@ -454,7 +458,7 @@ const PASSIVES: PassivesDict = {
     "Close Def 2": {
         description: "If foe initiates combat and uses sword, lance, axe, dragonstone, or beast damage, grants Def/Res+4 during combat.",
         slot: "A",
-        onCombatDefense(state, attacker) {
+        statModDefense(state, attacker) {
             const components: Component[] = [];
             const { range } = attacker.getOne("Weapon");
             if (range === 1) {
@@ -471,7 +475,7 @@ const PASSIVES: PassivesDict = {
     "Close Def 3": {
         description: "If foe initiates combat and uses sword, lance, axe, dragonstone, or beast damage, grants Def/Res+6 during combat.",
         slot: "A",
-        onCombatDefense(state, attacker) {
+        statModDefense(state, attacker) {
             const components: Component[] = [];
             const { range } = attacker.getOne("Weapon");
             if (range === 1) {
@@ -489,7 +493,7 @@ const PASSIVES: PassivesDict = {
         description: "If foe initiates combat and uses bow, dagger, magic, or staff, grants Def/Res+2 during combat.",
         slot: "A",
         isSacredSeal: true,
-        onCombatDefense(state, attacker) {
+        statModDefense(state, attacker) {
             const components: Component[] = [];
             const { range } = attacker.getOne("Weapon");
             if (range === 2) {
@@ -507,7 +511,7 @@ const PASSIVES: PassivesDict = {
         description: "If foe initiates combat and uses bow, dagger, magic, or staff, grants Def/Res+4 during combat.",
         slot: "A",
         isSacredSeal: true,
-        onCombatDefense(state, attacker) {
+        statModDefense(state, attacker) {
             const components: Component[] = [];
             const { range } = attacker.getOne("Weapon");
             if (range === 2) {
@@ -525,7 +529,7 @@ const PASSIVES: PassivesDict = {
         description: "If foe initiates combat and uses bow, dagger, magic, or staff, grants Def/Res+6 during combat.",
         slot: "A",
         isSacredSeal: true,
-        onCombatDefense(state, attacker) {
+        statModDefense(state, attacker) {
             const components: Component[] = [];
             const { range } = attacker.getOne("Weapon");
             if (range === 2) {
@@ -600,14 +604,17 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: closeRange,
         onSpecialTrigger() {
             const special = this.entity.getOne("Special");
+            const components: Component[] = [];
             const { hp, maxHP } = this.entity.getOne("Stats");
             const specialData = SPECIALS[special.name];
             if (hp / maxHP <= 0.25 && specialData.onCombatRoundAttack) {
-                this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "RoundDamageIncrease",
                     amount: 10
-                });
+                }));
             }
+
+            return components;
         }
     },
     "Wrath 2": {
@@ -628,15 +635,18 @@ const PASSIVES: PassivesDict = {
             return components;
         },
         onSpecialTrigger() {
+            let components: Component[] = [];
             const { hp, maxHP } = this.entity.getOne("Stats");
             const special = this.entity.getOne("Special");
             const specialData = SPECIALS[special.name];
             if (hp / maxHP <= 0.5 && specialData.onCombatRoundAttack) {
-                this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "RoundDamageIncrease",
                     amount: 10
-                });
+                }));
             }
+
+            return components;
         }
     },
     "Wrath 3": {
@@ -660,14 +670,15 @@ const PASSIVES: PassivesDict = {
             const special = this.entity.getOne("Special");
             const specialData = SPECIALS[special.name];
             const { hp, maxHP } = this.entity.getOne("Stats");
-
+            const components: Component[] = [];
             if (hp / maxHP <= 0.75 && specialData.onCombatRoundAttack) {
-                this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "RoundDamageIncrease",
                     amount: 10
-                });
+                }));
             }
 
+            return components;
         }
     },
     "Obstruct 1": {
@@ -676,18 +687,21 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         onTurnEnemyCheckRange(state, enemy) {
             const { hp, maxHP } = this.entity.getOne("Stats");
+            let components: Component[] = [];
             if (hp / maxHP >= 0.9) {
                 const { x, y } = this.entity.getOne("Position");
                 const surroundings = getSurroundings(state.map, y, x);
                 for (let tile of surroundings) {
                     const { x: tileX, y: tileY } = getTileCoordinates(tile);
-                    enemy.addComponent({
+                    components.push(enemy.addComponent({
                         type: "Obstruct",
                         x: tileX,
                         y: tileY
-                    });
+                    }));
                 }
             }
+            
+            return components;
         },
     },
     "Obstruct 2": {
@@ -696,18 +710,21 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         onTurnEnemyCheckRange(state, enemy) {
             const { hp, maxHP } = this.entity.getOne("Stats");
+            let components: Component[] = [];
             if (hp / maxHP >= 0.7) {
                 const { x, y } = this.entity.getOne("Position");
                 const surroundings = getSurroundings(state.map, y, x);
                 for (let tile of surroundings) {
                     const { x: tileX, y: tileY } = getTileCoordinates(tile);
-                    enemy.addComponent({
+                    components.push(enemy.addComponent({
                         type: "Obstruct",
                         x: tileX,
                         y: tileY
-                    });
+                    }));
                 }
             }
+
+            return components;
         },
     },
     "Obstruct 3": {
@@ -716,18 +733,21 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         onTurnEnemyCheckRange(state, enemy) {
             const { hp, maxHP } = this.entity.getOne("Stats");
+            let components: Component[] = [];
             if (hp / maxHP >= 0.5) {
                 const { x, y } = this.entity.getOne("Position");
                 const surroundings = getSurroundings(state.map, y, x);
                 for (let tile of surroundings) {
                     const { x: tileX, y: tileY } = getTileCoordinates(tile);
-                    enemy.addComponent({
+                    components.push(enemy.addComponent({
                         type: "Obstruct",
                         x: tileX,
                         y: tileY
-                    });
+                    }));
                 }
             }
+
+            return components;
         },
     },
     "Dazzling Staff 1": {
@@ -971,7 +991,7 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         allowedWeaponTypes: exceptStaves,
         description: "If unit initiates combat, grants Atk+2 during combat.",
-        onCombatInitiate() {
+        statModInitiate() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -985,7 +1005,7 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         allowedWeaponTypes: exceptStaves,
         description: "If unit initiates combat, grants Atk+4 during combat.",
-        onCombatInitiate() {
+        statModInitiate() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -999,7 +1019,7 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         allowedWeaponTypes: exceptStaves,
         description: "If unit initiates combat, grants Atk+6 during combat.",
-        onCombatInitiate() {
+        statModInitiate() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -1013,7 +1033,7 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         allowedWeaponTypes: exceptStaves,
         description: "If unit initiates combat, grants Spd+2 during combat.",
-        onCombatInitiate() {
+        statModInitiate() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -1027,7 +1047,7 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         allowedWeaponTypes: exceptStaves,
         description: "If unit initiates combat, grants Spd+4 during combat.",
-        onCombatInitiate() {
+        statModInitiate() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -1041,7 +1061,7 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         allowedWeaponTypes: exceptStaves,
         description: "If unit initiates combat, grants Spd+6 during combat.",
-        onCombatInitiate() {
+        statModInitiate() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -1054,7 +1074,7 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         description: "If unit initiates combat, grants Def+2 during combat.",
         allowedWeaponTypes: exceptStaves,
-        onCombatInitiate() {
+        statModInitiate() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -1068,7 +1088,7 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         description: "If unit initiates combat, grants Def+4 during combat.",
         allowedWeaponTypes: exceptStaves,
-        onCombatInitiate() {
+        statModInitiate() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -1083,7 +1103,7 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         description: "If unit initiates combat, grants Def+6 during combat.",
         allowedWeaponTypes: exceptStaves,
-        onCombatInitiate() {
+        statModInitiate() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -1097,7 +1117,7 @@ const PASSIVES: PassivesDict = {
         allowedWeaponTypes: exceptStaves,
         slot: "A",
         isSacredSeal: true,
-        onCombatInitiate() {
+        statModInitiate() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -1110,7 +1130,7 @@ const PASSIVES: PassivesDict = {
         description: "If unit initiates combat, grants Res+4 during combat.",
         allowedWeaponTypes: exceptStaves,
         slot: "A",
-        onCombatInitiate() {
+        statModInitiate() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -1123,7 +1143,7 @@ const PASSIVES: PassivesDict = {
         description: "If unit initiates combat, grants Res+6 during combat.",
         allowedWeaponTypes: exceptStaves,
         slot: "A",
-        onCombatInitiate() {
+        statModInitiate() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -1137,7 +1157,7 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         allowedWeaponTypes: exceptStaves,
         description: "If foe initiates combat, grants Atk+2 during combat.",
-        onCombatDefense() {
+        statModDefense() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -1151,7 +1171,7 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         allowedWeaponTypes: exceptStaves,
         description: "If foe initiates combat, grants Atk+4 during combat.",
-        onCombatDefense() {
+        statModDefense() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -1165,7 +1185,7 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         allowedWeaponTypes: exceptStaves,
         description: "If foe initiates combat, grants Atk+6 during combat.",
-        onCombatDefense() {
+        statModDefense() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -1178,7 +1198,7 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         isSacredSeal: true,
         description: "If foe initiates combat, grants Def+2 during combat.",
-        onCombatDefense() {
+        statModDefense() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -1191,7 +1211,7 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         isSacredSeal: true,
         description: "If foe initiates combat, grants Def+4 during combat.",
-        onCombatDefense() {
+        statModDefense() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -1204,7 +1224,7 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         isSacredSeal: true,
         description: "If foe initiates combat, grants Def+6 during combat.",
-        onCombatDefense() {
+        statModDefense() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -1218,7 +1238,7 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         allowedWeaponTypes: exceptStaves,
         isSacredSeal: true,
-        onCombatInitiate() {
+        statModInitiate() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -1233,7 +1253,7 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         allowedWeaponTypes: exceptStaves,
         isSacredSeal: true,
-        onCombatInitiate() {
+        statModInitiate() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -1248,7 +1268,7 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         allowedWeaponTypes: exceptStaves,
         isSacredSeal: true,
-        onCombatInitiate() {
+        statModInitiate() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -1263,7 +1283,7 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         allowedWeaponTypes: exceptStaves,
         isSacredSeal: true,
-        onCombatInitiate() {
+        statModInitiate() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -1278,7 +1298,7 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         allowedWeaponTypes: exceptStaves,
         isSacredSeal: true,
-        onCombatInitiate() {
+        statModInitiate() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -1293,7 +1313,7 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         allowedWeaponTypes: exceptStaves,
         isSacredSeal: true,
-        onCombatInitiate() {
+        statModInitiate() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -1308,7 +1328,7 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         allowedWeaponTypes: exceptStaves,
         isSacredSeal: true,
-        onCombatInitiate() {
+        statModInitiate() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -1323,7 +1343,7 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         allowedWeaponTypes: exceptStaves,
         isSacredSeal: true,
-        onCombatInitiate() {
+        statModInitiate() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -1338,7 +1358,7 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         allowedWeaponTypes: exceptStaves,
         slot: "A",
-        onCombatInitiate() {
+        statModInitiate() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -1353,7 +1373,7 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         allowedWeaponTypes: exceptStaves,
         slot: "A",
-        onCombatInitiate() {
+        statModInitiate() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -1368,7 +1388,7 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         allowedWeaponTypes: exceptStaves,
         description: "If unit initiates combat, grants Atk/Spd+2 during combat.",
-        onCombatInitiate() {
+        statModInitiate() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -1383,7 +1403,7 @@ const PASSIVES: PassivesDict = {
         isSacredSeal: true,
         allowedWeaponTypes: exceptStaves,
         description: "If unit initiates combat, grants Atk/Spd+3 during combat.",
-        onCombatInitiate() {
+        statModInitiate() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -1427,7 +1447,7 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         isSacredSeal: true,
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Res+2 during combat.",
-        onCombatStart(state, target) {
+        statMod(state, target) {
             const components: Component[] = [];
             const result = elementalBoost(this, target, {
                 res: 2
@@ -1440,7 +1460,7 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         isSacredSeal: true,
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Res+4 during combat.",
-        onCombatStart(state, target) {
+        statMod(state, target) {
             const components: Component[] = [];
             const result = elementalBoost(this, target, {
                 res: 4
@@ -1453,7 +1473,7 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         isSacredSeal: true,
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Res+6 during combat.",
-        onCombatStart(state, target) {
+        statMod(state, target) {
             const components: Component[] = [];
             const result = elementalBoost(this, target, {
                 res: 6
@@ -1466,7 +1486,7 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         isSacredSeal: true,
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Spd+2 during combat.",
-        onCombatStart(state, target) {
+        statMod(state, target) {
             const components: Component[] = [];
             const result = elementalBoost(this, target, {
                 spd: 2
@@ -1479,7 +1499,7 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         isSacredSeal: true,
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Spd+4 during combat.",
-        onCombatStart(state, target) {
+        statMod(state, target) {
             const components: Component[] = [];
             const result = elementalBoost(this, target, {
                 spd: 4
@@ -1492,7 +1512,7 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         isSacredSeal: true,
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Spd+6 during combat.",
-        onCombatStart(state, target) {
+        statMod(state, target) {
             const components: Component[] = [];
             const result = elementalBoost(this, target, {
                 spd: 6
@@ -1505,7 +1525,7 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         isSacredSeal: true,
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Def+2 during combat.",
-        onCombatStart(state, target) {
+        statMod(state, target) {
             const components: Component[] = [];
             const result = elementalBoost(this, target, {
                 def: 2
@@ -1518,7 +1538,7 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         isSacredSeal: true,
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Def+4 during combat.",
-        onCombatStart(state, target) {
+        statMod(state, target) {
             const components: Component[] = [];
             const result = elementalBoost(this, target, {
                 def: 4
@@ -1531,7 +1551,7 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         isSacredSeal: true,
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Def+6 during combat.",
-        onCombatStart(state, target) {
+        statMod(state, target) {
             const components: Component[] = [];
             const result = elementalBoost(this, target, {
                 def: 6
@@ -1543,7 +1563,7 @@ const PASSIVES: PassivesDict = {
     "Fire Boost 1": {
         slot: "A",
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Atk+2 during combat.",
-        onCombatStart(state, target) {
+        statMod(state, target) {
             const components: Component[] = [];
             const result = elementalBoost(this, target, {
                 atk: 2
@@ -1555,7 +1575,7 @@ const PASSIVES: PassivesDict = {
     "Fire Boost 2": {
         slot: "A",
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Atk+4 during combat.",
-        onCombatStart(state, target) {
+        statMod(state, target) {
             const components: Component[] = [];
             const result = elementalBoost(this, target, {
                 atk: 4
@@ -1567,7 +1587,7 @@ const PASSIVES: PassivesDict = {
     "Fire Boost 3": {
         slot: "A",
         description: "At start of combat, if unit's HP ≥ foe's HP+3, grants Atk+6 during combat.",
-        onCombatStart(state, target) {
+        statMod(state, target) {
             const components: Component[] = [];
             const result = elementalBoost(this, target, {
                 atk: 6
@@ -1734,20 +1754,6 @@ const PASSIVES: PassivesDict = {
         },
         slot: "B"
     },
-    // "Geyser Dance 3": {
-    //     description: "If Sing or Dance is used, grants Def/Res+4 to target.",
-    //     allowedWeaponTypes: exceptStaves,
-    //     onAssistAfter(battleState, ally, assistSkill) {
-    //         const assist = ASSISTS[assistSkill.name];
-    //         if (assist.type.includes("refresh")) {
-    //             applyMapComponent(ally, "MapBuff", {
-    //                 def: 4,
-    //                 res: 4
-    //             });
-    //         }
-    //     },
-    //     slot: "B"
-    // },
     "Seal Def 1": {
         description: "Inflicts Def-3 on foe through its next action after combat.",
         slot: "B",
@@ -2069,7 +2075,7 @@ const PASSIVES: PassivesDict = {
         slot: "A",
         isSacredSeal: true,
         description: "If foe initiates combat, grants Def+4 during combat and Special cooldown charge +1 per attack. (Only highest value applied. Does not stack.)",
-        onCombatDefense() {
+        statModDefense() {
             const components: Component[] = [];
             components.push(this.entity.addComponent({
                 type: "CombatBuff",
@@ -2434,12 +2440,14 @@ const PASSIVES: PassivesDict = {
         onSpecialTrigger() {
             const special = this.entity.getOne("Special");
             const specialData = SPECIALS[special.name];
+            let components: Component[] = [];
             if (specialData.onCombatRoundDefense) {
-                this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "RoundDamageReduction",
                     value: 5
-                });
+                }));
             }
+            return components;
         }
     },
     "Shield Pulse 3": {
@@ -2465,12 +2473,15 @@ const PASSIVES: PassivesDict = {
         onSpecialTrigger() {
             const special = this.entity.getOne("Special");
             const specialData = SPECIALS[special.name];
+            let components: Component[] = [];
             if (specialData.onCombatRoundDefense) {
-                this.entity.addComponent({
+                components.push(this.entity.addComponent({
                     type: "RoundDamageReduction",
                     value: 5
-                });
+                }));
             }
+
+            return components;
         }
     },
     "Cancel Affinity 1": {
@@ -3054,9 +3065,12 @@ const PASSIVES: PassivesDict = {
         description: "If unit's HP = 100%, infantry and armored allies within 2 spaces can move to a space adjacent to unit.",
         onTurnAllyCheckRange(state, ally) {
             const { hp, maxHP } = this.entity.getOne("Stats");
+            let components: Component[] = [];
             if (hp === maxHP && ["armored", "infantry"].includes(ally.getOne("MovementType").value) && HeroSystem.getDistance(ally, this.entity) <= 2) {
-                guidance(this.entity, state, ally);
+                components = components.concat(guidance(this.entity, state, ally));
             }
+
+            return components;
         },
         allowedMovementTypes: ["flier"]
     },
@@ -3067,9 +3081,12 @@ const PASSIVES: PassivesDict = {
         allowedMovementTypes: ["flier"],
         onTurnAllyCheckRange(state, ally) {
             const { hp, maxHP } = this.entity.getOne("Stats");
+            let components: Component[] = [];
             if (hp / maxHP >= 0.5 && ["armored", "infantry"].includes(ally.getOne("MovementType").value) && HeroSystem.getDistance(ally, this.entity) <= 2) {
-                guidance(this.entity, state, ally);
+                components = components.concat(guidance(this.entity, state, ally));
             }
+
+            return components
         }
     },
     "Guidance 3": {
@@ -3078,9 +3095,12 @@ const PASSIVES: PassivesDict = {
         allowedMovementTypes: ["flier"],
         description: "Infantry and armored allies within 2 spaces can move to a space adjacent to unit.",
         onTurnAllyCheckRange(state, ally) {
+            let components: Component[] = [];
             if (["armored", "infantry"].includes(ally.getOne("MovementType").value) && HeroSystem.getDistance(ally, this.entity) <= 2) {
-                guidance(this.entity, state, ally);
+                components = components.concat(guidance(this.entity, state, ally));
             }
+
+            return components;
         }
     },
     "Savage Blow 1": {
@@ -3409,35 +3429,35 @@ const PASSIVES: PassivesDict = {
         description: "Grants Atk/Spd+4 to flying allies within 2 spaces during combat.",
         slot: "C",
         allowedMovementTypes: ["flier"],
-        onCombatAllyStart: goad("flier")
+        statModAlly: goad("flier")
     },
     "Goad Armor": {
         description: "Grants Atk/Spd+4 to armored allies within 2 spaces during combat.",
         slot: "C",
         allowedMovementTypes: ["armored"],
-        onCombatAllyStart: goad("armored")
+        statModAlly: goad("armored")
     },
     "Goad Cavalry": {
         description: "Grants Atk/Spd+4 to cavalry allies within 2 spaces during combat.",
         slot: "C",
         allowedMovementTypes: ["cavalry"],
-        onCombatAllyStart: goad("cavalry")
+        statModAlly: goad("cavalry")
     },
     "Ward Cavalry": {
         description: "Grants Def/Res+4 to cavalry allies within 2 spaces during combat.",
-        onCombatAllyStart: ward("cavalry"),
+        statModAlly: ward("cavalry"),
         slot: "C",
         allowedMovementTypes: ["cavalry"]
     },
     "Ward Armor": {
         description: "Grants Def/Res+4 to armored allies within 2 spaces during combat.",
-        onCombatAllyStart: ward("armored"),
+        statModAlly: ward("armored"),
         slot: "C",
         allowedMovementTypes: ["armored"]
     },
     "Ward Fliers": {
         description: "Grants Def/Res+4 to flier allies within 2 spaces during combat.",
-        onCombatAllyStart: ward("flier"),
+        statModAlly: ward("flier"),
         slot: "C",
         allowedMovementTypes: ["flier"]
     },
@@ -3903,7 +3923,7 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         description: "Grants Def+2 to allies within 2 spaces during combat.",
         isSacredSeal: true,
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             return combatBuffByRange(this, ally, 2, {
                 def: 2,
             });
@@ -3913,7 +3933,7 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         isSacredSeal: true,
         description: "Grants Def+3 to allies within 2 spaces during combat.",
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             return combatBuffByRange(this, ally, 2, {
                 def: 3,
             });
@@ -3923,14 +3943,14 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         isSacredSeal: true,
         description: "Grants Atk+2 to allies within 2 spaces during combat.",
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             return combatBuffByRange(this, ally, 2, {
                 atk: 2
             });
         }
     },
     "Drive Atk 2": {
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             return combatBuffByRange(this, ally, 2, {
                 atk: 3
             });
@@ -3940,7 +3960,7 @@ const PASSIVES: PassivesDict = {
         description: "Grants Atk+3 to allies within 2 spaces during combat.",
     },
     "Drive Res 1": {
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             return combatBuffByRange(this, ally, 2, {
                 res: 2
             });
@@ -3950,7 +3970,7 @@ const PASSIVES: PassivesDict = {
         description: "Grants Res+2 to allies within 2 spaces during combat."
     },
     "Drive Res 2": {
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             return combatBuffByRange(this, ally, 2, {
                 res: 3
             });
@@ -3963,7 +3983,7 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         isSacredSeal: true,
         description: "Grants Atk+2 to adjacent allies during combat.",
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             return combatBuffByRange(this, ally, 1, {
                 atk: 2
             });
@@ -3973,7 +3993,7 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         isSacredSeal: true,
         description: "Grants Atk+3 to adjacent allies during combat.",
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             return combatBuffByRange(this, ally, 1, {
                 atk: 3
             });
@@ -3983,7 +4003,7 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         isSacredSeal: true,
         description: "Grants Atk+4 to adjacent allies during combat.",
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             return combatBuffByRange(this, ally, 1, {
                 atk: 4
             });
@@ -3993,7 +4013,7 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         isSacredSeal: true,
         description: "Grants Res+2 to adjacent allies during combat.",
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             return combatBuffByRange(this, ally, 1, {
                 res: 2
             });
@@ -4003,7 +4023,7 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         isSacredSeal: true,
         description: "Grants Res+3 to adjacent allies during combat.",
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             return combatBuffByRange(this, ally, 1, {
                 res: 3
             });
@@ -4013,7 +4033,7 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         isSacredSeal: true,
         description: "Grants Res+4 to adjacent allies during combat.",
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             return combatBuffByRange(this, ally, 1, {
                 res: 4
             });
@@ -4023,7 +4043,7 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         isSacredSeal: true,
         description: "Grants Def+2 to adjacent allies during combat.",
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             return combatBuffByRange(this, ally, 1, {
                 def: 2,
             });
@@ -4033,7 +4053,7 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         isSacredSeal: true,
         description: "Grants Def+3 to adjacent allies during combat.",
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             return combatBuffByRange(this, ally, 1, {
                 def: 3,
             });
@@ -4043,7 +4063,7 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         isSacredSeal: true,
         description: "Grants Def+4 to adjacent allies during combat.",
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             return combatBuffByRange(this, ally, 1, {
                 def: 4,
             });
@@ -4052,7 +4072,7 @@ const PASSIVES: PassivesDict = {
     "Spur Spd 1": {
         slot: "C",
         description: "Grants Spd+2 to adjacent allies during combat.",
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             return combatBuffByRange(this, ally, 1, {
                 spd: 2
             });
@@ -4061,7 +4081,7 @@ const PASSIVES: PassivesDict = {
     "Spur Spd 2": {
         slot: "C",
         description: "Grants Spd+3 to adjacent allies during combat.",
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             return combatBuffByRange(this, ally, 1, {
                 spd: 3,
             });
@@ -4070,7 +4090,7 @@ const PASSIVES: PassivesDict = {
     "Spur Spd 3": {
         slot: "C",
         description: "Grants Spd+4 to adjacent allies during combat.",
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             return combatBuffByRange(this, ally, 1, {
                 spd: 4
             });
@@ -4080,7 +4100,7 @@ const PASSIVES: PassivesDict = {
         description: "Grants Def/Res +2 to adjacent allies during combat.",
         slot: "C",
         isSacredSeal: true,
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             return combatBuffByRange(this, ally, 1, {
                 def: 2,
                 res: 2
@@ -4091,7 +4111,7 @@ const PASSIVES: PassivesDict = {
         description: "Grants Def/Res +3 to adjacent allies during combat.",
         slot: "C",
         isSacredSeal: true,
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             return combatBuffByRange(this, ally, 1, {
                 def: 3,
                 res: 3
@@ -4540,7 +4560,7 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         isSacredSeal: true,
         description: "Grants Spd/Def+2 to adjacent allies during combat.",
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             const components: Component[] = [];
             if (HeroSystem.getDistance(ally, this.entity) === 1) {
                 components.push(ally.addComponent({
@@ -4557,7 +4577,7 @@ const PASSIVES: PassivesDict = {
         slot: "C",
         isSacredSeal: true,
         description: "Grants Spd/Def+3 to adjacent allies during combat.",
-        onCombatAllyStart(state, ally) {
+        statModAlly(state, ally) {
             const components: Component[] = [];
             if (HeroSystem.getDistance(ally, this.entity) === 1) {
                 components.push(ally.addComponent({

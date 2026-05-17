@@ -27,7 +27,7 @@ interface SpecialsDict {
         exclusiveTo?: (keyof typeof Characters)[];
         allowedMovementTypes?: MovementType[];
         type?: "aoe";
-        getAoETargets?(state: GameState, target: Entity): Set<Entity>;
+        getAoETargets?(this: Skill, state: GameState, target: Entity): Set<Entity>;
         getAoEDamage?(skill: Skill, state: GameState, target: Entity): number;
         onAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: Skill): void;
         onSpecialTrigger?(this: Skill, battleState: GameState, target: Entity): void;
@@ -45,6 +45,10 @@ interface SpecialsDict {
         onTurnStartAfter?(this: Skill, battleState: GameState): void;
         onAllyAssistAfter?(this: Skill, battleState: GameState, ally: Entity, assistSkill: Skill): void;
         shouldActivate?(this: Skill, damage: number): boolean;
+        statModAlly?(this: Skill, battleState: GameState): Component[];
+        statModDefense?(this: Skill, battleState: GameState): Component[];
+        statModInitiate?(this: Skill, battleState: GameState): Component[];
+        statMod?(this: Skill, battleState: GameState, target: Entity): Component[];
     }
 }
 

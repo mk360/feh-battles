@@ -4,15 +4,18 @@
     "skipLibCheck": true,
     "module": "CommonJS",
     "lib": [
-      "ESNext"
+      "ESNext",
+      "DOM"
     ],
     "resolveJsonModule": true,
     "target": "ES6",
     "esModuleInterop": true,
     "declaration": true,
+    "strictNullChecks": false,
     "declarationDir": "./dec",
     "rootDir": "./src",
-    "outDir": "./lib"
+    "outDir": "./lib",
+    "noUncheckedIndexedAccess": false
   },
   "include": [
     "./src"

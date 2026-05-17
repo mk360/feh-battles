@@ -52,6 +52,10 @@ interface AssistsDict {
         onTurnStartAfter?(this: Assist, battleState: GameState): void;
         onAssistAfter?(this: Assist, battleState: GameState, ally: Entity, assistSkill: Assist): void;
         onAllyAssistAfter?(this: Assist, battleState: GameState, ally: Entity, assistSkill: Assist): void;
+        statModAlly?(this: Assist, battleState: GameState): Component[];
+        statModDefense?(this: Assist, battleState: GameState): Component[];
+        statModInitiate?(this: Assist, battleState: GameState): Component[];
+        statMod?(this: Assist, battleState: GameState, target: Entity): Component[];
     }
 }
 
@@ -128,7 +132,7 @@ const ASSISTS: AssistsDict = {
             };
 
             mapDebuffs.forEach((component) => {
-                const { type, ...stats } = component.getObject(false);
+                const { type, id, entity, ...stats } = component.getObject(false);
                 for (let stat in stats) {
                     newBuffs[stat] = Math.max(-stats[stat], newBuffs[stat]);
                 }

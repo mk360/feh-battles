@@ -32,6 +32,50 @@ class BeforeCombat extends System {
         const attackerSkills = this.state.skillMap.get(attacker);
         const defenderSkills = this.state.skillMap.get(defender);
 
+        attackerSkills.statMod?.forEach((skill) => {
+            const components = SKILLS[skill.name].statMod.call(skill, this.state, defender);
+            if (components) {
+                for (let addedComponent of components) {
+                    addLogEntry(addedComponent, attacker, addedComponent.entity === attacker ? attacker : defender, skill.name, this.state.history, !!attacker.getOne("PreviewingBattle"));
+                }
+            } else {
+                console.warn("No components found for " + skill.name);
+            }
+        });
+
+        attackerSkills.statModInitiate?.forEach((skill) => {
+            const components = SKILLS[skill.name].statModInitiate.call(skill, this.state, defender);
+            if (components) {
+                for (let addedComponent of components) {
+                    addLogEntry(addedComponent, attacker, addedComponent.entity === attacker ? attacker : defender, skill.name, this.state.history, !!attacker.getOne("PreviewingBattle"));
+                }
+            } else {
+                console.warn("No components found for " + skill.name);
+            }
+        });
+
+        defenderSkills.statMod?.forEach((skill) => {
+            const components = SKILLS[skill.name].statMod.call(skill, this.state, attacker);
+            if (components) {
+                for (let addedComponent of components) {
+                    addLogEntry(addedComponent, defender, addedComponent.entity === defender ? defender : attacker, skill.name, this.state.history, !!defender.getOne("PreviewingBattle"));
+                }
+            } else {
+                console.warn("No components found for " + skill.name);
+            }
+        });
+
+        defenderSkills.statModDefense?.forEach((skill) => {
+            const components = SKILLS[skill.name].statModDefense.call(skill, this.state, attacker);
+            if (components) {
+                for (let addedComponent of components) {
+                    addLogEntry(addedComponent, defender, addedComponent.entity === defender ? defender : attacker, skill.name, this.state.history, !!defender.getOne("PreviewingBattle"));
+                }
+            } else {
+                console.warn("No components found for " + skill.name);
+            }
+        });
+
         attackerSkills.onCombatStart?.forEach((skill) => {
             const components = SKILLS[skill.name].onCombatStart.bind(skill)(this.state, defender);
             if (components) {
@@ -55,7 +99,7 @@ class BeforeCombat extends System {
         });
 
         attackerSkills.onCombatInitiate?.forEach((skill) => {
-            const components = SKILLS[skill.name].onCombatInitiate.call(skill, this.state, defender);
+            const components = SKILLS[skill.name].onCombatInitiate!.call(skill, this.state, defender);
             if (components) {
                 for (let addedComponent of components) {
                     addLogEntry(addedComponent, attacker, addedComponent.entity === attacker ? attacker : defender, skill.name, this.state.history, !!attacker.getOne("PreviewingBattle"));
@@ -137,6 +181,18 @@ class BeforeCombat extends System {
     runAllySkills(entity: Entity) {
         const allies = getAllies(this.state, entity);
         for (let ally of allies) {
+
+            this.state.skillMap.get(ally).statModAlly?.forEach((skill) => {
+                 const components = SKILLS[skill.name].statModAlly.call(skill, this.state, entity);
+                if (components) {
+                    for (let addedComponent of components) {
+                        addLogEntry(addedComponent, ally, addedComponent.entity, skill.name, this.state.history, !!entity.getOne("PreviewingBattle"));
+                    }
+                } else {
+                    console.warn("No components found for " + skill.name);
+                }
+            });
+
             this.state.skillMap.get(ally).onCombatAllyStart?.forEach((skill) => {
                 const components = SKILLS[skill.name].onCombatAllyStart.call(skill, this.state, entity, { context: skill.name, owner: ally.id });
                 if (components) {

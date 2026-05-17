@@ -87,6 +87,8 @@ class BeforeCombat extends System {
             }
         });
 
+        // test commit
+
         defenderSkills.onCombatStart?.forEach((skill) => {
             const components = SKILLS[skill.name].onCombatStart.call(skill, this.state, attacker);
             if (components) {

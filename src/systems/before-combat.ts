@@ -86,6 +86,7 @@ class BeforeCombat extends System {
                 console.warn("No components found for " + skill.name);
             }
         });
+        //
 
         defenderSkills.onCombatStart?.forEach((skill) => {
             const components = SKILLS[skill.name].onCombatStart.call(skill, this.state, attacker);
